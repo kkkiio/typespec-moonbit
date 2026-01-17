@@ -1,0 +1,12 @@
+{
+  "import": [
+    { "path": "kkkiio/typespec-moonbit/ffi", "alias": "ffi" },
+    { "path": "kkkiio/typespec-moonbit/lib", "alias": "lib" },
+    { "path": "kkkiio/typespec-moonbit/codemodel", "alias": "codemodel" }
+  ],
+  "targets": {
+    "adapter.mbt": ["js"],
+    "helpers.mbt": ["js"],
+    "naming.mbt": ["js"]
+  }
+}

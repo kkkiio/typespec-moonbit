@@ -1,0 +1,48 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-moonbit/codemodel"
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct Client {
+  name : String
+  methods : Array[Method]
+}
+pub fn Client::methods(Self) -> Array[Method]
+pub fn Client::name(Self) -> String
+pub fn Client::new(String, Array[Method]) -> Self
+
+pub struct Crate {
+  name : String
+  version : String
+  clients : Array[Client]
+}
+pub fn Crate::clients(Self) -> Array[Client]
+pub fn Crate::name(Self) -> String
+pub fn Crate::new(String, String, Array[Client]) -> Self
+pub fn Crate::version(Self) -> String
+
+pub type Enum
+
+pub struct Method {
+  name : String
+  path : String
+  http_method : String
+}
+pub fn Method::http_method(Self) -> String
+pub fn Method::name(Self) -> String
+pub fn Method::new(String, String, String) -> Self
+pub fn Method::path(Self) -> String
+
+pub type Model
+
+pub type TypeRef
+
+pub type Union
+
+// Type aliases
+
+// Traits
+

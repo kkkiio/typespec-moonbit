@@ -1,3 +1,13 @@
 # kkkiio/typespec-moonbit
 
-Typespec emitter for Moonbit.
+Typespec MoonBit Emitter. Writen in MoonBit.
+
+## Features
+
+- [ ] http server
+
+## Architecture
+
+TODO
+
+```mermaid

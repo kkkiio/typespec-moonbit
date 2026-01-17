@@ -1,0 +1,30 @@
+{
+  "name": "typespec-moonbit",
+  "private": true,
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "tspMain": "./index.js",
+  "devDependencies": {
+    "@azure-tools/azure-http-specs": "^0.1.0-alpha.36",
+    "@azure-tools/typespec-autorest": "~0.64.0",
+    "@azure-tools/typespec-azure-core": "~0.64.0",
+    "@azure-tools/typespec-azure-resource-manager": "~0.64.0",
+    "@azure-tools/typespec-client-generator-core": "~0.64.1",
+    "@typespec/compiler": "^1.8.0",
+    "@typespec/http": "^1.8.0",
+    "@typespec/http-specs": "0.1.0-alpha.30",
+    "@typespec/rest": "~0.78.0",
+    "@typespec/spector": "0.1.0-alpha.22",
+    "@typespec/versioning": "~0.78.0",
+    "@typespec/xml": "~0.78.0"
+  },
+  "scripts": {
+    "spector": "node .scripts/spector.js",
+    "tspcompile": "node .scripts/tspcompile.js",
+    "test:e2e": "npm run tspcompile && moon test -C typespec-moonbit-tests --target native",
+    "test:runtime": "npm run tspcompile -- --filter=spector_routes --limit=1 && moon test -C typespec-moonbit-tests --target native -p kkkiio/typespec-moonbit-tests/runtime"
+  }
+}

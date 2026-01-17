@@ -1,0 +1,38 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-moonbit/tcgcadapter"
+
+import(
+  "kkkiio/typespec-moonbit/codemodel"
+  "kkkiio/typespec-moonbit/lib"
+  "moonbit-community/js-ffi/js"
+)
+
+// Values
+pub fn get_output_dir(@js.Value) -> String
+
+pub fn get_program(@js.Value) -> @js.Value
+
+pub fn get_raw_options(@js.Value) -> @js.Value
+
+pub fn sanitize_identifier(String) -> String
+
+pub fn sanitize_module_name(String) -> String
+
+// Errors
+
+// Types and methods
+pub struct Adapter {
+  context : @js.Value
+  options : @lib.EmitterOptions
+  service_name : String
+}
+pub fn Adapter::context(Self) -> @js.Value
+pub fn Adapter::create(@js.Value) -> Self
+pub fn Adapter::options(Self) -> @lib.EmitterOptions
+pub fn Adapter::service_name(Self) -> String
+pub async fn Adapter::tcgc_to_crate(Self) -> @codemodel.Crate
+
+// Type aliases
+
+// Traits
+

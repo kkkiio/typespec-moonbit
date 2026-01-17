@@ -1,0 +1,52 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-moonbit/model"
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct File {
+  name : String
+  content : String
+}
+pub fn File::content(Self) -> String
+pub fn File::name(Self) -> String
+pub fn File::new(String, String) -> Self
+
+pub enum HttpMethod {
+  Get
+  Post
+  Put
+  Patch
+  Delete
+}
+
+pub struct Operation {
+  name : String
+  path : String
+  method_ : HttpMethod
+}
+pub fn Operation::method_(Self) -> HttpMethod
+pub fn Operation::name(Self) -> String
+pub fn Operation::new(String, String, HttpMethod) -> Self
+pub fn Operation::path(Self) -> String
+
+pub struct Service {
+  name : String
+  operations : Array[Operation]
+}
+pub fn Service::name(Self) -> String
+pub fn Service::new(String, Array[Operation]) -> Self
+pub fn Service::operations(Self) -> Array[Operation]
+
+pub struct Spec {
+  services : Array[Service]
+}
+pub fn Spec::new(Array[Service]) -> Self
+pub fn Spec::services(Self) -> Array[Service]
+
+// Type aliases
+
+// Traits
+

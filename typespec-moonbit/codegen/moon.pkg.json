@@ -1,0 +1,21 @@
+{
+  "import": [
+    { "path": "kkkiio/typespec-moonbit/codemodel", "alias": "codemodel" },
+    { "path": "kkkiio/typespec-moonbit/lib", "alias": "lib" }
+  ],
+  "targets": {
+    "clients.mbt": ["js"],
+    "code_generator.mbt": ["js"],
+    "context.mbt": ["js"],
+    "emit.mbt": ["js"],
+    "enums.mbt": ["js"],
+    "errors.mbt": ["js"],
+    "file.mbt": ["js"],
+    "helpers.mbt": ["js"],
+    "lib.mbt": ["js"],
+    "mod.mbt": ["js"],
+    "models.mbt": ["js"],
+    "unions.mbt": ["js"],
+    "use.mbt": ["js"]
+  }
+}
