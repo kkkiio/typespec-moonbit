@@ -11,6 +11,24 @@ async test "runtime routes" {
   let client = @routes.ROUTESCLIENT::new("http://localhost:3000")
   let response = client.get_routes_fixed()
   assert_eq(response.code, 204)
+  let response = client.get_routes_in_interface_fixed()
+  assert_eq(response.code, 204)
+  let response = client.get_routes_path_template_only__param_("a")
+  assert_eq(response.code, 204)
+  let response = client.get_routes_path_explicit__param_("a")
+  assert_eq(response.code, 204)
+  let response = client.get_routes_path_annotation_only__param_("a")
+  assert_eq(response.code, 204)
+
+  // 关键：reserved expansion 不应编码 '/'，但应编码空格 -> %20。
+  let response = client.get_routes_path_reserved_expansion_template___param_(
+    "foo/bar baz",
+  )
+  assert_eq(response.code, 204)
+  let response = client.get_routes_path_reserved_expansion_annotation___param_(
+    "foo/bar baz",
+  )
+  assert_eq(response.code, 204)
 }
 
 ///|

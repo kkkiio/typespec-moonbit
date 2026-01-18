@@ -46,6 +46,10 @@ pub fn OutputFile::content(Self) -> String
 pub fn OutputFile::new(String, String) -> Self
 pub fn OutputFile::path(Self) -> String
 
+type UriTemplate
+
+type UriTemplateVar
+
 // Type aliases
 
 // Traits

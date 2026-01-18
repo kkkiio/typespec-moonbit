@@ -85,16 +85,16 @@ fn build_methods(operations_val : @ffi.JsValue) -> Array[@codemodel.Method] {
     } else {
       verb_val.cast()
     }
+    // NOTE: 优先使用 uriTemplate（它包含 RFC6570 的展开语义，例如 `{+param}`、`{/param*}`），
+    // 这对 spector 的 routes/path 编码测试是必须的。
+    let uri_val : @ffi.JsValue = op.get_with_string("uriTemplate")
     let path_val : @ffi.JsValue = op.get_with_string("path")
-    let path = if path_val.is_undefined() || path_val.is_null() {
-      let uri_val : @ffi.JsValue = op.get_with_string("uriTemplate")
-      if uri_val.is_undefined() || uri_val.is_null() {
-        "/"
-      } else {
-        uri_val.cast()
-      }
-    } else {
+    let path = if !(uri_val.is_undefined() || uri_val.is_null()) {
+      uri_val.cast()
+    } else if !(path_val.is_undefined() || path_val.is_null()) {
       path_val.cast()
+    } else {
+      "/"
     }
     let op_ref : @ffi.JsValue = op.get_with_string("operation")
     let op_name_val : @ffi.JsValue = op_ref.get_with_string("name")
