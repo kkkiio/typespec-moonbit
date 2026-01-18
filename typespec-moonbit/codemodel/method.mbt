@@ -4,6 +4,7 @@ pub struct Method {
   name : String
   path : String
   http_method : String
+  status_code : Int
 }
 
 ///|
@@ -12,8 +13,9 @@ pub fn Method::new(
   name : String,
   path : String,
   http_method : String,
+  status_code : Int,
 ) -> Method {
-  { name, path, http_method }
+  { name, path, http_method, status_code }
 }
 
 ///|
@@ -32,4 +34,10 @@ pub fn Method::path(self : Method) -> String {
 /// 获取 HTTP 方法字符串。
 pub fn Method::http_method(self : Method) -> String {
   self.http_method
+}
+
+///|
+/// 获取默认响应状态码（用于生成 server stub）。
+pub fn Method::status_code(self : Method) -> Int {
+  self.status_code
 }

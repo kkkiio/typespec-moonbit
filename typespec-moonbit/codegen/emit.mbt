@@ -4,13 +4,17 @@ pub fn emit(
   crate_ : @codemodel.Crate,
   options : @lib.EmitterOptions,
 ) -> Array[OutputFile] {
-  let files = Array::new(capacity=3)
-  files.push(
-    OutputFile::new("moon.pkg.json", emit_moon_pkg_json(crate_, options)),
-  )
-  files.push(OutputFile::new("README.mbt.md", emit_readme(crate_)))
-  files.push(OutputFile::new("generated.mbt", emit_source(crate_)))
-  files
+  if options.emit_kind() == "server" {
+    emit_server_stub(crate_, options)
+  } else {
+    let files = Array::new(capacity=3)
+    files.push(
+      OutputFile::new("moon.pkg.json", emit_moon_pkg_json(crate_, options)),
+    )
+    files.push(OutputFile::new("README.mbt.md", emit_readme(crate_)))
+    files.push(OutputFile::new("generated.mbt", emit_source(crate_)))
+    files
+  }
 }
 
 ///|
@@ -26,6 +30,140 @@ fn emit_moon_pkg_json(
     #|  ]
     #|}
   content
+}
+
+///|
+/// 生成基于 `moonbitlang/async/http` 的 server stub 工程（最小可运行）。
+fn emit_server_stub(
+  crate_ : @codemodel.Crate,
+  options : @lib.EmitterOptions,
+) -> Array[OutputFile] {
+  let files = Array::new(capacity=4)
+  files.push(OutputFile::new("moon.mod.json", emit_server_moon_mod_json(options)))
+  files.push(OutputFile::new("moon.pkg.json", emit_server_moon_pkg_json()))
+  files.push(OutputFile::new("README.mbt.md", emit_server_readme(crate_)))
+  files.push(OutputFile::new("main.mbt", emit_server_main(crate_)))
+  files
+}
+
+///|
+fn emit_server_moon_mod_json(options : @lib.EmitterOptions) -> String {
+  let name = options.package_name()
+  let version = options.package_version()
+  let buf = StringBuilder::new(size_hint=160)
+  buf.write_string("{\n")
+  buf.write_string("  \"name\": \"")
+  buf.write_string(name.replace_all(old="\\", new="\\\\").replace_all(old="\"", new="\\\""))
+  buf.write_string("\",\n")
+  buf.write_string("  \"version\": \"")
+  buf.write_string(version.replace_all(old="\\", new="\\\\").replace_all(old="\"", new="\\\""))
+  buf.write_string("\",\n")
+  buf.write_string("  \"deps\": {\n")
+  buf.write_string("    \"moonbitlang/async\": \"0.16.1\"\n")
+  buf.write_string("  }\n")
+  buf.write_string("}\n")
+  buf.to_string()
+}
+
+///|
+fn emit_server_moon_pkg_json() -> String {
+  let content =
+    #|{
+    #|  "is-main": true,
+    #|  "import": [
+    #|    { "path": "moonbitlang/async", "alias": "async" },
+    #|    { "path": "moonbitlang/async/http", "alias": "http" },
+    #|    { "path": "moonbitlang/async/io", "alias": "io" },
+    #|    { "path": "moonbitlang/async/socket", "alias": "socket" }
+    #|  ],
+    #|  "targets": {
+    #|    "main.mbt": ["native"]
+    #|  }
+    #|}
+  content
+}
+
+///|
+fn emit_server_readme(crate_ : @codemodel.Crate) -> String {
+  let buf = StringBuilder::new(size_hint=96)
+  buf.write_string("# ")
+  buf.write_string(crate_.name())
+  buf.write_string("\n\n")
+  buf.write_string("由 TypeSpec 生成的 MoonBit HTTP server stub（基于 moonbitlang/async/http）。\n")
+  buf.to_string()
+}
+
+///|
+fn emit_server_main(crate_ : @codemodel.Crate) -> String {
+  let buf = StringBuilder::new(size_hint=512)
+  buf.write_string("///|\n")
+  buf.write_string("/// 由 TypeSpec 生成的 HTTP server 入口。\n")
+  buf.write_string("///\n")
+  buf.write_string("/// 启动后会在 stdout 输出一行：`BASE_URL=<url>`，供 e2e 测试读取。\n")
+  buf.write_string("async fn main {\n")
+  buf.write_string("  let args = @env.args()\n")
+  buf.write_string(
+    "  let listen = if args.length() > 1 { args[1] } else { \"127.0.0.1:0\" }\n",
+  )
+  buf.write_string("  let addr = @socket.Addr::parse(listen) catch { _ => @socket.Addr::parse(\"127.0.0.1:0\") }\n")
+  buf.write_string("  let server = @http.Server::new(addr)\n")
+  buf.write_string("  let port = server.addr().port()\n")
+  buf.write_string("  println(\"BASE_URL=http://localhost:\\{port}\")\n")
+  buf.write_string("  server.run_forever((request, body, conn) => dispatch(request, body, conn))\n")
+  buf.write_string("}\n\n")
+  buf.write_string("///|\n")
+  buf.write_string("/// 请求分发：按 method + path 路由到具体操作。\n")
+  buf.write_string("pub async fn dispatch(\n")
+  buf.write_string("  request : @http.Request,\n")
+  buf.write_string("  _body : &@io.Reader,\n")
+  buf.write_string("  conn : @http.ServerConnection,\n")
+  buf.write_string(") -> Unit {\n")
+  // Emit routes.
+  let mut emitted_any = false
+  for client in crate_.clients() {
+    for op in client.methods() {
+      emitted_any = true
+      let meth = server_meth_ctor(op.http_method())
+      let path = op.path()
+        .replace_all(old="\\", new="\\\\")
+        .replace_all(old="\"", new="\\\"")
+      let code = op.status_code().to_string()
+      buf.write_string("  if request.meth == ")
+      buf.write_string(meth)
+      buf.write_string(" && request.path == \"")
+      buf.write_string(path)
+      buf.write_string("\" {\n")
+      buf.write_string("    let _ = conn.send_response(")
+      buf.write_string(code)
+      buf.write_string(", \"OK\")\n")
+      buf.write_string("    return\n")
+      buf.write_string("  }\n")
+    }
+  }
+  if !emitted_any {
+    buf.write_string("  let _ = request\n")
+  }
+  buf.write_string("  conn\n")
+  buf.write_string("    ..send_response(404, \"NotFound\")\n")
+  buf.write_string("    ..write(\"not found\")\n")
+  buf.write_string("}\n")
+  buf.to_string()
+}
+
+///|
+fn server_meth_ctor(http_method : String) -> String {
+  match http_method.to_upper() {
+    "GET" => "@http.Get"
+    "HEAD" => "@http.Head"
+    "POST" => "@http.Post"
+    "PUT" => "@http.Put"
+    "DELETE" => "@http.Delete"
+    "PATCH" => "@http.Patch"
+    "OPTIONS" => "@http.Options"
+    "TRACE" => "@http.Trace"
+    "CONNECT" => "@http.Connect"
+    _ => "@http.Get"
+  }
 }
 
 ///|

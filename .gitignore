@@ -5,5 +5,3 @@ target
 .mooncakes/
 .moonagent/
 node_modules/
-tests/tsp/**/_out/
-tests/tsp/**/package-lock.json

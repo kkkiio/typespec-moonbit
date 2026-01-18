@@ -62,7 +62,7 @@ pub async fn Adapter::tcgc_to_crate(self : Adapter) -> @codemodel.Crate {
   }
   let resolved_clients = if clients.length() == 0 {
     let methods = Array::new(capacity=1)
-    methods.push(@codemodel.Method::new("placeholder", "/", "GET"))
+    methods.push(@codemodel.Method::new("placeholder", "/", "GET", 200))
     [@codemodel.Client::new(self.service_name(), methods)]
   } else {
     clients
@@ -103,7 +103,33 @@ fn build_methods(operations_val : @ffi.JsValue) -> Array[@codemodel.Method] {
     } else {
       op_name_val.cast()
     }
-    methods.push(@codemodel.Method::new(op_name, path, verb))
+    let status_code = try_get_default_status_code(op).unwrap_or(200)
+    methods.push(@codemodel.Method::new(op_name, path, verb, status_code))
   }
   methods
+}
+
+///|
+/// 尝试从 @typespec/http 的 HttpOperation 里提取一个“默认状态码”。
+///
+/// 目前策略：
+/// - 遍历 `responses`，找到第一个 `statusCodes` 是 number 的响应并返回；
+/// - 其它情况（`*`、range/object 等）返回 `None`。
+fn try_get_default_status_code(op : @ffi.JsValue) -> Int? {
+  let responses_val : @ffi.JsValue = op.get_with_string("responses")
+  if responses_val.is_undefined() || responses_val.is_null() {
+    return None
+  }
+  let responses : Array[@ffi.JsValue] = responses_val.cast()
+  for r in responses {
+    let status_val : @ffi.JsValue = r.get_with_string("statusCodes")
+    if status_val.is_undefined() || status_val.is_null() {
+      continue
+    }
+    if status_val.is_number() {
+      let code : Double = status_val.cast()
+      return Some(code.to_int())
+    }
+  }
+  None
 }

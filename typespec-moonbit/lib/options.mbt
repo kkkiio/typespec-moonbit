@@ -4,6 +4,7 @@ pub struct EmitterOptions {
   package_name : String
   package_version : String
   module_name : String
+  emit_kind : String
   overwrite_moon_pkg : Bool
   overwrite_readme : Bool
   omit_doc_links : Bool
@@ -16,6 +17,7 @@ pub fn EmitterOptions::defaults() -> EmitterOptions {
     package_name: "typespec-moonbit",
     package_version: "0.1.0",
     module_name: "typespec_moonbit",
+    emit_kind: "client",
     overwrite_moon_pkg: false,
     overwrite_readme: false,
     omit_doc_links: false,
@@ -44,6 +46,11 @@ pub fn EmitterOptions::from_context(
       options,
       "module-name",
       defaults.module_name,
+    ),
+    emit_kind: @ffi.get_optional_string(
+      options,
+      "emit-kind",
+      defaults.emit_kind,
     ),
     overwrite_moon_pkg: @ffi.get_optional_bool(
       options,
@@ -79,6 +86,12 @@ pub fn EmitterOptions::package_version(self : EmitterOptions) -> String {
 /// 获取 MoonBit module 名称。
 pub fn EmitterOptions::module_name(self : EmitterOptions) -> String {
   self.module_name
+}
+
+///|
+/// 获取输出类型（`client` 或 `server`）。
+pub fn EmitterOptions::emit_kind(self : EmitterOptions) -> String {
+  self.emit_kind
 }
 
 ///|
