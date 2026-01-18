@@ -52,6 +52,80 @@ fn __tsmb_encode_path(path : String) -> String {
 }
 
 ///|
+/// 将 request target 编码为可用于 HTTP 请求的路径字符串。
+///
+/// - 仅对 `?` 或 `#` 之前的 path 部分做 `__tsmb_encode_path` 等价处理
+/// - `?query` 与 `#fragment` 部分保持原样（至少保证 `?` 不会被编码为 `%3F`）
+fn __tsmb_encode_request_target(target : String) -> String {
+  let bytes = @encoding/utf8.encode(target)
+  let out = StringBuilder::new(size_hint=bytes.length() * 3)
+  let mut i = 0
+  while i < bytes.length() {
+    let b = bytes[i]
+    // query/fragment separator: keep as-is, and keep the tail as-is
+    if b.to_int() == 0x3F || b.to_int() == 0x23 {
+      out.write_char(b.to_int().unsafe_to_char())
+      i += 1
+      while i < bytes.length() {
+        let bb = bytes[i]
+        // keep %XX
+        if bb.to_int() == 0x25 &&
+          i + 2 < bytes.length() &&
+          __tsmb_is_hex_digit(bytes[i + 1]) &&
+          __tsmb_is_hex_digit(bytes[i + 2]) {
+          out.write_char('%')
+          out.write_char(bytes[i + 1].to_int().unsafe_to_char())
+          out.write_char(bytes[i + 2].to_int().unsafe_to_char())
+          i += 3
+          continue
+        }
+        // keep ASCII bytes as-is, percent-encode others
+        let x = bb.to_int()
+        if x <= 0x1F || x == 0x7F || x >= 0x80 {
+          out.write_char('%')
+          out.write_string(__tsmb_hex2(bb))
+        } else {
+          out.write_char(x.unsafe_to_char())
+        }
+        i += 1
+      }
+      break
+    }
+    // keep %XX
+    if b.to_int() == 0x25 &&
+      i + 2 < bytes.length() &&
+      __tsmb_is_hex_digit(bytes[i + 1]) &&
+      __tsmb_is_hex_digit(bytes[i + 2]) {
+      out.write_char('%')
+      out.write_char(bytes[i + 1].to_int().unsafe_to_char())
+      out.write_char(bytes[i + 2].to_int().unsafe_to_char())
+      i += 3
+      continue
+    }
+    // '/' as separator
+    if b.to_int() == 0x2F {
+      out.write_char('/')
+      i += 1
+      continue
+    }
+    // for special URLs, backslash is treated as separator
+    if b.to_int() == 0x5C {
+      out.write_char('/')
+      i += 1
+      continue
+    }
+    if __tsmb_should_encode_path_byte(b) {
+      out.write_char('%')
+      out.write_string(__tsmb_hex2(b))
+    } else {
+      out.write_char(b.to_int().unsafe_to_char())
+    }
+    i += 1
+  }
+  out.to_string()
+}
+
+///|
 fn __tsmb_is_hex_digit(b : Byte) -> Bool {
   match b.to_int() {
     0x30..=0x39 => true // 0-9
@@ -64,9 +138,7 @@ fn __tsmb_is_hex_digit(b : Byte) -> Bool {
 ///|
 fn __tsmb_hex2(byte : Byte) -> String {
   let mut s = byte.to_int().to_string(radix=16).to_upper()
-  if s.length() == 1 {
-    s = "0" + s
-  }
+  if s.length() == 1 { s = "0" + s }
   s
 }
 
@@ -98,22 +170,17 @@ fn __tsmb_should_encode_path_byte(b : Byte) -> Bool {
 fn __tsmb_join(xs : Array[String], sep : String) -> String {
   let sb = StringBuilder::new(size_hint=32)
   for i in 0..<xs.length() {
-    if i > 0 {
-      sb.write_string(sep)
-    }
+    if i > 0 { sb.write_string(sep) }
     sb.write_string(xs[i])
   }
   sb.to_string()
 }
 
 ///|
-fn __tsmb_expand_string(
-  op : String,
-  name : String,
-  _explode : Bool,
-  value : String,
-) -> String {
+fn __tsmb_expand_string(op : String, name : String, _explode : Bool, value : String) -> String {
   match op {
+    "?" => "?" + name + "=" + value
+    "&" => "&" + name + "=" + value
     "/" => "/" + value
     "." => "." + value
     ";" => ";" + name + "=" + value
@@ -122,21 +189,30 @@ fn __tsmb_expand_string(
 }
 
 ///|
-fn __tsmb_expand_array(
-  op : String,
-  name : String,
-  explode : Bool,
-  value : Array[String],
-) -> String {
+fn __tsmb_expand_array(op : String, name : String, explode : Bool, value : Array[String]) -> String {
   match op {
+    "?" =>
+      if explode {
+        let parts = Array::new(capacity=value.length())
+        for x in value { parts.push(name + "=" + x) }
+        "?" + __tsmb_join(parts, "&")
+      } else {
+        "?" + name + "=" + __tsmb_join(value, ",")
+      }
+    "&" =>
+      if explode {
+        let parts = Array::new(capacity=value.length())
+        for x in value { parts.push("&" + name + "=" + x) }
+        __tsmb_join(parts, "")
+      } else {
+        "&" + name + "=" + __tsmb_join(value, ",")
+      }
     "/" => "/" + __tsmb_join(value, if explode { "/" } else { "," })
     "." => "." + __tsmb_join(value, if explode { "." } else { "," })
     ";" =>
       if explode {
         let parts = Array::new(capacity=value.length())
-        for x in value {
-          parts.push(";" + name + "=" + x)
-        }
+        for x in value { parts.push(";" + name + "=" + x) }
         __tsmb_join(parts, "")
       } else {
         ";" + name + "=" + __tsmb_join(value, ",")
@@ -146,38 +222,31 @@ fn __tsmb_expand_array(
 }
 
 ///|
-fn __tsmb_expand_record(
-  op : String,
-  name : String,
-  explode : Bool,
-  value : Map[String, Int],
-) -> String {
+fn __tsmb_expand_record(op : String, name : String, explode : Bool, value : Map[String, Int]) -> String {
   let pairs = value.to_array()
   // Keep output stable by sorting by key.
   pairs.sort_by_key(p => p.0)
   match op {
-    "/" =>
-      "/" +
-      __tsmb_expand_record_inner(
-        pairs,
-        explode,
-        if explode {
-          "/"
-        } else {
-          ","
-        },
-      )
-    "." =>
-      "." +
-      __tsmb_expand_record_inner(
-        pairs,
-        explode,
-        if explode {
-          "."
-        } else {
-          ","
-        },
-      )
+    "?" =>
+      if explode {
+        "?" + __tsmb_expand_record_inner(pairs, true, "&")
+      } else {
+        "?" + name + "=" + __tsmb_expand_record_inner(pairs, false, ",")
+      }
+    "&" =>
+      if explode {
+        let parts = Array::new()
+        for kv in pairs {
+          let k = kv.0
+          let v = kv.1
+          parts.push("&" + k + "=" + v.to_string())
+        }
+        __tsmb_join(parts, "")
+      } else {
+        "&" + name + "=" + __tsmb_expand_record_inner(pairs, false, ",")
+      }
+    "/" => "/" + __tsmb_expand_record_inner(pairs, explode, if explode { "/" } else { "," })
+    "." => "." + __tsmb_expand_record_inner(pairs, explode, if explode { "." } else { "," })
     ";" =>
       if explode {
         let parts = Array::new()
@@ -195,11 +264,7 @@ fn __tsmb_expand_record(
 }
 
 ///|
-fn __tsmb_expand_record_inner(
-  pairs : Array[(String, Int)],
-  explode : Bool,
-  sep : String,
-) -> String {
+fn __tsmb_expand_record_inner(pairs : Array[(String, Int)], explode : Bool, sep : String) -> String {
   let parts = Array::new()
   if explode {
     for kv in pairs {
@@ -221,7 +286,6 @@ fn __tsmb_expand_record_inner(
 
 ///|
 // --- End Helpers ---
-
 ///|
 /// ROUTESCLIENT HTTP 客户端。
 pub struct ROUTESCLIENT {
@@ -233,731 +297,546 @@ pub struct ROUTESCLIENT {
 pub fn ROUTESCLIENT::new(base_url : String) -> ROUTESCLIENT {
   { base_url, }
 }
-
 ///|
 /// 调用 get /routes/fixed。
-pub async fn ROUTESCLIENT::get_routes_fixed(
-  self : ROUTESCLIENT,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_fixed(self : ROUTESCLIENT) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   client.get("/routes/fixed")
 }
-
 ///|
 /// 调用 get /routes/path/template-only/{param}。
-pub async fn ROUTESCLIENT::get_routes_path_template_only__param_(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_template_only__param_(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=66)
   sb.write_string("/routes/path/template-only/")
   sb.write_string(__tsmb_expand_string("", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/explicit/{param}。
-pub async fn ROUTESCLIENT::get_routes_path_explicit__param_(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_explicit__param_(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=61)
   sb.write_string("/routes/path/explicit/")
   sb.write_string(__tsmb_expand_string("", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/annotation-only/{param}。
-pub async fn ROUTESCLIENT::get_routes_path_annotation_only__param_(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_annotation_only__param_(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=68)
   sb.write_string("/routes/path/annotation-only/")
   sb.write_string(__tsmb_expand_string("", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/reserved-expansion/template/{+param}。
-pub async fn ROUTESCLIENT::get_routes_path_reserved_expansion_template___param_(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_reserved_expansion_template___param_(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=81)
   sb.write_string("/routes/path/reserved-expansion/template/")
   sb.write_string(__tsmb_expand_string("+", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/reserved-expansion/annotation/{+param}。
-pub async fn ROUTESCLIENT::get_routes_path_reserved_expansion_annotation___param_(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_reserved_expansion_annotation___param_(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=83)
   sb.write_string("/routes/path/reserved-expansion/annotation/")
   sb.write_string(__tsmb_expand_string("+", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/simple/standard/primitive{param}。
-pub async fn ROUTESCLIENT::get_routes_path_simple_standard_primitive_param_(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_simple_standard_primitive_param_(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=77)
   sb.write_string("/routes/path/simple/standard/primitive")
   sb.write_string(__tsmb_expand_string("", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/simple/standard/array{param}。
-pub async fn ROUTESCLIENT::get_routes_path_simple_standard_array_param_(
-  self : ROUTESCLIENT,
-  param : Array[String],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_simple_standard_array_param_(self : ROUTESCLIENT, param : Array[String]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=73)
   sb.write_string("/routes/path/simple/standard/array")
   sb.write_string(__tsmb_expand_array("", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/simple/standard/record{param}。
-pub async fn ROUTESCLIENT::get_routes_path_simple_standard_record_param_(
-  self : ROUTESCLIENT,
-  param : Map[String, Int],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_simple_standard_record_param_(self : ROUTESCLIENT, param : Map[String, Int]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=74)
   sb.write_string("/routes/path/simple/standard/record")
   sb.write_string(__tsmb_expand_record("", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/simple/explode/primitive{param*}。
-pub async fn ROUTESCLIENT::get_routes_path_simple_explode_primitive_param__(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_simple_explode_primitive_param__(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=77)
   sb.write_string("/routes/path/simple/explode/primitive")
   sb.write_string(__tsmb_expand_string("", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/simple/explode/array{param*}。
-pub async fn ROUTESCLIENT::get_routes_path_simple_explode_array_param__(
-  self : ROUTESCLIENT,
-  param : Array[String],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_simple_explode_array_param__(self : ROUTESCLIENT, param : Array[String]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=73)
   sb.write_string("/routes/path/simple/explode/array")
   sb.write_string(__tsmb_expand_array("", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/simple/explode/record{param*}。
-pub async fn ROUTESCLIENT::get_routes_path_simple_explode_record_param__(
-  self : ROUTESCLIENT,
-  param : Map[String, Int],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_simple_explode_record_param__(self : ROUTESCLIENT, param : Map[String, Int]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=74)
   sb.write_string("/routes/path/simple/explode/record")
   sb.write_string(__tsmb_expand_record("", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/path/standard/primitive{/param}。
-pub async fn ROUTESCLIENT::get_routes_path_path_standard_primitive__param_(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_path_standard_primitive__param_(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=76)
   sb.write_string("/routes/path/path/standard/primitive")
   sb.write_string(__tsmb_expand_string("/", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/path/standard/array{/param}。
-pub async fn ROUTESCLIENT::get_routes_path_path_standard_array__param_(
-  self : ROUTESCLIENT,
-  param : Array[String],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_path_standard_array__param_(self : ROUTESCLIENT, param : Array[String]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=72)
   sb.write_string("/routes/path/path/standard/array")
   sb.write_string(__tsmb_expand_array("/", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/path/standard/record{/param}。
-pub async fn ROUTESCLIENT::get_routes_path_path_standard_record__param_(
-  self : ROUTESCLIENT,
-  param : Map[String, Int],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_path_standard_record__param_(self : ROUTESCLIENT, param : Map[String, Int]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=73)
   sb.write_string("/routes/path/path/standard/record")
   sb.write_string(__tsmb_expand_record("/", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/path/explode/primitive{/param*}。
-pub async fn ROUTESCLIENT::get_routes_path_path_explode_primitive__param__(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_path_explode_primitive__param__(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=76)
   sb.write_string("/routes/path/path/explode/primitive")
   sb.write_string(__tsmb_expand_string("/", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/path/explode/array{/param*}。
-pub async fn ROUTESCLIENT::get_routes_path_path_explode_array__param__(
-  self : ROUTESCLIENT,
-  param : Array[String],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_path_explode_array__param__(self : ROUTESCLIENT, param : Array[String]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=72)
   sb.write_string("/routes/path/path/explode/array")
   sb.write_string(__tsmb_expand_array("/", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/path/explode/record{/param*}。
-pub async fn ROUTESCLIENT::get_routes_path_path_explode_record__param__(
-  self : ROUTESCLIENT,
-  param : Map[String, Int],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_path_explode_record__param__(self : ROUTESCLIENT, param : Map[String, Int]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=73)
   sb.write_string("/routes/path/path/explode/record")
   sb.write_string(__tsmb_expand_record("/", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/label/standard/primitive{.param}。
-pub async fn ROUTESCLIENT::get_routes_path_label_standard_primitive__param_(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_label_standard_primitive__param_(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=77)
   sb.write_string("/routes/path/label/standard/primitive")
   sb.write_string(__tsmb_expand_string(".", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/label/standard/array{.param}。
-pub async fn ROUTESCLIENT::get_routes_path_label_standard_array__param_(
-  self : ROUTESCLIENT,
-  param : Array[String],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_label_standard_array__param_(self : ROUTESCLIENT, param : Array[String]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=73)
   sb.write_string("/routes/path/label/standard/array")
   sb.write_string(__tsmb_expand_array(".", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/label/standard/record{.param}。
-pub async fn ROUTESCLIENT::get_routes_path_label_standard_record__param_(
-  self : ROUTESCLIENT,
-  param : Map[String, Int],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_label_standard_record__param_(self : ROUTESCLIENT, param : Map[String, Int]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=74)
   sb.write_string("/routes/path/label/standard/record")
   sb.write_string(__tsmb_expand_record(".", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/label/explode/primitive{.param*}。
-pub async fn ROUTESCLIENT::get_routes_path_label_explode_primitive__param__(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_label_explode_primitive__param__(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=77)
   sb.write_string("/routes/path/label/explode/primitive")
   sb.write_string(__tsmb_expand_string(".", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/label/explode/array{.param*}。
-pub async fn ROUTESCLIENT::get_routes_path_label_explode_array__param__(
-  self : ROUTESCLIENT,
-  param : Array[String],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_label_explode_array__param__(self : ROUTESCLIENT, param : Array[String]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=73)
   sb.write_string("/routes/path/label/explode/array")
   sb.write_string(__tsmb_expand_array(".", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/label/explode/record{.param*}。
-pub async fn ROUTESCLIENT::get_routes_path_label_explode_record__param__(
-  self : ROUTESCLIENT,
-  param : Map[String, Int],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_label_explode_record__param__(self : ROUTESCLIENT, param : Map[String, Int]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=74)
   sb.write_string("/routes/path/label/explode/record")
   sb.write_string(__tsmb_expand_record(".", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/matrix/standard/primitive{;param}。
-pub async fn ROUTESCLIENT::get_routes_path_matrix_standard_primitive__param_(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_matrix_standard_primitive__param_(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=78)
   sb.write_string("/routes/path/matrix/standard/primitive")
   sb.write_string(__tsmb_expand_string(";", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/matrix/standard/array{;param}。
-pub async fn ROUTESCLIENT::get_routes_path_matrix_standard_array__param_(
-  self : ROUTESCLIENT,
-  param : Array[String],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_matrix_standard_array__param_(self : ROUTESCLIENT, param : Array[String]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=74)
   sb.write_string("/routes/path/matrix/standard/array")
   sb.write_string(__tsmb_expand_array(";", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/matrix/standard/record{;param}。
-pub async fn ROUTESCLIENT::get_routes_path_matrix_standard_record__param_(
-  self : ROUTESCLIENT,
-  param : Map[String, Int],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_matrix_standard_record__param_(self : ROUTESCLIENT, param : Map[String, Int]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=75)
   sb.write_string("/routes/path/matrix/standard/record")
   sb.write_string(__tsmb_expand_record(";", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/matrix/explode/primitive{;param*}。
-pub async fn ROUTESCLIENT::get_routes_path_matrix_explode_primitive__param__(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_matrix_explode_primitive__param__(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=78)
   sb.write_string("/routes/path/matrix/explode/primitive")
   sb.write_string(__tsmb_expand_string(";", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/matrix/explode/array{;param*}。
-pub async fn ROUTESCLIENT::get_routes_path_matrix_explode_array__param__(
-  self : ROUTESCLIENT,
-  param : Array[String],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_matrix_explode_array__param__(self : ROUTESCLIENT, param : Array[String]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=74)
   sb.write_string("/routes/path/matrix/explode/array")
   sb.write_string(__tsmb_expand_array(";", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/path/matrix/explode/record{;param*}。
-pub async fn ROUTESCLIENT::get_routes_path_matrix_explode_record__param__(
-  self : ROUTESCLIENT,
-  param : Map[String, Int],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_path_matrix_explode_record__param__(self : ROUTESCLIENT, param : Map[String, Int]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=75)
   sb.write_string("/routes/path/matrix/explode/record")
   sb.write_string(__tsmb_expand_record(";", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/template-only{?param}。
-pub async fn ROUTESCLIENT::get_routes_query_template_only__param_(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_template_only__param_(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=67)
   sb.write_string("/routes/query/template-only")
   sb.write_string(__tsmb_expand_string("?", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/explicit{?param}。
-pub async fn ROUTESCLIENT::get_routes_query_explicit__param_(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_explicit__param_(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=62)
   sb.write_string("/routes/query/explicit")
   sb.write_string(__tsmb_expand_string("?", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/annotation-only{?param}。
-pub async fn ROUTESCLIENT::get_routes_query_annotation_only__param_(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_annotation_only__param_(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=69)
   sb.write_string("/routes/query/annotation-only")
   sb.write_string(__tsmb_expand_string("?", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/query-expansion/standard/primitive{?param}。
-pub async fn ROUTESCLIENT::get_routes_query_query_expansion_standard_primitive__param_(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_query_expansion_standard_primitive__param_(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=88)
   sb.write_string("/routes/query/query-expansion/standard/primitive")
   sb.write_string(__tsmb_expand_string("?", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/query-expansion/standard/array{?param}。
-pub async fn ROUTESCLIENT::get_routes_query_query_expansion_standard_array__param_(
-  self : ROUTESCLIENT,
-  param : Array[String],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_query_expansion_standard_array__param_(self : ROUTESCLIENT, param : Array[String]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=84)
   sb.write_string("/routes/query/query-expansion/standard/array")
   sb.write_string(__tsmb_expand_array("?", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/query-expansion/standard/record{?param}。
-pub async fn ROUTESCLIENT::get_routes_query_query_expansion_standard_record__param_(
-  self : ROUTESCLIENT,
-  param : Map[String, Int],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_query_expansion_standard_record__param_(self : ROUTESCLIENT, param : Map[String, Int]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=85)
   sb.write_string("/routes/query/query-expansion/standard/record")
   sb.write_string(__tsmb_expand_record("?", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/query-expansion/explode/primitive{?param*}。
-pub async fn ROUTESCLIENT::get_routes_query_query_expansion_explode_primitive__param__(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_query_expansion_explode_primitive__param__(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=88)
   sb.write_string("/routes/query/query-expansion/explode/primitive")
   sb.write_string(__tsmb_expand_string("?", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/query-expansion/explode/array{?param*}。
-pub async fn ROUTESCLIENT::get_routes_query_query_expansion_explode_array__param__(
-  self : ROUTESCLIENT,
-  param : Array[String],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_query_expansion_explode_array__param__(self : ROUTESCLIENT, param : Array[String]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=84)
   sb.write_string("/routes/query/query-expansion/explode/array")
   sb.write_string(__tsmb_expand_array("?", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/query-expansion/explode/record{?param*}。
-pub async fn ROUTESCLIENT::get_routes_query_query_expansion_explode_record__param__(
-  self : ROUTESCLIENT,
-  param : Map[String, Int],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_query_expansion_explode_record__param__(self : ROUTESCLIENT, param : Map[String, Int]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=85)
   sb.write_string("/routes/query/query-expansion/explode/record")
   sb.write_string(__tsmb_expand_record("?", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/query-continuation/standard/primitive?fixed=true{&param}。
-pub async fn ROUTESCLIENT::get_routes_query_query_continuation_standard_primitive_fixed_true__param_(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_query_continuation_standard_primitive_fixed_true__param_(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=102)
-  sb.write_string(
-    "/routes/query/query-continuation/standard/primitive?fixed=true",
-  )
+  sb.write_string("/routes/query/query-continuation/standard/primitive?fixed=true")
   sb.write_string(__tsmb_expand_string("&", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/query-continuation/standard/array?fixed=true{&param}。
-pub async fn ROUTESCLIENT::get_routes_query_query_continuation_standard_array_fixed_true__param_(
-  self : ROUTESCLIENT,
-  param : Array[String],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_query_continuation_standard_array_fixed_true__param_(self : ROUTESCLIENT, param : Array[String]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=98)
   sb.write_string("/routes/query/query-continuation/standard/array?fixed=true")
   sb.write_string(__tsmb_expand_array("&", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/query-continuation/standard/record?fixed=true{&param}。
-pub async fn ROUTESCLIENT::get_routes_query_query_continuation_standard_record_fixed_true__param_(
-  self : ROUTESCLIENT,
-  param : Map[String, Int],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_query_continuation_standard_record_fixed_true__param_(self : ROUTESCLIENT, param : Map[String, Int]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=99)
   sb.write_string("/routes/query/query-continuation/standard/record?fixed=true")
   sb.write_string(__tsmb_expand_record("&", "param", false, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/query-continuation/explode/primitive?fixed=true{&param*}。
-pub async fn ROUTESCLIENT::get_routes_query_query_continuation_explode_primitive_fixed_true__param__(
-  self : ROUTESCLIENT,
-  param : String,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_query_continuation_explode_primitive_fixed_true__param__(self : ROUTESCLIENT, param : String) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=102)
-  sb.write_string(
-    "/routes/query/query-continuation/explode/primitive?fixed=true",
-  )
+  sb.write_string("/routes/query/query-continuation/explode/primitive?fixed=true")
   sb.write_string(__tsmb_expand_string("&", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/query-continuation/explode/array?fixed=true{&param*}。
-pub async fn ROUTESCLIENT::get_routes_query_query_continuation_explode_array_fixed_true__param__(
-  self : ROUTESCLIENT,
-  param : Array[String],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_query_continuation_explode_array_fixed_true__param__(self : ROUTESCLIENT, param : Array[String]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=98)
   sb.write_string("/routes/query/query-continuation/explode/array?fixed=true")
   sb.write_string(__tsmb_expand_array("&", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/query/query-continuation/explode/record?fixed=true{&param*}。
-pub async fn ROUTESCLIENT::get_routes_query_query_continuation_explode_record_fixed_true__param__(
-  self : ROUTESCLIENT,
-  param : Map[String, Int],
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_query_query_continuation_explode_record_fixed_true__param__(self : ROUTESCLIENT, param : Map[String, Int]) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let sb = StringBuilder::new(size_hint=99)
   sb.write_string("/routes/query/query-continuation/explode/record?fixed=true")
   sb.write_string(__tsmb_expand_record("&", "param", true, param))
   let path = sb.to_string()
-  let path = __tsmb_encode_path(path)
+  let path = __tsmb_encode_request_target(path)
   client.get(path)
 }
-
 ///|
 /// 调用 get /routes/in-interface/fixed。
-pub async fn ROUTESCLIENT::get_routes_in_interface_fixed(
-  self : ROUTESCLIENT,
-) -> @http.Response {
+pub async fn ROUTESCLIENT::get_routes_in_interface_fixed(self : ROUTESCLIENT) -> @http.Response raise {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   client.get("/routes/in-interface/fixed")
 }
+

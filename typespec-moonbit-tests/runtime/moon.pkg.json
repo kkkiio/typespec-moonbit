@@ -1,9 +1,7 @@
 {
   "test-import": [
     { "path": "moonbitlang/async", "alias": "async" },
-    {
-      "path": "kkkiio/typespec-moonbit-tests/generated_cases/routes",
-      "alias": "routes"
-    }
+    { "path": "moonbitlang/async/http", "alias": "http" },
+    { "path": "kkkiio/typespec-moonbit-tests/generated_cases/routes", "alias": "routes" }
   ]
 }

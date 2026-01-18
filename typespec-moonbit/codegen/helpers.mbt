@@ -61,6 +61,80 @@ let uri_utils_tmpl =
   #|}
   #|
   #|///|
+  #|/// 将 request target 编码为可用于 HTTP 请求的路径字符串。
+  #|///
+  #|/// - 仅对 `?` 或 `#` 之前的 path 部分做 `__tsmb_encode_path` 等价处理
+  #|/// - `?query` 与 `#fragment` 部分保持原样（至少保证 `?` 不会被编码为 `%3F`）
+  #|fn __tsmb_encode_request_target(target : String) -> String {
+  #|  let bytes = @encoding/utf8.encode(target)
+  #|  let out = StringBuilder::new(size_hint=bytes.length() * 3)
+  #|  let mut i = 0
+  #|  while i < bytes.length() {
+  #|    let b = bytes[i]
+  #|    // query/fragment separator: keep as-is, and keep the tail as-is
+  #|    if b.to_int() == 0x3F || b.to_int() == 0x23 {
+  #|      out.write_char(b.to_int().unsafe_to_char())
+  #|      i += 1
+  #|      while i < bytes.length() {
+  #|        let bb = bytes[i]
+  #|        // keep %XX
+  #|        if bb.to_int() == 0x25 &&
+  #|          i + 2 < bytes.length() &&
+  #|          __tsmb_is_hex_digit(bytes[i + 1]) &&
+  #|          __tsmb_is_hex_digit(bytes[i + 2]) {
+  #|          out.write_char('%')
+  #|          out.write_char(bytes[i + 1].to_int().unsafe_to_char())
+  #|          out.write_char(bytes[i + 2].to_int().unsafe_to_char())
+  #|          i += 3
+  #|          continue
+  #|        }
+  #|        // keep ASCII bytes as-is, percent-encode others
+  #|        let x = bb.to_int()
+  #|        if x <= 0x1F || x == 0x7F || x >= 0x80 {
+  #|          out.write_char('%')
+  #|          out.write_string(__tsmb_hex2(bb))
+  #|        } else {
+  #|          out.write_char(x.unsafe_to_char())
+  #|        }
+  #|        i += 1
+  #|      }
+  #|      break
+  #|    }
+  #|    // keep %XX
+  #|    if b.to_int() == 0x25 &&
+  #|      i + 2 < bytes.length() &&
+  #|      __tsmb_is_hex_digit(bytes[i + 1]) &&
+  #|      __tsmb_is_hex_digit(bytes[i + 2]) {
+  #|      out.write_char('%')
+  #|      out.write_char(bytes[i + 1].to_int().unsafe_to_char())
+  #|      out.write_char(bytes[i + 2].to_int().unsafe_to_char())
+  #|      i += 3
+  #|      continue
+  #|    }
+  #|    // '/' as separator
+  #|    if b.to_int() == 0x2F {
+  #|      out.write_char('/')
+  #|      i += 1
+  #|      continue
+  #|    }
+  #|    // for special URLs, backslash is treated as separator
+  #|    if b.to_int() == 0x5C {
+  #|      out.write_char('/')
+  #|      i += 1
+  #|      continue
+  #|    }
+  #|    if __tsmb_should_encode_path_byte(b) {
+  #|      out.write_char('%')
+  #|      out.write_string(__tsmb_hex2(b))
+  #|    } else {
+  #|      out.write_char(b.to_int().unsafe_to_char())
+  #|    }
+  #|    i += 1
+  #|  }
+  #|  out.to_string()
+  #|}
+  #|
+  #|///|
   #|fn __tsmb_is_hex_digit(b : Byte) -> Bool {
   #|  match b.to_int() {
   #|    0x30..=0x39 => true // 0-9
@@ -114,6 +188,8 @@ let uri_utils_tmpl =
   #|///|
   #|fn __tsmb_expand_string(op : String, name : String, _explode : Bool, value : String) -> String {
   #|  match op {
+  #|    "?" => "?" + name + "=" + value
+  #|    "&" => "&" + name + "=" + value
   #|    "/" => "/" + value
   #|    "." => "." + value
   #|    ";" => ";" + name + "=" + value
@@ -124,6 +200,22 @@ let uri_utils_tmpl =
   #|///|
   #|fn __tsmb_expand_array(op : String, name : String, explode : Bool, value : Array[String]) -> String {
   #|  match op {
+  #|    "?" =>
+  #|      if explode {
+  #|        let parts = Array::new(capacity=value.length())
+  #|        for x in value { parts.push(name + "=" + x) }
+  #|        "?" + __tsmb_join(parts, "&")
+  #|      } else {
+  #|        "?" + name + "=" + __tsmb_join(value, ",")
+  #|      }
+  #|    "&" =>
+  #|      if explode {
+  #|        let parts = Array::new(capacity=value.length())
+  #|        for x in value { parts.push("&" + name + "=" + x) }
+  #|        __tsmb_join(parts, "")
+  #|      } else {
+  #|        "&" + name + "=" + __tsmb_join(value, ",")
+  #|      }
   #|    "/" => "/" + __tsmb_join(value, if explode { "/" } else { "," })
   #|    "." => "." + __tsmb_join(value, if explode { "." } else { "," })
   #|    ";" =>
@@ -144,6 +236,24 @@ let uri_utils_tmpl =
   #|  // Keep output stable by sorting by key.
   #|  pairs.sort_by_key(p => p.0)
   #|  match op {
+  #|    "?" =>
+  #|      if explode {
+  #|        "?" + __tsmb_expand_record_inner(pairs, true, "&")
+  #|      } else {
+  #|        "?" + name + "=" + __tsmb_expand_record_inner(pairs, false, ",")
+  #|      }
+  #|    "&" =>
+  #|      if explode {
+  #|        let parts = Array::new()
+  #|        for kv in pairs {
+  #|          let k = kv.0
+  #|          let v = kv.1
+  #|          parts.push("&" + k + "=" + v.to_string())
+  #|        }
+  #|        __tsmb_join(parts, "")
+  #|      } else {
+  #|        "&" + name + "=" + __tsmb_expand_record_inner(pairs, false, ",")
+  #|      }
   #|    "/" => "/" + __tsmb_expand_record_inner(pairs, explode, if explode { "/" } else { "," })
   #|    "." => "." + __tsmb_expand_record_inner(pairs, explode, if explode { "." } else { "," })
   #|    ";" =>

@@ -151,7 +151,7 @@ fn emit_method(
       }
     }
     buf.write_string("  let path = sb.to_string()\n")
-    buf.write_string("  let path = __tsmb_encode_path(path)\n")
+    buf.write_string("  let path = __tsmb_encode_request_target(path)\n")
   }
   buf.write_string("  client.")
   buf.write_string(op.http_method().to_lower())
