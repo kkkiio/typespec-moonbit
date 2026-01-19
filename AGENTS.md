@@ -69,8 +69,8 @@ This is a [MoonBit](https://docs.moonbitlang.com) project.
 - `typespec-moonbit-tests/`：测试模块（native target 为主），负责运行时验证与维护生成用例。
   - `typespec-moonbit-tests/generated_cases/*`：从 http-specs/azure-http-specs 生成的 MoonBit packages（生成物进入 git，便于 review）。
   - `typespec-moonbit-tests/runtime/`：运行时验证（native target），调用生成的 client 并断言结果（mock server 由脚本启动）。
-  - `typespec-moonbit-tests/e2e/generated/*`：从 http-specs 生成的 MoonBit server stub 工程（生成物进入 git，便于 review）。
-  - `typespec-moonbit-tests/e2e/`：server-e2e 驱动（native 可执行），在同进程内启动最小 server，并调用 `tsp-spector knock` 做运行时验证。
+  - `typespec-moonbit-tests/e2e/generated/*/typespec-moonbit/`：从 http-specs 生成的 MoonBit server router package（生成物进入 git，便于 review）。
+  - `typespec-moonbit-tests/e2e/`：server-e2e 驱动（native 可执行），在同进程内启动 `moonbitlang/async/http` server，并 import 生成的 `dispatch` 后调用 `tsp-spector knock` 做运行时验证。
 
 ### 测试结构
 

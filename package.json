@@ -27,7 +27,7 @@
     "emit:e2e-server": "node .scripts/emit_e2e_server.js",
     "run:e2e-server": "moon build -C typespec-moonbit-tests --target native --release && typespec-moonbit-tests/_build/native/release/build/e2e/e2e.exe",
     "test:e2e-server": "npm run emit:e2e-server && npm run run:e2e-server",
-    "test:e2e": "npm run tspcompile && moon test -C typespec-moonbit-tests --target native",
+    "test:e2e": "npm run test:e2e-server",
     "test:runtime": "npm run tspcompile -- --filter=spector_routes --limit=1 && moon test -C typespec-moonbit-tests --target native -p kkkiio/typespec-moonbit-tests/runtime"
   }
 }

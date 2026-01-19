@@ -5,7 +5,7 @@ pub fn emit(
   options : @lib.EmitterOptions,
 ) -> Array[OutputFile] {
   if options.emit_kind() == "server" {
-    emit_server_stub(crate_, options)
+    emit_server_package(crate_, options)
   } else {
     let files = Array::new(capacity=3)
     files.push(
@@ -32,53 +32,27 @@ fn emit_moon_pkg_json(
   content
 }
 
-///|
-/// 生成基于 `moonbitlang/async/http` 的 server stub 工程（最小可运行）。
-fn emit_server_stub(
+///| 
+/// 生成基于 `moonbitlang/async/http` 的 server 包（可被 import 使用）。
+fn emit_server_package(
   crate_ : @codemodel.Crate,
-  options : @lib.EmitterOptions,
+  _options : @lib.EmitterOptions,
 ) -> Array[OutputFile] {
-  let files = Array::new(capacity=4)
-  files.push(OutputFile::new("moon.mod.json", emit_server_moon_mod_json(options)))
-  files.push(OutputFile::new("moon.pkg.json", emit_server_moon_pkg_json()))
+  let files = Array::new(capacity=3)
+  files.push(OutputFile::new("moon.pkg.json", emit_server_package_moon_pkg_json()))
   files.push(OutputFile::new("README.mbt.md", emit_server_readme(crate_)))
-  files.push(OutputFile::new("main.mbt", emit_server_main(crate_)))
+  files.push(OutputFile::new("router.mbt", emit_server_router(crate_)))
   files
 }
 
 ///|
-fn emit_server_moon_mod_json(options : @lib.EmitterOptions) -> String {
-  let name = options.package_name()
-  let version = options.package_version()
-  let buf = StringBuilder::new(size_hint=160)
-  buf.write_string("{\n")
-  buf.write_string("  \"name\": \"")
-  buf.write_string(name.replace_all(old="\\", new="\\\\").replace_all(old="\"", new="\\\""))
-  buf.write_string("\",\n")
-  buf.write_string("  \"version\": \"")
-  buf.write_string(version.replace_all(old="\\", new="\\\\").replace_all(old="\"", new="\\\""))
-  buf.write_string("\",\n")
-  buf.write_string("  \"deps\": {\n")
-  buf.write_string("    \"moonbitlang/async\": \"0.16.1\"\n")
-  buf.write_string("  }\n")
-  buf.write_string("}\n")
-  buf.to_string()
-}
-
-///|
-fn emit_server_moon_pkg_json() -> String {
+fn emit_server_package_moon_pkg_json() -> String {
   let content =
     #|{
-    #|  "is-main": true,
     #|  "import": [
-    #|    { "path": "moonbitlang/async", "alias": "async" },
     #|    { "path": "moonbitlang/async/http", "alias": "http" },
-    #|    { "path": "moonbitlang/async/io", "alias": "io" },
-    #|    { "path": "moonbitlang/async/socket", "alias": "socket" }
-    #|  ],
-    #|  "targets": {
-    #|    "main.mbt": ["native"]
-    #|  }
+    #|    { "path": "moonbitlang/async/io", "alias": "io" }
+    #|  ]
     #|}
   content
 }
@@ -89,50 +63,39 @@ fn emit_server_readme(crate_ : @codemodel.Crate) -> String {
   buf.write_string("# ")
   buf.write_string(crate_.name())
   buf.write_string("\n\n")
-  buf.write_string("由 TypeSpec 生成的 MoonBit HTTP server stub（基于 moonbitlang/async/http）。\n")
+  buf.write_string("由 TypeSpec 生成的 MoonBit HTTP server 包（基于 moonbitlang/async/http）。\n")
+  buf.write_string("\n")
+  buf.write_string("本目录是一个 MoonBit package，可被其它包 import 后用于启动 server。\n")
   buf.to_string()
 }
 
 ///|
-fn emit_server_main(crate_ : @codemodel.Crate) -> String {
-  let buf = StringBuilder::new(size_hint=512)
+fn emit_server_router(crate_ : @codemodel.Crate) -> String {
+  let buf = StringBuilder::new(size_hint=768)
   buf.write_string("///|\n")
-  buf.write_string("/// 由 TypeSpec 生成的 HTTP server 入口。\n")
+  buf.write_string("/// 由 TypeSpec 生成的 HTTP server 路由分发函数。\n")
   buf.write_string("///\n")
-  buf.write_string("/// 启动后会在 stdout 输出一行：`BASE_URL=<url>`，供 e2e 测试读取。\n")
-  buf.write_string("async fn main {\n")
-  buf.write_string("  let args = @env.args()\n")
-  buf.write_string(
-    "  let listen = if args.length() > 1 { args[1] } else { \"127.0.0.1:0\" }\n",
-  )
-  buf.write_string("  let addr = @socket.Addr::parse(listen) catch { _ => @socket.Addr::parse(\"127.0.0.1:0\") }\n")
-  buf.write_string("  let server = @http.Server::new(addr)\n")
-  buf.write_string("  let port = server.addr().port()\n")
-  buf.write_string("  println(\"BASE_URL=http://localhost:\\{port}\")\n")
-  buf.write_string("  server.run_forever((request, body, conn) => dispatch(request, body, conn))\n")
-  buf.write_string("}\n\n")
-  buf.write_string("///|\n")
-  buf.write_string("/// 请求分发：按 method + path 路由到具体操作。\n")
+  buf.write_string("/// 该函数可直接作为 `@http.Server::run_forever` 的回调。\n")
   buf.write_string("pub async fn dispatch(\n")
   buf.write_string("  request : @http.Request,\n")
   buf.write_string("  _body : &@io.Reader,\n")
   buf.write_string("  conn : @http.ServerConnection,\n")
   buf.write_string(") -> Unit {\n")
-  // Emit routes.
+  buf.write_string("  let path = strip_request_query(request.path)\n")
   let mut emitted_any = false
   for client in crate_.clients() {
     for op in client.methods() {
       emitted_any = true
       let meth = server_meth_ctor(op.http_method())
-      let path = op.path()
+      let tmpl = op.path()
         .replace_all(old="\\", new="\\\\")
         .replace_all(old="\"", new="\\\"")
       let code = op.status_code().to_string()
       buf.write_string("  if request.meth == ")
       buf.write_string(meth)
-      buf.write_string(" && request.path == \"")
-      buf.write_string(path)
-      buf.write_string("\" {\n")
+      buf.write_string(" && match_path_template(normalize_uri_template(\"")
+      buf.write_string(tmpl)
+      buf.write_string("\"), path) {\n")
       buf.write_string("    let _ = conn.send_response(")
       buf.write_string(code)
       buf.write_string(", \"OK\")\n")
@@ -146,6 +109,47 @@ fn emit_server_main(crate_ : @codemodel.Crate) -> String {
   buf.write_string("  conn\n")
   buf.write_string("    ..send_response(404, \"NotFound\")\n")
   buf.write_string("    ..write(\"not found\")\n")
+  buf.write_string("}\n\n")
+  buf.write_string("///|\n")
+  buf.write_string("/// 从请求路径中剥离 query 部分（`?` 之后）。\n")
+  buf.write_string("fn strip_request_query(path : String) -> String {\n")
+  buf.write_string("  let parts = path.split(\"?\").to_array()\n")
+  buf.write_string("  if parts.length() == 0 {\n")
+  buf.write_string("    path\n")
+  buf.write_string("  } else {\n")
+  buf.write_string("    parts[0].to_string()\n")
+  buf.write_string("  }\n")
+  buf.write_string("}\n\n")
+  buf.write_string("///|\n")
+  buf.write_string("/// 将 uriTemplate 归一化为 path-only 模板：\n")
+  buf.write_string("/// - 去掉尾部的 `{?...}` query template（注意：这里的 `?` 不代表真正的 query）；\n")
+  buf.write_string("/// - 去掉 `?` 之后的 query。\n")
+  buf.write_string("fn normalize_uri_template(template : String) -> String {\n")
+  buf.write_string("  let p1 = template.split(\"{?\").to_array()\n")
+  buf.write_string("  let s = if p1.length() == 0 { template } else { p1[0].to_string() }\n")
+  buf.write_string("  let p2 = s.split(\"?\").to_array()\n")
+  buf.write_string("  if p2.length() == 0 { s } else { p2[0].to_string() }\n")
+  buf.write_string("}\n\n")
+  buf.write_string("///|\n")
+  buf.write_string("/// 判断 `path` 是否匹配 `template`（最小实现：支持 `{param}` 段）。\n")
+  buf.write_string("fn match_path_template(template : String, path : String) -> Bool {\n")
+  buf.write_string("  let t = template.trim(char_set=\"/\")\n")
+  buf.write_string("  let p = path.trim(char_set=\"/\")\n")
+  buf.write_string("  let t_segs = if t == \"\" { [] } else { t.split(\"/\").to_array() }\n")
+  buf.write_string("  let p_segs = if p == \"\" { [] } else { p.split(\"/\").to_array() }\n")
+  buf.write_string("  if t_segs.length() != p_segs.length() {\n")
+  buf.write_string("    return false\n")
+  buf.write_string("  }\n")
+  buf.write_string("  for i in 0..<t_segs.length() {\n")
+  buf.write_string("    let ts = t_segs[i].to_string()\n")
+  buf.write_string("    let ps = p_segs[i].to_string()\n")
+  buf.write_string("    if ts.length() >= 2 && ts.has_prefix(\"{\") && ts.has_suffix(\"}\") {\n")
+  buf.write_string("      if ps == \"\" { return false }\n")
+  buf.write_string("    } else if ts != ps {\n")
+  buf.write_string("      return false\n")
+  buf.write_string("    }\n")
+  buf.write_string("  }\n")
+  buf.write_string("  true\n")
   buf.write_string("}\n")
   buf.to_string()
 }

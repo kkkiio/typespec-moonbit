@@ -18,15 +18,29 @@ execSync("moon build -C typespec-moonbit --target js", { stdio: "inherit" });
 
 const cases = [
   {
+    name: "http-specs_server_endpoint_not_defined",
+    input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/endpoint/not-defined/main.tsp"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/e2e/generated/server/endpoint/not-defined"),
+  },
+  {
+    name: "http-specs_server_path_multiple",
+    input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/path/multiple/main.tsp"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/e2e/generated/server/path/multiple"),
+  },
+  {
     name: "http-specs_server_path_single",
-    input: path.join(
-      repoRoot,
-      "node_modules/@typespec/http-specs/specs/server/path/single/main.tsp",
-    ),
-    outputDir: path.join(
-      repoRoot,
-      "typespec-moonbit-tests/e2e/generated/server/path/single",
-    ),
+    input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/path/single/main.tsp"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/e2e/generated/server/path/single"),
+  },
+  {
+    name: "http-specs_server_versions_not_versioned",
+    input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/versions/not-versioned/main.tsp"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/e2e/generated/server/versions/not-versioned"),
+  },
+  {
+    name: "http-specs_server_versions_versioned",
+    input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/versions/versioned/main.tsp"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/e2e/generated/server/versions/versioned"),
   },
 ];
 
@@ -43,7 +57,7 @@ for (const c of cases) {
     "compile",
     c.input,
     `--emit=${repoRoot}`,
-    `--option=typespec-moonbit.emitter-output-dir=${c.outputDir}`,
+    `--option=typespec-moonbit.package-name=${c.name}`,
     `--option=typespec-moonbit.emit-kind=server`,
     `--output-dir=${c.outputDir}`,
   ];

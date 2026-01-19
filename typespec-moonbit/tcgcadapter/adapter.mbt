@@ -57,7 +57,8 @@ pub async fn Adapter::tcgc_to_crate(self : Adapter) -> @codemodel.Crate {
     ])
     let name = if raw_name == "" { self.service_name() } else { raw_name }
     let operations_val = service.get_with_string("operations")
-    let methods = build_methods(operations_val)
+    let server_base_path = get_server_base_path(http, program, ns_value)
+    let methods = build_methods(operations_val, server_base_path)
     clients.push(@codemodel.Client::new(name, methods))
   }
   let resolved_clients = if clients.length() == 0 {
@@ -75,7 +76,10 @@ pub async fn Adapter::tcgc_to_crate(self : Adapter) -> @codemodel.Crate {
 }
 
 ///|
-fn build_methods(operations_val : @ffi.JsValue) -> Array[@codemodel.Method] {
+fn build_methods(
+  operations_val : @ffi.JsValue,
+  server_base_path : String,
+) -> Array[@codemodel.Method] {
   let methods = Array::new()
   let operations : Array[@ffi.JsValue] = operations_val.cast()
   for op in operations {
@@ -89,12 +93,15 @@ fn build_methods(operations_val : @ffi.JsValue) -> Array[@codemodel.Method] {
     // 这对 spector 的 routes/path 编码测试是必须的。
     let uri_val : @ffi.JsValue = op.get_with_string("uriTemplate")
     let path_val : @ffi.JsValue = op.get_with_string("path")
-    let path = if !(uri_val.is_undefined() || uri_val.is_null()) {
+    let mut path = if !(uri_val.is_undefined() || uri_val.is_null()) {
       uri_val.cast()
     } else if !(path_val.is_undefined() || path_val.is_null()) {
       path_val.cast()
     } else {
       "/"
+    }
+    if server_base_path != "" {
+      path = join_paths(server_base_path, path)
     }
     let op_ref : @ffi.JsValue = op.get_with_string("operation")
     let op_name_val : @ffi.JsValue = op_ref.get_with_string("name")
@@ -107,6 +114,99 @@ fn build_methods(operations_val : @ffi.JsValue) -> Array[@codemodel.Method] {
     methods.push(@codemodel.Method::new(op_name, path, verb, status_code))
   }
   methods
+}
+
+///|
+/// 从 `@server("{endpoint}/...")` 里提取 base path（以 `/` 开头）。
+///
+/// 对于 `@server("{endpoint}")` 或没有 `@server` 的情况，返回空字符串。
+fn get_server_base_path(
+  http_module : @ffi.JsValue,
+  program : @ffi.JsValue,
+  service_namespace : @ffi.JsValue,
+) -> String {
+  let servers_val : @ffi.JsValue = http_module.apply_with_string(
+    "getServers",
+    [program, service_namespace],
+  )
+  if servers_val.is_undefined() || servers_val.is_null() {
+    return ""
+  }
+  let servers : Array[@ffi.JsValue] = servers_val.cast()
+  if servers.length() == 0 {
+    return ""
+  }
+  let server0 = servers[0]
+  let url_val : @ffi.JsValue = server0.get_with_string("url")
+  if url_val.is_undefined() || url_val.is_null() {
+    return ""
+  }
+  let url : String = url_val.cast()
+  extract_path_from_server_url(url)
+}
+
+///|
+/// 从 server url（可能包含 `://` 或 `{endpoint}`）中提取 path 部分（含前导 `/`）。
+fn extract_path_from_server_url(url : String) -> String {
+  if url.contains("://") {
+    let parts = url.split("://").to_array()
+    if parts.length() < 2 {
+      ""
+    } else {
+      let rest = parts[1].to_string()
+      let rest_parts = rest.split("/").to_array()
+      let path = join_segments(rest_parts, 1)
+      if path == "" { "" } else { "/" + path }
+    }
+  } else {
+    let parts = url.split("/").to_array()
+    let path = join_segments(parts, 1)
+    if path == "" { "" } else { "/" + path }
+  }
+}
+
+///|
+/// 将 `parts[start..]` 用 `/` 连接起来（跳过空段）。
+fn join_segments(parts : Array[StringView], start : Int) -> String {
+  if start >= parts.length() {
+    return ""
+  }
+  let mut first = true
+  let sb = StringBuilder::new(size_hint=64)
+  for i in start..<parts.length() {
+    let seg = parts[i].to_string()
+    if seg == "" {
+      continue
+    }
+    if first {
+      first = false
+    } else {
+      sb.write_string("/")
+    }
+    sb.write_string(seg)
+  }
+  sb.to_string()
+}
+
+///|
+/// 拼接两个路径片段，避免重复的 `/`。
+fn join_paths(a : String, b : String) -> String {
+  if a == "" {
+    return b
+  }
+  if b == "" {
+    return a
+  }
+  if b == "/" {
+    return a
+  }
+  let left = a.trim_end(char_set="/").to_string()
+  let right = b.trim(char_set="/").to_string()
+  if right == "" {
+    left
+  } else {
+    left + "/" + right
+  }
 }
 
 ///|
