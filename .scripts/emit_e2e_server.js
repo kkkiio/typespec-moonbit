@@ -2,9 +2,9 @@
 //   1) 先 build 我们的 emitter（MoonBit -> JS）
 //   2) 再 `tsp compile` 生成一个可运行的 MoonBit server 工程（包含 moon.mod.json）
 //
+import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
-import { execSync } from "child_process";
 
 const repoRoot = process.cwd();
 const compiler = path.join(repoRoot, "node_modules/@typespec/compiler/cmd/tsp.js");
@@ -20,29 +20,30 @@ const cases = [
   {
     name: "http-specs_server_endpoint_not_defined",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/endpoint/not-defined/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/e2e/generated/server/endpoint/not-defined"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/endpoint/not-defined"),
   },
   {
     name: "http-specs_server_path_multiple",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/path/multiple/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/e2e/generated/server/path/multiple"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/path/multiple"),
   },
   {
     name: "http-specs_server_path_single",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/path/single/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/e2e/generated/server/path/single"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/path/single"),
   },
   {
     name: "http-specs_server_versions_not_versioned",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/versions/not-versioned/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/e2e/generated/server/versions/not-versioned"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/versions/not-versioned"),
   },
   {
     name: "http-specs_server_versions_versioned",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/versions/versioned/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/e2e/generated/server/versions/versioned"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/versions/versioned"),
   },
 ];
+
 
 for (const c of cases) {
   if (!fs.existsSync(c.input)) {

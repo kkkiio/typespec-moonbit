@@ -67,17 +67,19 @@ This is a [MoonBit](https://docs.moonbitlang.com) project.
   - `typespec-moonbit/ffi/`：Node.js 与 TypeSpec 编译器 API 的 JS FFI 包装（EmitContext 辅助）。
   - `typespec-moonbit/adapter/`、`typespec-moonbit/model/`：历史最小模型与适配层（保留作参考，后续会迁移到 `tcgcadapter/codemodel`）。
 - `typespec-moonbit-tests/`：测试模块（native target 为主），负责运行时验证与维护生成用例。
-  - `typespec-moonbit-tests/generated_cases/*`：从 http-specs/azure-http-specs 生成的 MoonBit packages（生成物进入 git，便于 review）。
-  - `typespec-moonbit-tests/runtime/`：运行时验证（native target），调用生成的 client 并断言结果（mock server 由脚本启动）。
-  - `typespec-moonbit-tests/e2e/generated/*/typespec-moonbit/`：从 http-specs 生成的 MoonBit server router package（生成物进入 git，便于 review）。
-  - `typespec-moonbit-tests/e2e/`：server-e2e 驱动（native 可执行），在同进程内启动 `moonbitlang/async/http` server，并 import 生成的 `dispatch` 后调用 `tsp-spector knock` 做运行时验证。
+  - `typespec-moonbit-tests/server/`：server emitter 端到端测试。
+    - `typespec-moonbit-tests/server/generated/`：从 http-specs 生成的 MoonBit server router package（生成物进入 git，便于 review）。
+    - `typespec-moonbit-tests/server/main.mbt`：server-e2e 驱动（native 可执行），在同进程内启动 `moonbitlang/async/http` server，并 import 生成的 `dispatch` 后调用 `tsp-spector knock` 做运行时验证。
+  - `typespec-moonbit-tests/client/`：client emitter 测试。
+    - `typespec-moonbit-tests/client/generated/`：从 http-specs/azure-http-specs 生成的 MoonBit client packages（生成物进入 git，便于 review）。
+    - `typespec-moonbit-tests/client/tests/`：运行时验证（native target），调用生成的 client 并断言结果（mock server 由脚本启动）。
 
 ### 测试结构
 
 - `node_modules/@typespec/http-specs/specs` 与 `node_modules/@azure-tools/azure-http-specs/specs`：spector 用例来源。
-- `typespec-moonbit-tests/generated_cases/`：生成物（提交到 git）。
-- `typespec-moonbit-tests/runtime/`：运行时验证（native target），使用 `moonbitlang/async/http` 与 `moonbitlang/async/process`。
-- `typespec-moonbit-tests/e2e/generated/`：server-e2e 生成物（提交到 git）。
+- `typespec-moonbit-tests/server/generated/`：server emitter 生成物（提交到 git）。
+- `typespec-moonbit-tests/client/generated/`：client emitter 生成物（提交到 git）。
+- `typespec-moonbit-tests/client/tests/`：运行时验证（native target），使用 `moonbitlang/async/http` 与 `moonbitlang/async/process`。
 
 ### 依赖边界
 

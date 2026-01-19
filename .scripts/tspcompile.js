@@ -3,9 +3,9 @@
 // Output layout (committed to git):
 //   typespec-moonbit-tests/generated_cases/<case>/
 //
+import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
-import { execSync } from "child_process";
 
 const repoRoot = process.cwd();
 const args = process.argv.slice(2);
@@ -50,10 +50,11 @@ const cases = [
     ),
     outputDir: path.join(
       repoRoot,
-      "typespec-moonbit-tests/generated_cases/routes",
+      "typespec-moonbit-tests/client/generated/routes",
     ),
   },
 ];
+
 
 const selected = cases.filter((c) => filter === "" || c.name.includes(filter));
 const limited = limit > 0 ? selected.slice(0, limit) : selected;
