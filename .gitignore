@@ -5,3 +5,5 @@ target
 .mooncakes/
 .moonagent/
 node_modules/
+
+.agent
