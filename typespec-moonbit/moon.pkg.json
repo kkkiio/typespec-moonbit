@@ -1,20 +1,45 @@
 {
   "import": [
-    { "path": "kkkiio/typespec-moonbit/lib", "alias": "lib" },
-    { "path": "kkkiio/typespec-moonbit/tcgcadapter", "alias": "tcgcadapter" },
-    { "path": "kkkiio/typespec-moonbit/codegen", "alias": "codegen" },
-    { "path": "kkkiio/typespec-moonbit/ffi", "alias": "ffi" },
-    { "path": "moonbit-community/js-ffi/js", "alias": "js" },
-    { "path": "moonbitlang/x/fs", "alias": "fs" },
-    { "path": "moonbitlang/x/path", "alias": "path" }
+    {
+      "path": "kkkiio/typespec-moonbit/config",
+      "alias": "config"
+    },
+    {
+      "path": "kkkiio/typespec-moonbit/tcgcadapter",
+      "alias": "tcgcadapter"
+    },
+    {
+      "path": "kkkiio/typespec-moonbit/codegen",
+      "alias": "codegen"
+    },
+    {
+      "path": "kkkiio/typespec-moonbit/ffi",
+      "alias": "ffi"
+    },
+    {
+      "path": "moonbit-community/js-ffi/js",
+      "alias": "js"
+    },
+    {
+      "path": "moonbitlang/x/fs",
+      "alias": "fs"
+    },
+    {
+      "path": "moonbitlang/x/path",
+      "alias": "path"
+    }
   ],
   "link": {
     "js": {
-      "exports": ["on_emit"],
+      "exports": [
+        "on_emit"
+      ],
       "format": "esm"
     }
   },
   "targets": {
-    "emitter.mbt": ["js"]
+    "emitter.mbt": [
+      "js"
+    ]
   }
 }

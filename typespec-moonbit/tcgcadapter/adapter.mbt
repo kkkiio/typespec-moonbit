@@ -2,14 +2,14 @@
 /// TypeSpec -> CodeModel 适配器。
 pub struct Adapter {
   context : @ffi.EmitContext
-  options : @lib.EmitterOptions
+  options : @config.EmitterOptions
   service_name : String
 }
 
 ///|
 /// 构建适配器实例。
 pub fn Adapter::create(context : @ffi.EmitContext) -> Adapter {
-  let options = @lib.EmitterOptions::from_context(context)
+  let options = @config.EmitterOptions::from_context(context)
   let raw_options : @ffi.JsValue = @ffi.get_value(context, "options")
   let service_name = @ffi.get_optional_string(
     raw_options,
@@ -27,7 +27,7 @@ pub fn Adapter::context(self : Adapter) -> @ffi.EmitContext {
 
 ///|
 /// 获取解析后的 EmitterOptions。
-pub fn Adapter::options(self : Adapter) -> @lib.EmitterOptions {
+pub fn Adapter::options(self : Adapter) -> @config.EmitterOptions {
   self.options
 }
 

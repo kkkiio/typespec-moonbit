@@ -11,10 +11,10 @@
 
 ```bash
 # Server E2E 测试
-npm run test:e2e-server
+npm run test:server
 
 # Client Runtime 测试
 npm run spector -- --start
-npm run test:runtime
+npm run test:client
 npm run spector -- --stop
 ```

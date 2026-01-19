@@ -14,5 +14,6 @@
     "moonbit",
     "emitter"
   ],
-  "description": "Typespec emitter for Moonbit"
+  "description": "Typespec emitter for Moonbit",
+  "preferred-target": "js"
 }

@@ -1,6 +1,0 @@
-{
-  "import": [
-    { "path": "kkkiio/typespec-moonbit/ffi", "alias": "ffi" },
-    { "path": "kkkiio/typespec-moonbit/model", "alias": "model" }
-  ]
-}

@@ -9,7 +9,7 @@
 
 ```bash
 npm run spector -- --start
-npm run test:runtime
+npm run test:client
 npm run spector -- --stop
 ```
 

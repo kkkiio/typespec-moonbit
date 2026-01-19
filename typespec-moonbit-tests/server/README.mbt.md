@@ -14,5 +14,5 @@ Server emitter 端到端测试。
 仓库根目录执行：
 
 ```sh
-npm run test:e2e-server
+npm run test:server
 ```
