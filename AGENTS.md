@@ -1,6 +1,45 @@
 # Project Agents.md Guide
 
-This is a [MoonBit](https://docs.moonbitlang.com) project.
+本项目是一个 TypeSpec Emitter，核心逻辑完全由 MoonBit 编写并编译到 JS 后端。
+
+由于 TypeSpec 要求导出 `$onEmit`，而 MoonBit 函数名不能以 `$` 开头，因此采用最小 JS shim：MoonBit 导出 `on_emit`，`index.js` 只做 `$onEmit` 的导出别名。
+
+本仓库拆分为两个 MoonBit module（对齐 typespec-rust 的“生成+测试”分层），避免把测试依赖/目标污染 emitter 模块.
+
+## typespec-moonbit
+
+主模块（JS target），实现 TypeSpec emitter 核心逻辑与 JS FFI。
+
+- `typespec-moonbit/emitter.mbt`：入口函数 `on_emit`（由 `index.js` 导出为 `$onEmit`）。
+- `typespec-moonbit/config/`：Emitter 选项解析（`EmitterOptions`）与诊断上报封装（`program.reportDiagnostic`）。
+- `typespec-moonbit/tcgcadapter/`：TypeSpec Program/TCGC 到 CodeModel 的适配层。
+- `typespec-moonbit/codemodel/`：内部中间模型（Crate/Client/Method 等），与 TypeSpec AST 解耦。
+- `typespec-moonbit/codegen/`：把 CodeModel 渲染成 MoonBit 源码文本与文件列表。
+- `typespec-moonbit/ffi/`：Node.js 与 TypeSpec 编译器 API 的 JS FFI 包装（EmitContext 辅助）。
+
+## typespec-moonbit-tests
+
+E2E 测试模块（native target），负责运行时验证与维护生成用例。
+
+命令
+
+- `npm run spector`: 启动/停止 Spector 测试服务器。
+- `npm run gen:client-test`: 生成 Client 端测试代码（基于 `tspcompile.js`）。
+- `npm run gen:server-test`: 生成 Server 端测试代码（基于 `emit_e2e_server.js`）。
+- `npm run test:server`: **Server 端 E2E 测试**（生成代码 -> 编译 server -> 运行验证）。
+- `npm run test:client`: **Client 端运行时测试**（生成代码 -> 运行 `moon test`）。
+
+- `typespec-moonbit-tests/server/`：server emitter 端到端测试。
+  - `typespec-moonbit-tests/server/generated/`：从 http-specs 生成的 MoonBit server router package（生成物进入 git，便于 review）。
+  - `typespec-moonbit-tests/server/main.mbt`：server-e2e 驱动（native 可执行），在同进程内启动 `moonbitlang/async/http` server，并 import 生成的 `dispatch` 后调用 `tsp-spector knock` 做运行时验证。
+- `typespec-moonbit-tests/client/`：client emitter 测试。
+  - `typespec-moonbit-tests/client/generated/`：从 http-specs/azure-http-specs 生成的 MoonBit client packages（生成物进入 git，便于 review）。
+  - `typespec-moonbit-tests/client/tests/`：运行时验证（native target），调用生成的 client 并断言结果（mock server 由脚本启动）。
+- `node_modules/@typespec/http-specs/specs` 与 `node_modules/@azure-tools/azure-http-specs/specs`：spector 用例来源。
+
+## 提交规范
+
+- 使用 Conventional Commits（例如 `feat: ...`、`fix: ...`、`chore: ...`）。
 
 ## Project Structure
 
@@ -49,52 +88,3 @@ This is a [MoonBit](https://docs.moonbitlang.com) project.
 
 - agent-todo.md has some small tasks that are easy for AI to pick up, agent is
   welcome to finish the tasks and check the box when you are done
-
-## 设计决策（typespec-moonbit）
-
-本项目是一个 TypeSpec Emitter，核心逻辑完全由 MoonBit 编写并编译到 JS 后端。
-
-由于 TypeSpec 要求导出 `$onEmit`，而 MoonBit 函数名不能以 `$` 开头，因此采用最小 JS shim：MoonBit 导出 `on_emit`，`index.js` 只做 `$onEmit` 的导出别名。
-
-本仓库拆分为两个 MoonBit module（对齐 typespec-rust 的“生成+测试”分层），避免把测试依赖/目标污染 emitter 模块.
-
-### typespec-moonbit
-
-主模块（JS target），实现 TypeSpec emitter 核心逻辑与 JS FFI。
-
-- `typespec-moonbit/emitter.mbt`：入口函数 `on_emit`（由 `index.js` 导出为 `$onEmit`）。
-- `typespec-moonbit/config/`：Emitter 选项解析（`EmitterOptions`）与诊断上报封装（`program.reportDiagnostic`）。
-- `typespec-moonbit/tcgcadapter/`：TypeSpec Program/TCGC 到 CodeModel 的适配层。
-- `typespec-moonbit/codemodel/`：内部中间模型（Crate/Client/Method 等），与 TypeSpec AST 解耦。
-- `typespec-moonbit/codegen/`：把 CodeModel 渲染成 MoonBit 源码文本与文件列表。
-  - `emit.mbt`：统一入口，按 `emit_kind` 分发到 server 或 client。
-  - `server.mbt`：server router 生成逻辑。
-  - `client.mbt`：client SDK 生成逻辑。
-  - `uri_template.mbt`：RFC6570 URI 模板解析与标识符处理。
-  - `helpers.mbt`：运行时 URI 编码辅助函数模板。
-  - `file.mbt`：OutputFile 类型定义。
-- `typespec-moonbit/ffi/`：Node.js 与 TypeSpec 编译器 API 的 JS FFI 包装（EmitContext 辅助）。
-
-### typespec-moonbit-tests
-
-E2E 测试模块（native target），负责运行时验证与维护生成用例。
-
-- `typespec-moonbit-tests/server/`：server emitter 端到端测试。
-  - `typespec-moonbit-tests/server/generated/`：从 http-specs 生成的 MoonBit server router package（生成物进入 git，便于 review）。
-  - `typespec-moonbit-tests/server/main.mbt`：server-e2e 驱动（native 可执行），在同进程内启动 `moonbitlang/async/http` server，并 import 生成的 `dispatch` 后调用 `tsp-spector knock` 做运行时验证。
-- `typespec-moonbit-tests/client/`：client emitter 测试。
-  - `typespec-moonbit-tests/client/generated/`：从 http-specs/azure-http-specs 生成的 MoonBit client packages（生成物进入 git，便于 review）。
-  - `typespec-moonbit-tests/client/tests/`：运行时验证（native target），调用生成的 client 并断言结果（mock server 由脚本启动）。
-- `node_modules/@typespec/http-specs/specs` 与 `node_modules/@azure-tools/azure-http-specs/specs`：spector 用例来源。
-
-命令
-
-- `npm run spector`: 启动/停止 Spector 测试服务器。
-- `npm run gen:client-test`: 生成 Client 端测试代码（基于 `tspcompile.js`）。
-- `npm run gen:server-test`: 生成 Server 端测试代码（基于 `emit_e2e_server.js`）。
-- `npm run test:server`: **Server 端 E2E 测试**（生成代码 -> 编译 server -> 运行验证）。
-- `npm run test:client`: **Client 端运行时测试**（生成代码 -> 运行 `moon test`）。
-
-### 提交规范
-
-- 使用 Conventional Commits（例如 `feat: ...`、`fix: ...`、`chore: ...`）。

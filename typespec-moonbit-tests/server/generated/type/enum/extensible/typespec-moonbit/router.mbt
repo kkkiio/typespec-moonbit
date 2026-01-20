@@ -8,20 +8,20 @@ pub async fn dispatch(
   conn : @http.ServerConnection,
 ) -> Unit {
   let path = strip_request_query(request.path)
-  if request.meth == @http.Head && match_path_template("/server/versions/versioned/without-api-version", path) {
+  if request.meth == @http.Get && match_path_template("/type/enum/extensible/string/known-value", path) {
     let _ = conn.send_response(200, "OK")
     return
   }
-  if request.meth == @http.Head && match_path_template("/server/versions/versioned/with-query-api-version", path) {
+  if request.meth == @http.Get && match_path_template("/type/enum/extensible/string/unknown-value", path) {
     let _ = conn.send_response(200, "OK")
     return
   }
-  if request.meth == @http.Head && match_path_template("/server/versions/versioned/with-path-api-version/{apiVersion}", path) {
-    let _ = conn.send_response(200, "OK")
+  if request.meth == @http.Put && match_path_template("/type/enum/extensible/string/known-value", path) {
+    let _ = conn.send_response(204, "OK")
     return
   }
-  if request.meth == @http.Head && match_path_template("/server/versions/versioned/with-query-old-api-version", path) {
-    let _ = conn.send_response(200, "OK")
+  if request.meth == @http.Put && match_path_template("/type/enum/extensible/string/unknown-value", path) {
+    let _ = conn.send_response(204, "OK")
     return
   }
   conn.send_response(404, "NotFound")

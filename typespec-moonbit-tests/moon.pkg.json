@@ -1,9 +1,1 @@
-{
-  "test-import": [
-    { "path": "moonbitlang/async", "alias": "async" },
-    { "path": "moonbitlang/async/http", "alias": "http" },
-    { "path": "moonbitlang/async/process", "alias": "process" },
-    { "path": "moonbitlang/x/fs", "alias": "fs" },
-    { "path": "moonbitlang/x/path", "alias": "path" }
-  ]
-}
+{}

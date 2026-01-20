@@ -1,0 +1,6 @@
+{
+  "import": [
+    { "path": "moonbitlang/async/http", "alias": "http" },
+    { "path": "moonbitlang/async/io", "alias": "io" }
+  ]
+}

@@ -42,6 +42,51 @@ const cases = [
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/versions/versioned/main.tsp"),
     outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/versions/versioned"),
   },
+  {
+    name: "http-specs_parameters_basic",
+    input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/parameters/basic/main.tsp"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/parameters/basic"),
+  },
+  {
+    name: "http-specs_parameters_body_optionality",
+    input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/parameters/body-optionality/main.tsp"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/parameters/body-optionality"),
+  },
+  {
+    name: "http-specs_parameters_spread",
+    input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/parameters/spread/main.tsp"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/parameters/spread"),
+  },
+  {
+    name: "http-specs_type_array",
+    input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/type/array/main.tsp"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/type/array"),
+  },
+  {
+    name: "http-specs_type_dictionary",
+    input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/type/dictionary/main.tsp"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/type/dictionary"),
+  },
+  {
+    name: "http-specs_type_enum_extensible",
+    input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/type/enum/extensible/main.tsp"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/type/enum/extensible"),
+  },
+  {
+    name: "http-specs_type_model_empty",
+    input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/type/model/empty/main.tsp"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/type/model/empty"),
+  },
+  {
+    name: "http-specs_type_model_inheritance_not_discriminated",
+    input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/type/model/inheritance/not-discriminated/main.tsp"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/type/model/inheritance/not-discriminated"),
+  },
+  {
+    name: "http-specs_type_model_inheritance_recursive",
+    input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/type/model/inheritance/recursive/main.tsp"),
+    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/type/model/inheritance/recursive"),
+  },
 ];
 
 

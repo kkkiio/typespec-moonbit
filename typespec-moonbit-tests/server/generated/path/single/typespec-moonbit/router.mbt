@@ -12,9 +12,8 @@ pub async fn dispatch(
     let _ = conn.send_response(200, "OK")
     return
   }
-  conn
-    ..send_response(404, "NotFound")
-    ..write("not found")
+  conn.send_response(404, "NotFound")
+  conn.write("not found")
 }
 
 ///|

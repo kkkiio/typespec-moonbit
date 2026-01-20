@@ -82,9 +82,8 @@ fn emit_server_router(crate_ : @codemodel.Crate) -> String {
   if !emitted_any {
     buf.write_string("  let _ = request\n")
   }
-  buf.write_string("  conn\n")
-  buf.write_string("    ..send_response(404, \"NotFound\")\n")
-  buf.write_string("    ..write(\"not found\")\n")
+  buf.write_string("  conn.send_response(404, \"NotFound\")\n")
+  buf.write_string("  conn.write(\"not found\")\n")
   buf.write_string("}\n\n")
   buf.write_string("///|\n")
   buf.write_string(

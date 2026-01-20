@@ -8,20 +8,12 @@ pub async fn dispatch(
   conn : @http.ServerConnection,
 ) -> Unit {
   let path = strip_request_query(request.path)
-  if request.meth == @http.Head && match_path_template("/server/versions/versioned/without-api-version", path) {
-    let _ = conn.send_response(200, "OK")
+  if request.meth == @http.Put && match_path_template("/parameters/basic/explicit-body/simple", path) {
+    let _ = conn.send_response(204, "OK")
     return
   }
-  if request.meth == @http.Head && match_path_template("/server/versions/versioned/with-query-api-version", path) {
-    let _ = conn.send_response(200, "OK")
-    return
-  }
-  if request.meth == @http.Head && match_path_template("/server/versions/versioned/with-path-api-version/{apiVersion}", path) {
-    let _ = conn.send_response(200, "OK")
-    return
-  }
-  if request.meth == @http.Head && match_path_template("/server/versions/versioned/with-query-old-api-version", path) {
-    let _ = conn.send_response(200, "OK")
+  if request.meth == @http.Put && match_path_template("/parameters/basic/implicit-body/simple", path) {
+    let _ = conn.send_response(204, "OK")
     return
   }
   conn.send_response(404, "NotFound")
