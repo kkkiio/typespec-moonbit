@@ -61,16 +61,17 @@ fn emit_server_router(crate_ : @codemodel.Crate) -> String {
     for op in client.methods() {
       emitted_any = true
       let meth = server_meth_ctor(op.http_method())
-      let tmpl = op
-        .path()
+      // Pre-calculate normalized template
+      let normalized_tmpl = normalize_uri_template(op.path())
+      let tmpl = normalized_tmpl
         .replace_all(old="\\", new="\\\\")
         .replace_all(old="\"", new="\\\"")
       let code = op.status_code().to_string()
       buf.write_string("  if request.meth == ")
       buf.write_string(meth)
-      buf.write_string(" && match_path_template(normalize_uri_template(\"")
+      buf.write_string(" && match_path_template(\"")
       buf.write_string(tmpl)
-      buf.write_string("\"), path) {\n")
+      buf.write_string("\", path) {\n")
       buf.write_string("    let _ = conn.send_response(")
       buf.write_string(code)
       buf.write_string(", \"OK\")\n")
@@ -96,20 +97,6 @@ fn emit_server_router(crate_ : @codemodel.Crate) -> String {
   buf.write_string("  } else {\n")
   buf.write_string("    parts[0].to_string()\n")
   buf.write_string("  }\n")
-  buf.write_string("}\n\n")
-  buf.write_string("///|\n")
-  buf.write_string("/// 将 uriTemplate 归一化为 path-only 模板：\n")
-  buf.write_string(
-    "/// - 去掉尾部的 `{?...}` query template（注意：这里的 `?` 不代表真正的 query）；\n",
-  )
-  buf.write_string("/// - 去掉 `?` 之后的 query。\n")
-  buf.write_string("fn normalize_uri_template(template : String) -> String {\n")
-  buf.write_string("  let p1 = template.split(\"{?\").to_array()\n")
-  buf.write_string(
-    "  let s = if p1.length() == 0 { template } else { p1[0].to_string() }\n",
-  )
-  buf.write_string("  let p2 = s.split(\"?\").to_array()\n")
-  buf.write_string("  if p2.length() == 0 { s } else { p2[0].to_string() }\n")
   buf.write_string("}\n\n")
   buf.write_string("///|\n")
   buf.write_string(
@@ -158,5 +145,17 @@ fn server_meth_ctor(http_method : String) -> String {
     "TRACE" => "@http.Trace"
     "CONNECT" => "@http.Connect"
     _ => "@http.Get"
+  }
+}
+
+///|
+fn normalize_uri_template(template : String) -> String {
+  let p1 = template.split("{?").to_array()
+  let s = if p1.length() == 0 { template } else { p1[0].to_string() }
+  let p2 = s.split("?").to_array()
+  if p2.length() == 0 {
+    s
+  } else {
+    p2[0].to_string()
   }
 }

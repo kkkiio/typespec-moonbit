@@ -8,7 +8,7 @@ pub async fn dispatch(
   conn : @http.ServerConnection,
 ) -> Unit {
   let path = strip_request_query(request.path)
-  if request.meth == @http.Head && match_path_template(normalize_uri_template("/server/endpoint/not-defined/valid"), path) {
+  if request.meth == @http.Head && match_path_template("/server/endpoint/not-defined/valid", path) {
     let _ = conn.send_response(200, "OK")
     return
   }
@@ -26,17 +26,6 @@ fn strip_request_query(path : String) -> String {
   } else {
     parts[0].to_string()
   }
-}
-
-///|
-/// 将 uriTemplate 归一化为 path-only 模板：
-/// - 去掉尾部的 `{?...}` query template（注意：这里的 `?` 不代表真正的 query）；
-/// - 去掉 `?` 之后的 query。
-fn normalize_uri_template(template : String) -> String {
-  let p1 = template.split("{?").to_array()
-  let s = if p1.length() == 0 { template } else { p1[0].to_string() }
-  let p2 = s.split("?").to_array()
-  if p2.length() == 0 { s } else { p2[0].to_string() }
 }
 
 ///|
