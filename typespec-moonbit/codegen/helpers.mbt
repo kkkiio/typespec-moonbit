@@ -1,8 +1,101 @@
 ///|
 /// 文本处理辅助函数（占位接口）。
-#declaration_only
 pub fn indent(text : String, spaces : Int) -> String {
-  ...
+  let pad = String::make(spaces, ' ')
+  let lines = text.split("\n").to_array()
+  let sb = StringBuilder::new(size_hint=text.length() + lines.length() * spaces)
+  let mut first = true
+  for line in lines {
+    if !first {
+      sb.write_char('\n')
+    }
+    first = false
+    if line.length() != 0 {
+      sb.write_string(pad)
+      sb.write_string(line.to_string())
+    }
+  }
+  sb.to_string()
+}
+
+///|
+
+///|
+pub fn to_pascal_case(s : String) -> String {
+  let sb = StringBuilder::new()
+  let mut next_upper = true
+  for c in s.to_array() {
+    if (c >= 'a' && c <= 'z') ||
+      (c >= 'A' && c <= 'Z') ||
+      (c >= '0' && c <= '9') {
+      if next_upper {
+        if c >= 'a' && c <= 'z' {
+          sb.write_char((c.to_int() - 32).to_char().unwrap())
+        } else {
+          sb.write_char(c)
+        }
+        next_upper = false
+      } else {
+        sb.write_char(c)
+      }
+    } else {
+      next_upper = true
+    }
+  }
+  sb.to_string()
+}
+
+///|
+pub fn to_snake_case(s : String) -> String {
+  let sb = StringBuilder::new()
+  let mut last_was_separator = true
+  for c in s.to_array() {
+    if (c >= 'a' && c <= 'z') ||
+      (c >= 'A' && c <= 'Z') ||
+      (c >= '0' && c <= '9') {
+      if c >= 'A' && c <= 'Z' {
+        if !last_was_separator {
+          sb.write_char('_')
+        }
+        sb.write_char((c.to_int() + 32).to_char().unwrap())
+        last_was_separator = false
+      } else {
+        sb.write_char(c)
+        last_was_separator = false
+      }
+    } else if !last_was_separator {
+      sb.write_char('_')
+      last_was_separator = true
+    }
+  }
+  sb.to_string().trim(char_set="_").to_string()
+}
+
+///|
+pub fn sanitize_identifier(s : String) -> String {
+  let sb = StringBuilder::new()
+  let mut first = true
+  for c in s.to_array() {
+    if (c >= 'a' && c <= 'z') ||
+      (c >= 'A' && c <= 'Z') ||
+      (c >= '0' && c <= '9') ||
+      c == '_' {
+      if first && c >= '0' && c <= '9' {
+        sb.write_char('_')
+      }
+      sb.write_char(c)
+      first = false
+    } else {
+      sb.write_char('_')
+      first = false
+    }
+  }
+  let res = sb.to_string()
+  if res == "" {
+    "_"
+  } else {
+    res
+  }
 }
 
 ///|

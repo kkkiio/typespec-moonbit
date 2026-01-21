@@ -31,3 +31,28 @@ pub async fn import_module(path : String) -> JsValue {
 ///|
 extern "js" fn import_module_ffi(path : String) -> @js.Promise =
   #| (path) => import(path)
+
+///|
+pub fn is_string(value : JsValue) -> Bool {
+  value.is_string()
+}
+
+///|
+pub fn is_number(value : JsValue) -> Bool {
+  value.is_number()
+}
+
+///|
+pub fn is_bool(value : JsValue) -> Bool {
+  value.is_bool()
+}
+
+///|
+pub fn cast_int(value : JsValue) -> Int {
+  value.cast()
+}
+
+///|
+pub fn cast_bool(value : JsValue) -> Bool {
+  value.cast()
+}

@@ -160,31 +160,6 @@ fn infer_param_type_from_operation(op_name : String) -> String {
 }
 
 ///|
-/// 将字符串转为安全的 MoonBit 标识符。
-fn sanitize_identifier(raw : String) -> String {
-  let out = raw
-    .replace_all(old="-", new="_")
-    .replace_all(old=" ", new="_")
-    .replace_all(old=":", new="_")
-    .replace_all(old=";", new="_")
-    .replace_all(old=".", new="_")
-    .replace_all(old="/", new="_")
-    .replace_all(old="{", new="_")
-    .replace_all(old="}", new="_")
-    .replace_all(old="+", new="_")
-    .replace_all(old="*", new="_")
-    .replace_all(old="?", new="_")
-    .replace_all(old="=", new="_")
-    .replace_all(old="&", new="_")
-    .replace_all(old=",", new="_")
-  if out.length() == 0 {
-    "_"
-  } else {
-    out
-  }
-}
-
-///|
 fn trim_leading_underscores(raw : String) -> String {
   let chars = raw.to_array()
   let mut start = 0
