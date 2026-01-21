@@ -1,16 +1,7 @@
-///| Model definitions
+///| 
+/// Model Record
 pub(all) struct Record {
-}
-
-pub impl @json.FromJson for Record with from_json(json, _path) {
-  match json {
-    Object(_obj) => {
-      Record::{ 
-      }
-    }
-    _ => Record::{}
-  }
-}
+}derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
 
 ///| Traits for operation handlers
 pub(open) trait Int32ValueHandler {
@@ -68,48 +59,22 @@ pub(open) trait RecursiveModelValueHandler {
   async put(Self, body : Record) -> Unit
 }
 
-///| Router definition
 pub struct Router {
-  _dispatch : async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+  dispatch : async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 }
-
 pub async fn Router::dispatch(
   self : Router,
   request : @http.Request,
   body : &@io.Reader,
   conn : @http.ServerConnection
 ) -> Unit {
-  (self._dispatch)(request, body, conn)
+  (self.dispatch)(request, body, conn)
 }
-
-pub fn[  H0 : Int32ValueHandler,
-  H1 : Int64ValueHandler,
-  H2 : ModelValueHandler,
-  H3 : StringValueHandler,
-  H4 : BooleanValueHandler,
-  H5 : Float32ValueHandler,
-  H6 : UnknownValueHandler,
-  H7 : DatetimeValueHandler,
-  H8 : DurationValueHandler,
-  H9 : NullableFloatValueHandler,
-  H10 : RecursiveModelValueHandler] create_router(
-  h0 : H0,
-  h1 : H1,
-  h2 : H2,
-  h3 : H3,
-  h4 : H4,
-  h5 : H5,
-  h6 : H6,
-  h7 : H7,
-  h8 : H8,
-  h9 : H9,
-  h10 : H10
-) -> Router {
+pub fn[H0 : Int32ValueHandler,H1 : Int64ValueHandler,H2 : ModelValueHandler,H3 : StringValueHandler,H4 : BooleanValueHandler,H5 : Float32ValueHandler,H6 : UnknownValueHandler,H7 : DatetimeValueHandler,H8 : DurationValueHandler,H9 : NullableFloatValueHandler,H10 : RecursiveModelValueHandler] create_router(h0 : H0,h1 : H1,h2 : H2,h3 : H3,h4 : H4,h5 : H5,h6 : H6,h7 : H7,h8 : H8,h9 : H9,h10 : H10) -> Router {
   Router::{
-    _dispatch: async fn(req, body_stream, conn) {
+    dispatch: async fn(req, body_stream, conn) {
       let path = strip_request_query(req.path)
-      if false { () }
-      else if req.meth == @http.Get && match_path_template("/type/dictionary/int32", path) {
+      if false { () }      else if req.meth == @http.Get && match_path_template("/type/dictionary/int32", path) {
         ignore(body_stream)
         h0.get()
         conn.send_response(204, "No Content")
@@ -254,7 +219,6 @@ fn strip_request_query(path : String) -> String {
   let parts = path.split("?").to_array()
   if parts.length() == 0 { path } else { parts[0].to_string() }
 }
-
 ///|
 fn match_path_template(template : String, path : String) -> Bool {
   let t = template.trim(char_set="/")

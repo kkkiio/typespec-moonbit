@@ -1,144 +1,59 @@
-///| Model definitions
+///| 
+/// Model Array
 pub(all) struct Array {
-}
+}derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
 
-pub impl @json.FromJson for Array with from_json(json, _path) {
-  match json {
-    Object(_obj) => {
-      Array::{ 
-      }
-    }
-    _ => Array::{}
-  }
-}
-
+///| 
+/// Model BodyParameter
 pub(all) struct BodyParameter {
   name : String
-}
+}derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
 
-pub impl @json.FromJson for BodyParameter with from_json(json, _path) {
-  match json {
-    Object(_obj) => {
-      BodyParameter::{ 
-        name: _obj.get("name").bind(fn(j) { try { Some(@json.from_json(j)) } catch { _ => None } }).unwrap_or(""),
-      }
-    }
-    _ => BodyParameter::{name: ""}
-  }
-}
-
+///| 
+/// Model AnonymousModel1
 pub(all) struct AnonymousModel1 {
   name : String
-}
+}derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
 
-pub impl @json.FromJson for AnonymousModel1 with from_json(json, _path) {
-  match json {
-    Object(_obj) => {
-      AnonymousModel1::{ 
-        name: _obj.get("name").bind(fn(j) { try { Some(@json.from_json(j)) } catch { _ => None } }).unwrap_or(""),
-      }
-    }
-    _ => AnonymousModel1::{name: ""}
-  }
-}
-
+///| 
+/// Model AnonymousModel2
 pub(all) struct AnonymousModel2 {
   name : String
-}
+}derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
 
-pub impl @json.FromJson for AnonymousModel2 with from_json(json, _path) {
-  match json {
-    Object(_obj) => {
-      AnonymousModel2::{ 
-        name: _obj.get("name").bind(fn(j) { try { Some(@json.from_json(j)) } catch { _ => None } }).unwrap_or(""),
-      }
-    }
-    _ => AnonymousModel2::{name: ""}
-  }
-}
-
+///| 
+/// Model AnonymousModel3
 pub(all) struct AnonymousModel3 {
   name : String
-}
+}derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
 
-pub impl @json.FromJson for AnonymousModel3 with from_json(json, _path) {
-  match json {
-    Object(_obj) => {
-      AnonymousModel3::{ 
-        name: _obj.get("name").bind(fn(j) { try { Some(@json.from_json(j)) } catch { _ => None } }).unwrap_or(""),
-      }
-    }
-    _ => AnonymousModel3::{name: ""}
-  }
-}
-
+///| 
+/// Model AnonymousModel4
 pub(all) struct AnonymousModel4 {
   required_string : String
   optional_int : String
   required_int_list : Array
   optional_string_list : Array
-}
+}derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
 
-pub impl @json.FromJson for AnonymousModel4 with from_json(json, _path) {
-  match json {
-    Object(_obj) => {
-      AnonymousModel4::{ 
-        required_string: _obj.get("requiredString").bind(fn(j) { try { Some(@json.from_json(j)) } catch { _ => None } }).unwrap_or(""),
-        optional_int: _obj.get("optionalInt").bind(fn(j) { try { Some(@json.from_json(j)) } catch { _ => None } }).unwrap_or(""),
-        required_int_list: _obj.get("requiredIntList").bind(fn(j) { try { Some(@json.from_json(j)) } catch { _ => None } }).unwrap_or(Array::{}),
-        optional_string_list: _obj.get("optionalStringList").bind(fn(j) { try { Some(@json.from_json(j)) } catch { _ => None } }).unwrap_or(Array::{}),
-      }
-    }
-    _ => AnonymousModel4::{required_string: "", optional_int: "", required_int_list: Array::{}, optional_string_list: Array::{}}
-  }
-}
-
+///| 
+/// Model AnonymousModel5
 pub(all) struct AnonymousModel5 {
   name : String
   age : String
-}
+}derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
 
-pub impl @json.FromJson for AnonymousModel5 with from_json(json, _path) {
-  match json {
-    Object(_obj) => {
-      AnonymousModel5::{ 
-        name: _obj.get("name").bind(fn(j) { try { Some(@json.from_json(j)) } catch { _ => None } }).unwrap_or(""),
-        age: _obj.get("age").bind(fn(j) { try { Some(@json.from_json(j)) } catch { _ => None } }).unwrap_or(""),
-      }
-    }
-    _ => AnonymousModel5::{name: "", age: ""}
-  }
-}
-
+///| 
+/// Model AnonymousModel6
 pub(all) struct AnonymousModel6 {
   name : String
-}
+}derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
 
-pub impl @json.FromJson for AnonymousModel6 with from_json(json, _path) {
-  match json {
-    Object(_obj) => {
-      AnonymousModel6::{ 
-        name: _obj.get("name").bind(fn(j) { try { Some(@json.from_json(j)) } catch { _ => None } }).unwrap_or(""),
-      }
-    }
-    _ => AnonymousModel6::{name: ""}
-  }
-}
-
+///| 
+/// Model AnonymousModel7
 pub(all) struct AnonymousModel7 {
   prop : String
-}
-
-pub impl @json.FromJson for AnonymousModel7 with from_json(json, _path) {
-  match json {
-    Object(_obj) => {
-      AnonymousModel7::{ 
-        prop: _obj.get("prop").bind(fn(j) { try { Some(@json.from_json(j)) } catch { _ => None } }).unwrap_or(""),
-      }
-    }
-    _ => AnonymousModel7::{prop: ""}
-  }
-}
+}derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
 
 ///| Traits for operation handlers
 pub(open) trait AliasHandler {
@@ -157,30 +72,22 @@ pub(open) trait ModelHandler {
   async spread_composite_request_mix(Self, name : String, test_header : String, body : AnonymousModel7) -> Unit
 }
 
-///| Router definition
 pub struct Router {
-  _dispatch : async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+  dispatch : async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 }
-
 pub async fn Router::dispatch(
   self : Router,
   request : @http.Request,
   body : &@io.Reader,
   conn : @http.ServerConnection
 ) -> Unit {
-  (self._dispatch)(request, body, conn)
+  (self.dispatch)(request, body, conn)
 }
-
-pub fn[  H0 : AliasHandler,
-  H1 : ModelHandler] create_router(
-  h0 : H0,
-  h1 : H1
-) -> Router {
+pub fn[H0 : AliasHandler,H1 : ModelHandler] create_router(h0 : H0,h1 : H1) -> Router {
   Router::{
-    _dispatch: async fn(req, body_stream, conn) {
+    dispatch: async fn(req, body_stream, conn) {
       let path = strip_request_query(req.path)
-      if false { () }
-      else if req.meth == @http.Put && match_path_template("/parameters/spread/alias/request-body", path) {
+      if false { () }      else if req.meth == @http.Put && match_path_template("/parameters/spread/alias/request-body", path) {
         let body_bytes = body_stream.read_all()
         let body_str = body_bytes.text()
         let p_1_body : AnonymousModel1 = try { @json.from_json(@json.parse(body_str)) } catch { _ => @json.from_json(null) }
@@ -275,7 +182,6 @@ fn strip_request_query(path : String) -> String {
   let parts = path.split("?").to_array()
   if parts.length() == 0 { path } else { parts[0].to_string() }
 }
-
 ///|
 fn match_path_template(template : String, path : String) -> Bool {
   let t = template.trim(char_set="/")

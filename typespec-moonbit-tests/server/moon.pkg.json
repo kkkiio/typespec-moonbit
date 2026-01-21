@@ -20,14 +20,10 @@
       "path": "moonbitlang/async/socket",
       "alias": "socket"
     },
-    {
-      "path": "moonbitlang/x/fs",
-      "alias": "fs"
-    },
-    {
-      "path": "moonbitlang/x/path",
-      "alias": "path"
-    },
+    "moonbitlang/async/os_error",
+    "moonbitlang/async/stdio"
+  ],
+  "test-import": [
     {
       "path": "kkkiio/typespec-moonbit-tests/server/generated/endpoint/not-defined/typespec-moonbit",
       "alias": "srv_endpoint_not_defined"
@@ -83,9 +79,7 @@
     {
       "path": "kkkiio/typespec-moonbit-tests/server/generated/type/model/inheritance/recursive/typespec-moonbit",
       "alias": "type_model_inheritance_recursive"
-    },
-    "moonbitlang/async/os_error",
-    "moonbitlang/async/stdio"
+    }
   ],
   "targets": {
     "main.mbt": [
