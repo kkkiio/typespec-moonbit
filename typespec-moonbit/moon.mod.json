@@ -4,7 +4,9 @@
   "deps": {
     "moonbitlang/async": "0.16.1",
     "moonbitlang/x": "0.4.38",
-    "moonbit-community/js-ffi": "0.4.2"
+    "moonbit-community/js-ffi": "0.4.2",
+    "ryota0624/mustache": "0.0.6",
+    "justjavac/case": "0.1.5"
   },
   "readme": "README.mbt.md",
   "repository": "",

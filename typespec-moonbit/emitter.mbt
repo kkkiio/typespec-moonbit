@@ -25,6 +25,7 @@ pub async fn on_emit_async(context : @ffi.EmitContext) -> Unit {
       @fs.write_string_to_file(full_path.to_string(), file.content())
     }
   }
+  @ffi.exec_moon_fmt(out_dir.to_string())
 }
 
 ///|

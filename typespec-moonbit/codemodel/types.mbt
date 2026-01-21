@@ -8,7 +8,6 @@ pub(all) enum TypeRef {
   Bool
   Model(Model)
   Array(TypeRef)
-  Unknown
 }
 
 ///|

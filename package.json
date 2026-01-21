@@ -25,7 +25,7 @@
     "spector": "node .scripts/spector.js",
     "gen:client-test": "node .scripts/tspcompile.js",
     "gen:server-test": "node .scripts/emit_e2e_server.js",
-    "test:server:run": "moon build -C typespec-moonbit-tests --target native --release && typespec-moonbit-tests/_build/native/release/build/server/server.exe",
+    "test:server:run": "moon test -C typespec-moonbit-tests -p kkkiio/typespec-moonbit-tests/server",
     "test:server": "npm run gen:server-test && npm run test:server:run",
     "test:client": "npm run gen:client-test -- --filter=spector_routes --limit=1 && moon test -C typespec-moonbit-tests --target native -p kkkiio/typespec-moonbit-tests/client/tests"
   }

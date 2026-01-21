@@ -7,7 +7,9 @@
     {
       "path": "kkkiio/typespec-moonbit/config",
       "alias": "config"
-    }
+    },
+    "justjavac/case",
+    "ryota0624/mustache"
   ],
   "targets": {
     "*": "js"

@@ -6,7 +6,7 @@
 pub fn emit(
   crate_ : @codemodel.Crate,
   options : @config.EmitterOptions,
-) -> Array[OutputFile] {
+) -> Array[OutputFile] raise {
   if options.emit_kind() == "server" {
     emit_server_files(crate_)
   } else {
