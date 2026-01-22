@@ -22,9 +22,7 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_as_r
   _self : SpreadAliasHandlerImpl,
   body : @parameters_spread.AnonymousModel1,
 ) {
-  guard body.name == "foo" else {
-    fail("alias.spread_as_request_body: name mismatch, expected 'foo'")
-  }
+  assert_eq(body.name, "foo", msg="alias.spread_as_request_body: name mismatch")
 }
 
 ///|
@@ -34,19 +32,17 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_para
   x_ms_test_header : String,
   body : @parameters_spread.AnonymousModel2,
 ) {
-  guard id == "1" else {
-    fail("spread_parameter_with_inner_model: id mismatch, expected '1'")
-  }
-  guard x_ms_test_header == "bar" else {
-    fail(
-      "spread_parameter_with_inner_model: x_ms_test_header mismatch, expected 'bar'",
-    )
-  }
-  guard body.name == "foo" else {
-    fail(
-      "spread_parameter_with_inner_model: body.name mismatch, expected 'foo'",
-    )
-  }
+  assert_eq(id, "1", msg="spread_parameter_with_inner_model: id mismatch")
+  assert_eq(
+    x_ms_test_header,
+    "bar",
+    msg="spread_parameter_with_inner_model: x_ms_test_header mismatch",
+  )
+  assert_eq(
+    body.name,
+    "foo",
+    msg="spread_parameter_with_inner_model: body.name mismatch",
+  )
 }
 
 ///|
@@ -56,17 +52,17 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_as_r
   x_ms_test_header : String,
   body : @parameters_spread.AnonymousModel3,
 ) {
-  guard id == "1" else {
-    fail("spread_as_request_parameter: id mismatch, expected '1'")
-  }
-  guard x_ms_test_header == "bar" else {
-    fail(
-      "spread_as_request_parameter: x_ms_test_header mismatch, expected 'bar'",
-    )
-  }
-  guard body.name == "foo" else {
-    fail("spread_as_request_parameter: body.name mismatch, expected 'foo'")
-  }
+  assert_eq(id, "1", msg="spread_as_request_parameter: id mismatch")
+  assert_eq(
+    x_ms_test_header,
+    "bar",
+    msg="spread_as_request_parameter: x_ms_test_header mismatch",
+  )
+  assert_eq(
+    body.name,
+    "foo",
+    msg="spread_as_request_parameter: body.name mismatch",
+  )
 }
 
 ///|
@@ -76,19 +72,17 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_with
   x_ms_test_header : String,
   body : @parameters_spread.AnonymousModel4,
 ) {
-  guard id == "1" else {
-    fail("spread_with_multiple_parameters: id mismatch, expected '1'")
-  }
-  guard x_ms_test_header == "bar" else {
-    fail(
-      "spread_with_multiple_parameters: x_ms_test_header mismatch, expected 'bar'",
-    )
-  }
-  guard body.required_string == "foo" else {
-    fail(
-      "spread_with_multiple_parameters: required_string mismatch, expected 'foo'",
-    )
-  }
+  assert_eq(id, "1", msg="spread_with_multiple_parameters: id mismatch")
+  assert_eq(
+    x_ms_test_header,
+    "bar",
+    msg="spread_with_multiple_parameters: x_ms_test_header mismatch",
+  )
+  assert_eq(
+    body.required_string,
+    "foo",
+    msg="spread_with_multiple_parameters: required_string mismatch",
+  )
   // TODO: Check requiredIntList == [1, 2]
   // TODO: Check optionalInt == 1
   // TODO: Check optionalStringList == ["foo", "bar"]
@@ -101,20 +95,22 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_para
   x_ms_test_header : String,
   body : @parameters_spread.AnonymousModel5,
 ) {
-  guard id == "1" else {
-    fail("spread_parameter_with_inner_alias: id mismatch, expected '1'")
-  }
-  guard x_ms_test_header == "bar" else {
-    fail(
-      "spread_parameter_with_inner_alias: x_ms_test_header mismatch, expected 'bar'",
-    )
-  }
-  guard body.name == "foo" else {
-    fail("spread_parameter_with_inner_alias: name mismatch, expected 'foo'")
-  }
-  guard body.age == "1" else {
-    fail("spread_parameter_with_inner_alias: age mismatch, expected '1'")
-  }
+  assert_eq(id, "1", msg="spread_parameter_with_inner_alias: id mismatch")
+  assert_eq(
+    x_ms_test_header,
+    "bar",
+    msg="spread_parameter_with_inner_alias: x_ms_test_header mismatch",
+  )
+  assert_eq(
+    body.name,
+    "foo",
+    msg="spread_parameter_with_inner_alias: name mismatch",
+  )
+  assert_eq(
+    body.age,
+    "1",
+    msg="spread_parameter_with_inner_alias: age mismatch",
+  )
 }
 
 ///|
@@ -125,9 +121,7 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_as_r
   _self : SpreadModelHandlerImpl,
   body : @parameters_spread.AnonymousModel6,
 ) {
-  guard body.name == "foo" else {
-    fail("model.spread_as_request_body: name mismatch, expected 'foo'")
-  }
+  assert_eq(body.name, "foo", msg="model.spread_as_request_body: name mismatch")
 }
 
 ///|
@@ -135,11 +129,11 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_comp
   _self : SpreadModelHandlerImpl,
   body : @parameters_spread.BodyParameter,
 ) {
-  guard body.name == "foo" else {
-    fail(
-      "spread_composite_request_only_with_body: name mismatch, expected 'foo'",
-    )
-  }
+  assert_eq(
+    body.name,
+    "foo",
+    msg="spread_composite_request_only_with_body: name mismatch",
+  )
 }
 
 ///|
@@ -148,14 +142,16 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_comp
   name : String,
   test_header : String,
 ) {
-  guard name == "foo" else {
-    fail("spread_composite_request_without_body: name mismatch, expected 'foo'")
-  }
-  guard test_header == "bar" else {
-    fail(
-      "spread_composite_request_without_body: test_header mismatch, expected 'bar'",
-    )
-  }
+  assert_eq(
+    name,
+    "foo",
+    msg="spread_composite_request_without_body: name mismatch",
+  )
+  assert_eq(
+    test_header,
+    "bar",
+    msg="spread_composite_request_without_body: test_header mismatch",
+  )
 }
 
 ///|
@@ -165,15 +161,17 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_comp
   test_header : String,
   body : @parameters_spread.BodyParameter,
 ) {
-  guard name == "foo" else {
-    fail("spread_composite_request: name mismatch, expected 'foo'")
-  }
-  guard test_header == "bar" else {
-    fail("spread_composite_request: test_header mismatch, expected 'bar'")
-  }
-  guard body.name == "foo" else {
-    fail("spread_composite_request: body.name mismatch, expected 'foo'")
-  }
+  assert_eq(name, "foo", msg="spread_composite_request: name mismatch")
+  assert_eq(
+    test_header,
+    "bar",
+    msg="spread_composite_request: test_header mismatch",
+  )
+  assert_eq(
+    body.name,
+    "foo",
+    msg="spread_composite_request: body.name mismatch",
+  )
 }
 
 ///|
@@ -183,13 +181,15 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_comp
   test_header : String,
   body : @parameters_spread.AnonymousModel7,
 ) {
-  guard name == "foo" else {
-    fail("spread_composite_request_mix: name mismatch, expected 'foo'")
-  }
-  guard test_header == "bar" else {
-    fail("spread_composite_request_mix: test_header mismatch, expected 'bar'")
-  }
-  guard body.prop == "foo" else {
-    fail("spread_composite_request_mix: body.prop mismatch, expected 'foo'")
-  }
+  assert_eq(name, "foo", msg="spread_composite_request_mix: name mismatch")
+  assert_eq(
+    test_header,
+    "bar",
+    msg="spread_composite_request_mix: test_header mismatch",
+  )
+  assert_eq(
+    body.prop,
+    "foo",
+    msg="spread_composite_request_mix: body.prop mismatch",
+  )
 }

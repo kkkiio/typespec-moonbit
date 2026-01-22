@@ -27,9 +27,7 @@ impl @parameters_body_optionality.BodyOptionalityHandler for BodyOptionalityHand
   _self : BodyOptionalityHandlerImpl,
   body : @parameters_body_optionality.BodyModel,
 ) {
-  guard body.name == "foo" else {
-    fail("required_explicit: body name mismatch, expected 'foo'")
-  }
+  assert_eq(body.name, "foo", msg="required_explicit: body name mismatch")
 }
 
 ///|
@@ -37,9 +35,7 @@ impl @parameters_body_optionality.BodyOptionalityHandler for BodyOptionalityHand
   _self : BodyOptionalityHandlerImpl,
   body : @parameters_body_optionality.AnonymousModel1,
 ) {
-  guard body.name == "foo" else {
-    fail("required_implicit: body name mismatch, expected 'foo'")
-  }
+  assert_eq(body.name, "foo", msg="required_implicit: body name mismatch")
 }
 
 ///|
@@ -50,9 +46,7 @@ impl @parameters_body_optionality.OptionalExplicitHandler for OptionalExplicitHa
   _self : OptionalExplicitHandlerImpl,
   body : @parameters_body_optionality.BodyModel,
 ) {
-  guard body.name == "foo" else {
-    fail("optional_explicit.set: body name mismatch, expected 'foo'")
-  }
+  assert_eq(body.name, "foo", msg="optional_explicit.set: body name mismatch")
 }
 
 ///|

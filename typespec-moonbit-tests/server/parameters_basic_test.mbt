@@ -20,7 +20,7 @@ impl @parameters_basic.ImplicitBodyHandler for ParamBasicImplicit with simple(
   _self : ParamBasicImplicit,
   body : @parameters_basic.AnonymousModel1,
 ) {
-  guard body.name == "foo" else { fail("implicit body name mismatch") }
+  assert_eq(body.name, "foo")
 }
 
 ///|
@@ -32,5 +32,5 @@ impl @parameters_basic.ExplicitBodyHandler for ParamBasicExplicit with simple(
   _self : ParamBasicExplicit,
   body : @parameters_basic.User,
 ) {
-  guard body.name == "foo" else { fail("explicit body name mismatch") }
+  assert_eq(body.name, "foo")
 }
