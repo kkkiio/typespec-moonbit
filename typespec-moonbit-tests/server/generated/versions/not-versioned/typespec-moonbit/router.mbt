@@ -7,55 +7,45 @@ pub(open) trait NotVersionedHandler {
 }
 
 ///|
-pub struct Router {
-  dispatch : async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
-}
-
-///|
-pub async fn Router::dispatch(
-  self : Router,
-  request : @http.Request,
-  body : &@io.Reader,
-  conn : @http.ServerConnection,
-) -> Unit {
-  (self.dispatch)(request, body, conn)
-}
+pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 ///|
 pub fn[H0 : NotVersionedHandler] create_router(h0 : H0) -> Router {
-  Router::{
-    dispatch: async fn(req, body_stream, conn) {
-      let path = strip_request_query(req.path)
-      if false {
-        ()
-      } else if req.meth == @http.Head &&
-        match_path_template(
-          "/server/versions/not-versioned/without-api-version", path,
-        ) {
-        ignore(body_stream)
-        h0.without_api_version()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Head &&
-        match_path_template(
-          "/server/versions/not-versioned/with-query-api-version", path,
-        ) {
-        ignore(body_stream)
-        let p_2_api_version = ""
-        h0.with_query_api_version(p_2_api_version)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Head &&
-        match_path_template(
-          "/server/versions/not-versioned/with-path-api-version/{apiVersion}", path,
-        ) {
-        ignore(body_stream)
-        let p_3_api_version = ""
-        h0.with_path_api_version(p_3_api_version)
-        conn.send_response(204, "No Content")
-      } else {
-        conn.send_response(404, "NotFound")
-        conn.write("not found")
-      }
-    },
+  async fn(
+    req : @http.Request,
+    body_stream : &@io.Reader,
+    conn : @http.ServerConnection,
+  ) {
+    let path = strip_request_query(req.path)
+    if false {
+      ()
+    } else if req.meth == @http.Head &&
+      match_path_template(
+        "/server/versions/not-versioned/without-api-version", path,
+      ) {
+      ignore(body_stream)
+      h0.without_api_version()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Head &&
+      match_path_template(
+        "/server/versions/not-versioned/with-query-api-version", path,
+      ) {
+      ignore(body_stream)
+      let p_2_api_version = ""
+      h0.with_query_api_version(p_2_api_version)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Head &&
+      match_path_template(
+        "/server/versions/not-versioned/with-path-api-version/{apiVersion}", path,
+      ) {
+      ignore(body_stream)
+      let p_3_api_version = ""
+      h0.with_path_api_version(p_3_api_version)
+      conn.send_response(204, "No Content")
+    } else {
+      conn.send_response(404, "NotFound")
+      conn.write("not found")
+    }
   }
 }
 

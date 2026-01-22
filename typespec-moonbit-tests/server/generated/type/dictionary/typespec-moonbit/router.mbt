@@ -85,19 +85,7 @@ pub(open) trait RecursiveModelValueHandler {
 }
 
 ///|
-pub struct Router {
-  dispatch : async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
-}
-
-///|
-pub async fn Router::dispatch(
-  self : Router,
-  request : @http.Request,
-  body : &@io.Reader,
-  conn : @http.ServerConnection,
-) -> Unit {
-  (self.dispatch)(request, body, conn)
-}
+pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 ///|
 pub fn[
@@ -125,170 +113,172 @@ pub fn[
   h9 : H9,
   h10 : H10,
 ) -> Router {
-  Router::{
-    dispatch: async fn(req, body_stream, conn) {
-      let path = strip_request_query(req.path)
-      if false {
-        ()
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/dictionary/int32", path) {
-        ignore(body_stream)
-        h0.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/dictionary/int32", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_2_body : Record = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h0.put(p_2_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/dictionary/int64", path) {
-        ignore(body_stream)
-        h1.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/dictionary/int64", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_4_body : Record = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h1.put(p_4_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/dictionary/model", path) {
-        ignore(body_stream)
-        h2.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/dictionary/model", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_6_body : Record = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h2.put(p_6_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/dictionary/string", path) {
-        ignore(body_stream)
-        h3.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/dictionary/string", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_8_body : Record = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h3.put(p_8_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/dictionary/boolean", path) {
-        ignore(body_stream)
-        h4.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/dictionary/boolean", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_10_body : Record = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h4.put(p_10_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/dictionary/float32", path) {
-        ignore(body_stream)
-        h5.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/dictionary/float32", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_12_body : Record = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h5.put(p_12_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/dictionary/unknown", path) {
-        ignore(body_stream)
-        h6.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/dictionary/unknown", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_14_body : Record = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h6.put(p_14_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/dictionary/datetime", path) {
-        ignore(body_stream)
-        h7.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/dictionary/datetime", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_16_body : Record = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h7.put(p_16_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/dictionary/duration", path) {
-        ignore(body_stream)
-        h8.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/dictionary/duration", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_18_body : Record = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h8.put(p_18_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/dictionary/nullable-float", path) {
-        ignore(body_stream)
-        h9.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/dictionary/nullable-float", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_20_body : Record = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h9.put(p_20_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/dictionary/model/recursive", path) {
-        ignore(body_stream)
-        h10.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/dictionary/model/recursive", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_22_body : Record = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h10.put(p_22_body)
-        conn.send_response(204, "No Content")
-      } else {
-        conn.send_response(404, "NotFound")
-        conn.write("not found")
+  async fn(
+    req : @http.Request,
+    body_stream : &@io.Reader,
+    conn : @http.ServerConnection,
+  ) {
+    let path = strip_request_query(req.path)
+    if false {
+      ()
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/dictionary/int32", path) {
+      ignore(body_stream)
+      h0.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/dictionary/int32", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_2_body : Record = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
       }
-    },
+      h0.put(p_2_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/dictionary/int64", path) {
+      ignore(body_stream)
+      h1.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/dictionary/int64", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_4_body : Record = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h1.put(p_4_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/dictionary/model", path) {
+      ignore(body_stream)
+      h2.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/dictionary/model", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_6_body : Record = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h2.put(p_6_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/dictionary/string", path) {
+      ignore(body_stream)
+      h3.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/dictionary/string", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_8_body : Record = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h3.put(p_8_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/dictionary/boolean", path) {
+      ignore(body_stream)
+      h4.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/dictionary/boolean", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_10_body : Record = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h4.put(p_10_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/dictionary/float32", path) {
+      ignore(body_stream)
+      h5.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/dictionary/float32", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_12_body : Record = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h5.put(p_12_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/dictionary/unknown", path) {
+      ignore(body_stream)
+      h6.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/dictionary/unknown", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_14_body : Record = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h6.put(p_14_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/dictionary/datetime", path) {
+      ignore(body_stream)
+      h7.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/dictionary/datetime", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_16_body : Record = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h7.put(p_16_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/dictionary/duration", path) {
+      ignore(body_stream)
+      h8.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/dictionary/duration", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_18_body : Record = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h8.put(p_18_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/dictionary/nullable-float", path) {
+      ignore(body_stream)
+      h9.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/dictionary/nullable-float", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_20_body : Record = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h9.put(p_20_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/dictionary/model/recursive", path) {
+      ignore(body_stream)
+      h10.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/dictionary/model/recursive", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_22_body : Record = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h10.put(p_22_body)
+      conn.send_response(204, "No Content")
+    } else {
+      conn.send_response(404, "NotFound")
+      conn.write("not found")
+    }
   }
 }
 

@@ -22,9 +22,7 @@ async test "type/array" {
     nullable_int32_handler, nullable_model_handler, nullable_string_handler, nullable_boolean_handler,
   )
   @async.with_task_group(fn(group) {
-    let base_url = @server.start_server(group, fn(req, body, conn) {
-      router.dispatch(req, body, conn)
-    })
+    let base_url = @server.start_server(group, router)
     // Skip int64 value scenarios (BigInt not fully supported)
     let status = @server.run_scenario("type/array/!(int64value)*/*", base_url)
     assert_true(status is @server.Status::Pass)

@@ -5,9 +5,7 @@ async test "type/enum/extensible" {
   let string_handler = ExtensibleStringHandlerImpl::{  }
   let router = @type_enum_extensible.create_router(string_handler)
   @async.with_task_group(fn(group) {
-    let base_url = @server.start_server(group, fn(req, body, conn) {
-      router.dispatch(req, body, conn)
-    })
+    let base_url = @server.start_server(group, router)
     let status = @server.run_scenario("type/enum/extensible/**/*", base_url)
     assert_true(status is @server.Status::Pass)
   })

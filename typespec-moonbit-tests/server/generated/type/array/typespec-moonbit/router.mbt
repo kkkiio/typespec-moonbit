@@ -106,19 +106,7 @@ pub(open) trait NullableBooleanValueHandler {
 }
 
 ///|
-pub struct Router {
-  dispatch : async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
-}
-
-///|
-pub async fn Router::dispatch(
-  self : Router,
-  request : @http.Request,
-  body : &@io.Reader,
-  conn : @http.ServerConnection,
-) -> Unit {
-  (self.dispatch)(request, body, conn)
-}
+pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 ///|
 pub fn[
@@ -152,212 +140,214 @@ pub fn[
   h12 : H12,
   h13 : H13,
 ) -> Router {
-  Router::{
-    dispatch: async fn(req, body_stream, conn) {
-      let path = strip_request_query(req.path)
-      if false {
-        ()
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/array/int32", path) {
-        ignore(body_stream)
-        h0.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/array/int32", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_2_body : Array = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h0.put(p_2_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/array/int64", path) {
-        ignore(body_stream)
-        h1.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/array/int64", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_4_body : Array = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h1.put(p_4_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/array/model", path) {
-        ignore(body_stream)
-        h2.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/array/model", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_6_body : Array = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h2.put(p_6_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/array/string", path) {
-        ignore(body_stream)
-        h3.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/array/string", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_8_body : Array = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h3.put(p_8_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/array/boolean", path) {
-        ignore(body_stream)
-        h4.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/array/boolean", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_10_body : Array = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h4.put(p_10_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/array/float32", path) {
-        ignore(body_stream)
-        h5.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/array/float32", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_12_body : Array = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h5.put(p_12_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/array/unknown", path) {
-        ignore(body_stream)
-        h6.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/array/unknown", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_14_body : Array = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h6.put(p_14_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/array/datetime", path) {
-        ignore(body_stream)
-        h7.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/array/datetime", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_16_body : Array = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h7.put(p_16_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/array/duration", path) {
-        ignore(body_stream)
-        h8.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/array/duration", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_18_body : Array = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h8.put(p_18_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/array/nullable-float", path) {
-        ignore(body_stream)
-        h9.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/array/nullable-float", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_20_body : Array = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h9.put(p_20_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/array/nullable-int32", path) {
-        ignore(body_stream)
-        h10.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/array/nullable-int32", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_22_body : Array = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h10.put(p_22_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/array/nullable-model", path) {
-        ignore(body_stream)
-        h11.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/array/nullable-model", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_24_body : Array = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h11.put(p_24_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/array/nullable-string", path) {
-        ignore(body_stream)
-        h12.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/array/nullable-string", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_26_body : Array = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h12.put(p_26_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/array/nullable-boolean", path) {
-        ignore(body_stream)
-        h13.get()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/array/nullable-boolean", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_28_body : Array = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h13.put(p_28_body)
-        conn.send_response(204, "No Content")
-      } else {
-        conn.send_response(404, "NotFound")
-        conn.write("not found")
+  async fn(
+    req : @http.Request,
+    body_stream : &@io.Reader,
+    conn : @http.ServerConnection,
+  ) {
+    let path = strip_request_query(req.path)
+    if false {
+      ()
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/array/int32", path) {
+      ignore(body_stream)
+      h0.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/array/int32", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_2_body : Array = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
       }
-    },
+      h0.put(p_2_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/array/int64", path) {
+      ignore(body_stream)
+      h1.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/array/int64", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_4_body : Array = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h1.put(p_4_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/array/model", path) {
+      ignore(body_stream)
+      h2.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/array/model", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_6_body : Array = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h2.put(p_6_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/array/string", path) {
+      ignore(body_stream)
+      h3.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/array/string", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_8_body : Array = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h3.put(p_8_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/array/boolean", path) {
+      ignore(body_stream)
+      h4.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/array/boolean", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_10_body : Array = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h4.put(p_10_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/array/float32", path) {
+      ignore(body_stream)
+      h5.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/array/float32", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_12_body : Array = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h5.put(p_12_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/array/unknown", path) {
+      ignore(body_stream)
+      h6.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/array/unknown", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_14_body : Array = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h6.put(p_14_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/array/datetime", path) {
+      ignore(body_stream)
+      h7.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/array/datetime", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_16_body : Array = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h7.put(p_16_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/array/duration", path) {
+      ignore(body_stream)
+      h8.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/array/duration", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_18_body : Array = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h8.put(p_18_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/array/nullable-float", path) {
+      ignore(body_stream)
+      h9.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/array/nullable-float", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_20_body : Array = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h9.put(p_20_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/array/nullable-int32", path) {
+      ignore(body_stream)
+      h10.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/array/nullable-int32", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_22_body : Array = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h10.put(p_22_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/array/nullable-model", path) {
+      ignore(body_stream)
+      h11.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/array/nullable-model", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_24_body : Array = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h11.put(p_24_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/array/nullable-string", path) {
+      ignore(body_stream)
+      h12.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/array/nullable-string", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_26_body : Array = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h12.put(p_26_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/array/nullable-boolean", path) {
+      ignore(body_stream)
+      h13.get()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/array/nullable-boolean", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_28_body : Array = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h13.put(p_28_body)
+      conn.send_response(204, "No Content")
+    } else {
+      conn.send_response(404, "NotFound")
+      conn.write("not found")
+    }
   }
 }
 

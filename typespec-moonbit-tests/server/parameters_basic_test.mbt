@@ -4,9 +4,7 @@ async test "parameters/basic" {
   let implicit = ParamBasicImplicit::{  }
   let router = @parameters_basic.create_router(explicit, implicit)
   @async.with_task_group(fn(group) {
-    let base_url = @server.start_server(group, fn(req, body, conn) {
-      router.dispatch(req, body, conn)
-    })
+    let base_url = @server.start_server(group, router)
     let status = @server.run_scenario("parameters/basic/**/*", base_url)
     assert_true(status is @server.Status::Pass)
   })

@@ -5,9 +5,7 @@ async test "type/model/inheritance/recursive" {
   let handler = RecursiveHandlerImpl::{  }
   let router = @type_model_inheritance_recursive.create_router(handler)
   @async.with_task_group(fn(group) {
-    let base_url = @server.start_server(group, fn(req, body, conn) {
-      router.dispatch(req, body, conn)
-    })
+    let base_url = @server.start_server(group, router)
     let status = @server.run_scenario(
       "type/model/inheritance/recursive/**/*", base_url,
     )

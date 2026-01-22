@@ -25,55 +25,45 @@ pub(open) trait EmptyHandler {
 }
 
 ///|
-pub struct Router {
-  dispatch : async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
-}
-
-///|
-pub async fn Router::dispatch(
-  self : Router,
-  request : @http.Request,
-  body : &@io.Reader,
-  conn : @http.ServerConnection,
-) -> Unit {
-  (self.dispatch)(request, body, conn)
-}
+pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 ///|
 pub fn[H0 : EmptyHandler] create_router(h0 : H0) -> Router {
-  Router::{
-    dispatch: async fn(req, body_stream, conn) {
-      let path = strip_request_query(req.path)
-      if false {
-        ()
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/model/empty/alone", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_1_body : EmptyInput = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h0.put_empty(p_1_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/model/empty/alone", path) {
-        ignore(body_stream)
-        h0.get_empty()
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Post &&
-        match_path_template("/type/model/empty/round-trip", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_3_body : EmptyInputOutput = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h0.post_round_trip_empty(p_3_body)
-        conn.send_response(204, "No Content")
-      } else {
-        conn.send_response(404, "NotFound")
-        conn.write("not found")
+  async fn(
+    req : @http.Request,
+    body_stream : &@io.Reader,
+    conn : @http.ServerConnection,
+  ) {
+    let path = strip_request_query(req.path)
+    if false {
+      ()
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/model/empty/alone", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_1_body : EmptyInput = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
       }
-    },
+      h0.put_empty(p_1_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/model/empty/alone", path) {
+      ignore(body_stream)
+      h0.get_empty()
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Post &&
+      match_path_template("/type/model/empty/round-trip", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_3_body : EmptyInputOutput = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
+      }
+      h0.post_round_trip_empty(p_3_body)
+      conn.send_response(204, "No Content")
+    } else {
+      conn.send_response(404, "NotFound")
+      conn.write("not found")
+    }
   }
 }
 

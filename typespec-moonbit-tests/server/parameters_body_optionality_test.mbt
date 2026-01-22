@@ -8,9 +8,7 @@ async test "parameters/body-optionality" {
     body_optionality_handler, optional_explicit_handler,
   )
   @async.with_task_group(fn(group) {
-    let base_url = @server.start_server(group, fn(req, body, conn) {
-      router.dispatch(req, body, conn)
-    })
+    let base_url = @server.start_server(group, router)
     // Skipping optional explicit scenarios: https://github.com/microsoft/typespec/issues/6561
     let status = @server.run_scenario(
       "parameters/bodyoptionality/**/!(optionalexplicit)*", base_url,

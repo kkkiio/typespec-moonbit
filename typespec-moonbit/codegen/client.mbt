@@ -26,7 +26,7 @@ fn emit_client_moon_pkg_json() -> String {
 fn emit_client_readme(crate_ : @codemodel.Crate) -> String {
   let buf = StringBuilder::new(size_hint=64)
   buf.write_string("# ")
-  buf.write_string(crate_.name())
+  buf.write_string(crate_.name)
   buf.write_string("\n\n")
   buf.write_string("由 TypeSpec 生成的 MoonBit 代码。\n")
   buf.to_string()
@@ -36,7 +36,7 @@ fn emit_client_readme(crate_ : @codemodel.Crate) -> String {
 fn emit_client_source(crate_ : @codemodel.Crate) -> String {
   let buf = StringBuilder::new(size_hint=256)
   buf.write_string(uri_utils_tmpl)
-  let clients = crate_.clients()
+  let clients = crate_.clients
   if clients.length() == 0 {
     buf.write_string("// No clients found in CodeModel.\n")
   } else {
@@ -49,7 +49,7 @@ fn emit_client_source(crate_ : @codemodel.Crate) -> String {
 
 ///|
 fn emit_client(buf : StringBuilder, client : @codemodel.Client) -> Unit {
-  let type_name = make_client_type_name(client.name())
+  let type_name = make_client_type_name(client.name)
   buf.write_string("///|\n")
   buf.write_string("/// ")
   buf.write_string(type_name)
@@ -70,7 +70,7 @@ fn emit_client(buf : StringBuilder, client : @codemodel.Client) -> Unit {
   buf.write_string(" {\n")
   buf.write_string("  { base_url, }\n")
   buf.write_string("}\n")
-  for op in client.methods() {
+  for op in client.methods {
     emit_method(buf, type_name, op)
   }
   buf.write_string("\n")
@@ -82,12 +82,12 @@ fn emit_method(
   type_name : String,
   op : @codemodel.Method,
 ) -> Unit {
-  let fn_name = make_method_name(op.http_method(), op.path(), op.name())
-  let path = op.path()
-  let template = parse_uri_template(path, op.name())
+  let fn_name = make_method_name(op.http_method, op.path, op.name)
+  let path = op.path
+  let template = parse_uri_template(path, op.name)
   buf.write_string("///|\n")
   buf.write_string("/// 调用 ")
-  buf.write_string(op.http_method())
+  buf.write_string(op.http_method)
   buf.write_string(" ")
   buf.write_string(path)
   buf.write_string("。\n")
@@ -148,7 +148,7 @@ fn emit_method(
     buf.write_string("  let path = __tsmb_encode_request_target(path)\n")
   }
   buf.write_string("  client.")
-  buf.write_string(op.http_method().to_lower())
+  buf.write_string(op.http_method.to_lower())
   if template.vars().length() == 0 {
     buf.write_string("(\"")
     buf.write_string(path)

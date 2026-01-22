@@ -97,21 +97,27 @@ pub async fn Adapter::tcgc_to_crate(self : Adapter) -> @codemodel.Crate {
       for op in ops {
         methods.push(build_method(op, server_base_path, processed_models))
       }
-      clients.push(@codemodel.Client::new(name, methods))
+      clients.push(@codemodel.Client::{ name, methods })
     }
   }
   let resolved_clients = if clients.length() == 0 {
     let methods = Array::new(capacity=1)
-    methods.push(@codemodel.Method::new("placeholder", "/", "GET", 200, []))
-    [@codemodel.Client::new(self.service_name(), methods)]
+    methods.push(@codemodel.Method::{
+      name: "placeholder",
+      path: "/",
+      http_method: "GET",
+      status_code: 200,
+      parameters: [],
+    })
+    [@codemodel.Client::{ name: self.service_name(), methods }]
   } else {
     clients
   }
-  @codemodel.Crate::new(
-    self.options.package_name(),
-    self.options.package_version(),
-    resolved_clients,
-  )
+  {
+    name: self.options.package_name(),
+    version: self.options.package_version(),
+    clients: resolved_clients,
+  }
 }
 
 ///|
@@ -147,7 +153,7 @@ fn build_method(
   }
   let status_code = try_get_default_status_code(op).unwrap_or(200)
   let params = extract_parameters(op, processed_models)
-  @codemodel.Method::new(op_name, path, verb, status_code, params)
+  { name: op_name, path, http_method: verb, status_code, parameters: params }
 }
 
 ///|

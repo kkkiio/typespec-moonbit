@@ -6,9 +6,7 @@ async test "parameters/spread" {
   let model_handler = SpreadModelHandlerImpl::{  }
   let router = @parameters_spread.create_router(alias_handler, model_handler)
   @async.with_task_group(fn(group) {
-    let base_url = @server.start_server(group, fn(req, body, conn) {
-      router.dispatch(req, body, conn)
-    })
+    let base_url = @server.start_server(group, router)
     let status = @server.run_scenario("parameters/spread/**/*", base_url)
     assert_true(status is @server.Status::Pass)
   })

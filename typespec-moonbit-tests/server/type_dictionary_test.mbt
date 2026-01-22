@@ -19,9 +19,7 @@ async test "type/dictionary" {
     recursive_model_handler,
   )
   @async.with_task_group(fn(group) {
-    let base_url = @server.start_server(group, fn(req, body, conn) {
-      router.dispatch(req, body, conn)
-    })
+    let base_url = @server.start_server(group, router)
     // Skip int64 value scenarios
     let status = @server.run_scenario(
       "type/dictionary/!(int64value)*/*", base_url,

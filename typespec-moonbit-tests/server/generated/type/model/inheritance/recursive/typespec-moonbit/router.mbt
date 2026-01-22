@@ -12,46 +12,36 @@ pub(open) trait RecursiveHandler {
 }
 
 ///|
-pub struct Router {
-  dispatch : async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
-}
-
-///|
-pub async fn Router::dispatch(
-  self : Router,
-  request : @http.Request,
-  body : &@io.Reader,
-  conn : @http.ServerConnection,
-) -> Unit {
-  (self.dispatch)(request, body, conn)
-}
+pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 ///|
 pub fn[H0 : RecursiveHandler] create_router(h0 : H0) -> Router {
-  Router::{
-    dispatch: async fn(req, body_stream, conn) {
-      let path = strip_request_query(req.path)
-      if false {
-        ()
-      } else if req.meth == @http.Put &&
-        match_path_template("/type/model/inheritance/recursive", path) {
-        let body_bytes = body_stream.read_all()
-        let body_str = body_bytes.text()
-        let p_1_body : Extension = @json.from_json(@json.parse(body_str)) catch {
-          _ => @json.from_json(null)
-        }
-        h0.put(p_1_body)
-        conn.send_response(204, "No Content")
-      } else if req.meth == @http.Get &&
-        match_path_template("/type/model/inheritance/recursive", path) {
-        ignore(body_stream)
-        h0.get()
-        conn.send_response(204, "No Content")
-      } else {
-        conn.send_response(404, "NotFound")
-        conn.write("not found")
+  async fn(
+    req : @http.Request,
+    body_stream : &@io.Reader,
+    conn : @http.ServerConnection,
+  ) {
+    let path = strip_request_query(req.path)
+    if false {
+      ()
+    } else if req.meth == @http.Put &&
+      match_path_template("/type/model/inheritance/recursive", path) {
+      let body_bytes = body_stream.read_all()
+      let body_str = body_bytes.text()
+      let p_1_body : Extension = @json.from_json(@json.parse(body_str)) catch {
+        _ => @json.from_json(null)
       }
-    },
+      h0.put(p_1_body)
+      conn.send_response(204, "No Content")
+    } else if req.meth == @http.Get &&
+      match_path_template("/type/model/inheritance/recursive", path) {
+      ignore(body_stream)
+      h0.get()
+      conn.send_response(204, "No Content")
+    } else {
+      conn.send_response(404, "NotFound")
+      conn.write("not found")
+    }
   }
 }
 
