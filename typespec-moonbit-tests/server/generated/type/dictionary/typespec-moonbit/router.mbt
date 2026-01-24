@@ -1,87 +1,132 @@
 ///|
-/// Model Record
-pub(all) struct Record {} derive (
-  Show,
-  Default,
-  ToJson,
-  @json.FromJson(rename_fields="camelCase"),
-)
+/// Nullable helper used for `T | null`.
+pub(all) struct Nullable[T] {
+  value : T?
+} derive(Show, Default)
+
+///|
+pub fn[T] Nullable::some(v : T) -> Nullable[T] {
+  { value: Some(v) }
+}
+
+///|
+pub fn[T] Nullable::none() -> Nullable[T] {
+  { value: None }
+}
+
+///|
+pub impl[T : ToJson] ToJson for Nullable[T] with to_json(self : Nullable[T]) -> Json {
+  match self.value {
+    Some(v) => v.to_json()
+    None => Json::null()
+  }
+}
+
+///|
+pub impl[T : @json.FromJson] @json.FromJson for Nullable[T] with from_json(
+  j : Json,
+  path : @json.JsonPath,
+) -> Nullable[T] raise @json.JsonDecodeError {
+  if j == Json::null() {
+    { value: None }
+  } else {
+    { value: Some(@json.from_json(j, path~)) }
+  }
+}
+
+///|
+/// Model InnerModel
+pub(all) struct InnerModel {
+  property : String
+  children : Map[String, InnerModel]?
+} derive(Show, Default, @json.FromJson(rename_fields="camelCase"))
+
+///|
+pub impl ToJson for InnerModel with to_json(self : InnerModel) -> Json {
+  let m : Map[String, Json] = Map::new()
+  m.set("property", self.property.to_json())
+  match self.children {
+    Some(v) => m.set("children", v.to_json())
+    None => ()
+  }
+  Json::object(m)
+}
 
 ///|
 /// Traits for operation handlers
 pub(open) trait Int32ValueHandler {
-  async get(Self) -> Record
-  async put(Self, body : Record) -> Unit
+  async get(Self) -> Map[String, Int]
+  async put(Self, body : Map[String, Int]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait Int64ValueHandler {
-  async get(Self) -> Record
-  async put(Self, body : Record) -> Unit
+  async get(Self) -> Map[String, Int64]
+  async put(Self, body : Map[String, Int64]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait ModelValueHandler {
-  async get(Self) -> Record
-  async put(Self, body : Record) -> Unit
+  async get(Self) -> Map[String, InnerModel]
+  async put(Self, body : Map[String, InnerModel]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait StringValueHandler {
-  async get(Self) -> Record
-  async put(Self, body : Record) -> Unit
+  async get(Self) -> Map[String, String]
+  async put(Self, body : Map[String, String]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait BooleanValueHandler {
-  async get(Self) -> Record
-  async put(Self, body : Record) -> Unit
+  async get(Self) -> Map[String, Bool]
+  async put(Self, body : Map[String, Bool]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait Float32ValueHandler {
-  async get(Self) -> Record
-  async put(Self, body : Record) -> Unit
+  async get(Self) -> Map[String, Double]
+  async put(Self, body : Map[String, Double]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait UnknownValueHandler {
-  async get(Self) -> Record
-  async put(Self, body : Record) -> Unit
+  async get(Self) -> Map[String, Json]
+  async put(Self, body : Map[String, Json]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait DatetimeValueHandler {
-  async get(Self) -> Record
-  async put(Self, body : Record) -> Unit
+  async get(Self) -> Map[String, String]
+  async put(Self, body : Map[String, String]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait DurationValueHandler {
-  async get(Self) -> Record
-  async put(Self, body : Record) -> Unit
+  async get(Self) -> Map[String, String]
+  async put(Self, body : Map[String, String]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait NullableFloatValueHandler {
-  async get(Self) -> Record
-  async put(Self, body : Record) -> Unit
+  async get(Self) -> Map[String, Nullable[Double]]
+  async put(Self, body : Map[String, Nullable[Double]]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait RecursiveModelValueHandler {
-  async get(Self) -> Record
-  async put(Self, body : Record) -> Unit
+  async get(Self) -> Map[String, InnerModel]
+  async put(Self, body : Map[String, InnerModel]) -> Unit
 }
 
 ///|
@@ -133,7 +178,7 @@ pub fn[
       match_path_template("/type/dictionary/int32", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_2_body : Record = @json.from_json(@json.parse(body_str)) catch {
+      let p_2_body : Map[String, Int] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
       h0.put(p_2_body)
@@ -151,7 +196,7 @@ pub fn[
       match_path_template("/type/dictionary/int64", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_4_body : Record = @json.from_json(@json.parse(body_str)) catch {
+      let p_4_body : Map[String, Int64] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
       h1.put(p_4_body)
@@ -169,7 +214,9 @@ pub fn[
       match_path_template("/type/dictionary/model", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_6_body : Record = @json.from_json(@json.parse(body_str)) catch {
+      let p_6_body : Map[String, InnerModel] = @json.from_json(
+        @json.parse(body_str),
+      ) catch {
         _ => @json.from_json(null)
       }
       h2.put(p_6_body)
@@ -187,7 +234,9 @@ pub fn[
       match_path_template("/type/dictionary/string", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_8_body : Record = @json.from_json(@json.parse(body_str)) catch {
+      let p_8_body : Map[String, String] = @json.from_json(
+        @json.parse(body_str),
+      ) catch {
         _ => @json.from_json(null)
       }
       h3.put(p_8_body)
@@ -205,7 +254,7 @@ pub fn[
       match_path_template("/type/dictionary/boolean", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_10_body : Record = @json.from_json(@json.parse(body_str)) catch {
+      let p_10_body : Map[String, Bool] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
       h4.put(p_10_body)
@@ -223,7 +272,9 @@ pub fn[
       match_path_template("/type/dictionary/float32", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_12_body : Record = @json.from_json(@json.parse(body_str)) catch {
+      let p_12_body : Map[String, Double] = @json.from_json(
+        @json.parse(body_str),
+      ) catch {
         _ => @json.from_json(null)
       }
       h5.put(p_12_body)
@@ -241,7 +292,7 @@ pub fn[
       match_path_template("/type/dictionary/unknown", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_14_body : Record = @json.from_json(@json.parse(body_str)) catch {
+      let p_14_body : Map[String, Json] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
       h6.put(p_14_body)
@@ -259,7 +310,9 @@ pub fn[
       match_path_template("/type/dictionary/datetime", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_16_body : Record = @json.from_json(@json.parse(body_str)) catch {
+      let p_16_body : Map[String, String] = @json.from_json(
+        @json.parse(body_str),
+      ) catch {
         _ => @json.from_json(null)
       }
       h7.put(p_16_body)
@@ -277,7 +330,9 @@ pub fn[
       match_path_template("/type/dictionary/duration", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_18_body : Record = @json.from_json(@json.parse(body_str)) catch {
+      let p_18_body : Map[String, String] = @json.from_json(
+        @json.parse(body_str),
+      ) catch {
         _ => @json.from_json(null)
       }
       h8.put(p_18_body)
@@ -295,7 +350,9 @@ pub fn[
       match_path_template("/type/dictionary/nullable-float", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_20_body : Record = @json.from_json(@json.parse(body_str)) catch {
+      let p_20_body : Map[String, Nullable[Double]] = @json.from_json(
+        @json.parse(body_str),
+      ) catch {
         _ => @json.from_json(null)
       }
       h9.put(p_20_body)
@@ -313,7 +370,9 @@ pub fn[
       match_path_template("/type/dictionary/model/recursive", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_22_body : Record = @json.from_json(@json.parse(body_str)) catch {
+      let p_22_body : Map[String, InnerModel] = @json.from_json(
+        @json.parse(body_str),
+      ) catch {
         _ => @json.from_json(null)
       }
       h10.put(p_22_body)

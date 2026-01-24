@@ -29,6 +29,16 @@ pub impl Show for BodyModel
 pub impl ToJson for BodyModel
 pub impl @json.FromJson for BodyModel
 
+pub(all) struct Nullable[T] {
+  value : T?
+}
+pub fn[T] Nullable::none() -> Self[T]
+pub fn[T] Nullable::some(T) -> Self[T]
+pub impl[T : Default] Default for Nullable[T]
+pub impl[T : Show] Show for Nullable[T]
+pub impl[T : ToJson] ToJson for Nullable[T]
+pub impl[T : @json.FromJson] @json.FromJson for Nullable[T]
+
 // Type aliases
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 

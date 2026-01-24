@@ -6,14 +6,18 @@ pub(all) enum TypeRef {
   Int64
   Float64
   Bool
+  Json
   Model(Model)
   Array(TypeRef)
+  Record(TypeRef)
+  Nullable(TypeRef)
 }
 
 ///|
 pub(all) struct ModelField {
   name : String
   type_ : TypeRef
+  optional : Bool
 }
 
 ///|

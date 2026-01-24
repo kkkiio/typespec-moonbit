@@ -13,6 +13,16 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(H0) -> async (@http.Request, 
 // Errors
 
 // Types and methods
+pub(all) struct Nullable[T] {
+  value : T?
+}
+pub fn[T] Nullable::none() -> Self[T]
+pub fn[T] Nullable::some(T) -> Self[T]
+pub impl[T : Default] Default for Nullable[T]
+pub impl[T : Show] Show for Nullable[T]
+pub impl[T : ToJson] ToJson for Nullable[T]
+pub impl[T : @json.FromJson] @json.FromJson for Nullable[T]
+
 pub(all) struct Siamese {
   name : String
   age : Int

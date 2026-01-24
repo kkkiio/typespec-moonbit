@@ -13,84 +13,96 @@ pub fn[H0 : Int32ValueHandler, H1 : Int64ValueHandler, H2 : ModelValueHandler, H
 // Errors
 
 // Types and methods
-pub(all) struct Array {
+pub(all) struct InnerModel {
+  property : String
+  children : Array[InnerModel]?
 }
-pub impl Default for Array
-pub impl Show for Array
-pub impl ToJson for Array
-pub impl @json.FromJson for Array
+pub impl Default for InnerModel
+pub impl Show for InnerModel
+pub impl ToJson for InnerModel
+pub impl @json.FromJson for InnerModel
+
+pub(all) struct Nullable[T] {
+  value : T?
+}
+pub fn[T] Nullable::none() -> Self[T]
+pub fn[T] Nullable::some(T) -> Self[T]
+pub impl[T : Default] Default for Nullable[T]
+pub impl[T : Show] Show for Nullable[T]
+pub impl[T : ToJson] ToJson for Nullable[T]
+pub impl[T : @json.FromJson] @json.FromJson for Nullable[T]
 
 // Type aliases
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 // Traits
 pub(open) trait BooleanValueHandler {
-  async get(Self) -> Array
-  async put(Self, Array) -> Unit
+  async get(Self) -> Array[Bool]
+  async put(Self, Array[Bool]) -> Unit
 }
 
 pub(open) trait DatetimeValueHandler {
-  async get(Self) -> Array
-  async put(Self, Array) -> Unit
+  async get(Self) -> Array[String]
+  async put(Self, Array[String]) -> Unit
 }
 
 pub(open) trait DurationValueHandler {
-  async get(Self) -> Array
-  async put(Self, Array) -> Unit
+  async get(Self) -> Array[String]
+  async put(Self, Array[String]) -> Unit
 }
 
 pub(open) trait Float32ValueHandler {
-  async get(Self) -> Array
-  async put(Self, Array) -> Unit
+  async get(Self) -> Array[Double]
+  async put(Self, Array[Double]) -> Unit
 }
 
 pub(open) trait Int32ValueHandler {
-  async get(Self) -> Array
-  async put(Self, Array) -> Unit
+  async get(Self) -> Array[Int]
+  async put(Self, Array[Int]) -> Unit
 }
 
 pub(open) trait Int64ValueHandler {
-  async get(Self) -> Array
-  async put(Self, Array) -> Unit
+  async get(Self) -> Array[Int64]
+  async put(Self, Array[Int64]) -> Unit
 }
 
 pub(open) trait ModelValueHandler {
-  async get(Self) -> Array
-  async put(Self, Array) -> Unit
+  async get(Self) -> Array[InnerModel]
+  async put(Self, Array[InnerModel]) -> Unit
 }
 
 pub(open) trait NullableBooleanValueHandler {
-  async get(Self) -> Array
-  async put(Self, Array) -> Unit
+  async get(Self) -> Array[Nullable[Bool]]
+  async put(Self, Array[Nullable[Bool]]) -> Unit
 }
 
 pub(open) trait NullableFloatValueHandler {
-  async get(Self) -> Array
-  async put(Self, Array) -> Unit
+  async get(Self) -> Array[Nullable[Double]]
+  async put(Self, Array[Nullable[Double]]) -> Unit
 }
 
 pub(open) trait NullableInt32ValueHandler {
-  async get(Self) -> Array
-  async put(Self, Array) -> Unit
+  async get(Self) -> Array[Nullable[Int]]
+  async put(Self, Array[Nullable[Int]]) -> Unit
 }
 
 pub(open) trait NullableModelValueHandler {
-  async get(Self) -> Array
-  async put(Self, Array) -> Unit
+  async get(Self) -> Array[Nullable[InnerModel]]
+  async put(Self, Array[Nullable[InnerModel]]) -> Unit
 }
 
 pub(open) trait NullableStringValueHandler {
-  async get(Self) -> Array
-  async put(Self, Array) -> Unit
+  async get(Self) -> Array[Nullable[String]]
+  async put(Self, Array[Nullable[String]]) -> Unit
 }
 
 pub(open) trait StringValueHandler {
-  async get(Self) -> Array
-  async put(Self, Array) -> Unit
+  async get(Self) -> Array[String]
+  async put(Self, Array[String]) -> Unit
 }
 
 pub(open) trait UnknownValueHandler {
-  async get(Self) -> Array
-  async put(Self, Array) -> Unit
+  async get(Self) -> Array[Json]
+  async put(Self, Array[Json]) -> Unit
 }
 

@@ -36,15 +36,21 @@ impl @type_dictionary.Int32ValueHandler for DictInt32ValueHandlerImpl with get(
   _self : DictInt32ValueHandlerImpl,
 ) {
   // Should return { k1: 1, k2: 2 }
-  @type_dictionary.Record::{  }
+  { "k1": 1, "k2": 2 }
 }
 
 ///|
 impl @type_dictionary.Int32ValueHandler for DictInt32ValueHandlerImpl with put(
   _self : DictInt32ValueHandlerImpl,
-  _body : @type_dictionary.Record,
+  body : Map[String, Int],
 ) {
-  // TODO: verify body == { k1: 1, k2: 2 }
+  guard body.length() == 2 else { fail("int32.put: body length should be 2") }
+  guard body.get("k1") == Some(1) else {
+    fail("int32.put: body.k1 should be 1")
+  }
+  guard body.get("k2") == Some(2) else {
+    fail("int32.put: body.k2 should be 2")
+  }
 }
 
 ///|
@@ -55,15 +61,21 @@ impl @type_dictionary.Int64ValueHandler for DictInt64ValueHandlerImpl with get(
   _self : DictInt64ValueHandlerImpl,
 ) {
   // Should return { k1: 0x7fffffffffffffff, k2: -0x7fffffffffffffff }
-  @type_dictionary.Record::{  }
+  { "k1": 0x7fffffffffffffffL, "k2": -0x7fffffffffffffffL }
 }
 
 ///|
 impl @type_dictionary.Int64ValueHandler for DictInt64ValueHandlerImpl with put(
   _self : DictInt64ValueHandlerImpl,
-  _body : @type_dictionary.Record,
+  body : Map[String, Int64],
 ) {
-  // TODO: verify body
+  guard body.length() == 2 else { fail("int64.put: body length should be 2") }
+  guard body.get("k1") == Some(0x7fffffffffffffffL) else {
+    fail("int64.put: body.k1 should be max int64")
+  }
+  guard body.get("k2") == Some(-0x7fffffffffffffffL) else {
+    fail("int64.put: body.k2 should be min int64")
+  }
 }
 
 ///|
@@ -74,15 +86,34 @@ impl @type_dictionary.ModelValueHandler for DictModelValueHandlerImpl with get(
   _self : DictModelValueHandlerImpl,
 ) {
   // Should return { k1: { property: "hello" }, k2: { property: "world" } }
-  @type_dictionary.Record::{  }
+  {
+    "k1": { property: "hello", children: None },
+    "k2": { property: "world", children: None },
+  }
 }
 
 ///|
 impl @type_dictionary.ModelValueHandler for DictModelValueHandlerImpl with put(
   _self : DictModelValueHandlerImpl,
-  _body : @type_dictionary.Record,
+  body : Map[String, @type_dictionary.InnerModel],
 ) {
-  // TODO: verify body
+  guard body.length() == 2 else { fail("model.put: body length should be 2") }
+  match body.get("k1") {
+    Some(v) => {
+      guard v.property == "hello" else {
+        fail("model.put: body.k1.property should be 'hello'")
+      }
+    }
+    None => fail("model.put: missing key k1")
+  }
+  match body.get("k2") {
+    Some(v) => {
+      guard v.property == "world" else {
+        fail("model.put: body.k2.property should be 'world'")
+      }
+    }
+    None => fail("model.put: missing key k2")
+  }
 }
 
 ///|
@@ -93,15 +124,21 @@ impl @type_dictionary.StringValueHandler for DictStringValueHandlerImpl with get
   _self : DictStringValueHandlerImpl,
 ) {
   // Should return { k1: "hello", k2: "" }
-  @type_dictionary.Record::{  }
+  { "k1": "hello", "k2": "" }
 }
 
 ///|
 impl @type_dictionary.StringValueHandler for DictStringValueHandlerImpl with put(
   _self : DictStringValueHandlerImpl,
-  _body : @type_dictionary.Record,
+  body : Map[String, String],
 ) {
-  // TODO: verify body == { k1: "hello", k2: "" }
+  guard body.length() == 2 else { fail("string.put: body length should be 2") }
+  guard body.get("k1") == Some("hello") else {
+    fail("string.put: body.k1 should be 'hello'")
+  }
+  guard body.get("k2") == Some("") else {
+    fail("string.put: body.k2 should be ''")
+  }
 }
 
 ///|
@@ -112,15 +149,21 @@ impl @type_dictionary.BooleanValueHandler for DictBooleanValueHandlerImpl with g
   _self : DictBooleanValueHandlerImpl,
 ) {
   // Should return { k1: true, k2: false }
-  @type_dictionary.Record::{  }
+  { "k1": true, "k2": false }
 }
 
 ///|
 impl @type_dictionary.BooleanValueHandler for DictBooleanValueHandlerImpl with put(
   _self : DictBooleanValueHandlerImpl,
-  _body : @type_dictionary.Record,
+  body : Map[String, Bool],
 ) {
-  // TODO: verify body == { k1: true, k2: false }
+  guard body.length() == 2 else { fail("boolean.put: body length should be 2") }
+  guard body.get("k1") == Some(true) else {
+    fail("boolean.put: body.k1 should be true")
+  }
+  guard body.get("k2") == Some(false) else {
+    fail("boolean.put: body.k2 should be false")
+  }
 }
 
 ///|
@@ -131,15 +174,18 @@ impl @type_dictionary.Float32ValueHandler for DictFloat32ValueHandlerImpl with g
   _self : DictFloat32ValueHandlerImpl,
 ) {
   // Should return { k1: 43.125 }
-  @type_dictionary.Record::{  }
+  { "k1": 43.125 }
 }
 
 ///|
 impl @type_dictionary.Float32ValueHandler for DictFloat32ValueHandlerImpl with put(
   _self : DictFloat32ValueHandlerImpl,
-  _body : @type_dictionary.Record,
+  body : Map[String, Double],
 ) {
-  // TODO: verify body
+  guard body.length() == 1 else { fail("float32.put: body length should be 1") }
+  guard body.get("k1") == Some(43.125) else {
+    fail("float32.put: body.k1 should be 43.125")
+  }
 }
 
 ///|
@@ -150,15 +196,43 @@ impl @type_dictionary.UnknownValueHandler for DictUnknownValueHandlerImpl with g
   _self : DictUnknownValueHandlerImpl,
 ) {
   // Should return { k1: 1, k2: "hello", k3: null }
-  @type_dictionary.Record::{  }
+  {
+    "k1": Json::number(1.0, repr="1"),
+    "k2": Json::string("hello"),
+    "k3": Json::null(),
+  }
 }
 
 ///|
 impl @type_dictionary.UnknownValueHandler for DictUnknownValueHandlerImpl with put(
   _self : DictUnknownValueHandlerImpl,
-  _body : @type_dictionary.Record,
+  body : Map[String, Json],
 ) {
-  // TODO: verify body
+  guard body.length() == 3 else { fail("unknown.put: body length should be 3") }
+  match body.get("k1") {
+    Some(v) => {
+      guard v.stringify() == "1" else {
+        fail("unknown.put: body.k1 should be 1")
+      }
+    }
+    None => fail("unknown.put: missing key k1")
+  }
+  match body.get("k2") {
+    Some(v) => {
+      guard v.stringify() == "\"hello\"" else {
+        fail("unknown.put: body.k2 should be 'hello'")
+      }
+    }
+    None => fail("unknown.put: missing key k2")
+  }
+  match body.get("k3") {
+    Some(v) => {
+      guard v.stringify() == "null" else {
+        fail("unknown.put: body.k3 should be null")
+      }
+    }
+    None => fail("unknown.put: missing key k3")
+  }
 }
 
 ///|
@@ -169,15 +243,20 @@ impl @type_dictionary.DatetimeValueHandler for DictDatetimeValueHandlerImpl with
   _self : DictDatetimeValueHandlerImpl,
 ) {
   // Should return { k1: Temporal.Instant.from("2022-08-26T18:38:00Z") }
-  @type_dictionary.Record::{  }
+  { "k1": "2022-08-26T18:38:00Z" }
 }
 
 ///|
 impl @type_dictionary.DatetimeValueHandler for DictDatetimeValueHandlerImpl with put(
   _self : DictDatetimeValueHandlerImpl,
-  _body : @type_dictionary.Record,
+  body : Map[String, String],
 ) {
-  // TODO: verify body
+  guard body.length() == 1 else {
+    fail("datetime.put: body length should be 1")
+  }
+  guard body.get("k1") == Some("2022-08-26T18:38:00Z") else {
+    fail("datetime.put: body.k1 should be '2022-08-26T18:38:00Z'")
+  }
 }
 
 ///|
@@ -188,15 +267,20 @@ impl @type_dictionary.DurationValueHandler for DictDurationValueHandlerImpl with
   _self : DictDurationValueHandlerImpl,
 ) {
   // Should return { k1: Temporal.Duration.from("P123DT22H14M12.011S") }
-  @type_dictionary.Record::{  }
+  { "k1": "P123DT22H14M12.011S" }
 }
 
 ///|
 impl @type_dictionary.DurationValueHandler for DictDurationValueHandlerImpl with put(
   _self : DictDurationValueHandlerImpl,
-  _body : @type_dictionary.Record,
+  body : Map[String, String],
 ) {
-  // TODO: verify body
+  guard body.length() == 1 else {
+    fail("duration.put: body length should be 1")
+  }
+  guard body.get("k1") == Some("P123DT22H14M12.011S") else {
+    fail("duration.put: body.k1 should be 'P123DT22H14M12.011S'")
+  }
 }
 
 ///|
@@ -207,15 +291,45 @@ impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandle
   _self : DictNullableFloatValueHandlerImpl,
 ) {
   // Should return { k1: 1.25, k2: 0.5, k3: null }
-  @type_dictionary.Record::{  }
+  {
+    "k1": @type_dictionary.Nullable::some(1.25),
+    "k2": @type_dictionary.Nullable::some(0.5),
+    "k3": @type_dictionary.Nullable::none(),
+  }
 }
 
 ///|
 impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandlerImpl with put(
   _self : DictNullableFloatValueHandlerImpl,
-  _body : @type_dictionary.Record,
+  body : Map[String, @type_dictionary.Nullable[Double]],
 ) {
-  // TODO: verify body
+  guard body.length() == 3 else {
+    fail("nullable-float.put: body length should be 3")
+  }
+  match body.get("k1") {
+    Some(v) => {
+      guard v.value == Some(1.25) else {
+        fail("nullable-float.put: body.k1 should be 1.25")
+      }
+    }
+    None => fail("nullable-float.put: missing key k1")
+  }
+  match body.get("k2") {
+    Some(v) => {
+      guard v.value == Some(0.5) else {
+        fail("nullable-float.put: body.k2 should be 0.5")
+      }
+    }
+    None => fail("nullable-float.put: missing key k2")
+  }
+  match body.get("k3") {
+    Some(v) => {
+      guard v.value is None else {
+        fail("nullable-float.put: body.k3 should be null")
+      }
+    }
+    None => fail("nullable-float.put: missing key k3")
+  }
 }
 
 ///|
@@ -235,13 +349,67 @@ impl @type_dictionary.RecursiveModelValueHandler for DictRecursiveModelValueHand
   //     },
   //   },
   // }
-  @type_dictionary.Record::{  }
+  let k1_children : Map[String, @type_dictionary.InnerModel] = Map::new()
+  let k2_1 : @type_dictionary.InnerModel = {
+    property: "inner world",
+    children: None,
+  }
+  let k2_children : Map[String, @type_dictionary.InnerModel] = { "k2.1": k2_1 }
+  {
+    "k1": { property: "hello", children: Some(k1_children) },
+    "k2": { property: "world", children: Some(k2_children) },
+  }
 }
 
 ///|
 impl @type_dictionary.RecursiveModelValueHandler for DictRecursiveModelValueHandlerImpl with put(
   _self : DictRecursiveModelValueHandlerImpl,
-  _body : @type_dictionary.Record,
+  body : Map[String, @type_dictionary.InnerModel],
 ) {
-  // TODO: verify body
+  guard body.length() == 2 else {
+    fail("recursive-model.put: body length should be 2")
+  }
+  match body.get("k1") {
+    Some(v) => {
+      guard v.property == "hello" else {
+        fail("recursive-model.put: body.k1.property should be 'hello'")
+      }
+      match v.children {
+        Some(children) => {
+          guard children.length() == 0 else {
+            fail("recursive-model.put: body.k1.children should be {}")
+          }
+        }
+        None => fail("recursive-model.put: body.k1.children should exist")
+      }
+    }
+    None => fail("recursive-model.put: missing key k1")
+  }
+  match body.get("k2") {
+    Some(v) => {
+      guard v.property == "world" else {
+        fail("recursive-model.put: body.k2.property should be 'world'")
+      }
+      match v.children {
+        Some(children) => {
+          guard children.length() == 1 else {
+            fail("recursive-model.put: body.k2.children length should be 1")
+          }
+          match children.get("k2.1") {
+            Some(inner) => {
+              guard inner.property == "inner world" else {
+                fail(
+                  "recursive-model.put: body.k2.children['k2.1'].property should be 'inner world'",
+                )
+              }
+            }
+            None =>
+              fail("recursive-model.put: missing key body.k2.children['k2.1']")
+          }
+        }
+        None => fail("recursive-model.put: body.k2.children should exist")
+      }
+    }
+    None => fail("recursive-model.put: missing key k2")
+  }
 }

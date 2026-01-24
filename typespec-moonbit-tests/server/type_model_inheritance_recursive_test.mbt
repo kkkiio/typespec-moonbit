@@ -20,24 +20,24 @@ struct RecursiveHandlerImpl {}
 impl @type_model_inheritance_recursive.RecursiveHandler for RecursiveHandlerImpl with get(
   _self : RecursiveHandlerImpl,
 ) {
-  // Should return:
-  // {
-  //   level: 0,
-  //   extension: [
-  //     {
-  //       level: 1,
-  //       extension: [
-  //         {
-  //           level: 2,
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       level: 1,
-  //     },
-  //   ],
-  // }
-  { level: 0, extension: @type_model_inheritance_recursive.Array::{  } }
+  let leaf : @type_model_inheritance_recursive.Extension = {
+    level: 2,
+    extension: None,
+  }
+  let inner = Array::new(capacity=1)
+  inner.push(leaf)
+  let child0 : @type_model_inheritance_recursive.Extension = {
+    level: 1,
+    extension: Some(inner),
+  }
+  let child1 : @type_model_inheritance_recursive.Extension = {
+    level: 1,
+    extension: None,
+  }
+  let top = Array::new(capacity=2)
+  top.push(child0)
+  top.push(child1)
+  { level: 0, extension: Some(top) }
 }
 
 ///|
@@ -63,4 +63,32 @@ impl @type_model_inheritance_recursive.RecursiveHandler for RecursiveHandlerImpl
   //   ],
   // })
   guard body.level == 0 else { fail("put: body.level should be 0") }
+  match body.extension {
+    None => fail("put: body.extension should exist")
+    Some(top) => {
+      guard top.length() == 2 else {
+        fail("put: body.extension length should be 2")
+      }
+      let c0 = top[0]
+      let c1 = top[1]
+      guard c0.level == 1 else { fail("put: child0.level should be 1") }
+      guard c1.level == 1 else { fail("put: child1.level should be 1") }
+      match c0.extension {
+        None => fail("put: child0.extension should exist")
+        Some(inner) => {
+          guard inner.length() == 1 else {
+            fail("put: child0.extension length should be 1")
+          }
+          let leaf = inner[0]
+          guard leaf.level == 2 else { fail("put: leaf.level should be 2") }
+          guard leaf.extension is None else {
+            fail("put: leaf.extension should be missing")
+          }
+        }
+      }
+      guard c1.extension is None else {
+        fail("put: child1.extension should be missing")
+      }
+    }
+  }
 }

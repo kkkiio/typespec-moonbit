@@ -1,11 +1,38 @@
 ///|
-/// Model Array
-pub(all) struct Array {} derive (
-  Show,
-  Default,
-  ToJson,
-  @json.FromJson(rename_fields="camelCase"),
-)
+/// Nullable helper used for `T | null`.
+pub(all) struct Nullable[T] {
+  value : T?
+} derive(Show, Default)
+
+///|
+pub fn[T] Nullable::some(v : T) -> Nullable[T] {
+  { value: Some(v) }
+}
+
+///|
+pub fn[T] Nullable::none() -> Nullable[T] {
+  { value: None }
+}
+
+///|
+pub impl[T : ToJson] ToJson for Nullable[T] with to_json(self : Nullable[T]) -> Json {
+  match self.value {
+    Some(v) => v.to_json()
+    None => Json::null()
+  }
+}
+
+///|
+pub impl[T : @json.FromJson] @json.FromJson for Nullable[T] with from_json(
+  j : Json,
+  path : @json.JsonPath,
+) -> Nullable[T] raise @json.JsonDecodeError {
+  if j == Json::null() {
+    { value: None }
+  } else {
+    { value: Some(@json.from_json(j, path~)) }
+  }
+}
 
 ///|
 /// Model BodyParameter
@@ -35,10 +62,26 @@ pub(all) struct AnonymousModel3 {
 /// Model AnonymousModel4
 pub(all) struct AnonymousModel4 {
   required_string : String
-  optional_int : Int
-  required_int_list : Array
-  optional_string_list : Array
-} derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
+  optional_int : Int?
+  required_int_list : Array[Int]
+  optional_string_list : Array[String]?
+} derive(Show, Default, @json.FromJson(rename_fields="camelCase"))
+
+///|
+pub impl ToJson for AnonymousModel4 with to_json(self : AnonymousModel4) -> Json {
+  let m : Map[String, Json] = Map::new()
+  m.set("requiredString", self.required_string.to_json())
+  match self.optional_int {
+    Some(v) => m.set("optionalInt", v.to_json())
+    None => ()
+  }
+  m.set("requiredIntList", self.required_int_list.to_json())
+  match self.optional_string_list {
+    Some(v) => m.set("optionalStringList", v.to_json())
+    None => ()
+  }
+  Json::object(m)
+}
 
 ///|
 /// Model AnonymousModel5

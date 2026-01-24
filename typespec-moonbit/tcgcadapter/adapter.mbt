@@ -238,7 +238,86 @@ fn resolve_type_ref(
   let kind_val = @ffi.get_value(prop, "kind")
   if @ffi.is_string(kind_val) {
     let kind = @ffi.cast_string(kind_val)
+    if kind == "Union" {
+      // Support nullable unions like `T | null`.
+      let variants_val = @ffi.get_value(prop, "variants")
+      if !@ffi.is_undefined(variants_val) && !variants_val.is_null() {
+        let variants = get_union_variants_as_array(variants_val)
+        let mut saw_null = false
+        let non_null_types = Array::new()
+        for v in variants {
+          let t = @ffi.get_value(v, "type")
+          if @ffi.is_undefined(t) || t.is_null() {
+            continue
+          }
+          let tk = @ffi.get_value(t, "kind")
+          if @ffi.is_string(tk) && @ffi.cast_string(tk) == "Intrinsic" {
+            let tn = @ffi.get_value(t, "name")
+            if @ffi.is_string(tn) && @ffi.cast_string(tn) == "null" {
+              saw_null = true
+              continue
+            }
+          }
+          non_null_types.push(t)
+        }
+        if saw_null && non_null_types.length() == 1 {
+          return Nullable(resolve_type_ref(non_null_types[0], processed_models))
+        }
+      }
+      return @codemodel.TypeRef::String
+    }
     if kind == "Model" {
+      // Array / Record types are represented as Models with an indexer.
+      // Prefer mapping them to `TypeRef::Array` / `TypeRef::Record` instead of
+      // generating an empty placeholder model like `Array {}` / `Record {}`.
+      let indexer_val = @ffi.get_value(prop, "indexer")
+      if !@ffi.is_undefined(indexer_val) && !indexer_val.is_null() {
+        // Distinguish arrays and dictionaries by indexer key type.
+        let mut is_array_indexer = false
+        let mut is_record_indexer = false
+        let key_val = @ffi.get_value(indexer_val, "key")
+        if !@ffi.is_undefined(key_val) && !key_val.is_null() {
+          let key_kind_val = @ffi.get_value(key_val, "kind")
+          let key_name_val = @ffi.get_value(key_val, "name")
+          if @ffi.is_string(key_kind_val) &&
+            @ffi.cast_string(key_kind_val) == "Scalar" &&
+            @ffi.is_string(key_name_val) {
+            let key_name = @ffi.cast_string(key_name_val)
+            if key_name == "string" {
+              is_record_indexer = true
+            }
+            if key_name == "integer" ||
+              key_name == "int32" ||
+              key_name == "int16" ||
+              key_name == "int8" {
+              is_array_indexer = true
+            }
+          }
+        }
+        if is_array_indexer || is_record_indexer {
+          // `indexer.value` is usually a ModelProperty whose `.type` is the element type.
+          let value_val = @ffi.get_value(indexer_val, "value")
+          if !@ffi.is_undefined(value_val) && !value_val.is_null() {
+            // In some cases, `indexer.value` is already the element type (e.g. Model/Union/Intrinsic).
+            let value_kind_val = @ffi.get_value(value_val, "kind")
+            if @ffi.is_string(value_kind_val) {
+              let elem = resolve_type_ref(value_val, processed_models)
+              return if is_array_indexer { Array(elem) } else { Record(elem) }
+            }
+            let value_type_val = @ffi.get_value(value_val, "type")
+            if !@ffi.is_undefined(value_type_val) && !value_type_val.is_null() {
+              let elem = resolve_type_ref(value_type_val, processed_models)
+              return if is_array_indexer { Array(elem) } else { Record(elem) }
+            }
+          }
+          // Some representations may expose `valueType` directly.
+          let value_type_val = @ffi.get_value(indexer_val, "valueType")
+          if !@ffi.is_undefined(value_type_val) && !value_type_val.is_null() {
+            let elem = resolve_type_ref(value_type_val, processed_models)
+            return if is_array_indexer { Array(elem) } else { Record(elem) }
+          }
+        }
+      }
       let name_val = @ffi.get_value(prop, "name")
       let mut name = if @ffi.is_string(name_val) {
         @ffi.cast_string(name_val)
@@ -274,11 +353,17 @@ fn resolve_type_ref(
         for p_item in props_array {
           let p_name : String = @ffi.cast_string(@ffi.get_value(p_item, "name"))
           let p_prop = @ffi.get_value(p_item, "prop")
+          let optional_val = @ffi.get_value(p_prop, "optional")
+          let optional = if @ffi.is_bool(optional_val) {
+            @ffi.cast_bool(optional_val)
+          } else {
+            false
+          }
           let p_type = resolve_type_ref(
             @ffi.get_value(p_prop, "type"),
             processed_models,
           )
-          fields.push({ name: p_name, type_: p_type })
+          fields.push({ name: p_name, type_: p_type, optional })
         }
       }
       return Model(model)
@@ -315,6 +400,17 @@ fn resolve_type_ref(
         return Float64
       }
     }
+    if kind == "Intrinsic" {
+      let name_val = @ffi.get_value(prop, "name")
+      let name = if @ffi.is_string(name_val) {
+        @ffi.cast_string(name_val)
+      } else {
+        ""
+      }
+      if name == "unknown" {
+        return Json
+      }
+    }
   }
   let type_sub = @ffi.get_value(prop, "type")
   if !@ffi.is_undefined(type_sub) {
@@ -338,6 +434,25 @@ extern "js" fn get_model_properties_as_array(
   #|       result.push({ name, prop: props[name] });
   #|     }
   #|   }
+  #|   return result;
+  #| }
+
+///|
+extern "js" fn get_union_variants_as_array(
+  variants : @ffi.JsValue,
+) -> Array[@ffi.JsValue] =
+  #| (variants) => {
+  #|   const result = [];
+  #|   if (!variants) return result;
+  #|   // In TypeSpec compiler, union.variants is usually a Map.
+  #|   if (variants.values) {
+  #|     for (const v of variants.values()) {
+  #|       result.push(v);
+  #|     }
+  #|     return result;
+  #|   }
+  #|   // Fallback: already an array-like.
+  #|   if (Array.isArray(variants)) return variants;
   #|   return result;
   #| }
 

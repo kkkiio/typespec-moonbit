@@ -37,15 +37,17 @@ impl @type_array.Int32ValueHandler for Int32ValueHandlerImpl with get(
   _self : Int32ValueHandlerImpl,
 ) {
   // Should return [1, 2]
-  @type_array.Array::{  }
+  [1, 2]
 }
 
 ///|
 impl @type_array.Int32ValueHandler for Int32ValueHandlerImpl with put(
   _self : Int32ValueHandlerImpl,
-  _body : @type_array.Array,
+  body : Array[Int],
 ) {
-  // TODO: verify body == [1, 2]
+  guard body.length() == 2 else { fail("int32.put: body length should be 2") }
+  guard body[0] == 1 else { fail("int32.put: body[0] should be 1") }
+  guard body[1] == 2 else { fail("int32.put: body[1] should be 2") }
 }
 
 ///|
@@ -56,15 +58,21 @@ impl @type_array.Int64ValueHandler for Int64ValueHandlerImpl with get(
   _self : Int64ValueHandlerImpl,
 ) {
   // Should return [0x7fffffffffffffff, -0x7fffffffffffffff]
-  @type_array.Array::{  }
+  [0x7fffffffffffffffL, -0x7fffffffffffffffL]
 }
 
 ///|
 impl @type_array.Int64ValueHandler for Int64ValueHandlerImpl with put(
   _self : Int64ValueHandlerImpl,
-  _body : @type_array.Array,
+  body : Array[Int64],
 ) {
-  // TODO: verify body
+  guard body.length() == 2 else { fail("int64.put: body length should be 2") }
+  guard body[0] == 0x7fffffffffffffffL else {
+    fail("int64.put: body[0] should be max int64")
+  }
+  guard body[1] == -0x7fffffffffffffffL else {
+    fail("int64.put: body[1] should be min int64")
+  }
 }
 
 ///|
@@ -75,15 +83,21 @@ impl @type_array.ModelValueHandler for ModelValueHandlerImpl with get(
   _self : ModelValueHandlerImpl,
 ) {
   // Should return [{ property: "hello" }, { property: "world" }]
-  @type_array.Array::{  }
+  [{ property: "hello", children: None }, { property: "world", children: None }]
 }
 
 ///|
 impl @type_array.ModelValueHandler for ModelValueHandlerImpl with put(
   _self : ModelValueHandlerImpl,
-  _body : @type_array.Array,
+  body : Array[@type_array.InnerModel],
 ) {
-  // TODO: verify body
+  guard body.length() == 2 else { fail("model.put: body length should be 2") }
+  guard body[0].property == "hello" else {
+    fail("model.put: body[0].property should be 'hello'")
+  }
+  guard body[1].property == "world" else {
+    fail("model.put: body[1].property should be 'world'")
+  }
 }
 
 ///|
@@ -94,15 +108,21 @@ impl @type_array.StringValueHandler for StringValueHandlerImpl with get(
   _self : StringValueHandlerImpl,
 ) {
   // Should return ["hello", ""]
-  @type_array.Array::{  }
+  ["hello", ""]
 }
 
 ///|
 impl @type_array.StringValueHandler for StringValueHandlerImpl with put(
   _self : StringValueHandlerImpl,
-  _body : @type_array.Array,
+  body : Array[String],
 ) {
-  // TODO: verify body == ["hello", ""]
+  guard body.length() == 2 else { fail("string.put: body length should be 2") }
+  guard body[0] == "hello" else {
+    fail("string.put: body[0] should be 'hello'")
+  }
+  guard body[1] == "" else {
+    fail("string.put: body[1] should be empty string")
+  }
 }
 
 ///|
@@ -113,15 +133,17 @@ impl @type_array.BooleanValueHandler for BooleanValueHandlerImpl with get(
   _self : BooleanValueHandlerImpl,
 ) {
   // Should return [true, false]
-  @type_array.Array::{  }
+  [true, false]
 }
 
 ///|
 impl @type_array.BooleanValueHandler for BooleanValueHandlerImpl with put(
   _self : BooleanValueHandlerImpl,
-  _body : @type_array.Array,
+  body : Array[Bool],
 ) {
-  // TODO: verify body == [true, false]
+  guard body.length() == 2 else { fail("boolean.put: body length should be 2") }
+  guard body[0] == true else { fail("boolean.put: body[0] should be true") }
+  guard body[1] == false else { fail("boolean.put: body[1] should be false") }
 }
 
 ///|
@@ -132,15 +154,16 @@ impl @type_array.Float32ValueHandler for Float32ValueHandlerImpl with get(
   _self : Float32ValueHandlerImpl,
 ) {
   // Should return [43.125]
-  @type_array.Array::{  }
+  [43.125]
 }
 
 ///|
 impl @type_array.Float32ValueHandler for Float32ValueHandlerImpl with put(
   _self : Float32ValueHandlerImpl,
-  _body : @type_array.Array,
+  body : Array[Double],
 ) {
-  // TODO: verify body
+  guard body.length() == 1 else { fail("float32.put: body length should be 1") }
+  guard body[0] == 43.125 else { fail("float32.put: body[0] should be 43.125") }
 }
 
 ///|
@@ -151,15 +174,25 @@ impl @type_array.UnknownValueHandler for UnknownValueHandlerImpl with get(
   _self : UnknownValueHandlerImpl,
 ) {
   // Should return [1, "hello", null]
-  @type_array.Array::{  }
+  let j = @json.parse("[1, \"hello\", null]")
+  @json.from_json(j)
 }
 
 ///|
 impl @type_array.UnknownValueHandler for UnknownValueHandlerImpl with put(
   _self : UnknownValueHandlerImpl,
-  _body : @type_array.Array,
+  body : Array[Json],
 ) {
-  // TODO: verify body
+  guard body.length() == 3 else { fail("unknown.put: body length should be 3") }
+  guard body[0].stringify() == "1" else {
+    fail("unknown.put: body[0] should be 1")
+  }
+  guard body[1].stringify() == "\"hello\"" else {
+    fail("unknown.put: body[1] should be 'hello'")
+  }
+  guard body[2].stringify() == "null" else {
+    fail("unknown.put: body[2] should be null")
+  }
 }
 
 ///|
@@ -170,15 +203,20 @@ impl @type_array.DatetimeValueHandler for DatetimeValueHandlerImpl with get(
   _self : DatetimeValueHandlerImpl,
 ) {
   // Should return [Temporal.Instant.from("2022-08-26T18:38:00Z")]
-  @type_array.Array::{  }
+  ["2022-08-26T18:38:00Z"]
 }
 
 ///|
 impl @type_array.DatetimeValueHandler for DatetimeValueHandlerImpl with put(
   _self : DatetimeValueHandlerImpl,
-  _body : @type_array.Array,
+  body : Array[String],
 ) {
-  // TODO: verify body
+  guard body.length() == 1 else {
+    fail("datetime.put: body length should be 1")
+  }
+  guard body[0] == "2022-08-26T18:38:00Z" else {
+    fail("datetime.put: body[0] should be '2022-08-26T18:38:00Z'")
+  }
 }
 
 ///|
@@ -189,15 +227,20 @@ impl @type_array.DurationValueHandler for DurationValueHandlerImpl with get(
   _self : DurationValueHandlerImpl,
 ) {
   // Should return [Temporal.Duration.from("P123DT22H14M12.011S")]
-  @type_array.Array::{  }
+  ["P123DT22H14M12.011S"]
 }
 
 ///|
 impl @type_array.DurationValueHandler for DurationValueHandlerImpl with put(
   _self : DurationValueHandlerImpl,
-  _body : @type_array.Array,
+  body : Array[String],
 ) {
-  // TODO: verify body
+  guard body.length() == 1 else {
+    fail("duration.put: body length should be 1")
+  }
+  guard body[0] == "P123DT22H14M12.011S" else {
+    fail("duration.put: body[0] should be 'P123DT22H14M12.011S'")
+  }
 }
 
 ///|
@@ -208,15 +251,30 @@ impl @type_array.NullableFloatValueHandler for NullableFloatValueHandlerImpl wit
   _self : NullableFloatValueHandlerImpl,
 ) {
   // Should return [1.25, null, 3.0]
-  @type_array.Array::{  }
+  [
+    @type_array.Nullable::some(1.25),
+    @type_array.Nullable::none(),
+    @type_array.Nullable::some(3.0),
+  ]
 }
 
 ///|
 impl @type_array.NullableFloatValueHandler for NullableFloatValueHandlerImpl with put(
   _self : NullableFloatValueHandlerImpl,
-  _body : @type_array.Array,
+  body : Array[@type_array.Nullable[Double]],
 ) {
-  // TODO: verify body
+  guard body.length() == 3 else {
+    fail("nullable-float.put: body length should be 3")
+  }
+  guard body[0].value == Some(1.25) else {
+    fail("nullable-float.put: body[0] should be 1.25")
+  }
+  guard body[1].value is None else {
+    fail("nullable-float.put: body[1] should be null")
+  }
+  guard body[2].value == Some(3.0) else {
+    fail("nullable-float.put: body[2] should be 3.0")
+  }
 }
 
 ///|
@@ -227,15 +285,30 @@ impl @type_array.NullableInt32ValueHandler for NullableInt32ValueHandlerImpl wit
   _self : NullableInt32ValueHandlerImpl,
 ) {
   // Should return [1, null, 3]
-  @type_array.Array::{  }
+  [
+    @type_array.Nullable::some(1),
+    @type_array.Nullable::none(),
+    @type_array.Nullable::some(3),
+  ]
 }
 
 ///|
 impl @type_array.NullableInt32ValueHandler for NullableInt32ValueHandlerImpl with put(
   _self : NullableInt32ValueHandlerImpl,
-  _body : @type_array.Array,
+  body : Array[@type_array.Nullable[Int]],
 ) {
-  // TODO: verify body
+  guard body.length() == 3 else {
+    fail("nullable-int32.put: body length should be 3")
+  }
+  guard body[0].value == Some(1) else {
+    fail("nullable-int32.put: body[0] should be 1")
+  }
+  guard body[1].value is None else {
+    fail("nullable-int32.put: body[1] should be null")
+  }
+  guard body[2].value == Some(3) else {
+    fail("nullable-int32.put: body[2] should be 3")
+  }
 }
 
 ///|
@@ -246,15 +319,40 @@ impl @type_array.NullableModelValueHandler for NullableModelValueHandlerImpl wit
   _self : NullableModelValueHandlerImpl,
 ) {
   // Should return [{ property: "hello" }, null, { property: "world" }]
-  @type_array.Array::{  }
+  [
+    @type_array.Nullable::some({ property: "hello", children: None }),
+    @type_array.Nullable::none(),
+    @type_array.Nullable::some({ property: "world", children: None }),
+  ]
 }
 
 ///|
 impl @type_array.NullableModelValueHandler for NullableModelValueHandlerImpl with put(
   _self : NullableModelValueHandlerImpl,
-  _body : @type_array.Array,
+  body : Array[@type_array.Nullable[@type_array.InnerModel]],
 ) {
-  // TODO: verify body
+  guard body.length() == 3 else {
+    fail("nullable-model.put: body length should be 3")
+  }
+  match body[0].value {
+    Some(v) => {
+      guard v.property == "hello" else {
+        fail("nullable-model.put: body[0].property should be 'hello'")
+      }
+    }
+    None => fail("nullable-model.put: body[0] should not be null")
+  }
+  guard body[1].value is None else {
+    fail("nullable-model.put: body[1] should be null")
+  }
+  match body[2].value {
+    Some(v) => {
+      guard v.property == "world" else {
+        fail("nullable-model.put: body[2].property should be 'world'")
+      }
+    }
+    None => fail("nullable-model.put: body[2] should not be null")
+  }
 }
 
 ///|
@@ -265,15 +363,30 @@ impl @type_array.NullableStringValueHandler for NullableStringValueHandlerImpl w
   _self : NullableStringValueHandlerImpl,
 ) {
   // Should return ["hello", null, "world"]
-  @type_array.Array::{  }
+  [
+    @type_array.Nullable::some("hello"),
+    @type_array.Nullable::none(),
+    @type_array.Nullable::some("world"),
+  ]
 }
 
 ///|
 impl @type_array.NullableStringValueHandler for NullableStringValueHandlerImpl with put(
   _self : NullableStringValueHandlerImpl,
-  _body : @type_array.Array,
+  body : Array[@type_array.Nullable[String]],
 ) {
-  // TODO: verify body
+  guard body.length() == 3 else {
+    fail("nullable-string.put: body length should be 3")
+  }
+  guard body[0].value == Some("hello") else {
+    fail("nullable-string.put: body[0] should be 'hello'")
+  }
+  guard body[1].value is None else {
+    fail("nullable-string.put: body[1] should be null")
+  }
+  guard body[2].value == Some("world") else {
+    fail("nullable-string.put: body[2] should be 'world'")
+  }
 }
 
 ///|
@@ -284,13 +397,28 @@ impl @type_array.NullableBooleanValueHandler for NullableBooleanValueHandlerImpl
   _self : NullableBooleanValueHandlerImpl,
 ) {
   // Should return [true, null, false]
-  @type_array.Array::{  }
+  [
+    @type_array.Nullable::some(true),
+    @type_array.Nullable::none(),
+    @type_array.Nullable::some(false),
+  ]
 }
 
 ///|
 impl @type_array.NullableBooleanValueHandler for NullableBooleanValueHandlerImpl with put(
   _self : NullableBooleanValueHandlerImpl,
-  _body : @type_array.Array,
+  body : Array[@type_array.Nullable[Bool]],
 ) {
-  // TODO: verify body
+  guard body.length() == 3 else {
+    fail("nullable-boolean.put: body length should be 3")
+  }
+  guard body[0].value == Some(true) else {
+    fail("nullable-boolean.put: body[0] should be true")
+  }
+  guard body[1].value is None else {
+    fail("nullable-boolean.put: body[1] should be null")
+  }
+  guard body[2].value == Some(false) else {
+    fail("nullable-boolean.put: body[2] should be false")
+  }
 }

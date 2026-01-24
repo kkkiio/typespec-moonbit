@@ -39,6 +39,7 @@ pub fn Model::name(Self) -> String
 pub(all) struct ModelField {
   name : String
   type_ : TypeRef
+  optional : Bool
 }
 
 pub(all) struct Parameter {
@@ -53,8 +54,11 @@ pub(all) enum TypeRef {
   Int64
   Float64
   Bool
+  Json
   Model(Model)
   Array(TypeRef)
+  Record(TypeRef)
+  Nullable(TypeRef)
 }
 
 pub struct Union {

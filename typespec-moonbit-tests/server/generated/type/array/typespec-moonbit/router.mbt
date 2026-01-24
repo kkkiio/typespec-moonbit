@@ -1,108 +1,153 @@
 ///|
-/// Model Array
-pub(all) struct Array {} derive (
-  Show,
-  Default,
-  ToJson,
-  @json.FromJson(rename_fields="camelCase"),
-)
+/// Nullable helper used for `T | null`.
+pub(all) struct Nullable[T] {
+  value : T?
+} derive(Show, Default)
+
+///|
+pub fn[T] Nullable::some(v : T) -> Nullable[T] {
+  { value: Some(v) }
+}
+
+///|
+pub fn[T] Nullable::none() -> Nullable[T] {
+  { value: None }
+}
+
+///|
+pub impl[T : ToJson] ToJson for Nullable[T] with to_json(self : Nullable[T]) -> Json {
+  match self.value {
+    Some(v) => v.to_json()
+    None => Json::null()
+  }
+}
+
+///|
+pub impl[T : @json.FromJson] @json.FromJson for Nullable[T] with from_json(
+  j : Json,
+  path : @json.JsonPath,
+) -> Nullable[T] raise @json.JsonDecodeError {
+  if j == Json::null() {
+    { value: None }
+  } else {
+    { value: Some(@json.from_json(j, path~)) }
+  }
+}
+
+///|
+/// Model InnerModel
+pub(all) struct InnerModel {
+  property : String
+  children : Array[InnerModel]?
+} derive(Show, Default, @json.FromJson(rename_fields="camelCase"))
+
+///|
+pub impl ToJson for InnerModel with to_json(self : InnerModel) -> Json {
+  let m : Map[String, Json] = Map::new()
+  m.set("property", self.property.to_json())
+  match self.children {
+    Some(v) => m.set("children", v.to_json())
+    None => ()
+  }
+  Json::object(m)
+}
 
 ///|
 /// Traits for operation handlers
 pub(open) trait Int32ValueHandler {
-  async get(Self) -> Array
-  async put(Self, body : Array) -> Unit
+  async get(Self) -> Array[Int]
+  async put(Self, body : Array[Int]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait Int64ValueHandler {
-  async get(Self) -> Array
-  async put(Self, body : Array) -> Unit
+  async get(Self) -> Array[Int64]
+  async put(Self, body : Array[Int64]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait ModelValueHandler {
-  async get(Self) -> Array
-  async put(Self, body : Array) -> Unit
+  async get(Self) -> Array[InnerModel]
+  async put(Self, body : Array[InnerModel]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait StringValueHandler {
-  async get(Self) -> Array
-  async put(Self, body : Array) -> Unit
+  async get(Self) -> Array[String]
+  async put(Self, body : Array[String]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait BooleanValueHandler {
-  async get(Self) -> Array
-  async put(Self, body : Array) -> Unit
+  async get(Self) -> Array[Bool]
+  async put(Self, body : Array[Bool]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait Float32ValueHandler {
-  async get(Self) -> Array
-  async put(Self, body : Array) -> Unit
+  async get(Self) -> Array[Double]
+  async put(Self, body : Array[Double]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait UnknownValueHandler {
-  async get(Self) -> Array
-  async put(Self, body : Array) -> Unit
+  async get(Self) -> Array[Json]
+  async put(Self, body : Array[Json]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait DatetimeValueHandler {
-  async get(Self) -> Array
-  async put(Self, body : Array) -> Unit
+  async get(Self) -> Array[String]
+  async put(Self, body : Array[String]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait DurationValueHandler {
-  async get(Self) -> Array
-  async put(Self, body : Array) -> Unit
+  async get(Self) -> Array[String]
+  async put(Self, body : Array[String]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait NullableFloatValueHandler {
-  async get(Self) -> Array
-  async put(Self, body : Array) -> Unit
+  async get(Self) -> Array[Nullable[Double]]
+  async put(Self, body : Array[Nullable[Double]]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait NullableInt32ValueHandler {
-  async get(Self) -> Array
-  async put(Self, body : Array) -> Unit
+  async get(Self) -> Array[Nullable[Int]]
+  async put(Self, body : Array[Nullable[Int]]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait NullableModelValueHandler {
-  async get(Self) -> Array
-  async put(Self, body : Array) -> Unit
+  async get(Self) -> Array[Nullable[InnerModel]]
+  async put(Self, body : Array[Nullable[InnerModel]]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait NullableStringValueHandler {
-  async get(Self) -> Array
-  async put(Self, body : Array) -> Unit
+  async get(Self) -> Array[Nullable[String]]
+  async put(Self, body : Array[Nullable[String]]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait NullableBooleanValueHandler {
-  async get(Self) -> Array
-  async put(Self, body : Array) -> Unit
+  async get(Self) -> Array[Nullable[Bool]]
+  async put(Self, body : Array[Nullable[Bool]]) -> Unit
 }
 
 ///|
@@ -160,7 +205,7 @@ pub fn[
       match_path_template("/type/array/int32", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_2_body : Array = @json.from_json(@json.parse(body_str)) catch {
+      let p_2_body : Array[Int] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
       h0.put(p_2_body)
@@ -178,7 +223,7 @@ pub fn[
       match_path_template("/type/array/int64", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_4_body : Array = @json.from_json(@json.parse(body_str)) catch {
+      let p_4_body : Array[Int64] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
       h1.put(p_4_body)
@@ -196,7 +241,7 @@ pub fn[
       match_path_template("/type/array/model", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_6_body : Array = @json.from_json(@json.parse(body_str)) catch {
+      let p_6_body : Array[InnerModel] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
       h2.put(p_6_body)
@@ -214,7 +259,7 @@ pub fn[
       match_path_template("/type/array/string", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_8_body : Array = @json.from_json(@json.parse(body_str)) catch {
+      let p_8_body : Array[String] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
       h3.put(p_8_body)
@@ -232,7 +277,7 @@ pub fn[
       match_path_template("/type/array/boolean", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_10_body : Array = @json.from_json(@json.parse(body_str)) catch {
+      let p_10_body : Array[Bool] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
       h4.put(p_10_body)
@@ -250,7 +295,7 @@ pub fn[
       match_path_template("/type/array/float32", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_12_body : Array = @json.from_json(@json.parse(body_str)) catch {
+      let p_12_body : Array[Double] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
       h5.put(p_12_body)
@@ -268,7 +313,7 @@ pub fn[
       match_path_template("/type/array/unknown", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_14_body : Array = @json.from_json(@json.parse(body_str)) catch {
+      let p_14_body : Array[Json] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
       h6.put(p_14_body)
@@ -286,7 +331,7 @@ pub fn[
       match_path_template("/type/array/datetime", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_16_body : Array = @json.from_json(@json.parse(body_str)) catch {
+      let p_16_body : Array[String] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
       h7.put(p_16_body)
@@ -304,7 +349,7 @@ pub fn[
       match_path_template("/type/array/duration", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_18_body : Array = @json.from_json(@json.parse(body_str)) catch {
+      let p_18_body : Array[String] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
       h8.put(p_18_body)
@@ -322,7 +367,9 @@ pub fn[
       match_path_template("/type/array/nullable-float", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_20_body : Array = @json.from_json(@json.parse(body_str)) catch {
+      let p_20_body : Array[Nullable[Double]] = @json.from_json(
+        @json.parse(body_str),
+      ) catch {
         _ => @json.from_json(null)
       }
       h9.put(p_20_body)
@@ -340,7 +387,9 @@ pub fn[
       match_path_template("/type/array/nullable-int32", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_22_body : Array = @json.from_json(@json.parse(body_str)) catch {
+      let p_22_body : Array[Nullable[Int]] = @json.from_json(
+        @json.parse(body_str),
+      ) catch {
         _ => @json.from_json(null)
       }
       h10.put(p_22_body)
@@ -358,7 +407,9 @@ pub fn[
       match_path_template("/type/array/nullable-model", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_24_body : Array = @json.from_json(@json.parse(body_str)) catch {
+      let p_24_body : Array[Nullable[InnerModel]] = @json.from_json(
+        @json.parse(body_str),
+      ) catch {
         _ => @json.from_json(null)
       }
       h11.put(p_24_body)
@@ -376,7 +427,9 @@ pub fn[
       match_path_template("/type/array/nullable-string", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_26_body : Array = @json.from_json(@json.parse(body_str)) catch {
+      let p_26_body : Array[Nullable[String]] = @json.from_json(
+        @json.parse(body_str),
+      ) catch {
         _ => @json.from_json(null)
       }
       h12.put(p_26_body)
@@ -394,7 +447,9 @@ pub fn[
       match_path_template("/type/array/nullable-boolean", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_28_body : Array = @json.from_json(@json.parse(body_str)) catch {
+      let p_28_body : Array[Nullable[Bool]] = @json.from_json(
+        @json.parse(body_str),
+      ) catch {
         _ => @json.from_json(null)
       }
       h13.put(p_28_body)

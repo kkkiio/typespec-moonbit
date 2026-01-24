@@ -21,6 +21,16 @@ pub impl Show for AnonymousModel1
 pub impl ToJson for AnonymousModel1
 pub impl @json.FromJson for AnonymousModel1
 
+pub(all) struct Nullable[T] {
+  value : T?
+}
+pub fn[T] Nullable::none() -> Self[T]
+pub fn[T] Nullable::some(T) -> Self[T]
+pub impl[T : Default] Default for Nullable[T]
+pub impl[T : Show] Show for Nullable[T]
+pub impl[T : ToJson] ToJson for Nullable[T]
+pub impl[T : @json.FromJson] @json.FromJson for Nullable[T]
+
 pub(all) struct User {
   name : String
 }

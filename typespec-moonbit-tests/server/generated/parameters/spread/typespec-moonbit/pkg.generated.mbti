@@ -39,9 +39,9 @@ pub impl @json.FromJson for AnonymousModel3
 
 pub(all) struct AnonymousModel4 {
   required_string : String
-  optional_int : Int
-  required_int_list : Array
-  optional_string_list : Array
+  optional_int : Int?
+  required_int_list : Array[Int]
+  optional_string_list : Array[String]?
 }
 pub impl Default for AnonymousModel4
 pub impl Show for AnonymousModel4
@@ -73,13 +73,6 @@ pub impl Show for AnonymousModel7
 pub impl ToJson for AnonymousModel7
 pub impl @json.FromJson for AnonymousModel7
 
-pub(all) struct Array {
-}
-pub impl Default for Array
-pub impl Show for Array
-pub impl ToJson for Array
-pub impl @json.FromJson for Array
-
 pub(all) struct BodyParameter {
   name : String
 }
@@ -87,6 +80,16 @@ pub impl Default for BodyParameter
 pub impl Show for BodyParameter
 pub impl ToJson for BodyParameter
 pub impl @json.FromJson for BodyParameter
+
+pub(all) struct Nullable[T] {
+  value : T?
+}
+pub fn[T] Nullable::none() -> Self[T]
+pub fn[T] Nullable::some(T) -> Self[T]
+pub impl[T : Default] Default for Nullable[T]
+pub impl[T : Show] Show for Nullable[T]
+pub impl[T : ToJson] ToJson for Nullable[T]
+pub impl[T : @json.FromJson] @json.FromJson for Nullable[T]
 
 // Type aliases
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit

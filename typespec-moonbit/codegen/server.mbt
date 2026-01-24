@@ -41,9 +41,22 @@ let model_template : String =
   #|/// Model {{name}}
   #|pub(all) struct {{struct_name}} {
   #|{{#fields}}
-  #|  {{name}} : {{type}}
+  #|  {{name}} : {{type}}{{#optional}}?{{/optional}}
   #|{{/fields}}
-  #|} derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
+  #|} derive(Show, Default, {{#derive_tojson}}ToJson, {{/derive_tojson}}@json.FromJson(rename_fields="camelCase"))
+  #|
+  #|{{^derive_tojson}}
+  #|pub impl ToJson for {{struct_name}} with to_json(self : {{struct_name}}) -> Json {
+  #|  let m : Map[String, Json] = Map::new()
+  #|  {{#fields}}
+  #|  {{^optional}}m.set("{{json_name}}", self.{{name}}.to_json())
+  #|  {{/optional}}
+  #|  {{#optional}}match self.{{name}} { Some(v) => m.set("{{json_name}}", v.to_json()) ; None => () }
+  #|  {{/optional}}
+  #|  {{/fields}}
+  #|  Json::object(m)
+  #|}
+  #|{{/derive_tojson}}
   #|
   #|{{/models}}
 
@@ -57,6 +70,45 @@ let handler_trait_template : String =
   #|  {{/methods}}
   #|}
   #|{{/clients}}
+
+///|
+let nullable_support_code : String =
+  #|///|
+  #|/// Nullable helper used for `T | null`.
+  #|pub(all) struct Nullable[T] {
+  #|  value : T?
+  #|} derive(Show, Default)
+  #|
+  #|///|
+  #|pub fn Nullable::some[T](v : T) -> Nullable[T] {
+  #|  { value: Some(v) }
+  #|}
+  #|
+  #|///|
+  #|pub fn Nullable::none[T]() -> Nullable[T] {
+  #|  { value: None }
+  #|}
+  #|
+  #|///|
+  #|pub impl[T : ToJson] ToJson for Nullable[T] with to_json(self : Nullable[T]) -> Json {
+  #|  match self.value {
+  #|    Some(v) => v.to_json()
+  #|    None => Json::null()
+  #|  }
+  #|}
+  #|
+  #|///|
+  #|pub impl[T : @json.FromJson] @json.FromJson for Nullable[T] with from_json(
+  #|  j : Json,
+  #|  path : @json.JsonPath,
+  #|) -> Nullable[T] raise @json.JsonDecodeError {
+  #|  if j == Json::null() {
+  #|    { value: None }
+  #|  } else {
+  #|    { value: Some(@json.from_json(j, path=path)) }
+  #|  }
+  #|}
+  #|
 
 ///|
 let router_template : String =
@@ -238,6 +290,7 @@ test "emit_server_router" {
                     @codemodel.ModelField::{
                       name: "name",
                       type_: @codemodel.TypeRef::String,
+                      optional: false,
                     },
                   ],
                 }),
@@ -251,6 +304,41 @@ test "emit_server_router" {
   inspect(
     router_code,
     content=(
+      #|///|
+      #|/// Nullable helper used for `T | null`.
+      #|pub(all) struct Nullable[T] {
+      #|  value : T?
+      #|} derive(Show, Default)
+      #|
+      #|///|
+      #|pub fn Nullable::some[T](v : T) -> Nullable[T] {
+      #|  { value: Some(v) }
+      #|}
+      #|
+      #|///|
+      #|pub fn Nullable::none[T]() -> Nullable[T] {
+      #|  { value: None }
+      #|}
+      #|
+      #|///|
+      #|pub impl[T : ToJson] ToJson for Nullable[T] with to_json(self : Nullable[T]) -> Json {
+      #|  match self.value {
+      #|    Some(v) => v.to_json()
+      #|    None => Json::null()
+      #|  }
+      #|}
+      #|
+      #|///|
+      #|pub impl[T : @json.FromJson] @json.FromJson for Nullable[T] with from_json(
+      #|  j : Json,
+      #|  path : @json.JsonPath,
+      #|) -> Nullable[T] raise @json.JsonDecodeError {
+      #|  if j == Json::null() {
+      #|    { value: None }
+      #|  } else {
+      #|    { value: Some(@json.from_json(j, path=path)) }
+      #|  }
+      #|}
       #|
       #|///|
       #|/// Model Item
@@ -259,6 +347,8 @@ test "emit_server_router" {
       #|  name : String
       #|
       #|} derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
+      #|
+      #|
       #|
       #|
       #|///|
@@ -359,23 +449,38 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
     }
   }
 
-  // 2. Generate Model Structs
+  // 2. Nullable helper (for `T | null`)
+  buf.write_string(nullable_support_code)
+
+  // 3. Generate Model Structs
   let model_list = models.to_array()
   model_list.sort_by_key(fn(m) { m.0 })
   let models_json = model_list.map(fn(item) -> Json {
     let m = item.1
+    let mut has_optional_fields = false
+    for f in m.fields {
+      if f.optional {
+        has_optional_fields = true
+      }
+    }
     let fields = m.fields.map(fn(f) -> Json {
-      { "name": @case.snake_case(f.name), "type": type_ref_to_string(f.type_) }
+      {
+        "name": @case.snake_case(f.name),
+        "json_name": @case.camel_case(f.name),
+        "type": type_ref_to_string(f.type_),
+        "optional": f.optional,
+      }
     })
     {
       "name": m.name,
       "struct_name": @case.pascal_case(m.name),
       "fields": fields,
+      "derive_tojson": !has_optional_fields,
     }
   })
   buf.write_string(@mustache.parse(model_template, { "models": models_json }))
 
-  // 3. Generate Handler Traits
+  // 4. Generate Handler Traits
 
   let clients_json = crate.clients.map(fn(client) -> Json {
     let methods = client.methods.map(fn(op) -> Json {
@@ -452,6 +557,8 @@ fn collect_models(
         }
       }
     Array(t) => collect_models(t, models)
+    Record(t) => collect_models(t, models)
+    Nullable(t) => collect_models(t, models)
     _ => ()
   }
 }

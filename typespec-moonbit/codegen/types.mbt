@@ -6,7 +6,10 @@ fn type_ref_to_string(type_ : @codemodel.TypeRef) -> String {
     Int64 => "Int64"
     Float64 => "Double"
     Bool => "Bool"
+    Json => "Json"
     Model(m) => @case.pascal_case(m.name)
     Array(t) => "Array[\{type_ref_to_string(t)}]"
+    Record(t) => "Map[String, \{type_ref_to_string(t)}]"
+    Nullable(t) => "Nullable[\{type_ref_to_string(t)}]"
   }
 }
