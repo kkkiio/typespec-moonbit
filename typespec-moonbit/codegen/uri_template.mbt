@@ -3,7 +3,6 @@
 
 ///|
 priv struct UriTemplateVar {
-  raw : String
   op : String
   name : String
   explode : Bool
@@ -66,14 +65,7 @@ fn parse_uri_template(path : String, op_name : String) -> UriTemplate {
             if name.length() > 0 {
               let param_name = sanitize_identifier(name.to_lower())
               let param_type = infer_param_type_from_operation(op_name)
-              vars.push({
-                raw: inner,
-                op,
-                name,
-                explode,
-                param_name,
-                param_type,
-              })
+              vars.push({ op, name, explode, param_name, param_type })
               // 用空字符串占位，方便在运行时按 vars 顺序展开
               parts.push("")
             } else {

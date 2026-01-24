@@ -1,14 +1,9 @@
 {
   "import": [
-    {
-      "path": "kkkiio/typespec-moonbit/codemodel",
-      "alias": "codemodel"
-    },
-    {
-      "path": "kkkiio/typespec-moonbit/config",
-      "alias": "config"
-    },
+    "kkkiio/typespec-moonbit/codemodel",
+    "kkkiio/typespec-moonbit/config",
     "justjavac/case",
+    "moonbitlang/core/cmp",
     "ryota0624/mustache"
   ],
   "targets": {

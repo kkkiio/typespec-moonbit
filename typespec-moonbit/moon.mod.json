@@ -5,15 +5,17 @@
     "moonbitlang/async": "0.16.1",
     "moonbitlang/x": "0.4.38",
     "moonbit-community/js-ffi": "0.4.2",
-    "ryota0624/mustache": "0.0.6",
-    "justjavac/case": "0.1.5"
+    "justjavac/case": "0.1.5",
+    // "ryota0624/mustache": "0.0.6",
+    "ryota0624/mustache": {
+      "path": "../../moonbit-mustache" // https://github.com/ryota0624/moonbit-mustache/issues/3
+    }
   },
   "readme": "README.mbt.md",
   "repository": "",
   "license": "Apache-2.0",
   "keywords": [
     "typespec",
-    "moonbit",
     "emitter"
   ],
   "description": "Typespec emitter for Moonbit",
