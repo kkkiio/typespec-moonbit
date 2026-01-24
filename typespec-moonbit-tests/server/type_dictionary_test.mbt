@@ -36,6 +36,7 @@ impl @type_dictionary.Int32ValueHandler for DictInt32ValueHandlerImpl with get(
   _self : DictInt32ValueHandlerImpl,
 ) {
   // Should return { k1: 1, k2: 2 }
+  @type_dictionary.Record::{  }
 }
 
 ///|
@@ -54,6 +55,7 @@ impl @type_dictionary.Int64ValueHandler for DictInt64ValueHandlerImpl with get(
   _self : DictInt64ValueHandlerImpl,
 ) {
   // Should return { k1: 0x7fffffffffffffff, k2: -0x7fffffffffffffff }
+  @type_dictionary.Record::{  }
 }
 
 ///|
@@ -72,6 +74,7 @@ impl @type_dictionary.ModelValueHandler for DictModelValueHandlerImpl with get(
   _self : DictModelValueHandlerImpl,
 ) {
   // Should return { k1: { property: "hello" }, k2: { property: "world" } }
+  @type_dictionary.Record::{  }
 }
 
 ///|
@@ -90,6 +93,7 @@ impl @type_dictionary.StringValueHandler for DictStringValueHandlerImpl with get
   _self : DictStringValueHandlerImpl,
 ) {
   // Should return { k1: "hello", k2: "" }
+  @type_dictionary.Record::{  }
 }
 
 ///|
@@ -108,6 +112,7 @@ impl @type_dictionary.BooleanValueHandler for DictBooleanValueHandlerImpl with g
   _self : DictBooleanValueHandlerImpl,
 ) {
   // Should return { k1: true, k2: false }
+  @type_dictionary.Record::{  }
 }
 
 ///|
@@ -126,6 +131,7 @@ impl @type_dictionary.Float32ValueHandler for DictFloat32ValueHandlerImpl with g
   _self : DictFloat32ValueHandlerImpl,
 ) {
   // Should return { k1: 43.125 }
+  @type_dictionary.Record::{  }
 }
 
 ///|
@@ -144,6 +150,7 @@ impl @type_dictionary.UnknownValueHandler for DictUnknownValueHandlerImpl with g
   _self : DictUnknownValueHandlerImpl,
 ) {
   // Should return { k1: 1, k2: "hello", k3: null }
+  @type_dictionary.Record::{  }
 }
 
 ///|
@@ -162,6 +169,7 @@ impl @type_dictionary.DatetimeValueHandler for DictDatetimeValueHandlerImpl with
   _self : DictDatetimeValueHandlerImpl,
 ) {
   // Should return { k1: Temporal.Instant.from("2022-08-26T18:38:00Z") }
+  @type_dictionary.Record::{  }
 }
 
 ///|
@@ -180,6 +188,7 @@ impl @type_dictionary.DurationValueHandler for DictDurationValueHandlerImpl with
   _self : DictDurationValueHandlerImpl,
 ) {
   // Should return { k1: Temporal.Duration.from("P123DT22H14M12.011S") }
+  @type_dictionary.Record::{  }
 }
 
 ///|
@@ -198,6 +207,7 @@ impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandle
   _self : DictNullableFloatValueHandlerImpl,
 ) {
   // Should return { k1: 1.25, k2: 0.5, k3: null }
+  @type_dictionary.Record::{  }
 }
 
 ///|
@@ -225,6 +235,7 @@ impl @type_dictionary.RecursiveModelValueHandler for DictRecursiveModelValueHand
   //     },
   //   },
   // }
+  @type_dictionary.Record::{  }
 }
 
 ///|

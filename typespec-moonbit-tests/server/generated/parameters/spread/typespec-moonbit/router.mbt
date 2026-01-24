@@ -35,7 +35,7 @@ pub(all) struct AnonymousModel3 {
 /// Model AnonymousModel4
 pub(all) struct AnonymousModel4 {
   required_string : String
-  optional_int : String
+  optional_int : Int
   required_int_list : Array
   optional_string_list : Array
 } derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
@@ -44,7 +44,7 @@ pub(all) struct AnonymousModel4 {
 /// Model AnonymousModel5
 pub(all) struct AnonymousModel5 {
   name : String
-  age : String
+  age : Int
 } derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
 
 ///|

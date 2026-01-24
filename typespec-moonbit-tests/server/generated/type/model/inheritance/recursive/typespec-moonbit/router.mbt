@@ -1,14 +1,24 @@
 ///|
+/// Model Array
+pub(all) struct Array {} derive (
+  Show,
+  Default,
+  ToJson,
+  @json.FromJson(rename_fields="camelCase"),
+)
+
+///|
 /// Model Extension
 pub(all) struct Extension {
-  level : String
+  extension : Array
+  level : Int
 } derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
 
 ///|
 /// Traits for operation handlers
 pub(open) trait RecursiveHandler {
   async put(Self, body : Extension) -> Unit
-  async get(Self) -> Unit
+  async get(Self) -> Extension
 }
 
 ///|
@@ -37,8 +47,10 @@ pub fn[H0 : RecursiveHandler] create_router(h0 : H0) -> Router {
     } else if req.meth == @http.Get &&
       match_path_template("/type/model/inheritance/recursive", path) {
       ignore(body_stream)
-      h0.get()
-      conn.send_response(200, "OK")
+      let resp_body = h0.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else {
       conn.send_response(404, "NotFound")

@@ -37,7 +37,7 @@ impl @type_model_inheritance_recursive.RecursiveHandler for RecursiveHandlerImpl
   //     },
   //   ],
   // }
-  // TODO: implement response body
+  { level: 0, extension: @type_model_inheritance_recursive.Array::{  } }
 }
 
 ///|
@@ -62,6 +62,5 @@ impl @type_model_inheritance_recursive.RecursiveHandler for RecursiveHandlerImpl
   //     },
   //   ],
   // })
-  // Note: The generated Extension struct has 'level' as String
-  guard body.level == "0" else { fail("put: body.level should be '0'") }
+  guard body.level == 0 else { fail("put: body.level should be 0") }
 }

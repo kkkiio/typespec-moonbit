@@ -104,11 +104,7 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_para
     "foo",
     msg="spread_parameter_with_inner_alias: name mismatch",
   )
-  assert_eq(
-    body.age,
-    "1",
-    msg="spread_parameter_with_inner_alias: age mismatch",
-  )
+  assert_eq(body.age, 1, msg="spread_parameter_with_inner_alias: age mismatch")
 }
 
 ///|

@@ -14,7 +14,9 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(H0) -> async (@http.Request, 
 
 // Types and methods
 pub(all) struct Siamese {
-  smart : String
+  name : String
+  age : Int
+  smart : Bool
 }
 pub impl Default for Siamese
 pub impl Show for Siamese
@@ -27,7 +29,7 @@ pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> 
 // Traits
 pub(open) trait NotDiscriminatedHandler {
   async post_valid(Self, Siamese) -> Unit
-  async get_valid(Self) -> Unit
-  async put_valid(Self, Siamese) -> Unit
+  async get_valid(Self) -> Siamese
+  async put_valid(Self, Siamese) -> Siamese
 }
 

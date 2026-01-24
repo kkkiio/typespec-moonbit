@@ -223,6 +223,18 @@ fn resolve_type_ref(
   prop : @ffi.JsValue,
   processed_models : Map[String, @codemodel.Model],
 ) -> @codemodel.TypeRef {
+  fn model_field_exists(
+    fields : Array[@codemodel.ModelField],
+    name : String,
+  ) -> Bool {
+    for f in fields {
+      if f.name == name {
+        return true
+      }
+    }
+    false
+  }
+
   let kind_val = @ffi.get_value(prop, "kind")
   if @ffi.is_string(kind_val) {
     let kind = @ffi.cast_string(kind_val)
@@ -243,6 +255,19 @@ fn resolve_type_ref(
       let fields = Array::new()
       let model = @codemodel.Model::{ name, fields }
       processed_models.set(name, model)
+
+      // Inheritance: merge base model fields first.
+      let base_model_val = @ffi.get_value(prop, "baseModel")
+      if !@ffi.is_undefined(base_model_val) && !base_model_val.is_null() {
+        let base_ref = resolve_type_ref(base_model_val, processed_models)
+        if base_ref is Model(base_model) {
+          for bf in base_model.fields {
+            if !model_field_exists(fields, bf.name) {
+              fields.push(bf)
+            }
+          }
+        }
+      }
       let props_obj = @ffi.get_value(prop, "properties")
       if !@ffi.is_undefined(props_obj) && !props_obj.is_null() {
         let props_array = get_model_properties_as_array(props_obj)
@@ -266,6 +291,29 @@ fn resolve_type_ref(
     }
     if kind == "Boolean" {
       return Bool
+    }
+    if kind == "Scalar" {
+      let name_val = @ffi.get_value(prop, "name")
+      let name = if @ffi.is_string(name_val) {
+        @ffi.cast_string(name_val)
+      } else {
+        ""
+      }
+      if name == "string" {
+        return String
+      }
+      if name == "boolean" {
+        return Bool
+      }
+      if name == "int32" || name == "int16" || name == "int8" {
+        return Int32
+      }
+      if name == "int64" {
+        return Int64
+      }
+      if name == "float32" || name == "float64" {
+        return Float64
+      }
     }
   }
   let type_sub = @ffi.get_value(prop, "type")
@@ -414,6 +462,14 @@ fn try_get_default_status_code(op : @ffi.JsValue) -> Int? {
       let code = @ffi.cast_int(status_val)
       return Some(code)
     }
+    if @ffi.is_array(status_val) {
+      let codes : Array[@ffi.JsValue] = status_val.cast()
+      for c in codes {
+        if @ffi.is_number(c) {
+          return Some(@ffi.cast_int(c))
+        }
+      }
+    }
   }
   None
 }
@@ -432,20 +488,39 @@ fn try_get_default_response_body(
   let responses : Array[@ffi.JsValue] = responses_val.cast()
   for r in responses {
     let status_val = @ffi.get_value(r, "statusCodes")
-    if @ffi.is_undefined(status_val) || !@ffi.is_number(status_val) {
+    if @ffi.is_undefined(status_val) {
       continue
     }
-    if @ffi.cast_int(status_val) != status_code {
+    let mut matched = false
+    if @ffi.is_number(status_val) {
+      matched = @ffi.cast_int(status_val) == status_code
+    } else if @ffi.is_array(status_val) {
+      let codes : Array[@ffi.JsValue] = status_val.cast()
+      for c in codes {
+        if @ffi.is_number(c) && @ffi.cast_int(c) == status_code {
+          matched = true
+        }
+      }
+    }
+    if !matched {
       continue
     }
-    // `getAllHttpServices` 的 response 没有直接暴露 `body` 字段；
-    // 需要从 `responses[*].properties[*]` 里找 kind == "body" 的项。
     let variants_val = @ffi.get_value(r, "responses")
     if @ffi.is_undefined(variants_val) {
       return None
     }
     let variants : Array[@ffi.JsValue] = variants_val.cast()
     for v in variants {
+      // Prefer `responses[*].body.type` when available.
+      let body_val = @ffi.get_value(v, "body")
+      if !@ffi.is_undefined(body_val) && !body_val.is_null() {
+        let body_type_val = @ffi.get_value(body_val, "type")
+        if !@ffi.is_undefined(body_type_val) && !body_type_val.is_null() {
+          return Some(resolve_type_ref(body_type_val, processed_models))
+        }
+      }
+
+      // Fallback: scan `responses[*].properties[*]` for body-related entries.
       let props_val = @ffi.get_value(v, "properties")
       if @ffi.is_undefined(props_val) {
         continue
@@ -456,7 +531,8 @@ fn try_get_default_response_body(
         if !@ffi.is_string(kind_val) {
           continue
         }
-        if @ffi.cast_string(kind_val) != "body" {
+        let kind = @ffi.cast_string(kind_val)
+        if kind != "body" && kind != "bodyProperty" {
           continue
         }
         let prop_val = @ffi.get_value(p, "property")

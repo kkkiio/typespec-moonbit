@@ -21,7 +21,7 @@ impl @type_model_inheritance_not_discriminated.NotDiscriminatedHandler for NotDi
   _self : NotDiscriminatedHandlerImpl,
 ) {
   // Should return: { name: "abc", age: 32, smart: true }
-  // TODO: implement response body
+  { name: "abc", age: 32, smart: true }
 }
 
 ///|
@@ -30,10 +30,12 @@ impl @type_model_inheritance_not_discriminated.NotDiscriminatedHandler for NotDi
   body : @type_model_inheritance_not_discriminated.Siamese,
 ) {
   // In TypeScript: assert.deepStrictEqual(input, { name: "abc", age: 32, smart: true })
-  // Note: The generated Siamese struct only has 'smart' field
-  // The parent fields (name, age) should be inherited but may not be in generated code yet
-  guard body.smart == "true" else {
-    fail("post_valid: body.smart should be 'true'")
+  guard body.name == "abc" else {
+    fail("post_valid: body.name should be 'abc'")
+  }
+  guard body.age == 32 else { fail("post_valid: body.age should be 32") }
+  guard body.smart == true else {
+    fail("post_valid: body.smart should be true")
   }
 }
 
@@ -44,8 +46,8 @@ impl @type_model_inheritance_not_discriminated.NotDiscriminatedHandler for NotDi
 ) {
   // In TypeScript: assert.deepStrictEqual(input, { name: "abc", age: 32, smart: true })
   // Should return: { name: "abc", age: 32, smart: true }
-  guard body.smart == "true" else {
-    fail("put_valid: body.smart should be 'true'")
-  }
-  // TODO: implement response body
+  guard body.name == "abc" else { fail("put_valid: body.name should be 'abc'") }
+  guard body.age == 32 else { fail("put_valid: body.age should be 32") }
+  guard body.smart == true else { fail("put_valid: body.smart should be true") }
+  body
 }

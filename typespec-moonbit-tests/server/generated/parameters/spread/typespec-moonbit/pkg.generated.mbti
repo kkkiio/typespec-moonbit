@@ -39,7 +39,7 @@ pub impl @json.FromJson for AnonymousModel3
 
 pub(all) struct AnonymousModel4 {
   required_string : String
-  optional_int : String
+  optional_int : Int
   required_int_list : Array
   optional_string_list : Array
 }
@@ -50,7 +50,7 @@ pub impl @json.FromJson for AnonymousModel4
 
 pub(all) struct AnonymousModel5 {
   name : String
-  age : String
+  age : Int
 }
 pub impl Default for AnonymousModel5
 pub impl Show for AnonymousModel5

@@ -26,6 +26,8 @@ pub fn get_value(@js.Value, String) -> @js.Value
 
 pub async fn import_module(String) -> @js.Value
 
+pub fn is_array(@js.Value) -> Bool
+
 pub fn is_bool(@js.Value) -> Bool
 
 pub fn is_number(@js.Value) -> Bool

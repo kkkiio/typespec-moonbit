@@ -19,6 +19,8 @@
 
 执行 `moon test` 运行单元测试, 执行 `moon test -u` 更新单元测试快照.
 
+不要写非规范的 fallback 代码，所有不支持的场景都应该报错.
+
 ## typespec-moonbit-tests
 
 E2E 测试模块（native target），负责运行时验证与维护生成用例。

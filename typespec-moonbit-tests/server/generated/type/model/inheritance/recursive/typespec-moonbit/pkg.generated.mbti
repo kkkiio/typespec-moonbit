@@ -13,8 +13,16 @@ pub fn[H0 : RecursiveHandler] create_router(H0) -> async (@http.Request, &@io.Re
 // Errors
 
 // Types and methods
+pub(all) struct Array {
+}
+pub impl Default for Array
+pub impl Show for Array
+pub impl ToJson for Array
+pub impl @json.FromJson for Array
+
 pub(all) struct Extension {
-  level : String
+  extension : Array
+  level : Int
 }
 pub impl Default for Extension
 pub impl Show for Extension
@@ -27,6 +35,6 @@ pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> 
 // Traits
 pub(open) trait RecursiveHandler {
   async put(Self, Extension) -> Unit
-  async get(Self) -> Unit
+  async get(Self) -> Extension
 }
 

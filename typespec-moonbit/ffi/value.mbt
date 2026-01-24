@@ -48,6 +48,16 @@ pub fn is_bool(value : JsValue) -> Bool {
 }
 
 ///|
+/// 判断 JS 值是否为 Array。
+pub fn is_array(value : JsValue) -> Bool {
+  is_array_ffi(value)
+}
+
+///|
+extern "js" fn is_array_ffi(value : JsValue) -> Bool =
+  #| (value) => Array.isArray(value)
+
+///|
 pub fn cast_int(value : JsValue) -> Int {
   value.cast()
 }

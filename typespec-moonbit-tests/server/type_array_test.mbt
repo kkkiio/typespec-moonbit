@@ -37,7 +37,7 @@ impl @type_array.Int32ValueHandler for Int32ValueHandlerImpl with get(
   _self : Int32ValueHandlerImpl,
 ) {
   // Should return [1, 2]
-  // TODO: implement response body
+  @type_array.Array::{  }
 }
 
 ///|
@@ -56,6 +56,7 @@ impl @type_array.Int64ValueHandler for Int64ValueHandlerImpl with get(
   _self : Int64ValueHandlerImpl,
 ) {
   // Should return [0x7fffffffffffffff, -0x7fffffffffffffff]
+  @type_array.Array::{  }
 }
 
 ///|
@@ -74,6 +75,7 @@ impl @type_array.ModelValueHandler for ModelValueHandlerImpl with get(
   _self : ModelValueHandlerImpl,
 ) {
   // Should return [{ property: "hello" }, { property: "world" }]
+  @type_array.Array::{  }
 }
 
 ///|
@@ -92,6 +94,7 @@ impl @type_array.StringValueHandler for StringValueHandlerImpl with get(
   _self : StringValueHandlerImpl,
 ) {
   // Should return ["hello", ""]
+  @type_array.Array::{  }
 }
 
 ///|
@@ -110,6 +113,7 @@ impl @type_array.BooleanValueHandler for BooleanValueHandlerImpl with get(
   _self : BooleanValueHandlerImpl,
 ) {
   // Should return [true, false]
+  @type_array.Array::{  }
 }
 
 ///|
@@ -128,6 +132,7 @@ impl @type_array.Float32ValueHandler for Float32ValueHandlerImpl with get(
   _self : Float32ValueHandlerImpl,
 ) {
   // Should return [43.125]
+  @type_array.Array::{  }
 }
 
 ///|
@@ -146,6 +151,7 @@ impl @type_array.UnknownValueHandler for UnknownValueHandlerImpl with get(
   _self : UnknownValueHandlerImpl,
 ) {
   // Should return [1, "hello", null]
+  @type_array.Array::{  }
 }
 
 ///|
@@ -164,6 +170,7 @@ impl @type_array.DatetimeValueHandler for DatetimeValueHandlerImpl with get(
   _self : DatetimeValueHandlerImpl,
 ) {
   // Should return [Temporal.Instant.from("2022-08-26T18:38:00Z")]
+  @type_array.Array::{  }
 }
 
 ///|
@@ -182,6 +189,7 @@ impl @type_array.DurationValueHandler for DurationValueHandlerImpl with get(
   _self : DurationValueHandlerImpl,
 ) {
   // Should return [Temporal.Duration.from("P123DT22H14M12.011S")]
+  @type_array.Array::{  }
 }
 
 ///|
@@ -200,6 +208,7 @@ impl @type_array.NullableFloatValueHandler for NullableFloatValueHandlerImpl wit
   _self : NullableFloatValueHandlerImpl,
 ) {
   // Should return [1.25, null, 3.0]
+  @type_array.Array::{  }
 }
 
 ///|
@@ -218,6 +227,7 @@ impl @type_array.NullableInt32ValueHandler for NullableInt32ValueHandlerImpl wit
   _self : NullableInt32ValueHandlerImpl,
 ) {
   // Should return [1, null, 3]
+  @type_array.Array::{  }
 }
 
 ///|
@@ -236,6 +246,7 @@ impl @type_array.NullableModelValueHandler for NullableModelValueHandlerImpl wit
   _self : NullableModelValueHandlerImpl,
 ) {
   // Should return [{ property: "hello" }, null, { property: "world" }]
+  @type_array.Array::{  }
 }
 
 ///|
@@ -254,6 +265,7 @@ impl @type_array.NullableStringValueHandler for NullableStringValueHandlerImpl w
   _self : NullableStringValueHandlerImpl,
 ) {
   // Should return ["hello", null, "world"]
+  @type_array.Array::{  }
 }
 
 ///|
@@ -272,6 +284,7 @@ impl @type_array.NullableBooleanValueHandler for NullableBooleanValueHandlerImpl
   _self : NullableBooleanValueHandlerImpl,
 ) {
   // Should return [true, null, false]
+  @type_array.Array::{  }
 }
 
 ///|

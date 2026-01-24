@@ -25,72 +25,72 @@ pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> 
 
 // Traits
 pub(open) trait BooleanValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, Array) -> Unit
 }
 
 pub(open) trait DatetimeValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, Array) -> Unit
 }
 
 pub(open) trait DurationValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, Array) -> Unit
 }
 
 pub(open) trait Float32ValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, Array) -> Unit
 }
 
 pub(open) trait Int32ValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, Array) -> Unit
 }
 
 pub(open) trait Int64ValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, Array) -> Unit
 }
 
 pub(open) trait ModelValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, Array) -> Unit
 }
 
 pub(open) trait NullableBooleanValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, Array) -> Unit
 }
 
 pub(open) trait NullableFloatValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, Array) -> Unit
 }
 
 pub(open) trait NullableInt32ValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, Array) -> Unit
 }
 
 pub(open) trait NullableModelValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, Array) -> Unit
 }
 
 pub(open) trait NullableStringValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, Array) -> Unit
 }
 
 pub(open) trait StringValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, Array) -> Unit
 }
 
 pub(open) trait UnknownValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, Array) -> Unit
 }
 

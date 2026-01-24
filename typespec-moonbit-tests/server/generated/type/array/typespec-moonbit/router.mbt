@@ -10,98 +10,98 @@ pub(all) struct Array {} derive (
 ///|
 /// Traits for operation handlers
 pub(open) trait Int32ValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, body : Array) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait Int64ValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, body : Array) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait ModelValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, body : Array) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait StringValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, body : Array) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait BooleanValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, body : Array) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait Float32ValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, body : Array) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait UnknownValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, body : Array) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait DatetimeValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, body : Array) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait DurationValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, body : Array) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait NullableFloatValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, body : Array) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait NullableInt32ValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, body : Array) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait NullableModelValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, body : Array) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait NullableStringValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, body : Array) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait NullableBooleanValueHandler {
-  async get(Self) -> Unit
+  async get(Self) -> Array
   async put(Self, body : Array) -> Unit
 }
 
@@ -151,8 +151,10 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/int32", path) {
       ignore(body_stream)
-      h0.get()
-      conn.send_response(200, "OK")
+      let resp_body = h0.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/int32", path) {
@@ -167,8 +169,10 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/int64", path) {
       ignore(body_stream)
-      h1.get()
-      conn.send_response(200, "OK")
+      let resp_body = h1.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/int64", path) {
@@ -183,8 +187,10 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/model", path) {
       ignore(body_stream)
-      h2.get()
-      conn.send_response(200, "OK")
+      let resp_body = h2.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/model", path) {
@@ -199,8 +205,10 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/string", path) {
       ignore(body_stream)
-      h3.get()
-      conn.send_response(200, "OK")
+      let resp_body = h3.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/string", path) {
@@ -215,8 +223,10 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/boolean", path) {
       ignore(body_stream)
-      h4.get()
-      conn.send_response(200, "OK")
+      let resp_body = h4.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/boolean", path) {
@@ -231,8 +241,10 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/float32", path) {
       ignore(body_stream)
-      h5.get()
-      conn.send_response(200, "OK")
+      let resp_body = h5.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/float32", path) {
@@ -247,8 +259,10 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/unknown", path) {
       ignore(body_stream)
-      h6.get()
-      conn.send_response(200, "OK")
+      let resp_body = h6.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/unknown", path) {
@@ -263,8 +277,10 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/datetime", path) {
       ignore(body_stream)
-      h7.get()
-      conn.send_response(200, "OK")
+      let resp_body = h7.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/datetime", path) {
@@ -279,8 +295,10 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/duration", path) {
       ignore(body_stream)
-      h8.get()
-      conn.send_response(200, "OK")
+      let resp_body = h8.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/duration", path) {
@@ -295,8 +313,10 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-float", path) {
       ignore(body_stream)
-      h9.get()
-      conn.send_response(200, "OK")
+      let resp_body = h9.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/nullable-float", path) {
@@ -311,8 +331,10 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-int32", path) {
       ignore(body_stream)
-      h10.get()
-      conn.send_response(200, "OK")
+      let resp_body = h10.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/nullable-int32", path) {
@@ -327,8 +349,10 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-model", path) {
       ignore(body_stream)
-      h11.get()
-      conn.send_response(200, "OK")
+      let resp_body = h11.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/nullable-model", path) {
@@ -343,8 +367,10 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-string", path) {
       ignore(body_stream)
-      h12.get()
-      conn.send_response(200, "OK")
+      let resp_body = h12.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/nullable-string", path) {
@@ -359,8 +385,10 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-boolean", path) {
       ignore(body_stream)
-      h13.get()
-      conn.send_response(200, "OK")
+      let resp_body = h13.get()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/nullable-boolean", path) {

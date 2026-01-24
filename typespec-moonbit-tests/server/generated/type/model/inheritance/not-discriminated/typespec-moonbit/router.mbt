@@ -1,15 +1,17 @@
 ///|
 /// Model Siamese
 pub(all) struct Siamese {
-  smart : String
+  name : String
+  age : Int
+  smart : Bool
 } derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
 
 ///|
 /// Traits for operation handlers
 pub(open) trait NotDiscriminatedHandler {
   async post_valid(Self, body : Siamese) -> Unit
-  async get_valid(Self) -> Unit
-  async put_valid(Self, body : Siamese) -> Unit
+  async get_valid(Self) -> Siamese
+  async put_valid(Self, body : Siamese) -> Siamese
 }
 
 ///|
@@ -42,8 +44,10 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(h0 : H0) -> Router {
         "/type/model/inheritance/not-discriminated/valid", path,
       ) {
       ignore(body_stream)
-      h0.get_valid()
-      conn.send_response(200, "OK")
+      let resp_body = h0.get_valid()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template(
@@ -54,8 +58,10 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(h0 : H0) -> Router {
       let p_3_body : Siamese = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h0.put_valid(p_3_body)
-      conn.send_response(200, "OK")
+      let resp_body = h0.put_valid(p_3_body)
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
       conn.end_response()
     } else {
       conn.send_response(404, "NotFound")
