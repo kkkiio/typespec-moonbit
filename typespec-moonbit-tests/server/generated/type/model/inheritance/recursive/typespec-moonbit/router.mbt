@@ -33,14 +33,17 @@ pub fn[H0 : RecursiveHandler] create_router(h0 : H0) -> Router {
       }
       h0.put(p_1_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/model/inheritance/recursive", path) {
       ignore(body_stream)
       h0.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else {
       conn.send_response(404, "NotFound")
       conn.write("not found")
+      conn.end_response()
     }
   }
 }

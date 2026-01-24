@@ -1,43 +1,25 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "kkkiio/typespec-moonbit/codegen"
 
-import(
-  "kkkiio/typespec-moonbit/codemodel"
-  "kkkiio/typespec-moonbit/lib"
-)
+import {
+  "kkkiio/typespec-moonbit/codemodel",
+  "kkkiio/typespec-moonbit/config",
+}
 
 // Values
-pub fn emit(@codemodel.Crate, @lib.EmitterOptions) -> Array[OutputFile]
+pub fn emit(@codemodel.Crate, @config.EmitterOptions) -> Array[OutputFile] raise
 
-pub fn emit_clients(@codemodel.Crate) -> String
+pub fn emit_client_files(@codemodel.Crate) -> Array[OutputFile]
 
-pub fn emit_enums(@codemodel.Crate) -> String
-
-pub fn emit_lib(@codemodel.Crate) -> String
-
-pub fn emit_mod(@codemodel.Crate) -> String
-
-pub fn emit_models(@codemodel.Crate) -> String
-
-pub fn emit_unions(@codemodel.Crate) -> String
-
-pub fn emit_use(@codemodel.Crate) -> String
+pub fn emit_server_files(@codemodel.Crate) -> Array[OutputFile] raise
 
 pub fn indent(String, Int) -> String
 
+pub fn sanitize_identifier(String) -> String
+
 // Errors
-pub suberror CodegenError {
-  Message(String)
-}
-pub impl Show for CodegenError
 
 // Types and methods
-pub type CodeGenerator
-pub fn CodeGenerator::emit_files(Self, @lib.EmitterOptions) -> Array[OutputFile] raise
-pub fn CodeGenerator::new(@codemodel.Crate) -> Self raise
-
-pub type CodegenContext
-
 pub struct OutputFile {
   path : String
   content : String
@@ -45,10 +27,6 @@ pub struct OutputFile {
 pub fn OutputFile::content(Self) -> String
 pub fn OutputFile::new(String, String) -> Self
 pub fn OutputFile::path(Self) -> String
-
-type UriTemplate
-
-type UriTemplateVar
 
 // Type aliases
 

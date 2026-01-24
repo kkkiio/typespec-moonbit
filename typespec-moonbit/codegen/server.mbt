@@ -16,7 +16,8 @@ fn emit_server_moon_pkg_json() -> String {
     #|{
     #|  "import": [
     #|    "moonbitlang/async/http",
-    #|    "moonbitlang/async/io"
+    #|    "moonbitlang/async/io",
+    #|    "moonbitlang/core/json"
     #|  ]
     #|}
   )
@@ -52,7 +53,7 @@ let handler_trait_template : String =
   #|///|
   #|/// Traits for operation handlers
   #|pub(open) trait {{trait_name}} {
-  #|  {{#methods}}async {{method_name}}(Self{{#params}}, {{name}} : {{type}}{{/params}}) -> Unit
+  #|  {{#methods}}async {{method_name}}(Self{{#params}}, {{name}} : {{type}}{{/params}}) -> {{return_type}}
   #|  {{/methods}}
   #|}
   #|{{/clients}}
@@ -77,18 +78,54 @@ let router_template : String =
   #|      {{#isBody}}{{#isString}}let {{var_name}} = body_str{{/isString}}{{^isString}}let {{var_name}} : {{type_str}} = try { @json.from_json(@json.parse(body_str)) } catch { _ => @json.from_json(null) }{{/isString}}{{/isBody}}
   #|      {{^isBody}}let {{var_name}} = ""{{/isBody}}
   #|      {{/params}}
-  #|      {{{handler_var}}}.{{handler_method}}({{#params}}{{var_name}}{{^is_last}}, {{/is_last}}{{/params}})
-  #|      conn.send_response(204, "No Content")
+  #|      {{#has_response_body}}let resp_body = {{{handler_var}}}.{{handler_method}}({{#params}}{{var_name}}{{^is_last}}, {{/is_last}}{{/params}})
+  #|      let headers : Map[String, String] = { "content-type": "application/json" }
+  #|      conn.send_response({{status_code}}, "{{reason_phrase}}", extra_headers=headers)
+  #|      conn.write(resp_body.to_json().stringify())
+  #|      conn.end_response()
+  #|      {{/has_response_body}}
+  #|      {{^has_response_body}}{{{handler_var}}}.{{handler_method}}({{#params}}{{var_name}}{{^is_last}}, {{/is_last}}{{/params}})
+  #|      conn.send_response({{status_code}}, "{{reason_phrase}}")
+  #|      conn.end_response()
+  #|      {{/has_response_body}}
   #|    }
   #|      {{/methods}}
   #|    {{/clients}}
   #|    else {
   #|      conn.send_response(404, "NotFound")
   #|      conn.write("not found")
+  #|      conn.end_response()
   #|    }
   #|  }
   #|}
   #|
+
+///|
+fn status_reason_phrase(code : Int) -> String {
+  if code == 200 {
+    "OK"
+  } else if code == 201 {
+    "Created"
+  } else if code == 202 {
+    "Accepted"
+  } else if code == 204 {
+    "No Content"
+  } else if code == 400 {
+    "Bad Request"
+  } else if code == 401 {
+    "Unauthorized"
+  } else if code == 403 {
+    "Forbidden"
+  } else if code == 404 {
+    "Not Found"
+  } else if code == 409 {
+    "Conflict"
+  } else if code == 500 {
+    "Internal Server Error"
+  } else {
+    "OK"
+  }
+}
 
 ///|
 fn emit_create_router(crate : @codemodel.Crate) -> String raise {
@@ -121,17 +158,21 @@ fn emit_create_router(crate : @codemodel.Crate) -> String raise {
         let pname = sanitize_identifier(@case.snake_case(param.name))
         let var_name = "p_\{op_counter}_\{pname}"
         let type_str = type_ref_to_string(param.type_)
-        params_arr.push(
-          Json::object({
-            "name": Json::string(@case.snake_case(param.name)),
-            "var_name": Json::string(var_name),
-            "location": Json::string(param.location),
-            "type_str": Json::string(type_str),
-            "isBody": Json::boolean(param.location == "body"),
-            "isString": Json::boolean(type_str == "String"),
-            "is_last": Json::boolean(j == param_count - 1),
-          }),
-        )
+        let param_ctx : Json = {
+          "name": @case.snake_case(param.name),
+          "var_name": var_name,
+          "location": param.location,
+          "type_str": type_str,
+          "isBody": param.location == "body",
+          "isString": type_str == "String",
+          "is_last": j == param_count - 1,
+        }
+        params_arr.push(param_ctx)
+      }
+      let has_response_body = op.response_body is Some(_)
+      let return_type = match op.response_body {
+        Some(t) => type_ref_to_string(t)
+        None => "Unit"
       }
       methods_arr.push(
         Json::object({
@@ -140,6 +181,10 @@ fn emit_create_router(crate : @codemodel.Crate) -> String raise {
           "http_meth_token": Json::string(meth),
           "path_template": Json::string(tmpl),
           "has_body": Json::boolean(has_body),
+          "status_code": Json::number(op.status_code.to_double()),
+          "reason_phrase": Json::string(status_reason_phrase(op.status_code)),
+          "has_response_body": Json::boolean(has_response_body),
+          "return_type": Json::string(return_type),
           "params": Json::array(params_arr),
         }),
       )
@@ -176,6 +221,7 @@ test "emit_server_router" {
             http_method: "GET",
             path: "/items/{itemId}",
             status_code: 200,
+            response_body: None,
             parameters: [
               @codemodel.Parameter::{
                 name: "itemId",
@@ -189,6 +235,7 @@ test "emit_server_router" {
             http_method: "POST",
             path: "/items",
             status_code: 200,
+            response_body: None,
             parameters: [
               @codemodel.Parameter::{
                 name: "body",
@@ -245,8 +292,11 @@ test "emit_server_router" {
       #|      
       #|      let p_1_item_id = ""
       #|      
+      #|      
       #|      h0.get_item(p_1_item_id)
-      #|      conn.send_response(204, "No Content")
+      #|      conn.send_response(200, "OK")
+      #|      conn.end_response()
+      #|      
       #|    }
       #|      
       #|    else if req.meth == @http.Post && match_path_template("/items", path) {
@@ -258,14 +308,18 @@ test "emit_server_router" {
       #|      let p_2_body : Item = try { @json.from_json(@json.parse(body_str)) } catch { _ => @json.from_json(null) }
       #|      
       #|      
+      #|      
       #|      h0.create_item(p_2_body)
-      #|      conn.send_response(204, "No Content")
+      #|      conn.send_response(200, "OK")
+      #|      conn.end_response()
+      #|      
       #|    }
       #|      
       #|    
       #|    else {
       #|      conn.send_response(404, "NotFound")
       #|      conn.write("not found")
+      #|      conn.end_response()
       #|    }
       #|  }
       #|}
@@ -291,7 +345,6 @@ test "emit_server_router" {
       #|  true
       #|}
       #|
-
     ),
   )
 }
@@ -306,6 +359,10 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
     for op in client.methods {
       for param in op.parameters {
         collect_models(param.type_, models)
+      }
+      match op.response_body {
+        Some(t) => collect_models(t, models)
+        None => ()
       }
     }
   }
@@ -344,8 +401,13 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
           "type": Json::string(type_ref_to_string(p.type_)),
         })
       })
+      let return_type = match op.response_body {
+        Some(t) => type_ref_to_string(t)
+        None => "Unit"
+      }
       Json::object({
         "method_name": Json::string(@case.snake_case(op.name)),
+        "return_type": Json::string(return_type),
         "params": Json::array(params),
       })
     })

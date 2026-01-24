@@ -1,8 +1,8 @@
 ///|
 /// Traits for operation handlers
 pub(open) trait StringHandler {
-  async get_known_value(Self) -> Unit
-  async get_unknown_value(Self) -> Unit
+  async get_known_value(Self) -> String
+  async get_unknown_value(Self) -> String
   async put_known_value(Self, content_type : String, body : String) -> Unit
   async put_unknown_value(Self, content_type : String, body : String) -> Unit
 }
@@ -23,13 +23,19 @@ pub fn[H0 : StringHandler] create_router(h0 : H0) -> Router {
     } else if req.meth == @http.Get &&
       match_path_template("/type/enum/extensible/string/known-value", path) {
       ignore(body_stream)
-      h0.get_known_value()
-      conn.send_response(204, "No Content")
+      let resp_body = h0.get_known_value()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/enum/extensible/string/unknown-value", path) {
       ignore(body_stream)
-      h0.get_unknown_value()
-      conn.send_response(204, "No Content")
+      let resp_body = h0.get_unknown_value()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/enum/extensible/string/known-value", path) {
       let body_bytes = body_stream.read_all()
@@ -38,6 +44,7 @@ pub fn[H0 : StringHandler] create_router(h0 : H0) -> Router {
       let p_3_body = body_str
       h0.put_known_value(p_3_content_type, p_3_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/enum/extensible/string/unknown-value", path) {
       let body_bytes = body_stream.read_all()
@@ -46,9 +53,11 @@ pub fn[H0 : StringHandler] create_router(h0 : H0) -> Router {
       let p_4_body = body_str
       h0.put_unknown_value(p_4_content_type, p_4_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else {
       conn.send_response(404, "NotFound")
       conn.write("not found")
+      conn.end_response()
     }
   }
 }

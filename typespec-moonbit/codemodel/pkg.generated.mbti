@@ -6,44 +6,62 @@ package "kkkiio/typespec-moonbit/codemodel"
 // Errors
 
 // Types and methods
-pub struct Client {
+pub(all) struct Client {
   name : String
   methods : Array[Method]
 }
-pub fn Client::methods(Self) -> Array[Method]
-pub fn Client::name(Self) -> String
-pub fn Client::new(String, Array[Method]) -> Self
 
-pub struct Crate {
+pub(all) struct Crate {
   name : String
   version : String
   clients : Array[Client]
 }
-pub fn Crate::clients(Self) -> Array[Client]
-pub fn Crate::name(Self) -> String
-pub fn Crate::new(String, String, Array[Client]) -> Self
-pub fn Crate::version(Self) -> String
 
-pub type Enum
+pub struct Enum {
+  name : String
+}
 
-pub struct Method {
+pub(all) struct Method {
   name : String
   path : String
   http_method : String
   status_code : Int
+  response_body : TypeRef?
+  parameters : Array[Parameter]
 }
-pub fn Method::http_method(Self) -> String
-pub fn Method::name(Self) -> String
-pub fn Method::new(String, String, String, Int) -> Self
-pub fn Method::path(Self) -> String
-pub fn Method::status_code(Self) -> Int
 
-pub type Model
+pub(all) struct Model {
+  name : String
+  fields : Array[ModelField]
+}
+pub fn Model::name(Self) -> String
 
-pub type TypeRef
+pub(all) struct ModelField {
+  name : String
+  type_ : TypeRef
+}
 
-pub type Union
+pub(all) struct Parameter {
+  name : String
+  type_ : TypeRef
+  location : String
+}
+
+pub(all) enum TypeRef {
+  String
+  Int32
+  Int64
+  Float64
+  Bool
+  Model(Model)
+  Array(TypeRef)
+}
+
+pub struct Union {
+  name : String
+}
 
 // Type aliases
 
 // Traits
+

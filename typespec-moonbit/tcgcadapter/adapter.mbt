@@ -107,6 +107,7 @@ pub async fn Adapter::tcgc_to_crate(self : Adapter) -> @codemodel.Crate {
       path: "/",
       http_method: "GET",
       status_code: 200,
+      response_body: None,
       parameters: [],
     })
     [@codemodel.Client::{ name: self.service_name(), methods }]
@@ -152,8 +153,18 @@ fn build_method(
     op_name_val.cast()
   }
   let status_code = try_get_default_status_code(op).unwrap_or(200)
+  let response_body = try_get_default_response_body(
+    op, status_code, processed_models,
+  )
   let params = extract_parameters(op, processed_models)
-  { name: op_name, path, http_method: verb, status_code, parameters: params }
+  {
+    name: op_name,
+    path,
+    http_method: verb,
+    status_code,
+    response_body,
+    parameters: params,
+  }
 }
 
 ///|
@@ -403,6 +414,63 @@ fn try_get_default_status_code(op : @ffi.JsValue) -> Int? {
       let code = @ffi.cast_int(status_val)
       return Some(code)
     }
+  }
+  None
+}
+
+///|
+/// 尝试从“默认响应”（`status_code` 匹配的那个 response）里提取响应体类型。
+fn try_get_default_response_body(
+  op : @ffi.JsValue,
+  status_code : Int,
+  processed_models : Map[String, @codemodel.Model],
+) -> @codemodel.TypeRef? {
+  let responses_val = @ffi.get_value(op, "responses")
+  if @ffi.is_undefined(responses_val) {
+    return None
+  }
+  let responses : Array[@ffi.JsValue] = responses_val.cast()
+  for r in responses {
+    let status_val = @ffi.get_value(r, "statusCodes")
+    if @ffi.is_undefined(status_val) || !@ffi.is_number(status_val) {
+      continue
+    }
+    if @ffi.cast_int(status_val) != status_code {
+      continue
+    }
+    // `getAllHttpServices` 的 response 没有直接暴露 `body` 字段；
+    // 需要从 `responses[*].properties[*]` 里找 kind == "body" 的项。
+    let variants_val = @ffi.get_value(r, "responses")
+    if @ffi.is_undefined(variants_val) {
+      return None
+    }
+    let variants : Array[@ffi.JsValue] = variants_val.cast()
+    for v in variants {
+      let props_val = @ffi.get_value(v, "properties")
+      if @ffi.is_undefined(props_val) {
+        continue
+      }
+      let props : Array[@ffi.JsValue] = props_val.cast()
+      for p in props {
+        let kind_val = @ffi.get_value(p, "kind")
+        if !@ffi.is_string(kind_val) {
+          continue
+        }
+        if @ffi.cast_string(kind_val) != "body" {
+          continue
+        }
+        let prop_val = @ffi.get_value(p, "property")
+        if @ffi.is_undefined(prop_val) {
+          continue
+        }
+        let typ_val = @ffi.get_value(prop_val, "type")
+        if @ffi.is_undefined(typ_val) {
+          continue
+        }
+        return Some(resolve_type_ref(typ_val, processed_models))
+      }
+    }
+    return None
   }
   None
 }

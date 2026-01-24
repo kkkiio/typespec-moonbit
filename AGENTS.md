@@ -17,6 +17,8 @@
 - `typespec-moonbit/codegen/`：把 CodeModel 渲染成 MoonBit 源码文本与文件列表。
 - `typespec-moonbit/ffi/`：Node.js 与 TypeSpec 编译器 API 的 JS FFI 包装（EmitContext 辅助）。
 
+执行 `moon test` 运行单元测试, 执行 `moon test -u` 更新单元测试快照.
+
 ## typespec-moonbit-tests
 
 E2E 测试模块（native target），负责运行时验证与维护生成用例。

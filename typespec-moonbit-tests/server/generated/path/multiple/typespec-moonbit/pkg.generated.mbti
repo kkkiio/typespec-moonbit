@@ -1,0 +1,24 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-moonbit-tests/server/generated/path/multiple/typespec-moonbit"
+
+import {
+  "moonbitlang/async/http",
+  "moonbitlang/async/io",
+}
+
+// Values
+pub fn[H0 : MultipleHandler] create_router(H0) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+
+// Traits
+pub(open) trait MultipleHandler {
+  async no_operation_params(Self) -> Unit
+  async with_operation_path_param(Self, String) -> Unit
+}
+

@@ -21,10 +21,12 @@ pub fn[H0 : SingleHandler] create_router(h0 : H0) -> Router {
       match_path_template("/server/path/single/myOp", path) {
       ignore(body_stream)
       h0.my_op()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else {
       conn.send_response(404, "NotFound")
       conn.write("not found")
+      conn.end_response()
     }
   }
 }

@@ -125,7 +125,8 @@ pub fn[
       match_path_template("/type/dictionary/int32", path) {
       ignore(body_stream)
       h0.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/dictionary/int32", path) {
       let body_bytes = body_stream.read_all()
@@ -135,11 +136,13 @@ pub fn[
       }
       h0.put(p_2_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/dictionary/int64", path) {
       ignore(body_stream)
       h1.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/dictionary/int64", path) {
       let body_bytes = body_stream.read_all()
@@ -149,11 +152,13 @@ pub fn[
       }
       h1.put(p_4_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/dictionary/model", path) {
       ignore(body_stream)
       h2.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/dictionary/model", path) {
       let body_bytes = body_stream.read_all()
@@ -163,11 +168,13 @@ pub fn[
       }
       h2.put(p_6_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/dictionary/string", path) {
       ignore(body_stream)
       h3.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/dictionary/string", path) {
       let body_bytes = body_stream.read_all()
@@ -177,11 +184,13 @@ pub fn[
       }
       h3.put(p_8_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/dictionary/boolean", path) {
       ignore(body_stream)
       h4.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/dictionary/boolean", path) {
       let body_bytes = body_stream.read_all()
@@ -191,11 +200,13 @@ pub fn[
       }
       h4.put(p_10_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/dictionary/float32", path) {
       ignore(body_stream)
       h5.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/dictionary/float32", path) {
       let body_bytes = body_stream.read_all()
@@ -205,11 +216,13 @@ pub fn[
       }
       h5.put(p_12_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/dictionary/unknown", path) {
       ignore(body_stream)
       h6.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/dictionary/unknown", path) {
       let body_bytes = body_stream.read_all()
@@ -219,11 +232,13 @@ pub fn[
       }
       h6.put(p_14_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/dictionary/datetime", path) {
       ignore(body_stream)
       h7.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/dictionary/datetime", path) {
       let body_bytes = body_stream.read_all()
@@ -233,11 +248,13 @@ pub fn[
       }
       h7.put(p_16_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/dictionary/duration", path) {
       ignore(body_stream)
       h8.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/dictionary/duration", path) {
       let body_bytes = body_stream.read_all()
@@ -247,11 +264,13 @@ pub fn[
       }
       h8.put(p_18_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/dictionary/nullable-float", path) {
       ignore(body_stream)
       h9.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/dictionary/nullable-float", path) {
       let body_bytes = body_stream.read_all()
@@ -261,11 +280,13 @@ pub fn[
       }
       h9.put(p_20_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/dictionary/model/recursive", path) {
       ignore(body_stream)
       h10.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/dictionary/model/recursive", path) {
       let body_bytes = body_stream.read_all()
@@ -275,9 +296,11 @@ pub fn[
       }
       h10.put(p_22_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else {
       conn.send_response(404, "NotFound")
       conn.write("not found")
+      conn.end_response()
     }
   }
 }

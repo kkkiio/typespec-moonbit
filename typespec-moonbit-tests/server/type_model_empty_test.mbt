@@ -27,16 +27,15 @@ impl @type_model_empty.EmptyHandler for EmptyHandlerImpl with put_empty(
 impl @type_model_empty.EmptyHandler for EmptyHandlerImpl with get_empty(
   _self : EmptyHandlerImpl,
 ) {
-  // Should return: { body: {} }
-  // TODO: implement response body
+  @type_model_empty.EmptyOutput::{  }
 }
 
 ///|
 impl @type_model_empty.EmptyHandler for EmptyHandlerImpl with post_round_trip_empty(
   _self : EmptyHandlerImpl,
-  _body : @type_model_empty.EmptyInputOutput,
+  body : @type_model_empty.EmptyInputOutput,
 ) {
   // Should return: { body }
   // EmptyInputOutput is an empty struct, round-trip the same empty object
-  // TODO: implement response body
+  body
 }

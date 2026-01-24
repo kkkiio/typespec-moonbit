@@ -36,13 +36,15 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(h0 : H0) -> Router {
       }
       h0.post_valid(p_1_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template(
         "/type/model/inheritance/not-discriminated/valid", path,
       ) {
       ignore(body_stream)
       h0.get_valid()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template(
         "/type/model/inheritance/not-discriminated/valid", path,
@@ -53,10 +55,12 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(h0 : H0) -> Router {
         _ => @json.from_json(null)
       }
       h0.put_valid(p_3_body)
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else {
       conn.send_response(404, "NotFound")
       conn.write("not found")
+      conn.end_response()
     }
   }
 }

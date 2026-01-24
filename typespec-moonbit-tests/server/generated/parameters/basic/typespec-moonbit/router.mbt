@@ -47,6 +47,7 @@ pub fn[H0 : ExplicitBodyHandler, H1 : ImplicitBodyHandler] create_router(
       }
       h0.simple(p_1_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/parameters/basic/implicit-body/simple", path) {
       let body_bytes = body_stream.read_all()
@@ -56,9 +57,11 @@ pub fn[H0 : ExplicitBodyHandler, H1 : ImplicitBodyHandler] create_router(
       }
       h1.simple(p_2_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else {
       conn.send_response(404, "NotFound")
       conn.write("not found")
+      conn.end_response()
     }
   }
 }

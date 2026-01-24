@@ -1,0 +1,45 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-moonbit-tests/server/generated/parameters/body-optionality/typespec-moonbit"
+
+import {
+  "moonbitlang/async/http",
+  "moonbitlang/async/io",
+  "moonbitlang/core/json",
+}
+
+// Values
+pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(H0, H1) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+
+// Errors
+
+// Types and methods
+pub(all) struct AnonymousModel1 {
+  name : String
+}
+pub impl Default for AnonymousModel1
+pub impl Show for AnonymousModel1
+pub impl ToJson for AnonymousModel1
+pub impl @json.FromJson for AnonymousModel1
+
+pub(all) struct BodyModel {
+  name : String
+}
+pub impl Default for BodyModel
+pub impl Show for BodyModel
+pub impl ToJson for BodyModel
+pub impl @json.FromJson for BodyModel
+
+// Type aliases
+pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+
+// Traits
+pub(open) trait BodyOptionalityHandler {
+  async required_explicit(Self, BodyModel) -> Unit
+  async required_implicit(Self, AnonymousModel1) -> Unit
+}
+
+pub(open) trait OptionalExplicitHandler {
+  async set(Self, BodyModel) -> Unit
+  async omit(Self, BodyModel) -> Unit
+}
+

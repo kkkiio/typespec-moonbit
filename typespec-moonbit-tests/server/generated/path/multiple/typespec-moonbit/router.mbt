@@ -23,15 +23,18 @@ pub fn[H0 : MultipleHandler] create_router(h0 : H0) -> Router {
       ignore(body_stream)
       h0.no_operation_params()
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/server/path/multiple/{apiVersion}/{keyword}", path) {
       ignore(body_stream)
       let p_2_keyword = ""
       h0.with_operation_path_param(p_2_keyword)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else {
       conn.send_response(404, "NotFound")
       conn.write("not found")
+      conn.end_response()
     }
   }
 }

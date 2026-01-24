@@ -23,7 +23,7 @@ impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with ge
   //   contentType: "application/json",
   //   body: "Monday",
   // }
-  // TODO: implement response body
+  "Monday"
 }
 
 ///|
@@ -35,7 +35,7 @@ impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with ge
   //   contentType: "application/json",
   //   body: "Weekend",
   // }
-  // TODO: implement response body
+  "Weekend"
 }
 
 ///|

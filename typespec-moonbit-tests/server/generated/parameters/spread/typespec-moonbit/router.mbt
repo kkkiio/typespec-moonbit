@@ -138,6 +138,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       }
       h0.spread_as_request_body(p_1_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Post &&
       match_path_template(
         "/parameters/spread/alias/inner-model-parameter/{id}", path,
@@ -153,6 +154,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
         p_2_id, p_2_x_ms_test_header, p_2_body,
       )
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template(
         "/parameters/spread/alias/request-parameter/{id}", path,
@@ -166,6 +168,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       }
       h0.spread_as_request_parameter(p_3_id, p_3_x_ms_test_header, p_3_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template(
         "/parameters/spread/alias/multiple-parameters/{id}", path,
@@ -179,6 +182,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       }
       h0.spread_with_multiple_parameters(p_4_id, p_4_x_ms_test_header, p_4_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Post &&
       match_path_template(
         "/parameters/spread/alias/inner-alias-parameter/{id}", path,
@@ -194,6 +198,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
         p_5_id, p_5_x_ms_test_header, p_5_body,
       )
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/parameters/spread/model/request-body", path) {
       let body_bytes = body_stream.read_all()
@@ -203,6 +208,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       }
       h1.spread_as_request_body(p_6_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template(
         "/parameters/spread/model/composite-request-only-with-body", path,
@@ -214,6 +220,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       }
       h1.spread_composite_request_only_with_body(p_7_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template(
         "/parameters/spread/model/composite-request-without-body/{name}", path,
@@ -223,6 +230,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       let p_8_test_header = ""
       h1.spread_composite_request_without_body(p_8_name, p_8_test_header)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template(
         "/parameters/spread/model/composite-request/{name}", path,
@@ -236,6 +244,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       }
       h1.spread_composite_request(p_9_name, p_9_test_header, p_9_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template(
         "/parameters/spread/model/composite-request-mix/{name}", path,
@@ -249,9 +258,11 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       }
       h1.spread_composite_request_mix(p_10_name, p_10_test_header, p_10_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else {
       conn.send_response(404, "NotFound")
       conn.write("not found")
+      conn.end_response()
     }
   }
 }

@@ -152,7 +152,8 @@ pub fn[
       match_path_template("/type/array/int32", path) {
       ignore(body_stream)
       h0.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/int32", path) {
       let body_bytes = body_stream.read_all()
@@ -162,11 +163,13 @@ pub fn[
       }
       h0.put(p_2_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/int64", path) {
       ignore(body_stream)
       h1.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/int64", path) {
       let body_bytes = body_stream.read_all()
@@ -176,11 +179,13 @@ pub fn[
       }
       h1.put(p_4_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/model", path) {
       ignore(body_stream)
       h2.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/model", path) {
       let body_bytes = body_stream.read_all()
@@ -190,11 +195,13 @@ pub fn[
       }
       h2.put(p_6_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/string", path) {
       ignore(body_stream)
       h3.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/string", path) {
       let body_bytes = body_stream.read_all()
@@ -204,11 +211,13 @@ pub fn[
       }
       h3.put(p_8_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/boolean", path) {
       ignore(body_stream)
       h4.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/boolean", path) {
       let body_bytes = body_stream.read_all()
@@ -218,11 +227,13 @@ pub fn[
       }
       h4.put(p_10_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/float32", path) {
       ignore(body_stream)
       h5.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/float32", path) {
       let body_bytes = body_stream.read_all()
@@ -232,11 +243,13 @@ pub fn[
       }
       h5.put(p_12_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/unknown", path) {
       ignore(body_stream)
       h6.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/unknown", path) {
       let body_bytes = body_stream.read_all()
@@ -246,11 +259,13 @@ pub fn[
       }
       h6.put(p_14_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/datetime", path) {
       ignore(body_stream)
       h7.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/datetime", path) {
       let body_bytes = body_stream.read_all()
@@ -260,11 +275,13 @@ pub fn[
       }
       h7.put(p_16_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/duration", path) {
       ignore(body_stream)
       h8.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/duration", path) {
       let body_bytes = body_stream.read_all()
@@ -274,11 +291,13 @@ pub fn[
       }
       h8.put(p_18_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-float", path) {
       ignore(body_stream)
       h9.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/nullable-float", path) {
       let body_bytes = body_stream.read_all()
@@ -288,11 +307,13 @@ pub fn[
       }
       h9.put(p_20_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-int32", path) {
       ignore(body_stream)
       h10.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/nullable-int32", path) {
       let body_bytes = body_stream.read_all()
@@ -302,11 +323,13 @@ pub fn[
       }
       h10.put(p_22_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-model", path) {
       ignore(body_stream)
       h11.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/nullable-model", path) {
       let body_bytes = body_stream.read_all()
@@ -316,11 +339,13 @@ pub fn[
       }
       h11.put(p_24_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-string", path) {
       ignore(body_stream)
       h12.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/nullable-string", path) {
       let body_bytes = body_stream.read_all()
@@ -330,11 +355,13 @@ pub fn[
       }
       h12.put(p_26_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-boolean", path) {
       ignore(body_stream)
       h13.get()
-      conn.send_response(204, "No Content")
+      conn.send_response(200, "OK")
+      conn.end_response()
     } else if req.meth == @http.Put &&
       match_path_template("/type/array/nullable-boolean", path) {
       let body_bytes = body_stream.read_all()
@@ -344,9 +371,11 @@ pub fn[
       }
       h13.put(p_28_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else {
       conn.send_response(404, "NotFound")
       conn.write("not found")
+      conn.end_response()
     }
   }
 }

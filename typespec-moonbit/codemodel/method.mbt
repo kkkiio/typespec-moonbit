@@ -14,5 +14,7 @@ pub(all) struct Method {
   http_method : String
   /// 默认响应状态码
   status_code : Int
+  /// 默认响应体类型（如果存在）
+  response_body : TypeRef?
   parameters : Array[Parameter]
 }

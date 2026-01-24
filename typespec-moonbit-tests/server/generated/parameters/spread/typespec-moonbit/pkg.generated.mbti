@@ -1,0 +1,110 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-moonbit-tests/server/generated/parameters/spread/typespec-moonbit"
+
+import {
+  "moonbitlang/async/http",
+  "moonbitlang/async/io",
+  "moonbitlang/core/json",
+}
+
+// Values
+pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(H0, H1) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+
+// Errors
+
+// Types and methods
+pub(all) struct AnonymousModel1 {
+  name : String
+}
+pub impl Default for AnonymousModel1
+pub impl Show for AnonymousModel1
+pub impl ToJson for AnonymousModel1
+pub impl @json.FromJson for AnonymousModel1
+
+pub(all) struct AnonymousModel2 {
+  name : String
+}
+pub impl Default for AnonymousModel2
+pub impl Show for AnonymousModel2
+pub impl ToJson for AnonymousModel2
+pub impl @json.FromJson for AnonymousModel2
+
+pub(all) struct AnonymousModel3 {
+  name : String
+}
+pub impl Default for AnonymousModel3
+pub impl Show for AnonymousModel3
+pub impl ToJson for AnonymousModel3
+pub impl @json.FromJson for AnonymousModel3
+
+pub(all) struct AnonymousModel4 {
+  required_string : String
+  optional_int : String
+  required_int_list : Array
+  optional_string_list : Array
+}
+pub impl Default for AnonymousModel4
+pub impl Show for AnonymousModel4
+pub impl ToJson for AnonymousModel4
+pub impl @json.FromJson for AnonymousModel4
+
+pub(all) struct AnonymousModel5 {
+  name : String
+  age : String
+}
+pub impl Default for AnonymousModel5
+pub impl Show for AnonymousModel5
+pub impl ToJson for AnonymousModel5
+pub impl @json.FromJson for AnonymousModel5
+
+pub(all) struct AnonymousModel6 {
+  name : String
+}
+pub impl Default for AnonymousModel6
+pub impl Show for AnonymousModel6
+pub impl ToJson for AnonymousModel6
+pub impl @json.FromJson for AnonymousModel6
+
+pub(all) struct AnonymousModel7 {
+  prop : String
+}
+pub impl Default for AnonymousModel7
+pub impl Show for AnonymousModel7
+pub impl ToJson for AnonymousModel7
+pub impl @json.FromJson for AnonymousModel7
+
+pub(all) struct Array {
+}
+pub impl Default for Array
+pub impl Show for Array
+pub impl ToJson for Array
+pub impl @json.FromJson for Array
+
+pub(all) struct BodyParameter {
+  name : String
+}
+pub impl Default for BodyParameter
+pub impl Show for BodyParameter
+pub impl ToJson for BodyParameter
+pub impl @json.FromJson for BodyParameter
+
+// Type aliases
+pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+
+// Traits
+pub(open) trait AliasHandler {
+  async spread_as_request_body(Self, AnonymousModel1) -> Unit
+  async spread_parameter_with_inner_model(Self, String, String, AnonymousModel2) -> Unit
+  async spread_as_request_parameter(Self, String, String, AnonymousModel3) -> Unit
+  async spread_with_multiple_parameters(Self, String, String, AnonymousModel4) -> Unit
+  async spread_parameter_with_inner_alias(Self, String, String, AnonymousModel5) -> Unit
+}
+
+pub(open) trait ModelHandler {
+  async spread_as_request_body(Self, AnonymousModel6) -> Unit
+  async spread_composite_request_only_with_body(Self, BodyParameter) -> Unit
+  async spread_composite_request_without_body(Self, String, String) -> Unit
+  async spread_composite_request(Self, String, String, BodyParameter) -> Unit
+  async spread_composite_request_mix(Self, String, String, AnonymousModel7) -> Unit
+}
+

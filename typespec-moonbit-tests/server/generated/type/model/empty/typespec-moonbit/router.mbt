@@ -8,6 +8,15 @@ pub(all) struct EmptyInput {} derive (
 )
 
 ///|
+/// Model EmptyOutput
+pub(all) struct EmptyOutput {} derive (
+  Show,
+  Default,
+  ToJson,
+  @json.FromJson(rename_fields="camelCase"),
+)
+
+///|
 /// Model EmptyInputOutput
 pub(all) struct EmptyInputOutput {} derive (
   Show,
@@ -20,8 +29,8 @@ pub(all) struct EmptyInputOutput {} derive (
 /// Traits for operation handlers
 pub(open) trait EmptyHandler {
   async put_empty(Self, body : EmptyInput) -> Unit
-  async get_empty(Self) -> Unit
-  async post_round_trip_empty(Self, body : EmptyInputOutput) -> Unit
+  async get_empty(Self) -> EmptyOutput
+  async post_round_trip_empty(Self, body : EmptyInputOutput) -> EmptyInputOutput
 }
 
 ///|
@@ -46,11 +55,15 @@ pub fn[H0 : EmptyHandler] create_router(h0 : H0) -> Router {
       }
       h0.put_empty(p_1_body)
       conn.send_response(204, "No Content")
+      conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/model/empty/alone", path) {
       ignore(body_stream)
-      h0.get_empty()
-      conn.send_response(204, "No Content")
+      let resp_body = h0.get_empty()
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
+      conn.end_response()
     } else if req.meth == @http.Post &&
       match_path_template("/type/model/empty/round-trip", path) {
       let body_bytes = body_stream.read_all()
@@ -58,11 +71,15 @@ pub fn[H0 : EmptyHandler] create_router(h0 : H0) -> Router {
       let p_3_body : EmptyInputOutput = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h0.post_round_trip_empty(p_3_body)
-      conn.send_response(204, "No Content")
+      let resp_body = h0.post_round_trip_empty(p_3_body)
+      let headers : Map[String, String] = { "content-type": "application/json" }
+      conn.send_response(200, "OK", extra_headers=headers)
+      conn.write(resp_body.to_json().stringify())
+      conn.end_response()
     } else {
       conn.send_response(404, "NotFound")
       conn.write("not found")
+      conn.end_response()
     }
   }
 }
