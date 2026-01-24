@@ -116,7 +116,8 @@ let router_template : String =
   #|
   #|pub fn[{{#clients}}H{{client_index}} : {{trait_name}}{{^is_last}}, {{/is_last}}{{/clients}}] create_router({{#clients}}{{handler_var}} : H{{client_index}}{{^is_last}}, {{/is_last}}{{/clients}}) -> Router {
   #|  async fn(req : @http.Request, body_stream : &@io.Reader, conn : @http.ServerConnection) {
-  #|    let path = strip_request_query(req.path)
+  #|    let full_path = req.path
+  #|    let path = strip_request_query(full_path)
   #|    if false { () }
   #|    {{#clients}}
   #|      {{#methods}}
@@ -128,7 +129,10 @@ let router_template : String =
   #|      {{/has_body}}
   #|      {{#params}}
   #|      {{#isBody}}{{#isString}}let {{var_name}} = body_str{{/isString}}{{^isString}}let {{var_name}} : {{type_str}} = try { @json.from_json(@json.parse(body_str)) } catch { _ => @json.from_json(null) }{{/isString}}{{/isBody}}
-  #|      {{^isBody}}let {{var_name}} = ""{{/isBody}}
+  #|      {{#isPath}}let {{var_name}} = get_path_param("{{{path_template}}}", path, "{{wire_name}}"){{/isPath}}
+  #|      {{#isHeader}}let {{var_name}} = get_header(req.headers, "{{wire_name}}"){{/isHeader}}
+  #|      {{#isQuery}}let {{var_name}} = get_query_param(full_path, "{{wire_name}}"){{/isQuery}}
+  #|      {{^isBody}}{{^isPath}}{{^isHeader}}{{^isQuery}}let {{var_name}} = ""{{/isQuery}}{{/isHeader}}{{/isPath}}{{/isBody}}
   #|      {{/params}}
   #|      {{#has_response_body}}let resp_body = {{{handler_var}}}.{{handler_method}}({{#params}}{{var_name}}{{^is_last}}, {{/is_last}}{{/params}})
   #|      let headers : Map[String, String] = { "content-type": "application/json" }
@@ -212,10 +216,14 @@ fn emit_create_router(crate : @codemodel.Crate) -> String raise {
         let type_str = type_ref_to_string(param.type_)
         let param_ctx : Json = {
           "name": @case.snake_case(param.name),
+          "wire_name": param.name,
           "var_name": var_name,
           "location": param.location,
           "type_str": type_str,
           "isBody": param.location == "body",
+          "isPath": param.location == "path",
+          "isHeader": param.location == "header",
+          "isQuery": param.location == "query",
           "isString": type_str == "String",
           "is_last": j == param_count - 1,
         }
@@ -511,6 +519,9 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
   buf.write_string(emit_create_router(crate))
   buf.write_string(strip_request_query_code)
   buf.write_string(match_path_template_code)
+  buf.write_string(get_path_param_code)
+  buf.write_string(get_header_code)
+  buf.write_string(get_query_param_code)
   buf.to_string()
 }
 
@@ -527,19 +538,112 @@ let strip_request_query_code =
 let match_path_template_code =
   #|///|
   #|fn match_path_template(template : String, path : String) -> Bool {
-  #|  let t = template.trim(char_set="/")
-  #|  let p = path.trim(char_set="/")
-  #|  let t_segs = if t == "" { [] } else { t.split("/").to_array() }
-  #|  let p_segs = if p == "" { [] } else { p.split("/").to_array() }
-  #|  if t_segs.length() != p_segs.length() { return false }
-  #|  for i in 0..<t_segs.length() {
-  #|    let ts = t_segs[i].to_string()
-  #|    let ps = p_segs[i].to_string()
-  #|    if ts.length() >= 2 && ts.has_prefix("{") && ts.has_suffix("}") {
-  #|      if ps == "" { return false }
-  #|    } else if ts != ps { return false }
+  #|  let tlen = template.length()
+  #|  let plen = path.length()
+  #|  let mut ti = 0
+  #|  let mut pi = 0
+  #|  while ti < tlen && pi < plen {
+  #|    if template.code_unit_at(ti) == '{' {
+  #|      // find matching `}` in template
+  #|      let mut close = ti + 1
+  #|      while close < tlen && template.code_unit_at(close) != '}' {
+  #|        close += 1
+  #|      }
+  #|      if close >= tlen {
+  #|        return false
+  #|      }
+  #|      // match a non-empty path segment
+  #|      let seg_start = pi
+  #|      while pi < plen && path.code_unit_at(pi) != '/' {
+  #|        pi += 1
+  #|      }
+  #|      if pi == seg_start {
+  #|        return false
+  #|      }
+  #|      ti = close + 1
+  #|    } else {
+  #|      if template.code_unit_at(ti) != path.code_unit_at(pi) {
+  #|        return false
+  #|      }
+  #|      ti += 1
+  #|      pi += 1
+  #|    }
   #|  }
-  #|  true
+  #|  ti == tlen && pi == plen
+  #|}
+  #|
+
+///|
+let get_path_param_code =
+  #|///|
+  #|fn get_path_param(template : String, path : String, name : String) -> String {
+  #|  let tlen = template.length()
+  #|  let plen = path.length()
+  #|  let mut ti = 0
+  #|  let mut pi = 0
+  #|  while ti < tlen && pi < plen {
+  #|    if template.code_unit_at(ti) == '{' {
+  #|      let mut close = ti + 1
+  #|      while close < tlen && template.code_unit_at(close) != '}' {
+  #|        close += 1
+  #|      }
+  #|      if close >= tlen {
+  #|        return ""
+  #|      }
+  #|      let key_sb = StringBuilder::new(size_hint=close - (ti + 1))
+  #|      for k in (ti + 1)..<close {
+  #|        key_sb.write_char(template.code_unit_at(k).to_int().unsafe_to_char())
+  #|      }
+  #|      let key = key_sb.to_string()
+  #|      let seg_start = pi
+  #|      while pi < plen && path.code_unit_at(pi) != '/' {
+  #|        pi += 1
+  #|      }
+  #|      if key == name {
+  #|        let seg_sb = StringBuilder::new(size_hint=pi - seg_start)
+  #|        for k in seg_start..<pi {
+  #|          seg_sb.write_char(path.code_unit_at(k).to_int().unsafe_to_char())
+  #|        }
+  #|        return seg_sb.to_string()
+  #|      }
+  #|      ti = close + 1
+  #|    } else {
+  #|      if template.code_unit_at(ti) != path.code_unit_at(pi) {
+  #|        return ""
+  #|      }
+  #|      ti += 1
+  #|      pi += 1
+  #|    }
+  #|  }
+  #|  ""
+  #|}
+  #|
+
+///|
+let get_header_code =
+  #|///|
+  #|fn get_header(headers : Map[String, String], name : String) -> String {
+  #|  match headers.get(name.to_lower().to_string()) {
+  #|    Some(v) => v
+  #|    None => ""
+  #|  }
+  #|}
+  #|
+
+///|
+let get_query_param_code =
+  #|///|
+  #|fn get_query_param(full_path : String, name : String) -> String {
+  #|  let parts = full_path.split("?").to_array()
+  #|  if parts.length() < 2 { return "" }
+  #|  let query = parts[1].to_string()
+  #|  for pair in query.split("&") {
+  #|    let kv = pair.split("=").to_array()
+  #|    if kv.length() >= 2 {
+  #|      if kv[0].to_string() == name { return kv[1].to_string() }
+  #|    }
+  #|  }
+  #|  ""
   #|}
   #|
 
