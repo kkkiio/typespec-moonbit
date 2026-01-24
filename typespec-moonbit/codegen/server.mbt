@@ -131,10 +131,10 @@ fn status_reason_phrase(code : Int) -> String {
 fn emit_create_router(crate : @codemodel.Crate) -> String raise {
   let clients = crate.clients
   let mut op_counter = 0
-  let clients_ctx = Array::new()
+  let clients_ctx : Array[Json] = Array::new()
   for i in 0..<clients.length() {
     let client = clients[i]
-    let methods_arr = Array::new()
+    let methods_arr : Array[Json] = Array::new()
     for op in client.methods {
       op_counter += 1
       let meth = server_meth_ctor(op.http_method)
@@ -174,37 +174,29 @@ fn emit_create_router(crate : @codemodel.Crate) -> String raise {
         Some(t) => type_ref_to_string(t)
         None => "Unit"
       }
-      methods_arr.push(
-        Json::object({
-          "method_name": Json::string(@case.snake_case(op.name)),
-          "handler_method": Json::string(@case.snake_case(op.name)),
-          "http_meth_token": Json::string(meth),
-          "path_template": Json::string(tmpl),
-          "has_body": Json::boolean(has_body),
-          "status_code": Json::number(op.status_code.to_double()),
-          "reason_phrase": Json::string(status_reason_phrase(op.status_code)),
-          "has_response_body": Json::boolean(has_response_body),
-          "return_type": Json::string(return_type),
-          "params": Json::array(params_arr),
-        }),
-      )
+      methods_arr.push({
+        "method_name": @case.snake_case(op.name),
+        "handler_method": @case.snake_case(op.name),
+        "http_meth_token": meth,
+        "path_template": tmpl,
+        "has_body": has_body,
+        "status_code": op.status_code.to_double(),
+        "reason_phrase": status_reason_phrase(op.status_code),
+        "has_response_body": has_response_body,
+        "return_type": return_type,
+        "params": params_arr,
+      })
     }
-    clients_ctx.push(
-      Json::object({
-        "handler_var": Json::string("h\{i}"),
-        "trait_name": Json::string(
-          @case.pascal_case(sanitize_identifier(client.name)) + "Handler",
-        ),
-        "client_index": Json::number(i.to_double()),
-        "is_last": Json::boolean(i == clients.length() - 1),
-        "methods": Json::array(methods_arr),
-      }),
-    )
+    clients_ctx.push({
+      "handler_var": "h\{i}",
+      "trait_name": @case.pascal_case(sanitize_identifier(client.name)) +
+      "Handler",
+      "client_index": i.to_double(),
+      "is_last": i == clients.length() - 1,
+      "methods": methods_arr,
+    })
   }
-  @mustache.parse(
-    router_template,
-    Json::object({ "clients": Json::array(clients_ctx) }),
-  )
+  @mustache.parse(router_template, { "clients": clients_ctx })
 }
 
 ///|
@@ -370,57 +362,46 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
   // 2. Generate Model Structs
   let model_list = models.to_array()
   model_list.sort_by_key(fn(m) { m.0 })
-  let models_json = model_list.map(fn(item) {
+  let models_json = model_list.map(fn(item) -> Json {
     let m = item.1
-    let fields = m.fields.map(fn(f) {
-      Json::object({
-        "name": Json::string(@case.snake_case(f.name)),
-        "type": Json::string(type_ref_to_string(f.type_)),
-      })
+    let fields = m.fields.map(fn(f) -> Json {
+      { "name": @case.snake_case(f.name), "type": type_ref_to_string(f.type_) }
     })
-    Json::object({
-      "name": Json::string(m.name),
-      "struct_name": Json::string(@case.pascal_case(m.name)),
-      "fields": Json::array(fields),
-    })
+    {
+      "name": m.name,
+      "struct_name": @case.pascal_case(m.name),
+      "fields": fields,
+    }
   })
-  buf.write_string(
-    @mustache.parse(
-      model_template,
-      Json::object({ "models": Json::array(models_json) }),
-    ),
-  )
+  buf.write_string(@mustache.parse(model_template, { "models": models_json }))
 
   // 3. Generate Handler Traits
 
-  let clients_json = crate.clients.map(fn(client) {
-    let methods = client.methods.map(fn(op) {
-      let params = op.parameters.map(fn(p) {
-        Json::object({
-          "name": Json::string(@case.snake_case(p.name)),
-          "type": Json::string(type_ref_to_string(p.type_)),
-        })
+  let clients_json = crate.clients.map(fn(client) -> Json {
+    let methods = client.methods.map(fn(op) -> Json {
+      let params = op.parameters.map(fn(p) -> Json {
+        {
+          "name": @case.snake_case(p.name),
+          "type": type_ref_to_string(p.type_),
+        }
       })
       let return_type = match op.response_body {
         Some(t) => type_ref_to_string(t)
         None => "Unit"
       }
-      Json::object({
-        "method_name": Json::string(@case.snake_case(op.name)),
-        "return_type": Json::string(return_type),
-        "params": Json::array(params),
-      })
+      {
+        "method_name": @case.snake_case(op.name),
+        "return_type": return_type,
+        "params": params,
+      }
     })
-    Json::object({
-      "trait_name": Json::string(@case.pascal_case(client.name) + "Handler"),
-      "methods": Json::array(methods),
-    })
+    {
+      "trait_name": @case.pascal_case(client.name) + "Handler",
+      "methods": methods,
+    }
   })
   buf.write_string(
-    @mustache.parse(
-      handler_trait_template,
-      Json::object({ "clients": Json::array(clients_json) }),
-    ),
+    @mustache.parse(handler_trait_template, { "clients": clients_json }),
   )
   buf.write_string(emit_create_router(crate))
   buf.write_string(strip_request_query_code)
