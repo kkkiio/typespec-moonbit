@@ -3,11 +3,14 @@
 ///|
 /// 生成 server 包的文件列表。
 pub fn emit_server_files(crate : @codemodel.Crate) -> Array[OutputFile] raise {
-  let files = Array::new(capacity=4)
+  let files = Array::new(capacity=5)
   files.push(OutputFile::new("moon.pkg.json", emit_server_moon_pkg_json()))
   files.push(OutputFile::new("README.mbt.md", emit_server_readme(crate)))
   files.push(OutputFile::new("models.mbt", emit_server_models(crate)))
   files.push(OutputFile::new("router.mbt", emit_server_router(crate)))
+  files.push(
+    OutputFile::new("router_helpers.mbt", emit_server_router_helpers(crate)),
+  )
   files
 }
 
@@ -411,40 +414,83 @@ test "emit_server_router" {
       },
     ],
   }
-  let models_code = emit_server_models(crate)
-  inspect(models_code.contains("pub(all) struct Nullable"), content="true")
-  inspect(models_code.contains("pub(all) struct Item"), content="true")
   let router_code = emit_server_router(crate)
   inspect(
-    router_code.contains("pub(open) trait TestClientHandler"),
-    content="true",
+    router_code,
+    content=(
+      #|
+      #|///|
+      #|/// Traits for operation handlers
+      #|pub(open) trait TestClientHandler {
+      #|  async get_item(Self, item_id : String) -> Unit
+      #|  async create_item(Self, body : Item) -> Unit
+      #|  
+      #|}
+      #|pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+      #|
+      #|pub fn[H0 : TestClientHandler] create_router(
+      #|  test_client_handler~ : H0,
+      #|  
+      #|) -> Router {
+      #|  async fn(req : @http.Request, body_stream : &@io.Reader, conn : @http.ServerConnection) {
+      #|    let full_path = req.path
+      #|    let path = strip_request_query(full_path)
+      #|    if false { () }
+      #|    
+      #|      
+      #|    else if req.meth == @http.Get && match_path_template("/items/{itemId}", path) {
+      #|      
+      #|      ignore(body_stream)
+      #|      
+      #|      
+      #|      
+      #|      let p_1_item_id = get_path_param("/items/{itemId}", path, "itemId")
+      #|      
+      #|      
+      #|      
+      #|      
+      #|      
+      #|      test_client_handler.get_item(p_1_item_id)
+      #|      conn.send_response(200, "OK")
+      #|      conn.end_response()
+      #|      
+      #|    }
+      #|      
+      #|    else if req.meth == @http.Post && match_path_template("/items", path) {
+      #|      let body_bytes = body_stream.read_all()
+      #|      let body_str = body_bytes.text()
+      #|      
+      #|      
+      #|      
+      #|      let p_2_body : Item = try { @json.from_json(@json.parse(body_str)) } catch { _ => @json.from_json(null) }
+      #|      
+      #|      
+      #|      
+      #|      
+      #|      
+      #|      
+      #|      test_client_handler.create_item(p_2_body)
+      #|      conn.send_response(200, "OK")
+      #|      conn.end_response()
+      #|      
+      #|    }
+      #|      
+      #|    
+      #|    else {
+      #|      conn.send_response(404, "NotFound")
+      #|      conn.write("not found")
+      #|      conn.end_response()
+      #|    }
+      #|  }
+      #|}
+      #|
+    ),
   )
-  inspect(
-    router_code.contains("pub fn[H0 : TestClientHandler] create_router"),
-    content="true",
-  )
-  inspect(router_code.contains("pub(all) struct Item"), content="false")
 }
 
 ///|
 fn emit_server_router(crate : @codemodel.Crate) -> String raise {
   let buf = StringBuilder::new(size_hint=8192)
-  let mut need_path_param = false
-  let mut need_header = false
-  let mut need_query = false
-  for client in crate.clients {
-    for op in client.methods {
-      for p in op.parameters {
-        if p.location == "path" {
-          need_path_param = true
-        } else if p.location == "header" {
-          need_header = true
-        } else if p.location == "query" {
-          need_query = true
-        }
-      }
-    }
-  }
   // 1. Generate Handler Traits
 
   let clients_json = crate.clients.map(fn(client) -> Json {
@@ -475,6 +521,36 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
   )
   // 2. Generate Router
   buf.write_string(emit_create_router(crate))
+  buf.to_string()
+}
+
+///|
+fn analyze_router_helper_needs(crate : @codemodel.Crate) -> (Bool, Bool, Bool) {
+  let mut need_path_param = false
+  let mut need_header = false
+  let mut need_query = false
+  for client in crate.clients {
+    for op in client.methods {
+      for p in op.parameters {
+        if p.location == "path" {
+          need_path_param = true
+        } else if p.location == "header" {
+          need_header = true
+        } else if p.location == "query" {
+          need_query = true
+        }
+      }
+    }
+  }
+  (need_path_param, need_header, need_query)
+}
+
+///|
+fn emit_server_router_helpers(crate : @codemodel.Crate) -> String {
+  let buf = StringBuilder::new(size_hint=2048)
+  let (need_path_param, need_header, need_query) = analyze_router_helper_needs(
+    crate,
+  )
   buf.write_string(strip_request_query_code)
   buf.write_string(match_path_template_code)
   if need_path_param {
@@ -487,6 +563,125 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
     buf.write_string(get_query_param_code)
   }
   buf.to_string()
+}
+
+///|
+test "emit_server_router_helpers" {
+  let crate : @codemodel.Crate = {
+    name: "test_crate",
+    version: "0.1.0",
+    clients: [
+      @codemodel.Client::{
+        name: "TestClient",
+        methods: [
+          @codemodel.Method::{
+            name: "GetItem",
+            http_method: "GET",
+            path: "/items/{itemId}",
+            status_code: 200,
+            response_body: None,
+            parameters: [
+              @codemodel.Parameter::{
+                name: "itemId",
+                location: "path",
+                type_: @codemodel.TypeRef::String,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  }
+  let helpers_code = emit_server_router_helpers(crate)
+  inspect(
+    helpers_code,
+    content=(
+      #|///|
+      #|fn strip_request_query(path : String) -> String {
+      #|  let parts = path.split("?").to_array()
+      #|  if parts.length() == 0 { path } else { parts[0].to_string() }
+      #|}
+      #|///|
+      #|fn match_path_template(template : String, path : String) -> Bool {
+      #|  let tlen = template.length()
+      #|  let plen = path.length()
+      #|  let mut ti = 0
+      #|  let mut pi = 0
+      #|  while ti < tlen && pi < plen {
+      #|    if template.code_unit_at(ti) == '{' {
+      #|      // find matching `}` in template
+      #|      let mut close = ti + 1
+      #|      while close < tlen && template.code_unit_at(close) != '}' {
+      #|        close += 1
+      #|      }
+      #|      if close >= tlen {
+      #|        return false
+      #|      }
+      #|      // match a non-empty path segment
+      #|      let seg_start = pi
+      #|      while pi < plen && path.code_unit_at(pi) != '/' {
+      #|        pi += 1
+      #|      }
+      #|      if pi == seg_start {
+      #|        return false
+      #|      }
+      #|      ti = close + 1
+      #|    } else {
+      #|      if template.code_unit_at(ti) != path.code_unit_at(pi) {
+      #|        return false
+      #|      }
+      #|      ti += 1
+      #|      pi += 1
+      #|    }
+      #|  }
+      #|  ti == tlen && pi == plen
+      #|}
+      #|///|
+      #|fn get_path_param(template : String, path : String, name : String) -> String {
+      #|  let tlen = template.length()
+      #|  let plen = path.length()
+      #|  let mut ti = 0
+      #|  let mut pi = 0
+      #|  while ti < tlen && pi < plen {
+      #|    if template.code_unit_at(ti) == '{' {
+      #|      let mut close = ti + 1
+      #|      while close < tlen && template.code_unit_at(close) != '}' {
+      #|        close += 1
+      #|      }
+      #|      if close >= tlen {
+      #|        return ""
+      #|      }
+      #|      let key_sb = StringBuilder::new(size_hint=close - (ti + 1))
+      #|      for k in (ti + 1)..<close {
+      #|        key_sb.write_char(template.code_unit_at(k).to_int().unsafe_to_char())
+      #|      }
+      #|      let key = key_sb.to_string()
+      #|      let seg_start = pi
+      #|      while pi < plen && path.code_unit_at(pi) != '/' {
+      #|        pi += 1
+      #|      }
+      #|      if key == name {
+      #|        let seg_sb = StringBuilder::new(size_hint=pi - seg_start)
+      #|        for k in seg_start..<pi {
+      #|          seg_sb.write_char(path.code_unit_at(k).to_int().unsafe_to_char())
+      #|        }
+      #|        return seg_sb.to_string()
+      #|      }
+      #|      ti = close + 1
+      #|    } else {
+      #|      if template.code_unit_at(ti) != path.code_unit_at(pi) {
+      #|        return ""
+      #|      }
+      #|      ti += 1
+      #|      pi += 1
+      #|    }
+      #|  }
+      #|  ""
+      #|}
+      #|
+
+    ),
+  )
 }
 
 ///|
