@@ -1,56 +1,8 @@
 ///|
-/// Nullable helper used for `T | null`.
-pub(all) struct Nullable[T] {
-  value : T?
-} derive(Show, Default)
-
-///|
-pub fn[T] Nullable::some(v : T) -> Nullable[T] {
-  { value: Some(v) }
-}
-
-///|
-pub fn[T] Nullable::none() -> Nullable[T] {
-  { value: None }
-}
-
-///|
-pub impl[T : ToJson] ToJson for Nullable[T] with to_json(self : Nullable[T]) -> Json {
-  match self.value {
-    Some(v) => v.to_json()
-    None => Json::null()
-  }
-}
-
-///|
-pub impl[T : @json.FromJson] @json.FromJson for Nullable[T] with from_json(
-  j : Json,
-  path : @json.JsonPath,
-) -> Nullable[T] raise @json.JsonDecodeError {
-  if j == Json::null() {
-    { value: None }
-  } else {
-    { value: Some(@json.from_json(j, path~)) }
-  }
-}
-
-///|
-/// Model BodyModel
-pub(all) struct BodyModel {
-  name : String
-} derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
-
-///|
-/// Model AnonymousModel1
-pub(all) struct AnonymousModel1 {
-  name : String
-} derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
-
-///|
 /// Traits for operation handlers
 pub(open) trait BodyOptionalityHandler {
   async required_explicit(Self, body : BodyModel) -> Unit
-  async required_implicit(Self, body : AnonymousModel1) -> Unit
+  async required_implicit(Self, body : BodyModel0) -> Unit
 }
 
 ///|
@@ -95,7 +47,7 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
       ) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_2_body : AnonymousModel1 = @json.from_json(@json.parse(body_str)) catch {
+      let p_2_body : BodyModel0 = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
       h0.required_implicit(p_2_body)

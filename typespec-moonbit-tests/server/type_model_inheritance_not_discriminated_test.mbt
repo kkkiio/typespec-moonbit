@@ -18,7 +18,7 @@ struct NotDiscriminatedHandlerImpl {}
 
 ///|
 impl @type_model_inheritance_not_discriminated.NotDiscriminatedHandler for NotDiscriminatedHandlerImpl with get_valid(
-  _self : NotDiscriminatedHandlerImpl,
+  _self,
 ) {
   // Should return: { name: "abc", age: 32, smart: true }
   { name: "abc", age: 32, smart: true }
@@ -26,8 +26,8 @@ impl @type_model_inheritance_not_discriminated.NotDiscriminatedHandler for NotDi
 
 ///|
 impl @type_model_inheritance_not_discriminated.NotDiscriminatedHandler for NotDiscriminatedHandlerImpl with post_valid(
-  _self : NotDiscriminatedHandlerImpl,
-  body : @type_model_inheritance_not_discriminated.Siamese,
+  _self,
+  body,
 ) {
   // In TypeScript: assert.deepStrictEqual(input, { name: "abc", age: 32, smart: true })
   guard body.name == "abc" else {
@@ -41,8 +41,8 @@ impl @type_model_inheritance_not_discriminated.NotDiscriminatedHandler for NotDi
 
 ///|
 impl @type_model_inheritance_not_discriminated.NotDiscriminatedHandler for NotDiscriminatedHandlerImpl with put_valid(
-  _self : NotDiscriminatedHandlerImpl,
-  body : @type_model_inheritance_not_discriminated.Siamese,
+  _self,
+  body,
 ) {
   // In TypeScript: assert.deepStrictEqual(input, { name: "abc", age: 32, smart: true })
   // Should return: { name: "abc", age: 32, smart: true }

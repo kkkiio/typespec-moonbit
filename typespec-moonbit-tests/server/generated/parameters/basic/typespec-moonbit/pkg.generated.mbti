@@ -13,13 +13,13 @@ pub fn[H0 : ExplicitBodyHandler, H1 : ImplicitBodyHandler] create_router(H0, H1)
 // Errors
 
 // Types and methods
-pub(all) struct AnonymousModel1 {
+pub(all) struct Model0 {
   name : String
 }
-pub impl Default for AnonymousModel1
-pub impl Show for AnonymousModel1
-pub impl ToJson for AnonymousModel1
-pub impl @json.FromJson for AnonymousModel1
+pub impl Default for Model0
+pub impl Show for Model0
+pub impl ToJson for Model0
+pub impl @json.FromJson for Model0
 
 pub(all) struct Nullable[T] {
   value : T?
@@ -48,6 +48,6 @@ pub(open) trait ExplicitBodyHandler {
 }
 
 pub(open) trait ImplicitBodyHandler {
-  async simple(Self, AnonymousModel1) -> Unit
+  async simple(Self, Model0) -> Unit
 }
 

@@ -13,14 +13,6 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
 // Errors
 
 // Types and methods
-pub(all) struct AnonymousModel1 {
-  name : String
-}
-pub impl Default for AnonymousModel1
-pub impl Show for AnonymousModel1
-pub impl ToJson for AnonymousModel1
-pub impl @json.FromJson for AnonymousModel1
-
 pub(all) struct BodyModel {
   name : String
 }
@@ -28,6 +20,14 @@ pub impl Default for BodyModel
 pub impl Show for BodyModel
 pub impl ToJson for BodyModel
 pub impl @json.FromJson for BodyModel
+
+pub(all) struct BodyModel0 {
+  name : String
+}
+pub impl Default for BodyModel0
+pub impl Show for BodyModel0
+pub impl ToJson for BodyModel0
+pub impl @json.FromJson for BodyModel0
 
 pub(all) struct Nullable[T] {
   value : T?
@@ -45,7 +45,7 @@ pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> 
 // Traits
 pub(open) trait BodyOptionalityHandler {
   async required_explicit(Self, BodyModel) -> Unit
-  async required_implicit(Self, AnonymousModel1) -> Unit
+  async required_implicit(Self, BodyModel0) -> Unit
 }
 
 pub(open) trait OptionalExplicitHandler {

@@ -22,16 +22,16 @@ struct BodyOptionalityHandlerImpl {}
 
 ///|
 impl @parameters_body_optionality.BodyOptionalityHandler for BodyOptionalityHandlerImpl with required_explicit(
-  _self : BodyOptionalityHandlerImpl,
-  body : @parameters_body_optionality.BodyModel,
+  _self,
+  body,
 ) {
   assert_eq(body.name, "foo", msg="required_explicit: body name mismatch")
 }
 
 ///|
 impl @parameters_body_optionality.BodyOptionalityHandler for BodyOptionalityHandlerImpl with required_implicit(
-  _self : BodyOptionalityHandlerImpl,
-  body : @parameters_body_optionality.AnonymousModel1,
+  _self,
+  body,
 ) {
   assert_eq(body.name, "foo", msg="required_implicit: body name mismatch")
 }
@@ -41,16 +41,16 @@ struct OptionalExplicitHandlerImpl {}
 
 ///|
 impl @parameters_body_optionality.OptionalExplicitHandler for OptionalExplicitHandlerImpl with set(
-  _self : OptionalExplicitHandlerImpl,
-  body : @parameters_body_optionality.BodyModel,
+  _self,
+  body,
 ) {
   assert_eq(body.name, "foo", msg="optional_explicit.set: body name mismatch")
 }
 
 ///|
 impl @parameters_body_optionality.OptionalExplicitHandler for OptionalExplicitHandlerImpl with omit(
-  _self : OptionalExplicitHandlerImpl,
-  _body : @parameters_body_optionality.BodyModel,
+  _self,
+  _body,
 ) {
   // omit should receive undefined/empty body
   // In TypeScript: assert.isUndefined(options?.body)

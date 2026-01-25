@@ -16,24 +16,22 @@ struct EmptyHandlerImpl {}
 
 ///|
 impl @type_model_empty.EmptyHandler for EmptyHandlerImpl with put_empty(
-  _self : EmptyHandlerImpl,
-  _body : @type_model_empty.EmptyInput,
+  _self,
+  _body,
 ) {
   // In TypeScript: deepStrictEqual(input, {})
   // EmptyInput is an empty struct, so nothing to verify
 }
 
 ///|
-impl @type_model_empty.EmptyHandler for EmptyHandlerImpl with get_empty(
-  _self : EmptyHandlerImpl,
-) {
+impl @type_model_empty.EmptyHandler for EmptyHandlerImpl with get_empty(_self) {
   @type_model_empty.EmptyOutput::{  }
 }
 
 ///|
 impl @type_model_empty.EmptyHandler for EmptyHandlerImpl with post_round_trip_empty(
-  _self : EmptyHandlerImpl,
-  body : @type_model_empty.EmptyInputOutput,
+  _self,
+  body,
 ) {
   // Should return: { body }
   // EmptyInputOutput is an empty struct, round-trip the same empty object

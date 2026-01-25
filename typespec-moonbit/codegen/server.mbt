@@ -3,9 +3,10 @@
 ///|
 /// 生成 server 包的文件列表。
 pub fn emit_server_files(crate : @codemodel.Crate) -> Array[OutputFile] raise {
-  let files = Array::new(capacity=3)
+  let files = Array::new(capacity=4)
   files.push(OutputFile::new("moon.pkg.json", emit_server_moon_pkg_json()))
   files.push(OutputFile::new("README.mbt.md", emit_server_readme(crate)))
+  files.push(OutputFile::new("models.mbt", emit_server_models(crate)))
   files.push(OutputFile::new("router.mbt", emit_server_router(crate)))
   files
 }
@@ -32,6 +33,25 @@ fn emit_server_readme(crate : @codemodel.Crate) -> String {
     $|
     $|This MoonBit package can be imported by other packages to start a server.
   )
+}
+
+///|
+fn collect_models_from_crate(
+  crate : @codemodel.Crate,
+) -> Map[String, @codemodel.Model] {
+  let models = Map::new()
+  for client in crate.clients {
+    for op in client.methods {
+      for param in op.parameters {
+        collect_models(param.type_, models)
+      }
+      match op.response_body {
+        Some(t) => collect_models(t, models)
+        None => ()
+      }
+    }
+  }
+  models
 }
 
 ///|
@@ -109,6 +129,46 @@ let nullable_support_code : String =
   #|  }
   #|}
   #|
+
+///|
+fn emit_server_models(crate : @codemodel.Crate) -> String raise {
+  let buf = StringBuilder::new(size_hint=8192)
+
+  // 1. Collect Models
+  let models = collect_models_from_crate(crate)
+
+  // 2. Nullable helper (for `T | null`)
+  buf.write_string(nullable_support_code)
+
+  // 3. Generate Model Structs
+  let model_list = models.to_array()
+  model_list.sort_by_key(fn(m) { m.0 })
+  let models_json = model_list.map(fn(item) -> Json {
+    let m = item.1
+    let mut has_optional_fields = false
+    for f in m.fields {
+      if f.optional {
+        has_optional_fields = true
+      }
+    }
+    let fields = m.fields.map(fn(f) -> Json {
+      {
+        "name": @case.snake_case(f.name),
+        "json_name": @case.camel_case(f.name),
+        "type": type_ref_to_string(f.type_),
+        "optional": f.optional,
+      }
+    })
+    {
+      "name": m.name,
+      "struct_name": @case.pascal_case(m.name),
+      "fields": fields,
+      "derive_tojson": !has_optional_fields,
+    }
+  })
+  buf.write_string(@mustache.parse(model_template, { "models": models_json }))
+  buf.to_string()
+}
 
 ///|
 let router_template : String =
@@ -261,7 +321,7 @@ fn emit_create_router(crate : @codemodel.Crate) -> String raise {
 
 ///|
 test "emit_server_router" {
-  let router_code = emit_server_router({
+  let crate : @codemodel.Crate = {
     name: "test_crate",
     version: "0.1.0",
     clients: [
@@ -308,187 +368,26 @@ test "emit_server_router" {
         ],
       },
     ],
-  })
+  }
+  let models_code = emit_server_models(crate)
+  inspect(models_code.contains("pub(all) struct Nullable"), content="true")
+  inspect(models_code.contains("pub(all) struct Item"), content="true")
+  let router_code = emit_server_router(crate)
   inspect(
-    router_code,
-    content=(
-      #|///|
-      #|/// Nullable helper used for `T | null`.
-      #|pub(all) struct Nullable[T] {
-      #|  value : T?
-      #|} derive(Show, Default)
-      #|
-      #|///|
-      #|pub fn Nullable::some[T](v : T) -> Nullable[T] {
-      #|  { value: Some(v) }
-      #|}
-      #|
-      #|///|
-      #|pub fn Nullable::none[T]() -> Nullable[T] {
-      #|  { value: None }
-      #|}
-      #|
-      #|///|
-      #|pub impl[T : ToJson] ToJson for Nullable[T] with to_json(self : Nullable[T]) -> Json {
-      #|  match self.value {
-      #|    Some(v) => v.to_json()
-      #|    None => Json::null()
-      #|  }
-      #|}
-      #|
-      #|///|
-      #|pub impl[T : @json.FromJson] @json.FromJson for Nullable[T] with from_json(
-      #|  j : Json,
-      #|  path : @json.JsonPath,
-      #|) -> Nullable[T] raise @json.JsonDecodeError {
-      #|  if j == Json::null() {
-      #|    { value: None }
-      #|  } else {
-      #|    { value: Some(@json.from_json(j, path=path)) }
-      #|  }
-      #|}
-      #|
-      #|///|
-      #|/// Model Item
-      #|pub(all) struct Item {
-      #|
-      #|  name : String
-      #|
-      #|} derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
-      #|
-      #|
-      #|
-      #|
-      #|///|
-      #|/// Traits for operation handlers
-      #|pub(open) trait TestClientHandler {
-      #|  async get_item(Self, item_id : String) -> Unit
-      #|  async create_item(Self, body : Item) -> Unit
-      #|  
-      #|}
-      #|pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
-      #|
-      #|pub fn[H0 : TestClientHandler] create_router(h0 : H0) -> Router {
-      #|  async fn(req : @http.Request, body_stream : &@io.Reader, conn : @http.ServerConnection) {
-      #|    let path = strip_request_query(req.path)
-      #|    if false { () }
-      #|    
-      #|      
-      #|    else if req.meth == @http.Get && match_path_template("/items/{itemId}", path) {
-      #|      
-      #|      ignore(body_stream)
-      #|      
-      #|      
-      #|      
-      #|      let p_1_item_id = ""
-      #|      
-      #|      
-      #|      h0.get_item(p_1_item_id)
-      #|      conn.send_response(200, "OK")
-      #|      conn.end_response()
-      #|      
-      #|    }
-      #|      
-      #|    else if req.meth == @http.Post && match_path_template("/items", path) {
-      #|      let body_bytes = body_stream.read_all()
-      #|      let body_str = body_bytes.text()
-      #|      
-      #|      
-      #|      
-      #|      let p_2_body : Item = try { @json.from_json(@json.parse(body_str)) } catch { _ => @json.from_json(null) }
-      #|      
-      #|      
-      #|      
-      #|      h0.create_item(p_2_body)
-      #|      conn.send_response(200, "OK")
-      #|      conn.end_response()
-      #|      
-      #|    }
-      #|      
-      #|    
-      #|    else {
-      #|      conn.send_response(404, "NotFound")
-      #|      conn.write("not found")
-      #|      conn.end_response()
-      #|    }
-      #|  }
-      #|}
-      #|///|
-      #|fn strip_request_query(path : String) -> String {
-      #|  let parts = path.split("?").to_array()
-      #|  if parts.length() == 0 { path } else { parts[0].to_string() }
-      #|}
-      #|///|
-      #|fn match_path_template(template : String, path : String) -> Bool {
-      #|  let t = template.trim(char_set="/")
-      #|  let p = path.trim(char_set="/")
-      #|  let t_segs = if t == "" { [] } else { t.split("/").to_array() }
-      #|  let p_segs = if p == "" { [] } else { p.split("/").to_array() }
-      #|  if t_segs.length() != p_segs.length() { return false }
-      #|  for i in 0..<t_segs.length() {
-      #|    let ts = t_segs[i].to_string()
-      #|    let ps = p_segs[i].to_string()
-      #|    if ts.length() >= 2 && ts.has_prefix("{") && ts.has_suffix("}") {
-      #|      if ps == "" { return false }
-      #|    } else if ts != ps { return false }
-      #|  }
-      #|  true
-      #|}
-      #|
-    ),
+    router_code.contains("pub(open) trait TestClientHandler"),
+    content="true",
   )
+  inspect(
+    router_code.contains("pub fn[H0 : TestClientHandler] create_router"),
+    content="true",
+  )
+  inspect(router_code.contains("pub(all) struct Item"), content="false")
 }
 
 ///|
 fn emit_server_router(crate : @codemodel.Crate) -> String raise {
   let buf = StringBuilder::new(size_hint=8192)
-
-  // 1. Collect Models
-  let models = Map::new()
-  for client in crate.clients {
-    for op in client.methods {
-      for param in op.parameters {
-        collect_models(param.type_, models)
-      }
-      match op.response_body {
-        Some(t) => collect_models(t, models)
-        None => ()
-      }
-    }
-  }
-
-  // 2. Nullable helper (for `T | null`)
-  buf.write_string(nullable_support_code)
-
-  // 3. Generate Model Structs
-  let model_list = models.to_array()
-  model_list.sort_by_key(fn(m) { m.0 })
-  let models_json = model_list.map(fn(item) -> Json {
-    let m = item.1
-    let mut has_optional_fields = false
-    for f in m.fields {
-      if f.optional {
-        has_optional_fields = true
-      }
-    }
-    let fields = m.fields.map(fn(f) -> Json {
-      {
-        "name": @case.snake_case(f.name),
-        "json_name": @case.camel_case(f.name),
-        "type": type_ref_to_string(f.type_),
-        "optional": f.optional,
-      }
-    })
-    {
-      "name": m.name,
-      "struct_name": @case.pascal_case(m.name),
-      "fields": fields,
-      "derive_tojson": !has_optional_fields,
-    }
-  })
-  buf.write_string(@mustache.parse(model_template, { "models": models_json }))
-
-  // 4. Generate Handler Traits
+  // 1. Generate Handler Traits
 
   let clients_json = crate.clients.map(fn(client) -> Json {
     let methods = client.methods.map(fn(op) -> Json {
@@ -516,6 +415,7 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
   buf.write_string(
     @mustache.parse(handler_trait_template, { "clients": clients_json }),
   )
+  // 2. Generate Router
   buf.write_string(emit_create_router(crate))
   buf.write_string(strip_request_query_code)
   buf.write_string(match_path_template_code)

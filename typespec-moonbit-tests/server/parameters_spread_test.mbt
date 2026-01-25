@@ -17,18 +17,18 @@ struct SpreadAliasHandlerImpl {}
 
 ///|
 impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_as_request_body(
-  _self : SpreadAliasHandlerImpl,
-  body : @parameters_spread.AnonymousModel1,
+  _self,
+  body,
 ) {
   assert_eq(body.name, "foo", msg="alias.spread_as_request_body: name mismatch")
 }
 
 ///|
 impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_parameter_with_inner_model(
-  _self : SpreadAliasHandlerImpl,
-  id : String,
-  x_ms_test_header : String,
-  body : @parameters_spread.AnonymousModel2,
+  _self,
+  id,
+  x_ms_test_header,
+  body,
 ) {
   assert_eq(id, "1", msg="spread_parameter_with_inner_model: id mismatch")
   assert_eq(
@@ -45,10 +45,10 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_para
 
 ///|
 impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_as_request_parameter(
-  _self : SpreadAliasHandlerImpl,
-  id : String,
-  x_ms_test_header : String,
-  body : @parameters_spread.AnonymousModel3,
+  _self,
+  id,
+  x_ms_test_header,
+  body,
 ) {
   assert_eq(id, "1", msg="spread_as_request_parameter: id mismatch")
   assert_eq(
@@ -65,10 +65,10 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_as_r
 
 ///|
 impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_with_multiple_parameters(
-  _self : SpreadAliasHandlerImpl,
-  id : String,
-  x_ms_test_header : String,
-  body : @parameters_spread.AnonymousModel4,
+  _self,
+  id,
+  x_ms_test_header,
+  body,
 ) {
   assert_eq(id, "1", msg="spread_with_multiple_parameters: id mismatch")
   assert_eq(
@@ -88,10 +88,10 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_with
 
 ///|
 impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_parameter_with_inner_alias(
-  _self : SpreadAliasHandlerImpl,
-  id : String,
-  x_ms_test_header : String,
-  body : @parameters_spread.AnonymousModel5,
+  _self,
+  id,
+  x_ms_test_header,
+  body,
 ) {
   assert_eq(id, "1", msg="spread_parameter_with_inner_alias: id mismatch")
   assert_eq(
@@ -112,16 +112,16 @@ struct SpreadModelHandlerImpl {}
 
 ///|
 impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_as_request_body(
-  _self : SpreadModelHandlerImpl,
-  body : @parameters_spread.AnonymousModel6,
+  _self,
+  body,
 ) {
   assert_eq(body.name, "foo", msg="model.spread_as_request_body: name mismatch")
 }
 
 ///|
 impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_composite_request_only_with_body(
-  _self : SpreadModelHandlerImpl,
-  body : @parameters_spread.BodyParameter,
+  _self,
+  body,
 ) {
   assert_eq(
     body.name,
@@ -132,9 +132,9 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_comp
 
 ///|
 impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_composite_request_without_body(
-  _self : SpreadModelHandlerImpl,
-  name : String,
-  test_header : String,
+  _self,
+  name,
+  test_header,
 ) {
   assert_eq(
     name,
@@ -150,10 +150,10 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_comp
 
 ///|
 impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_composite_request(
-  _self : SpreadModelHandlerImpl,
-  name : String,
-  test_header : String,
-  body : @parameters_spread.BodyParameter,
+  _self,
+  name,
+  test_header,
+  body,
 ) {
   assert_eq(name, "foo", msg="spread_composite_request: name mismatch")
   assert_eq(
@@ -170,10 +170,10 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_comp
 
 ///|
 impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_composite_request_mix(
-  _self : SpreadModelHandlerImpl,
-  name : String,
-  test_header : String,
-  body : @parameters_spread.AnonymousModel7,
+  _self,
+  name,
+  test_header,
+  body,
 ) {
   assert_eq(name, "foo", msg="spread_composite_request_mix: name mismatch")
   assert_eq(

@@ -219,6 +219,23 @@ fn extract_parameters(
 let anon_model_counter : Ref[Int] = { val: 0 }
 
 ///|
+extern "js" fn get_cached_anon_model_name(model : @ffi.JsValue) -> @ffi.JsValue =
+  #| (model) => {
+  #|   const cache = (globalThis.__typespec_moonbit_anon_model_names ??= new WeakMap());
+  #|   return cache.get(model);
+  #| }
+
+///|
+extern "js" fn set_cached_anon_model_name(
+  model : @ffi.JsValue,
+  name : String,
+) -> Unit =
+  #| (model, name) => {
+  #|   const cache = (globalThis.__typespec_moonbit_anon_model_names ??= new WeakMap());
+  #|   cache.set(model, name);
+  #| }
+
+///|
 fn resolve_type_ref(
   prop : @ffi.JsValue,
   processed_models : Map[String, @codemodel.Model],
@@ -325,8 +342,62 @@ fn resolve_type_ref(
         ""
       }
       if name == "" {
-        anon_model_counter.val = anon_model_counter.val + 1
-        name = "AnonymousModel\{anon_model_counter.val}"
+        let cached = get_cached_anon_model_name(prop)
+        if @ffi.is_string(cached) {
+          name = @ffi.cast_string(cached)
+        } else {
+          let suffix = anon_model_counter.val.to_string()
+          anon_model_counter.val = anon_model_counter.val + 1
+
+          // Follow `http-server-csharp` naming strategy:
+          // - Prefer `sourceModel.name + suffix`
+          // - Then `sourceModels[].model.name ... + suffix`
+          // - Fallback to `Model + suffix`
+          let mut candidate = ""
+          let source_model_val = @ffi.get_value(prop, "sourceModel")
+          if !@ffi.is_undefined(source_model_val) && !source_model_val.is_null() {
+            let sm_name_val = @ffi.get_value(source_model_val, "name")
+            if @ffi.is_string(sm_name_val) {
+              let sm_name = @ffi.cast_string(sm_name_val)
+              if sm_name != "" {
+                candidate = "\{sm_name}\{suffix}"
+              }
+            }
+          }
+          if candidate == "" {
+            let source_models_val = @ffi.get_value(prop, "sourceModels")
+            if !@ffi.is_undefined(source_models_val) &&
+              !source_models_val.is_null() &&
+              @ffi.is_array(source_models_val) {
+              let source_models : Array[@ffi.JsValue] = source_models_val.cast()
+              let names : Array[String] = []
+              for item in source_models {
+                let m_val = @ffi.get_value(item, "model")
+                if !@ffi.is_undefined(m_val) && !m_val.is_null() {
+                  let n_val = @ffi.get_value(m_val, "name")
+                  if @ffi.is_string(n_val) {
+                    let n = @ffi.cast_string(n_val)
+                    if n != "" {
+                      names.push(n)
+                    }
+                  }
+                }
+              }
+              if names.length() > 0 {
+                let sb = StringBuilder::new(size_hint=64)
+                for n in names {
+                  sb.write_string(n)
+                }
+                candidate = "\{sb.to_string()}\{suffix}"
+              }
+            }
+          }
+          if candidate == "" {
+            candidate = "Model\{suffix}"
+          }
+          name = sanitize_identifier(candidate)
+          set_cached_anon_model_name(prop, name)
+        }
       }
       if processed_models.contains(name) {
         return Model(processed_models.get(name).unwrap())

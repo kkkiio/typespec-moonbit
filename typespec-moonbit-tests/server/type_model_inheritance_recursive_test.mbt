@@ -18,7 +18,7 @@ struct RecursiveHandlerImpl {}
 
 ///|
 impl @type_model_inheritance_recursive.RecursiveHandler for RecursiveHandlerImpl with get(
-  _self : RecursiveHandlerImpl,
+  _self,
 ) {
   let leaf : @type_model_inheritance_recursive.Extension = {
     level: 2,
@@ -42,8 +42,8 @@ impl @type_model_inheritance_recursive.RecursiveHandler for RecursiveHandlerImpl
 
 ///|
 impl @type_model_inheritance_recursive.RecursiveHandler for RecursiveHandlerImpl with put(
-  _self : RecursiveHandlerImpl,
-  body : @type_model_inheritance_recursive.Extension,
+  _self,
+  body,
 ) {
   // In TypeScript:
   // assert.deepStrictEqual(input, {

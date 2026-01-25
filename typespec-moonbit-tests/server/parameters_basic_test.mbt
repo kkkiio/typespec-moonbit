@@ -15,8 +15,8 @@ struct ParamBasicImplicit {}
 
 ///|
 impl @parameters_basic.ImplicitBodyHandler for ParamBasicImplicit with simple(
-  _self : ParamBasicImplicit,
-  body : @parameters_basic.AnonymousModel1,
+  _self,
+  body,
 ) {
   assert_eq(body.name, "foo")
 }
@@ -27,8 +27,8 @@ struct ParamBasicExplicit {}
 
 ///|
 impl @parameters_basic.ExplicitBodyHandler for ParamBasicExplicit with simple(
-  _self : ParamBasicExplicit,
-  body : @parameters_basic.User,
+  _self,
+  body,
 ) {
   assert_eq(body.name, "foo")
 }

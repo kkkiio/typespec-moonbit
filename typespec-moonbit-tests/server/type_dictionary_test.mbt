@@ -33,7 +33,7 @@ struct DictInt32ValueHandlerImpl {}
 
 ///|
 impl @type_dictionary.Int32ValueHandler for DictInt32ValueHandlerImpl with get(
-  _self : DictInt32ValueHandlerImpl,
+  _self,
 ) {
   // Should return { k1: 1, k2: 2 }
   { "k1": 1, "k2": 2 }
@@ -41,8 +41,8 @@ impl @type_dictionary.Int32ValueHandler for DictInt32ValueHandlerImpl with get(
 
 ///|
 impl @type_dictionary.Int32ValueHandler for DictInt32ValueHandlerImpl with put(
-  _self : DictInt32ValueHandlerImpl,
-  body : Map[String, Int],
+  _self,
+  body,
 ) {
   guard body.length() == 2 else { fail("int32.put: body length should be 2") }
   guard body.get("k1") == Some(1) else {
@@ -58,7 +58,7 @@ struct DictInt64ValueHandlerImpl {}
 
 ///|
 impl @type_dictionary.Int64ValueHandler for DictInt64ValueHandlerImpl with get(
-  _self : DictInt64ValueHandlerImpl,
+  _self,
 ) {
   // Should return { k1: 0x7fffffffffffffff, k2: -0x7fffffffffffffff }
   { "k1": 0x7fffffffffffffffL, "k2": -0x7fffffffffffffffL }
@@ -66,8 +66,8 @@ impl @type_dictionary.Int64ValueHandler for DictInt64ValueHandlerImpl with get(
 
 ///|
 impl @type_dictionary.Int64ValueHandler for DictInt64ValueHandlerImpl with put(
-  _self : DictInt64ValueHandlerImpl,
-  body : Map[String, Int64],
+  _self,
+  body,
 ) {
   guard body.length() == 2 else { fail("int64.put: body length should be 2") }
   guard body.get("k1") == Some(0x7fffffffffffffffL) else {
@@ -83,7 +83,7 @@ struct DictModelValueHandlerImpl {}
 
 ///|
 impl @type_dictionary.ModelValueHandler for DictModelValueHandlerImpl with get(
-  _self : DictModelValueHandlerImpl,
+  _self,
 ) {
   // Should return { k1: { property: "hello" }, k2: { property: "world" } }
   {
@@ -94,8 +94,8 @@ impl @type_dictionary.ModelValueHandler for DictModelValueHandlerImpl with get(
 
 ///|
 impl @type_dictionary.ModelValueHandler for DictModelValueHandlerImpl with put(
-  _self : DictModelValueHandlerImpl,
-  body : Map[String, @type_dictionary.InnerModel],
+  _self,
+  body,
 ) {
   guard body.length() == 2 else { fail("model.put: body length should be 2") }
   match body.get("k1") {
@@ -121,7 +121,7 @@ struct DictStringValueHandlerImpl {}
 
 ///|
 impl @type_dictionary.StringValueHandler for DictStringValueHandlerImpl with get(
-  _self : DictStringValueHandlerImpl,
+  _self,
 ) {
   // Should return { k1: "hello", k2: "" }
   { "k1": "hello", "k2": "" }
@@ -129,8 +129,8 @@ impl @type_dictionary.StringValueHandler for DictStringValueHandlerImpl with get
 
 ///|
 impl @type_dictionary.StringValueHandler for DictStringValueHandlerImpl with put(
-  _self : DictStringValueHandlerImpl,
-  body : Map[String, String],
+  _self,
+  body,
 ) {
   guard body.length() == 2 else { fail("string.put: body length should be 2") }
   guard body.get("k1") == Some("hello") else {
@@ -146,7 +146,7 @@ struct DictBooleanValueHandlerImpl {}
 
 ///|
 impl @type_dictionary.BooleanValueHandler for DictBooleanValueHandlerImpl with get(
-  _self : DictBooleanValueHandlerImpl,
+  _self,
 ) {
   // Should return { k1: true, k2: false }
   { "k1": true, "k2": false }
@@ -154,8 +154,8 @@ impl @type_dictionary.BooleanValueHandler for DictBooleanValueHandlerImpl with g
 
 ///|
 impl @type_dictionary.BooleanValueHandler for DictBooleanValueHandlerImpl with put(
-  _self : DictBooleanValueHandlerImpl,
-  body : Map[String, Bool],
+  _self,
+  body,
 ) {
   guard body.length() == 2 else { fail("boolean.put: body length should be 2") }
   guard body.get("k1") == Some(true) else {
@@ -171,7 +171,7 @@ struct DictFloat32ValueHandlerImpl {}
 
 ///|
 impl @type_dictionary.Float32ValueHandler for DictFloat32ValueHandlerImpl with get(
-  _self : DictFloat32ValueHandlerImpl,
+  _self,
 ) {
   // Should return { k1: 43.125 }
   { "k1": 43.125 }
@@ -179,8 +179,8 @@ impl @type_dictionary.Float32ValueHandler for DictFloat32ValueHandlerImpl with g
 
 ///|
 impl @type_dictionary.Float32ValueHandler for DictFloat32ValueHandlerImpl with put(
-  _self : DictFloat32ValueHandlerImpl,
-  body : Map[String, Double],
+  _self,
+  body,
 ) {
   guard body.length() == 1 else { fail("float32.put: body length should be 1") }
   guard body.get("k1") == Some(43.125) else {
@@ -193,7 +193,7 @@ struct DictUnknownValueHandlerImpl {}
 
 ///|
 impl @type_dictionary.UnknownValueHandler for DictUnknownValueHandlerImpl with get(
-  _self : DictUnknownValueHandlerImpl,
+  _self,
 ) {
   // Should return { k1: 1, k2: "hello", k3: null }
   {
@@ -205,8 +205,8 @@ impl @type_dictionary.UnknownValueHandler for DictUnknownValueHandlerImpl with g
 
 ///|
 impl @type_dictionary.UnknownValueHandler for DictUnknownValueHandlerImpl with put(
-  _self : DictUnknownValueHandlerImpl,
-  body : Map[String, Json],
+  _self,
+  body,
 ) {
   guard body.length() == 3 else { fail("unknown.put: body length should be 3") }
   match body.get("k1") {
@@ -240,7 +240,7 @@ struct DictDatetimeValueHandlerImpl {}
 
 ///|
 impl @type_dictionary.DatetimeValueHandler for DictDatetimeValueHandlerImpl with get(
-  _self : DictDatetimeValueHandlerImpl,
+  _self,
 ) {
   // Should return { k1: Temporal.Instant.from("2022-08-26T18:38:00Z") }
   { "k1": "2022-08-26T18:38:00Z" }
@@ -248,8 +248,8 @@ impl @type_dictionary.DatetimeValueHandler for DictDatetimeValueHandlerImpl with
 
 ///|
 impl @type_dictionary.DatetimeValueHandler for DictDatetimeValueHandlerImpl with put(
-  _self : DictDatetimeValueHandlerImpl,
-  body : Map[String, String],
+  _self,
+  body,
 ) {
   guard body.length() == 1 else {
     fail("datetime.put: body length should be 1")
@@ -264,7 +264,7 @@ struct DictDurationValueHandlerImpl {}
 
 ///|
 impl @type_dictionary.DurationValueHandler for DictDurationValueHandlerImpl with get(
-  _self : DictDurationValueHandlerImpl,
+  _self,
 ) {
   // Should return { k1: Temporal.Duration.from("P123DT22H14M12.011S") }
   { "k1": "P123DT22H14M12.011S" }
@@ -272,8 +272,8 @@ impl @type_dictionary.DurationValueHandler for DictDurationValueHandlerImpl with
 
 ///|
 impl @type_dictionary.DurationValueHandler for DictDurationValueHandlerImpl with put(
-  _self : DictDurationValueHandlerImpl,
-  body : Map[String, String],
+  _self,
+  body,
 ) {
   guard body.length() == 1 else {
     fail("duration.put: body length should be 1")
@@ -288,7 +288,7 @@ struct DictNullableFloatValueHandlerImpl {}
 
 ///|
 impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandlerImpl with get(
-  _self : DictNullableFloatValueHandlerImpl,
+  _self,
 ) {
   // Should return { k1: 1.25, k2: 0.5, k3: null }
   {
@@ -300,8 +300,8 @@ impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandle
 
 ///|
 impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandlerImpl with put(
-  _self : DictNullableFloatValueHandlerImpl,
-  body : Map[String, @type_dictionary.Nullable[Double]],
+  _self,
+  body,
 ) {
   guard body.length() == 3 else {
     fail("nullable-float.put: body length should be 3")
@@ -337,7 +337,7 @@ struct DictRecursiveModelValueHandlerImpl {}
 
 ///|
 impl @type_dictionary.RecursiveModelValueHandler for DictRecursiveModelValueHandlerImpl with get(
-  _self : DictRecursiveModelValueHandlerImpl,
+  _self,
 ) {
   // Should return:
   // {
@@ -363,8 +363,8 @@ impl @type_dictionary.RecursiveModelValueHandler for DictRecursiveModelValueHand
 
 ///|
 impl @type_dictionary.RecursiveModelValueHandler for DictRecursiveModelValueHandlerImpl with put(
-  _self : DictRecursiveModelValueHandlerImpl,
-  body : Map[String, @type_dictionary.InnerModel],
+  _self,
+  body,
 ) {
   guard body.length() == 2 else {
     fail("recursive-model.put: body length should be 2")

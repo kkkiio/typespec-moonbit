@@ -16,7 +16,7 @@ struct ExtensibleStringHandlerImpl {}
 
 ///|
 impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with get_known_value(
-  _self : ExtensibleStringHandlerImpl,
+  _self,
 ) {
   // Should return:
   // {
@@ -28,7 +28,7 @@ impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with ge
 
 ///|
 impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with get_unknown_value(
-  _self : ExtensibleStringHandlerImpl,
+  _self,
 ) {
   // Should return:
   // {
@@ -40,9 +40,9 @@ impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with ge
 
 ///|
 impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with put_known_value(
-  _self : ExtensibleStringHandlerImpl,
-  _content_type : String,
-  body : String,
+  _self,
+  _content_type,
+  body,
 ) {
   // In TypeScript: assert.equal(body, "Monday")
   // The body is parsed as JSON string, so we need to check the value
@@ -53,9 +53,9 @@ impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with pu
 
 ///|
 impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with put_unknown_value(
-  _self : ExtensibleStringHandlerImpl,
-  _content_type : String,
-  body : String,
+  _self,
+  _content_type,
+  body,
 ) {
   // In TypeScript: assert.equal(body, "Weekend")
   guard body.contains("Weekend") else {
