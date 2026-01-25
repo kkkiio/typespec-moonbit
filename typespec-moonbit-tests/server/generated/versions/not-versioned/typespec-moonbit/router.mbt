@@ -20,9 +20,7 @@ pub fn[H0 : NotVersionedHandler] create_router(
   ) {
     let full_path = req.path
     let path = strip_request_query(full_path)
-    if false {
-      ()
-    } else if req.meth == @http.Head &&
+    if req.meth == @http.Head &&
       match_path_template(
         "/server/versions/not-versioned/without-api-version", path,
       ) {
@@ -30,7 +28,9 @@ pub fn[H0 : NotVersionedHandler] create_router(
       not_versioned_handler.without_api_version()
       conn.send_response(200, "OK")
       conn.end_response()
-    } else if req.meth == @http.Head &&
+      return ()
+    }
+    if req.meth == @http.Head &&
       match_path_template(
         "/server/versions/not-versioned/with-query-api-version", path,
       ) {
@@ -39,7 +39,9 @@ pub fn[H0 : NotVersionedHandler] create_router(
       not_versioned_handler.with_query_api_version(p_2_api_version)
       conn.send_response(200, "OK")
       conn.end_response()
-    } else if req.meth == @http.Head &&
+      return ()
+    }
+    if req.meth == @http.Head &&
       match_path_template(
         "/server/versions/not-versioned/with-path-api-version/{apiVersion}", path,
       ) {
@@ -51,10 +53,10 @@ pub fn[H0 : NotVersionedHandler] create_router(
       not_versioned_handler.with_path_api_version(p_3_api_version)
       conn.send_response(200, "OK")
       conn.end_response()
-    } else {
-      conn.send_response(404, "NotFound")
-      conn.write("not found")
-      conn.end_response()
+      return ()
     }
+    conn.send_response(404, "NotFound")
+    conn.write("not found")
+    conn.end_response()
   }
 }

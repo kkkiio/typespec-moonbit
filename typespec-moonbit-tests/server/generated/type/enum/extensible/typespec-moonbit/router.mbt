@@ -19,9 +19,7 @@ pub fn[H0 : StringHandler] create_router(string_handler~ : H0) -> Router {
   ) {
     let full_path = req.path
     let path = strip_request_query(full_path)
-    if false {
-      ()
-    } else if req.meth == @http.Get &&
+    if req.meth == @http.Get &&
       match_path_template("/type/enum/extensible/string/known-value", path) {
       ignore(body_stream)
       let resp_body = string_handler.get_known_value()
@@ -29,7 +27,9 @@ pub fn[H0 : StringHandler] create_router(string_handler~ : H0) -> Router {
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-    } else if req.meth == @http.Get &&
+      return ()
+    }
+    if req.meth == @http.Get &&
       match_path_template("/type/enum/extensible/string/unknown-value", path) {
       ignore(body_stream)
       let resp_body = string_handler.get_unknown_value()
@@ -37,7 +37,9 @@ pub fn[H0 : StringHandler] create_router(string_handler~ : H0) -> Router {
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-    } else if req.meth == @http.Put &&
+      return ()
+    }
+    if req.meth == @http.Put &&
       match_path_template("/type/enum/extensible/string/known-value", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
@@ -46,7 +48,9 @@ pub fn[H0 : StringHandler] create_router(string_handler~ : H0) -> Router {
       string_handler.put_known_value(p_3_content_type, p_3_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Put &&
+      return ()
+    }
+    if req.meth == @http.Put &&
       match_path_template("/type/enum/extensible/string/unknown-value", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
@@ -55,10 +59,10 @@ pub fn[H0 : StringHandler] create_router(string_handler~ : H0) -> Router {
       string_handler.put_unknown_value(p_4_content_type, p_4_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else {
-      conn.send_response(404, "NotFound")
-      conn.write("not found")
-      conn.end_response()
+      return ()
     }
+    conn.send_response(404, "NotFound")
+    conn.write("not found")
+    conn.end_response()
   }
 }

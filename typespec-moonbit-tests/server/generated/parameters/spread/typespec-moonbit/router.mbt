@@ -67,9 +67,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
   ) {
     let full_path = req.path
     let path = strip_request_query(full_path)
-    if false {
-      ()
-    } else if req.meth == @http.Put &&
+    if req.meth == @http.Put &&
       match_path_template("/parameters/spread/alias/request-body", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
@@ -79,7 +77,9 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       alias_handler.spread_as_request_body(p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Post &&
+      return ()
+    }
+    if req.meth == @http.Post &&
       match_path_template(
         "/parameters/spread/alias/inner-model-parameter/{id}", path,
       ) {
@@ -97,7 +97,9 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       )
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Put &&
+      return ()
+    }
+    if req.meth == @http.Put &&
       match_path_template(
         "/parameters/spread/alias/request-parameter/{id}", path,
       ) {
@@ -115,7 +117,9 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       )
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Put &&
+      return ()
+    }
+    if req.meth == @http.Put &&
       match_path_template(
         "/parameters/spread/alias/multiple-parameters/{id}", path,
       ) {
@@ -133,7 +137,9 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       )
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Post &&
+      return ()
+    }
+    if req.meth == @http.Post &&
       match_path_template(
         "/parameters/spread/alias/inner-alias-parameter/{id}", path,
       ) {
@@ -151,7 +157,9 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       )
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Put &&
+      return ()
+    }
+    if req.meth == @http.Put &&
       match_path_template("/parameters/spread/model/request-body", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
@@ -161,7 +169,9 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       model_handler.spread_as_request_body(p_6_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Put &&
+      return ()
+    }
+    if req.meth == @http.Put &&
       match_path_template(
         "/parameters/spread/model/composite-request-only-with-body", path,
       ) {
@@ -173,7 +183,9 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       model_handler.spread_composite_request_only_with_body(p_7_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Put &&
+      return ()
+    }
+    if req.meth == @http.Put &&
       match_path_template(
         "/parameters/spread/model/composite-request-without-body/{name}", path,
       ) {
@@ -187,7 +199,9 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       )
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Put &&
+      return ()
+    }
+    if req.meth == @http.Put &&
       match_path_template(
         "/parameters/spread/model/composite-request/{name}", path,
       ) {
@@ -205,7 +219,9 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       )
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Put &&
+      return ()
+    }
+    if req.meth == @http.Put &&
       match_path_template(
         "/parameters/spread/model/composite-request-mix/{name}", path,
       ) {
@@ -223,10 +239,10 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       )
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else {
-      conn.send_response(404, "NotFound")
-      conn.write("not found")
-      conn.end_response()
+      return ()
     }
+    conn.send_response(404, "NotFound")
+    conn.write("not found")
+    conn.end_response()
   }
 }

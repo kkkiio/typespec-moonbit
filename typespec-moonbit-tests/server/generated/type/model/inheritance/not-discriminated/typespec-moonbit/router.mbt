@@ -20,9 +20,7 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(
   ) {
     let full_path = req.path
     let path = strip_request_query(full_path)
-    if false {
-      ()
-    } else if req.meth == @http.Post &&
+    if req.meth == @http.Post &&
       match_path_template(
         "/type/model/inheritance/not-discriminated/valid", path,
       ) {
@@ -34,7 +32,9 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(
       not_discriminated_handler.post_valid(p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Get &&
+      return ()
+    }
+    if req.meth == @http.Get &&
       match_path_template(
         "/type/model/inheritance/not-discriminated/valid", path,
       ) {
@@ -44,7 +44,9 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-    } else if req.meth == @http.Put &&
+      return ()
+    }
+    if req.meth == @http.Put &&
       match_path_template(
         "/type/model/inheritance/not-discriminated/valid", path,
       ) {
@@ -58,10 +60,10 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-    } else {
-      conn.send_response(404, "NotFound")
-      conn.write("not found")
-      conn.end_response()
+      return ()
     }
+    conn.send_response(404, "NotFound")
+    conn.write("not found")
+    conn.end_response()
   }
 }

@@ -19,9 +19,7 @@ pub fn[H0 : VersionedHandler] create_router(versioned_handler~ : H0) -> Router {
   ) {
     let full_path = req.path
     let path = strip_request_query(full_path)
-    if false {
-      ()
-    } else if req.meth == @http.Head &&
+    if req.meth == @http.Head &&
       match_path_template(
         "/server/versions/versioned/without-api-version", path,
       ) {
@@ -29,7 +27,9 @@ pub fn[H0 : VersionedHandler] create_router(versioned_handler~ : H0) -> Router {
       versioned_handler.without_api_version()
       conn.send_response(200, "OK")
       conn.end_response()
-    } else if req.meth == @http.Head &&
+      return ()
+    }
+    if req.meth == @http.Head &&
       match_path_template(
         "/server/versions/versioned/with-query-api-version", path,
       ) {
@@ -38,7 +38,9 @@ pub fn[H0 : VersionedHandler] create_router(versioned_handler~ : H0) -> Router {
       versioned_handler.with_query_api_version(p_2_api_version)
       conn.send_response(200, "OK")
       conn.end_response()
-    } else if req.meth == @http.Head &&
+      return ()
+    }
+    if req.meth == @http.Head &&
       match_path_template(
         "/server/versions/versioned/with-path-api-version/{apiVersion}", path,
       ) {
@@ -49,7 +51,9 @@ pub fn[H0 : VersionedHandler] create_router(versioned_handler~ : H0) -> Router {
       versioned_handler.with_path_api_version(p_3_api_version)
       conn.send_response(200, "OK")
       conn.end_response()
-    } else if req.meth == @http.Head &&
+      return ()
+    }
+    if req.meth == @http.Head &&
       match_path_template(
         "/server/versions/versioned/with-query-old-api-version", path,
       ) {
@@ -58,10 +62,10 @@ pub fn[H0 : VersionedHandler] create_router(versioned_handler~ : H0) -> Router {
       versioned_handler.with_query_old_api_version(p_4_api_version)
       conn.send_response(200, "OK")
       conn.end_response()
-    } else {
-      conn.send_response(404, "NotFound")
-      conn.write("not found")
-      conn.end_response()
+      return ()
     }
+    conn.send_response(404, "NotFound")
+    conn.write("not found")
+    conn.end_response()
   }
 }

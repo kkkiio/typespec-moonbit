@@ -18,9 +18,7 @@ pub fn[H0 : EmptyHandler] create_router(empty_handler~ : H0) -> Router {
   ) {
     let full_path = req.path
     let path = strip_request_query(full_path)
-    if false {
-      ()
-    } else if req.meth == @http.Put &&
+    if req.meth == @http.Put &&
       match_path_template("/type/model/empty/alone", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
@@ -30,7 +28,9 @@ pub fn[H0 : EmptyHandler] create_router(empty_handler~ : H0) -> Router {
       empty_handler.put_empty(p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Get &&
+      return ()
+    }
+    if req.meth == @http.Get &&
       match_path_template("/type/model/empty/alone", path) {
       ignore(body_stream)
       let resp_body = empty_handler.get_empty()
@@ -38,7 +38,9 @@ pub fn[H0 : EmptyHandler] create_router(empty_handler~ : H0) -> Router {
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-    } else if req.meth == @http.Post &&
+      return ()
+    }
+    if req.meth == @http.Post &&
       match_path_template("/type/model/empty/round-trip", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
@@ -50,10 +52,10 @@ pub fn[H0 : EmptyHandler] create_router(empty_handler~ : H0) -> Router {
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-    } else {
-      conn.send_response(404, "NotFound")
-      conn.write("not found")
-      conn.end_response()
+      return ()
     }
+    conn.send_response(404, "NotFound")
+    conn.write("not found")
+    conn.end_response()
   }
 }

@@ -27,9 +27,7 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
   ) {
     let full_path = req.path
     let path = strip_request_query(full_path)
-    if false {
-      ()
-    } else if req.meth == @http.Post &&
+    if req.meth == @http.Post &&
       match_path_template(
         "/parameters/body-optionality/required-explicit", path,
       ) {
@@ -41,7 +39,9 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
       body_optionality_handler.required_explicit(p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Post &&
+      return ()
+    }
+    if req.meth == @http.Post &&
       match_path_template(
         "/parameters/body-optionality/required-implicit", path,
       ) {
@@ -53,7 +53,9 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
       body_optionality_handler.required_implicit(p_2_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Post &&
+      return ()
+    }
+    if req.meth == @http.Post &&
       match_path_template(
         "/parameters/body-optionality/optional-explicit/set", path,
       ) {
@@ -65,7 +67,9 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
       optional_explicit_handler.set(p_3_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else if req.meth == @http.Post &&
+      return ()
+    }
+    if req.meth == @http.Post &&
       match_path_template(
         "/parameters/body-optionality/optional-explicit/omit", path,
       ) {
@@ -77,10 +81,10 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
       optional_explicit_handler.omit(p_4_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-    } else {
-      conn.send_response(404, "NotFound")
-      conn.write("not found")
-      conn.end_response()
+      return ()
     }
+    conn.send_response(404, "NotFound")
+    conn.write("not found")
+    conn.end_response()
   }
 }

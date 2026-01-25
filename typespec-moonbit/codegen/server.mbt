@@ -171,10 +171,9 @@ let router_template : String =
   #|  async fn(req : @http.Request, body_stream : &@io.Reader, conn : @http.ServerConnection) {
   #|    let full_path = req.path
   #|    let path = strip_request_query(full_path)
-  #|    if false { () }
   #|    {{#clients}}
   #|      {{#methods}}
-  #|    else if req.meth == {{http_meth_token}} && match_path_template("{{{path_template}}}", path) {
+  #|    if req.meth == {{http_meth_token}} && match_path_template("{{{path_template}}}", path) {
   #|      {{#has_body}}let body_bytes = body_stream.read_all()
   #|      let body_str = body_bytes.text()
   #|      {{/has_body}}
@@ -192,19 +191,19 @@ let router_template : String =
   #|      conn.send_response({{status_code}}, "{{reason_phrase}}", extra_headers=headers)
   #|      conn.write(resp_body.to_json().stringify())
   #|      conn.end_response()
+  #|      return ()
   #|      {{/has_response_body}}
   #|      {{^has_response_body}}{{{handler_var}}}.{{handler_method}}({{#params}}{{var_name}}{{^is_last}}, {{/is_last}}{{/params}})
   #|      conn.send_response({{status_code}}, "{{reason_phrase}}")
   #|      conn.end_response()
+  #|      return ()
   #|      {{/has_response_body}}
   #|    }
   #|      {{/methods}}
   #|    {{/clients}}
-  #|    else {
-  #|      conn.send_response(404, "NotFound")
-  #|      conn.write("not found")
-  #|      conn.end_response()
-  #|    }
+  #|    conn.send_response(404, "NotFound")
+  #|    conn.write("not found")
+  #|    conn.end_response()
   #|  }
   #|}
   #|
@@ -435,10 +434,9 @@ test "emit_server_router" {
       #|  async fn(req : @http.Request, body_stream : &@io.Reader, conn : @http.ServerConnection) {
       #|    let full_path = req.path
       #|    let path = strip_request_query(full_path)
-      #|    if false { () }
       #|    
       #|      
-      #|    else if req.meth == @http.Get && match_path_template("/items/{itemId}", path) {
+      #|    if req.meth == @http.Get && match_path_template("/items/{itemId}", path) {
       #|      
       #|      ignore(body_stream)
       #|      
@@ -453,10 +451,11 @@ test "emit_server_router" {
       #|      test_client_handler.get_item(p_1_item_id)
       #|      conn.send_response(200, "OK")
       #|      conn.end_response()
+      #|      return ()
       #|      
       #|    }
       #|      
-      #|    else if req.meth == @http.Post && match_path_template("/items", path) {
+      #|    if req.meth == @http.Post && match_path_template("/items", path) {
       #|      let body_bytes = body_stream.read_all()
       #|      let body_str = body_bytes.text()
       #|      
@@ -472,15 +471,14 @@ test "emit_server_router" {
       #|      test_client_handler.create_item(p_2_body)
       #|      conn.send_response(200, "OK")
       #|      conn.end_response()
+      #|      return ()
       #|      
       #|    }
       #|      
       #|    
-      #|    else {
-      #|      conn.send_response(404, "NotFound")
-      #|      conn.write("not found")
-      #|      conn.end_response()
-      #|    }
+      #|    conn.send_response(404, "NotFound")
+      #|    conn.write("not found")
+      #|    conn.end_response()
       #|  }
       #|}
       #|
@@ -679,7 +677,6 @@ test "emit_server_router_helpers" {
       #|  ""
       #|}
       #|
-
     ),
   )
 }

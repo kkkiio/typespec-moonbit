@@ -16,18 +16,16 @@ pub fn[H0 : SingleHandler] create_router(single_handler~ : H0) -> Router {
   ) {
     let full_path = req.path
     let path = strip_request_query(full_path)
-    if false {
-      ()
-    } else if req.meth == @http.Head &&
+    if req.meth == @http.Head &&
       match_path_template("/server/path/single/myOp", path) {
       ignore(body_stream)
       single_handler.my_op()
       conn.send_response(200, "OK")
       conn.end_response()
-    } else {
-      conn.send_response(404, "NotFound")
-      conn.write("not found")
-      conn.end_response()
+      return ()
     }
+    conn.send_response(404, "NotFound")
+    conn.write("not found")
+    conn.end_response()
   }
 }
