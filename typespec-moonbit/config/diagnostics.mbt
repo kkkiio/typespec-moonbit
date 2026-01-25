@@ -1,5 +1,6 @@
 ///|
 /// 诊断严重级别。
+#warnings("-unused_constructor")
 pub enum DiagnosticSeverity {
   Error
   Warning
@@ -16,6 +17,7 @@ pub fn DiagnosticSeverity::to_string(self : DiagnosticSeverity) -> String {
 
 ///|
 /// 诊断码枚举（与 typespec-rust 对齐）。
+#warnings("-unused_constructor")
 pub enum DiagnosticCode {
   InternalError
   InvalidArgument

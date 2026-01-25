@@ -95,23 +95,11 @@ let handler_trait_template : String =
 let nullable_support_code : String =
   #|///|
   #|/// Nullable helper used for `T | null`.
-  #|pub(all) struct Nullable[T] {
-  #|  value : T?
-  #|} derive(Show, Default)
-  #|
-  #|///|
-  #|pub fn Nullable::some[T](v : T) -> Nullable[T] {
-  #|  { value: Some(v) }
-  #|}
-  #|
-  #|///|
-  #|pub fn Nullable::none[T]() -> Nullable[T] {
-  #|  { value: None }
-  #|}
+  #|pub(all) struct Nullable[T](T?) derive(Show, Default, Eq, Compare)
   #|
   #|///|
   #|pub impl[T : ToJson] ToJson for Nullable[T] with to_json(self : Nullable[T]) -> Json {
-  #|  match self.value {
+  #|  match self.0 {
   #|    Some(v) => v.to_json()
   #|    None => Json::null()
   #|  }
@@ -122,10 +110,9 @@ let nullable_support_code : String =
   #|  j : Json,
   #|  path : @json.JsonPath,
   #|) -> Nullable[T] raise @json.JsonDecodeError {
-  #|  if j == Json::null() {
-  #|    { value: None }
-  #|  } else {
-  #|    { value: Some(@json.from_json(j, path=path)) }
+  #|  match j {
+  #|    Null => Nullable(None)
+  #|    _ => Nullable(Some(@json.from_json(j, path~)))
   #|  }
   #|}
   #|

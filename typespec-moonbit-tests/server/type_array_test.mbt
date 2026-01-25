@@ -56,9 +56,9 @@ impl @type_array.Int32ValueHandler for Int32ValueHandlerImpl with put(
   _self,
   body,
 ) {
-  guard body.length() == 2 else { fail("int32.put: body length should be 2") }
-  guard body[0] == 1 else { fail("int32.put: body[0] should be 1") }
-  guard body[1] == 2 else { fail("int32.put: body[1] should be 2") }
+  assert_eq(body.length(), 2)
+  assert_eq(body[0], 1)
+  assert_eq(body[1], 2)
 }
 
 ///|
@@ -77,13 +77,9 @@ impl @type_array.Int64ValueHandler for Int64ValueHandlerImpl with put(
   _self,
   body,
 ) {
-  guard body.length() == 2 else { fail("int64.put: body length should be 2") }
-  guard body[0] == 0x7fffffffffffffffL else {
-    fail("int64.put: body[0] should be max int64")
-  }
-  guard body[1] == -0x7fffffffffffffffL else {
-    fail("int64.put: body[1] should be min int64")
-  }
+  assert_eq(body.length(), 2)
+  assert_eq(body[0], 0x7fffffffffffffffL)
+  assert_eq(body[1], -0x7fffffffffffffffL)
 }
 
 ///|
@@ -103,13 +99,9 @@ impl @type_array.ModelValueHandler for ModelValueHandlerImpl with put(
   _self,
   body,
 ) {
-  guard body.length() == 2 else { fail("model.put: body length should be 2") }
-  guard body[0].property == "hello" else {
-    fail("model.put: body[0].property should be 'hello'")
-  }
-  guard body[1].property == "world" else {
-    fail("model.put: body[1].property should be 'world'")
-  }
+  assert_eq(body.length(), 2)
+  assert_eq(body[0].property, "hello")
+  assert_eq(body[1].property, "world")
 }
 
 ///|
@@ -128,13 +120,9 @@ impl @type_array.StringValueHandler for StringValueHandlerImpl with put(
   _self,
   body,
 ) {
-  guard body.length() == 2 else { fail("string.put: body length should be 2") }
-  guard body[0] == "hello" else {
-    fail("string.put: body[0] should be 'hello'")
-  }
-  guard body[1] == "" else {
-    fail("string.put: body[1] should be empty string")
-  }
+  assert_eq(body.length(), 2)
+  assert_eq(body[0], "hello")
+  assert_eq(body[1], "")
 }
 
 ///|
@@ -153,9 +141,9 @@ impl @type_array.BooleanValueHandler for BooleanValueHandlerImpl with put(
   _self,
   body,
 ) {
-  guard body.length() == 2 else { fail("boolean.put: body length should be 2") }
-  guard body[0] == true else { fail("boolean.put: body[0] should be true") }
-  guard body[1] == false else { fail("boolean.put: body[1] should be false") }
+  assert_eq(body.length(), 2)
+  assert_eq(body[0], true)
+  assert_eq(body[1], false)
 }
 
 ///|
@@ -174,8 +162,8 @@ impl @type_array.Float32ValueHandler for Float32ValueHandlerImpl with put(
   _self,
   body,
 ) {
-  guard body.length() == 1 else { fail("float32.put: body length should be 1") }
-  guard body[0] == 43.125 else { fail("float32.put: body[0] should be 43.125") }
+  assert_eq(body.length(), 1)
+  assert_eq(body[0], 43.125)
 }
 
 ///|
@@ -193,16 +181,10 @@ impl @type_array.UnknownValueHandler for UnknownValueHandlerImpl with put(
   _self,
   body,
 ) {
-  guard body.length() == 3 else { fail("unknown.put: body length should be 3") }
-  guard body[0].stringify() == "1" else {
-    fail("unknown.put: body[0] should be 1")
-  }
-  guard body[1].stringify() == "\"hello\"" else {
-    fail("unknown.put: body[1] should be 'hello'")
-  }
-  guard body[2].stringify() == "null" else {
-    fail("unknown.put: body[2] should be null")
-  }
+  assert_eq(body.length(), 3)
+  assert_eq(body[0].stringify(), "1")
+  assert_eq(body[1].stringify(), "\"hello\"")
+  assert_eq(body[2].stringify(), "null")
 }
 
 ///|
@@ -221,12 +203,8 @@ impl @type_array.DatetimeValueHandler for DatetimeValueHandlerImpl with put(
   _self,
   body,
 ) {
-  guard body.length() == 1 else {
-    fail("datetime.put: body length should be 1")
-  }
-  guard body[0] == "2022-08-26T18:38:00Z" else {
-    fail("datetime.put: body[0] should be '2022-08-26T18:38:00Z'")
-  }
+  assert_eq(body.length(), 1)
+  assert_eq(body[0], "2022-08-26T18:38:00Z")
 }
 
 ///|
@@ -245,12 +223,8 @@ impl @type_array.DurationValueHandler for DurationValueHandlerImpl with put(
   _self,
   body,
 ) {
-  guard body.length() == 1 else {
-    fail("duration.put: body length should be 1")
-  }
-  guard body[0] == "P123DT22H14M12.011S" else {
-    fail("duration.put: body[0] should be 'P123DT22H14M12.011S'")
-  }
+  assert_eq(body.length(), 1)
+  assert_eq(body[0], "P123DT22H14M12.011S")
 }
 
 ///|
@@ -262,9 +236,9 @@ impl @type_array.NullableFloatValueHandler for NullableFloatValueHandlerImpl wit
 ) {
   // Should return [1.25, null, 3.0]
   [
-    @type_array.Nullable::some(1.25),
-    @type_array.Nullable::none(),
-    @type_array.Nullable::some(3.0),
+    @type_array.Nullable(Some(1.25)),
+    @type_array.Nullable(None),
+    @type_array.Nullable(Some(3.0)),
   ]
 }
 
@@ -273,18 +247,10 @@ impl @type_array.NullableFloatValueHandler for NullableFloatValueHandlerImpl wit
   _self,
   body,
 ) {
-  guard body.length() == 3 else {
-    fail("nullable-float.put: body length should be 3")
-  }
-  guard body[0].value == Some(1.25) else {
-    fail("nullable-float.put: body[0] should be 1.25")
-  }
-  guard body[1].value is None else {
-    fail("nullable-float.put: body[1] should be null")
-  }
-  guard body[2].value == Some(3.0) else {
-    fail("nullable-float.put: body[2] should be 3.0")
-  }
+  assert_eq(body.length(), 3)
+  assert_eq(body[0], @type_array.Nullable(Some(1.25)))
+  assert_eq(body[1], @type_array.Nullable(None))
+  assert_eq(body[2], @type_array.Nullable(Some(3.0)))
 }
 
 ///|
@@ -296,9 +262,9 @@ impl @type_array.NullableInt32ValueHandler for NullableInt32ValueHandlerImpl wit
 ) {
   // Should return [1, null, 3]
   [
-    @type_array.Nullable::some(1),
-    @type_array.Nullable::none(),
-    @type_array.Nullable::some(3),
+    @type_array.Nullable(Some(1)),
+    @type_array.Nullable(None),
+    @type_array.Nullable(Some(3)),
   ]
 }
 
@@ -307,18 +273,10 @@ impl @type_array.NullableInt32ValueHandler for NullableInt32ValueHandlerImpl wit
   _self,
   body,
 ) {
-  guard body.length() == 3 else {
-    fail("nullable-int32.put: body length should be 3")
-  }
-  guard body[0].value == Some(1) else {
-    fail("nullable-int32.put: body[0] should be 1")
-  }
-  guard body[1].value is None else {
-    fail("nullable-int32.put: body[1] should be null")
-  }
-  guard body[2].value == Some(3) else {
-    fail("nullable-int32.put: body[2] should be 3")
-  }
+  assert_eq(body.length(), 3)
+  assert_eq(body[0], @type_array.Nullable(Some(1)))
+  assert_eq(body[1], @type_array.Nullable(None))
+  assert_eq(body[2], @type_array.Nullable(Some(3)))
 }
 
 ///|
@@ -330,9 +288,9 @@ impl @type_array.NullableModelValueHandler for NullableModelValueHandlerImpl wit
 ) {
   // Should return [{ property: "hello" }, null, { property: "world" }]
   [
-    @type_array.Nullable::some({ property: "hello", children: None }),
-    @type_array.Nullable::none(),
-    @type_array.Nullable::some({ property: "world", children: None }),
+    @type_array.Nullable(Some({ property: "hello", children: None })),
+    @type_array.Nullable(None),
+    @type_array.Nullable(Some({ property: "world", children: None })),
   ]
 }
 
@@ -341,27 +299,17 @@ impl @type_array.NullableModelValueHandler for NullableModelValueHandlerImpl wit
   _self,
   body,
 ) {
-  guard body.length() == 3 else {
-    fail("nullable-model.put: body length should be 3")
+  assert_eq(body.length(), 3)
+  match body[0].0 {
+    Some(v) => assert_eq(v.property, "hello")
+    None =>
+      assert_true(false, msg="nullable-model.put: body[0] should not be null")
   }
-  match body[0].value {
-    Some(v) => {
-      guard v.property == "hello" else {
-        fail("nullable-model.put: body[0].property should be 'hello'")
-      }
-    }
-    None => fail("nullable-model.put: body[0] should not be null")
-  }
-  guard body[1].value is None else {
-    fail("nullable-model.put: body[1] should be null")
-  }
-  match body[2].value {
-    Some(v) => {
-      guard v.property == "world" else {
-        fail("nullable-model.put: body[2].property should be 'world'")
-      }
-    }
-    None => fail("nullable-model.put: body[2] should not be null")
+  assert_true(body[1].0 is None)
+  match body[2].0 {
+    Some(v) => assert_eq(v.property, "world")
+    None =>
+      assert_true(false, msg="nullable-model.put: body[2] should not be null")
   }
 }
 
@@ -374,9 +322,9 @@ impl @type_array.NullableStringValueHandler for NullableStringValueHandlerImpl w
 ) {
   // Should return ["hello", null, "world"]
   [
-    @type_array.Nullable::some("hello"),
-    @type_array.Nullable::none(),
-    @type_array.Nullable::some("world"),
+    @type_array.Nullable(Some("hello")),
+    @type_array.Nullable(None),
+    @type_array.Nullable(Some("world")),
   ]
 }
 
@@ -385,18 +333,10 @@ impl @type_array.NullableStringValueHandler for NullableStringValueHandlerImpl w
   _self,
   body,
 ) {
-  guard body.length() == 3 else {
-    fail("nullable-string.put: body length should be 3")
-  }
-  guard body[0].value == Some("hello") else {
-    fail("nullable-string.put: body[0] should be 'hello'")
-  }
-  guard body[1].value is None else {
-    fail("nullable-string.put: body[1] should be null")
-  }
-  guard body[2].value == Some("world") else {
-    fail("nullable-string.put: body[2] should be 'world'")
-  }
+  assert_eq(body.length(), 3)
+  assert_eq(body[0], @type_array.Nullable(Some("hello")))
+  assert_eq(body[1], @type_array.Nullable(None))
+  assert_eq(body[2], @type_array.Nullable(Some("world")))
 }
 
 ///|
@@ -408,9 +348,9 @@ impl @type_array.NullableBooleanValueHandler for NullableBooleanValueHandlerImpl
 ) {
   // Should return [true, null, false]
   [
-    @type_array.Nullable::some(true),
-    @type_array.Nullable::none(),
-    @type_array.Nullable::some(false),
+    @type_array.Nullable(Some(true)),
+    @type_array.Nullable(None),
+    @type_array.Nullable(Some(false)),
   ]
 }
 
@@ -419,16 +359,8 @@ impl @type_array.NullableBooleanValueHandler for NullableBooleanValueHandlerImpl
   _self,
   body,
 ) {
-  guard body.length() == 3 else {
-    fail("nullable-boolean.put: body length should be 3")
-  }
-  guard body[0].value == Some(true) else {
-    fail("nullable-boolean.put: body[0] should be true")
-  }
-  guard body[1].value is None else {
-    fail("nullable-boolean.put: body[1] should be null")
-  }
-  guard body[2].value == Some(false) else {
-    fail("nullable-boolean.put: body[2] should be false")
-  }
+  assert_eq(body.length(), 3)
+  assert_eq(body[0], @type_array.Nullable(Some(true)))
+  assert_eq(body[1], @type_array.Nullable(None))
+  assert_eq(body[2], @type_array.Nullable(Some(false)))
 }

@@ -81,12 +81,12 @@ pub impl Show for Model6
 pub impl ToJson for Model6
 pub impl @json.FromJson for Model6
 
-pub(all) struct Nullable[T] {
-  value : T?
-}
-pub fn[T] Nullable::none() -> Self[T]
-pub fn[T] Nullable::some(T) -> Self[T]
+pub(all) struct Nullable[T](T?)
+#deprecated
+pub fn[T] Nullable::inner(Self[T]) -> T?
+pub impl[T : Compare] Compare for Nullable[T]
 pub impl[T : Default] Default for Nullable[T]
+pub impl[T : Eq] Eq for Nullable[T]
 pub impl[T : Show] Show for Nullable[T]
 pub impl[T : ToJson] ToJson for Nullable[T]
 pub impl[T : @json.FromJson] @json.FromJson for Nullable[T]

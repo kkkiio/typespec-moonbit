@@ -24,26 +24,7 @@
     "moonbitlang/async/stdio"
   ],
   "test-import": [
-    {
-      "path": "kkkiio/typespec-moonbit-tests/server/generated/endpoint/not-defined/typespec-moonbit",
-      "alias": "srv_endpoint_not_defined"
-    },
-    {
-      "path": "kkkiio/typespec-moonbit-tests/server/generated/path/multiple/typespec-moonbit",
-      "alias": "srv_path_multiple"
-    },
-    {
-      "path": "kkkiio/typespec-moonbit-tests/server/generated/path/single/typespec-moonbit",
-      "alias": "srv_path_single"
-    },
-    {
-      "path": "kkkiio/typespec-moonbit-tests/server/generated/versions/not-versioned/typespec-moonbit",
-      "alias": "srv_versions_not_versioned"
-    },
-    {
-      "path": "kkkiio/typespec-moonbit-tests/server/generated/versions/versioned/typespec-moonbit",
-      "alias": "srv_versions_versioned"
-    },
+    "moonbitlang/core/json",
     {
       "path": "kkkiio/typespec-moonbit-tests/server/generated/parameters/basic/typespec-moonbit",
       "alias": "parameters_basic"

@@ -52,13 +52,9 @@ impl @type_dictionary.Int32ValueHandler for DictInt32ValueHandlerImpl with put(
   _self,
   body,
 ) {
-  guard body.length() == 2 else { fail("int32.put: body length should be 2") }
-  guard body.get("k1") == Some(1) else {
-    fail("int32.put: body.k1 should be 1")
-  }
-  guard body.get("k2") == Some(2) else {
-    fail("int32.put: body.k2 should be 2")
-  }
+  assert_eq(body.length(), 2)
+  assert_eq(body.get("k1"), Some(1))
+  assert_eq(body.get("k2"), Some(2))
 }
 
 ///|
@@ -77,13 +73,9 @@ impl @type_dictionary.Int64ValueHandler for DictInt64ValueHandlerImpl with put(
   _self,
   body,
 ) {
-  guard body.length() == 2 else { fail("int64.put: body length should be 2") }
-  guard body.get("k1") == Some(0x7fffffffffffffffL) else {
-    fail("int64.put: body.k1 should be max int64")
-  }
-  guard body.get("k2") == Some(-0x7fffffffffffffffL) else {
-    fail("int64.put: body.k2 should be min int64")
-  }
+  assert_eq(body.length(), 2)
+  assert_eq(body.get("k1"), Some(0x7fffffffffffffffL))
+  assert_eq(body.get("k2"), Some(-0x7fffffffffffffffL))
 }
 
 ///|
@@ -105,22 +97,14 @@ impl @type_dictionary.ModelValueHandler for DictModelValueHandlerImpl with put(
   _self,
   body,
 ) {
-  guard body.length() == 2 else { fail("model.put: body length should be 2") }
+  assert_eq(body.length(), 2)
   match body.get("k1") {
-    Some(v) => {
-      guard v.property == "hello" else {
-        fail("model.put: body.k1.property should be 'hello'")
-      }
-    }
-    None => fail("model.put: missing key k1")
+    Some(v) => assert_eq(v.property, "hello")
+    None => assert_true(false, msg="model.put: missing key k1")
   }
   match body.get("k2") {
-    Some(v) => {
-      guard v.property == "world" else {
-        fail("model.put: body.k2.property should be 'world'")
-      }
-    }
-    None => fail("model.put: missing key k2")
+    Some(v) => assert_eq(v.property, "world")
+    None => assert_true(false, msg="model.put: missing key k2")
   }
 }
 
@@ -140,13 +124,9 @@ impl @type_dictionary.StringValueHandler for DictStringValueHandlerImpl with put
   _self,
   body,
 ) {
-  guard body.length() == 2 else { fail("string.put: body length should be 2") }
-  guard body.get("k1") == Some("hello") else {
-    fail("string.put: body.k1 should be 'hello'")
-  }
-  guard body.get("k2") == Some("") else {
-    fail("string.put: body.k2 should be ''")
-  }
+  assert_eq(body.length(), 2)
+  assert_eq(body.get("k1"), Some("hello"))
+  assert_eq(body.get("k2"), Some(""))
 }
 
 ///|
@@ -165,13 +145,9 @@ impl @type_dictionary.BooleanValueHandler for DictBooleanValueHandlerImpl with p
   _self,
   body,
 ) {
-  guard body.length() == 2 else { fail("boolean.put: body length should be 2") }
-  guard body.get("k1") == Some(true) else {
-    fail("boolean.put: body.k1 should be true")
-  }
-  guard body.get("k2") == Some(false) else {
-    fail("boolean.put: body.k2 should be false")
-  }
+  assert_eq(body.length(), 2)
+  assert_eq(body.get("k1"), Some(true))
+  assert_eq(body.get("k2"), Some(false))
 }
 
 ///|
@@ -190,10 +166,8 @@ impl @type_dictionary.Float32ValueHandler for DictFloat32ValueHandlerImpl with p
   _self,
   body,
 ) {
-  guard body.length() == 1 else { fail("float32.put: body length should be 1") }
-  guard body.get("k1") == Some(43.125) else {
-    fail("float32.put: body.k1 should be 43.125")
-  }
+  assert_eq(body.length(), 1)
+  assert_eq(body.get("k1"), Some(43.125))
 }
 
 ///|
@@ -216,30 +190,18 @@ impl @type_dictionary.UnknownValueHandler for DictUnknownValueHandlerImpl with p
   _self,
   body,
 ) {
-  guard body.length() == 3 else { fail("unknown.put: body length should be 3") }
+  assert_eq(body.length(), 3)
   match body.get("k1") {
-    Some(v) => {
-      guard v.stringify() == "1" else {
-        fail("unknown.put: body.k1 should be 1")
-      }
-    }
-    None => fail("unknown.put: missing key k1")
+    Some(v) => assert_eq(v.stringify(), "1")
+    None => assert_true(false, msg="unknown.put: missing key k1")
   }
   match body.get("k2") {
-    Some(v) => {
-      guard v.stringify() == "\"hello\"" else {
-        fail("unknown.put: body.k2 should be 'hello'")
-      }
-    }
-    None => fail("unknown.put: missing key k2")
+    Some(v) => assert_eq(v.stringify(), "\"hello\"")
+    None => assert_true(false, msg="unknown.put: missing key k2")
   }
   match body.get("k3") {
-    Some(v) => {
-      guard v.stringify() == "null" else {
-        fail("unknown.put: body.k3 should be null")
-      }
-    }
-    None => fail("unknown.put: missing key k3")
+    Some(v) => assert_eq(v.stringify(), "null")
+    None => assert_true(false, msg="unknown.put: missing key k3")
   }
 }
 
@@ -259,12 +221,8 @@ impl @type_dictionary.DatetimeValueHandler for DictDatetimeValueHandlerImpl with
   _self,
   body,
 ) {
-  guard body.length() == 1 else {
-    fail("datetime.put: body length should be 1")
-  }
-  guard body.get("k1") == Some("2022-08-26T18:38:00Z") else {
-    fail("datetime.put: body.k1 should be '2022-08-26T18:38:00Z'")
-  }
+  assert_eq(body.length(), 1)
+  assert_eq(body.get("k1"), Some("2022-08-26T18:38:00Z"))
 }
 
 ///|
@@ -283,12 +241,8 @@ impl @type_dictionary.DurationValueHandler for DictDurationValueHandlerImpl with
   _self,
   body,
 ) {
-  guard body.length() == 1 else {
-    fail("duration.put: body length should be 1")
-  }
-  guard body.get("k1") == Some("P123DT22H14M12.011S") else {
-    fail("duration.put: body.k1 should be 'P123DT22H14M12.011S'")
-  }
+  assert_eq(body.length(), 1)
+  assert_eq(body.get("k1"), Some("P123DT22H14M12.011S"))
 }
 
 ///|
@@ -300,9 +254,9 @@ impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandle
 ) {
   // Should return { k1: 1.25, k2: 0.5, k3: null }
   {
-    "k1": @type_dictionary.Nullable::some(1.25),
-    "k2": @type_dictionary.Nullable::some(0.5),
-    "k3": @type_dictionary.Nullable::none(),
+    "k1": @type_dictionary.Nullable(Some(1.25)),
+    "k2": @type_dictionary.Nullable(Some(0.5)),
+    "k3": @type_dictionary.Nullable(None),
   }
 }
 
@@ -311,32 +265,18 @@ impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandle
   _self,
   body,
 ) {
-  guard body.length() == 3 else {
-    fail("nullable-float.put: body length should be 3")
-  }
+  assert_eq(body.length(), 3)
   match body.get("k1") {
-    Some(v) => {
-      guard v.value == Some(1.25) else {
-        fail("nullable-float.put: body.k1 should be 1.25")
-      }
-    }
-    None => fail("nullable-float.put: missing key k1")
+    Some(v) => assert_eq(v, @type_dictionary.Nullable(Some(1.25)))
+    None => assert_true(false, msg="nullable-float.put: missing key k1")
   }
   match body.get("k2") {
-    Some(v) => {
-      guard v.value == Some(0.5) else {
-        fail("nullable-float.put: body.k2 should be 0.5")
-      }
-    }
-    None => fail("nullable-float.put: missing key k2")
+    Some(v) => assert_eq(v, @type_dictionary.Nullable(Some(0.5)))
+    None => assert_true(false, msg="nullable-float.put: missing key k2")
   }
   match body.get("k3") {
-    Some(v) => {
-      guard v.value is None else {
-        fail("nullable-float.put: body.k3 should be null")
-      }
-    }
-    None => fail("nullable-float.put: missing key k3")
+    Some(v) => assert_eq(v, @type_dictionary.Nullable(None))
+    None => assert_true(false, msg="nullable-float.put: missing key k3")
   }
 }
 
@@ -374,50 +314,43 @@ impl @type_dictionary.RecursiveModelValueHandler for DictRecursiveModelValueHand
   _self,
   body,
 ) {
-  guard body.length() == 2 else {
-    fail("recursive-model.put: body length should be 2")
-  }
+  assert_eq(body.length(), 2)
   match body.get("k1") {
     Some(v) => {
-      guard v.property == "hello" else {
-        fail("recursive-model.put: body.k1.property should be 'hello'")
-      }
+      assert_eq(v.property, "hello")
       match v.children {
-        Some(children) => {
-          guard children.length() == 0 else {
-            fail("recursive-model.put: body.k1.children should be {}")
-          }
-        }
-        None => fail("recursive-model.put: body.k1.children should exist")
+        Some(children) => assert_eq(children.length(), 0)
+        None =>
+          assert_true(
+            false,
+            msg="recursive-model.put: body.k1.children should exist",
+          )
       }
     }
-    None => fail("recursive-model.put: missing key k1")
+    None => assert_true(false, msg="recursive-model.put: missing key k1")
   }
   match body.get("k2") {
     Some(v) => {
-      guard v.property == "world" else {
-        fail("recursive-model.put: body.k2.property should be 'world'")
-      }
+      assert_eq(v.property, "world")
       match v.children {
         Some(children) => {
-          guard children.length() == 1 else {
-            fail("recursive-model.put: body.k2.children length should be 1")
-          }
+          assert_eq(children.length(), 1)
           match children.get("k2.1") {
-            Some(inner) => {
-              guard inner.property == "inner world" else {
-                fail(
-                  "recursive-model.put: body.k2.children['k2.1'].property should be 'inner world'",
-                )
-              }
-            }
+            Some(inner) => assert_eq(inner.property, "inner world")
             None =>
-              fail("recursive-model.put: missing key body.k2.children['k2.1']")
+              assert_true(
+                false,
+                msg="recursive-model.put: missing key body.k2.children['k2.1']",
+              )
           }
         }
-        None => fail("recursive-model.put: body.k2.children should exist")
+        None =>
+          assert_true(
+            false,
+            msg="recursive-model.put: body.k2.children should exist",
+          )
       }
     }
-    None => fail("recursive-model.put: missing key k2")
+    None => assert_true(false, msg="recursive-model.put: missing key k2")
   }
 }

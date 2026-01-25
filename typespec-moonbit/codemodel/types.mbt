@@ -34,12 +34,14 @@ pub fn Model::name(self : Model) -> String {
 
 ///|
 /// CodeModel 枚举。
+#warnings("-struct_never_constructed")
 pub struct Enum {
   name : String
 }
 
 ///|
 /// CodeModel 联合类型。
+#warnings("-struct_never_constructed")
 pub struct Union {
   name : String
 }
