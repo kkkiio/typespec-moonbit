@@ -9,7 +9,7 @@ pub(open) trait MultipleHandler {
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 ///|
-pub fn[H0 : MultipleHandler] create_router(h0 : H0) -> Router {
+pub fn[H0 : MultipleHandler] create_router(multiple_handler~ : H0) -> Router {
   async fn(
     req : @http.Request,
     body_stream : &@io.Reader,
@@ -22,7 +22,7 @@ pub fn[H0 : MultipleHandler] create_router(h0 : H0) -> Router {
     } else if req.meth == @http.Get &&
       match_path_template("/server/path/multiple/{apiVersion}", path) {
       ignore(body_stream)
-      h0.no_operation_params()
+      multiple_handler.no_operation_params()
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
@@ -31,7 +31,7 @@ pub fn[H0 : MultipleHandler] create_router(h0 : H0) -> Router {
       let p_2_keyword = get_path_param(
         "/server/path/multiple/{apiVersion}/{keyword}", path, "keyword",
       )
-      h0.with_operation_path_param(p_2_keyword)
+      multiple_handler.with_operation_path_param(p_2_keyword)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else {

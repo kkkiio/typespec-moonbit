@@ -2,7 +2,10 @@
 async test "parameters/basic" {
   let explicit = ParamBasicExplicit::{  }
   let implicit = ParamBasicImplicit::{  }
-  let router = @parameters_basic.create_router(explicit, implicit)
+  let router = @parameters_basic.create_router(
+    explicit_body_handler=explicit,
+    implicit_body_handler=implicit,
+  )
   @async.with_task_group(fn(group) {
     let base_url = @server.start_server(group, router)
     let status = @server.run_scenario("parameters/basic/**/*", base_url)

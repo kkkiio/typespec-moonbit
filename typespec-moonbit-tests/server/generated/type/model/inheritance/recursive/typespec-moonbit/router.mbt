@@ -9,7 +9,7 @@ pub(open) trait RecursiveHandler {
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 ///|
-pub fn[H0 : RecursiveHandler] create_router(h0 : H0) -> Router {
+pub fn[H0 : RecursiveHandler] create_router(recursive_handler~ : H0) -> Router {
   async fn(
     req : @http.Request,
     body_stream : &@io.Reader,
@@ -26,13 +26,13 @@ pub fn[H0 : RecursiveHandler] create_router(h0 : H0) -> Router {
       let p_1_body : Extension = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h0.put(p_1_body)
+      recursive_handler.put(p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/model/inheritance/recursive", path) {
       ignore(body_stream)
-      let resp_body = h0.get()
+      let resp_body = recursive_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())

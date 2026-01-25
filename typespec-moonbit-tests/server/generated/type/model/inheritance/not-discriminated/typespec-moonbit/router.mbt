@@ -10,7 +10,9 @@ pub(open) trait NotDiscriminatedHandler {
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 ///|
-pub fn[H0 : NotDiscriminatedHandler] create_router(h0 : H0) -> Router {
+pub fn[H0 : NotDiscriminatedHandler] create_router(
+  not_discriminated_handler~ : H0,
+) -> Router {
   async fn(
     req : @http.Request,
     body_stream : &@io.Reader,
@@ -29,7 +31,7 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(h0 : H0) -> Router {
       let p_1_body : Siamese = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h0.post_valid(p_1_body)
+      not_discriminated_handler.post_valid(p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
@@ -37,7 +39,7 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(h0 : H0) -> Router {
         "/type/model/inheritance/not-discriminated/valid", path,
       ) {
       ignore(body_stream)
-      let resp_body = h0.get_valid()
+      let resp_body = not_discriminated_handler.get_valid()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -51,7 +53,7 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(h0 : H0) -> Router {
       let p_3_body : Siamese = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      let resp_body = h0.put_valid(p_3_body)
+      let resp_body = not_discriminated_handler.put_valid(p_3_body)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())

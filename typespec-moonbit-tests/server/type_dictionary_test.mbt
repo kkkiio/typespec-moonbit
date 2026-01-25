@@ -14,9 +14,17 @@ async test "type/dictionary" {
   let nullable_float_handler = DictNullableFloatValueHandlerImpl::{  }
   let recursive_model_handler = DictRecursiveModelValueHandlerImpl::{  }
   let router = @type_dictionary.create_router(
-    int32_handler, int64_handler, model_handler, string_handler, boolean_handler,
-    float32_handler, unknown_handler, datetime_handler, duration_handler, nullable_float_handler,
-    recursive_model_handler,
+    int32_value_handler=int32_handler,
+    int64_value_handler=int64_handler,
+    model_value_handler=model_handler,
+    string_value_handler=string_handler,
+    boolean_value_handler=boolean_handler,
+    float32_value_handler=float32_handler,
+    unknown_value_handler=unknown_handler,
+    datetime_value_handler=datetime_handler,
+    duration_value_handler=duration_handler,
+    nullable_float_value_handler=nullable_float_handler,
+    recursive_model_value_handler=recursive_model_handler,
   )
   @async.with_task_group(fn(group) {
     let base_url = @server.start_server(group, router)

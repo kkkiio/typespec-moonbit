@@ -116,20 +116,20 @@ pub fn[
   H12 : NullableStringValueHandler,
   H13 : NullableBooleanValueHandler,
 ] create_router(
-  h0 : H0,
-  h1 : H1,
-  h2 : H2,
-  h3 : H3,
-  h4 : H4,
-  h5 : H5,
-  h6 : H6,
-  h7 : H7,
-  h8 : H8,
-  h9 : H9,
-  h10 : H10,
-  h11 : H11,
-  h12 : H12,
-  h13 : H13,
+  int32_value_handler~ : H0,
+  int64_value_handler~ : H1,
+  model_value_handler~ : H2,
+  string_value_handler~ : H3,
+  boolean_value_handler~ : H4,
+  float32_value_handler~ : H5,
+  unknown_value_handler~ : H6,
+  datetime_value_handler~ : H7,
+  duration_value_handler~ : H8,
+  nullable_float_value_handler~ : H9,
+  nullable_int32_value_handler~ : H10,
+  nullable_model_value_handler~ : H11,
+  nullable_string_value_handler~ : H12,
+  nullable_boolean_value_handler~ : H13,
 ) -> Router {
   async fn(
     req : @http.Request,
@@ -143,7 +143,7 @@ pub fn[
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/int32", path) {
       ignore(body_stream)
-      let resp_body = h0.get()
+      let resp_body = int32_value_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -155,13 +155,13 @@ pub fn[
       let p_2_body : Array[Int] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h0.put(p_2_body)
+      int32_value_handler.put(p_2_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/int64", path) {
       ignore(body_stream)
-      let resp_body = h1.get()
+      let resp_body = int64_value_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -173,13 +173,13 @@ pub fn[
       let p_4_body : Array[Int64] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h1.put(p_4_body)
+      int64_value_handler.put(p_4_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/model", path) {
       ignore(body_stream)
-      let resp_body = h2.get()
+      let resp_body = model_value_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -191,13 +191,13 @@ pub fn[
       let p_6_body : Array[InnerModel] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h2.put(p_6_body)
+      model_value_handler.put(p_6_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/string", path) {
       ignore(body_stream)
-      let resp_body = h3.get()
+      let resp_body = string_value_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -209,13 +209,13 @@ pub fn[
       let p_8_body : Array[String] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h3.put(p_8_body)
+      string_value_handler.put(p_8_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/boolean", path) {
       ignore(body_stream)
-      let resp_body = h4.get()
+      let resp_body = boolean_value_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -227,13 +227,13 @@ pub fn[
       let p_10_body : Array[Bool] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h4.put(p_10_body)
+      boolean_value_handler.put(p_10_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/float32", path) {
       ignore(body_stream)
-      let resp_body = h5.get()
+      let resp_body = float32_value_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -245,13 +245,13 @@ pub fn[
       let p_12_body : Array[Double] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h5.put(p_12_body)
+      float32_value_handler.put(p_12_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/unknown", path) {
       ignore(body_stream)
-      let resp_body = h6.get()
+      let resp_body = unknown_value_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -263,13 +263,13 @@ pub fn[
       let p_14_body : Array[Json] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h6.put(p_14_body)
+      unknown_value_handler.put(p_14_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/datetime", path) {
       ignore(body_stream)
-      let resp_body = h7.get()
+      let resp_body = datetime_value_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -281,13 +281,13 @@ pub fn[
       let p_16_body : Array[String] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h7.put(p_16_body)
+      datetime_value_handler.put(p_16_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/duration", path) {
       ignore(body_stream)
-      let resp_body = h8.get()
+      let resp_body = duration_value_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -299,13 +299,13 @@ pub fn[
       let p_18_body : Array[String] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h8.put(p_18_body)
+      duration_value_handler.put(p_18_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-float", path) {
       ignore(body_stream)
-      let resp_body = h9.get()
+      let resp_body = nullable_float_value_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -319,13 +319,13 @@ pub fn[
       ) catch {
         _ => @json.from_json(null)
       }
-      h9.put(p_20_body)
+      nullable_float_value_handler.put(p_20_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-int32", path) {
       ignore(body_stream)
-      let resp_body = h10.get()
+      let resp_body = nullable_int32_value_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -339,13 +339,13 @@ pub fn[
       ) catch {
         _ => @json.from_json(null)
       }
-      h10.put(p_22_body)
+      nullable_int32_value_handler.put(p_22_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-model", path) {
       ignore(body_stream)
-      let resp_body = h11.get()
+      let resp_body = nullable_model_value_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -359,13 +359,13 @@ pub fn[
       ) catch {
         _ => @json.from_json(null)
       }
-      h11.put(p_24_body)
+      nullable_model_value_handler.put(p_24_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-string", path) {
       ignore(body_stream)
-      let resp_body = h12.get()
+      let resp_body = nullable_string_value_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -379,13 +379,13 @@ pub fn[
       ) catch {
         _ => @json.from_json(null)
       }
-      h12.put(p_26_body)
+      nullable_string_value_handler.put(p_26_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/array/nullable-boolean", path) {
       ignore(body_stream)
-      let resp_body = h13.get()
+      let resp_body = nullable_boolean_value_handler.get()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -399,7 +399,7 @@ pub fn[
       ) catch {
         _ => @json.from_json(null)
       }
-      h13.put(p_28_body)
+      nullable_boolean_value_handler.put(p_28_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else {

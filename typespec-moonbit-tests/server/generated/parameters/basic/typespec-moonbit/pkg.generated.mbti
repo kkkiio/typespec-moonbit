@@ -8,7 +8,7 @@ import {
 }
 
 // Values
-pub fn[H0 : ExplicitBodyHandler, H1 : ImplicitBodyHandler] create_router(H0, H1) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+pub fn[H0 : ExplicitBodyHandler, H1 : ImplicitBodyHandler] create_router(explicit_body_handler~ : H0, implicit_body_handler~ : H1) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 // Errors
 

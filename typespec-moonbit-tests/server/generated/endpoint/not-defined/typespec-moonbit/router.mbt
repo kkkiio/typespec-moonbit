@@ -8,7 +8,9 @@ pub(open) trait NotDefinedHandler {
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 ///|
-pub fn[H0 : NotDefinedHandler] create_router(h0 : H0) -> Router {
+pub fn[H0 : NotDefinedHandler] create_router(
+  not_defined_handler~ : H0,
+) -> Router {
   async fn(
     req : @http.Request,
     body_stream : &@io.Reader,
@@ -21,7 +23,7 @@ pub fn[H0 : NotDefinedHandler] create_router(h0 : H0) -> Router {
     } else if req.meth == @http.Head &&
       match_path_template("/server/endpoint/not-defined/valid", path) {
       ignore(body_stream)
-      h0.valid()
+      not_defined_handler.valid()
       conn.send_response(200, "OK")
       conn.end_response()
     } else {

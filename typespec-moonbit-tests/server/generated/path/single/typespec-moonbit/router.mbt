@@ -8,7 +8,7 @@ pub(open) trait SingleHandler {
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 ///|
-pub fn[H0 : SingleHandler] create_router(h0 : H0) -> Router {
+pub fn[H0 : SingleHandler] create_router(single_handler~ : H0) -> Router {
   async fn(
     req : @http.Request,
     body_stream : &@io.Reader,
@@ -21,7 +21,7 @@ pub fn[H0 : SingleHandler] create_router(h0 : H0) -> Router {
     } else if req.meth == @http.Head &&
       match_path_template("/server/path/single/myOp", path) {
       ignore(body_stream)
-      h0.my_op()
+      single_handler.my_op()
       conn.send_response(200, "OK")
       conn.end_response()
     } else {

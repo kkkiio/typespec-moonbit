@@ -174,7 +174,10 @@ fn emit_server_models(crate : @codemodel.Crate) -> String raise {
 let router_template : String =
   #|pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
   #|
-  #|pub fn[{{#clients}}H{{client_index}} : {{trait_name}}{{^is_last}}, {{/is_last}}{{/clients}}] create_router({{#clients}}{{handler_var}} : H{{client_index}}{{^is_last}}, {{/is_last}}{{/clients}}) -> Router {
+  #|pub fn[{{#clients}}H{{client_index}} : {{trait_name}}{{^is_last}}, {{/is_last}}{{/clients}}] create_router(
+  #|  {{#clients}}{{handler_var}}~ : H{{client_index}},
+  #|  {{/clients}}
+  #|) -> Router {
   #|  async fn(req : @http.Request, body_stream : &@io.Reader, conn : @http.ServerConnection) {
   #|    let full_path = req.path
   #|    let path = strip_request_query(full_path)
@@ -245,8 +248,31 @@ fn status_reason_phrase(code : Int) -> String {
 
 ///|
 fn emit_create_router(crate : @codemodel.Crate) -> String raise {
+  fn compact_alpha_digit_underscore(s : String) -> String {
+    let n = s.length()
+    let sb = StringBuilder::new(size_hint=n)
+    let mut i = 0
+    while i < n {
+      let ch = s.code_unit_at(i)
+      if ch == '_' && i > 0 && i + 1 < n {
+        let prev = s.code_unit_at(i - 1)
+        let next = s.code_unit_at(i + 1)
+        let prev_is_lower = prev >= 'a' && prev <= 'z'
+        let next_is_digit = next >= '0' && next <= '9'
+        if prev_is_lower && next_is_digit {
+          i += 1
+          continue
+        }
+      }
+      sb.write_char(ch.to_int().unsafe_to_char())
+      i += 1
+    }
+    sb.to_string()
+  }
+
   let clients = crate.clients
   let mut op_counter = 0
+  let used_handler_vars : Array[String] = Array::new()
   let clients_ctx : Array[Json] = Array::new()
   for i in 0..<clients.length() {
     let client = clients[i]
@@ -307,8 +333,37 @@ fn emit_create_router(crate : @codemodel.Crate) -> String raise {
         "params": params_arr,
       })
     }
-    clients_ctx.push({
-      "handler_var": "h\{i}",
+	    clients_ctx.push({
+	      "handler_var": {
+	        let base = {
+	          let s = compact_alpha_digit_underscore(
+	            sanitize_identifier(@case.snake_case(client.name)),
+	          )
+	          if s == "" {
+	            "h\{i}"
+	          } else {
+	            "\{s}_handler"
+          }
+        }
+        let mut candidate = base
+        let mut suffix = 1
+        while true {
+          let mut exists = false
+          for name in used_handler_vars {
+            if name == candidate {
+              exists = true
+              break
+            }
+          }
+          if !exists {
+            break
+          }
+          candidate = "\{base}_\{suffix}"
+          suffix += 1
+        }
+        used_handler_vars.push(candidate)
+        candidate
+      },
       "trait_name": @case.pascal_case(sanitize_identifier(client.name)) +
       "Handler",
       "client_index": i.to_double(),

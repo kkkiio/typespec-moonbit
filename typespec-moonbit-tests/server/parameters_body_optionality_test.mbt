@@ -5,7 +5,8 @@ async test "parameters/body-optionality" {
   let body_optionality_handler = BodyOptionalityHandlerImpl::{  }
   let optional_explicit_handler = OptionalExplicitHandlerImpl::{  }
   let router = @parameters_body_optionality.create_router(
-    body_optionality_handler, optional_explicit_handler,
+    body_optionality_handler~,
+    optional_explicit_handler~,
   )
   @async.with_task_group(fn(group) {
     let base_url = @server.start_server(group, router)

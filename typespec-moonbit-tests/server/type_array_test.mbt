@@ -17,9 +17,20 @@ async test "type/array" {
   let nullable_string_handler = NullableStringValueHandlerImpl::{  }
   let nullable_boolean_handler = NullableBooleanValueHandlerImpl::{  }
   let router = @type_array.create_router(
-    int32_handler, int64_handler, model_handler, string_handler, boolean_handler,
-    float32_handler, unknown_handler, datetime_handler, duration_handler, nullable_float_handler,
-    nullable_int32_handler, nullable_model_handler, nullable_string_handler, nullable_boolean_handler,
+    int32_value_handler=int32_handler,
+    int64_value_handler=int64_handler,
+    model_value_handler=model_handler,
+    string_value_handler=string_handler,
+    boolean_value_handler=boolean_handler,
+    float32_value_handler=float32_handler,
+    unknown_value_handler=unknown_handler,
+    datetime_value_handler=datetime_handler,
+    duration_value_handler=duration_handler,
+    nullable_float_value_handler=nullable_float_handler,
+    nullable_int32_value_handler=nullable_int32_handler,
+    nullable_model_value_handler=nullable_model_handler,
+    nullable_string_value_handler=nullable_string_handler,
+    nullable_boolean_value_handler=nullable_boolean_handler,
   )
   @async.with_task_group(fn(group) {
     let base_url = @server.start_server(group, router)

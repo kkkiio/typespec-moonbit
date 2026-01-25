@@ -10,7 +10,7 @@ pub(open) trait EmptyHandler {
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 ///|
-pub fn[H0 : EmptyHandler] create_router(h0 : H0) -> Router {
+pub fn[H0 : EmptyHandler] create_router(empty_handler~ : H0) -> Router {
   async fn(
     req : @http.Request,
     body_stream : &@io.Reader,
@@ -27,13 +27,13 @@ pub fn[H0 : EmptyHandler] create_router(h0 : H0) -> Router {
       let p_1_body : EmptyInput = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h0.put_empty(p_1_body)
+      empty_handler.put_empty(p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Get &&
       match_path_template("/type/model/empty/alone", path) {
       ignore(body_stream)
-      let resp_body = h0.get_empty()
+      let resp_body = empty_handler.get_empty()
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
@@ -45,7 +45,7 @@ pub fn[H0 : EmptyHandler] create_router(h0 : H0) -> Router {
       let p_3_body : EmptyInputOutput = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      let resp_body = h0.post_round_trip_empty(p_3_body)
+      let resp_body = empty_handler.post_round_trip_empty(p_3_body)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())

@@ -8,7 +8,7 @@ import {
 }
 
 // Values
-pub fn[H0 : Int32ValueHandler, H1 : Int64ValueHandler, H2 : ModelValueHandler, H3 : StringValueHandler, H4 : BooleanValueHandler, H5 : Float32ValueHandler, H6 : UnknownValueHandler, H7 : DatetimeValueHandler, H8 : DurationValueHandler, H9 : NullableFloatValueHandler, H10 : RecursiveModelValueHandler] create_router(H0, H1, H2, H3, H4, H5, H6, H7, H8, H9, H10) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+pub fn[H0 : Int32ValueHandler, H1 : Int64ValueHandler, H2 : ModelValueHandler, H3 : StringValueHandler, H4 : BooleanValueHandler, H5 : Float32ValueHandler, H6 : UnknownValueHandler, H7 : DatetimeValueHandler, H8 : DurationValueHandler, H9 : NullableFloatValueHandler, H10 : RecursiveModelValueHandler] create_router(int32_value_handler~ : H0, int64_value_handler~ : H1, model_value_handler~ : H2, string_value_handler~ : H3, boolean_value_handler~ : H4, float32_value_handler~ : H5, unknown_value_handler~ : H6, datetime_value_handler~ : H7, duration_value_handler~ : H8, nullable_float_value_handler~ : H9, recursive_model_value_handler~ : H10) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 // Errors
 

@@ -15,8 +15,8 @@ pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> 
 
 ///|
 pub fn[H0 : ExplicitBodyHandler, H1 : ImplicitBodyHandler] create_router(
-  h0 : H0,
-  h1 : H1,
+  explicit_body_handler~ : H0,
+  implicit_body_handler~ : H1,
 ) -> Router {
   async fn(
     req : @http.Request,
@@ -34,7 +34,7 @@ pub fn[H0 : ExplicitBodyHandler, H1 : ImplicitBodyHandler] create_router(
       let p_1_body : User = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h0.simple(p_1_body)
+      explicit_body_handler.simple(p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Put &&
@@ -44,7 +44,7 @@ pub fn[H0 : ExplicitBodyHandler, H1 : ImplicitBodyHandler] create_router(
       let p_2_body : Model0 = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h1.simple(p_2_body)
+      implicit_body_handler.simple(p_2_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else {

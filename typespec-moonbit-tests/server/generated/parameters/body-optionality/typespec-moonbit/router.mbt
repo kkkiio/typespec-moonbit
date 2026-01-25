@@ -17,8 +17,8 @@ pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> 
 
 ///|
 pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
-  h0 : H0,
-  h1 : H1,
+  body_optionality_handler~ : H0,
+  optional_explicit_handler~ : H1,
 ) -> Router {
   async fn(
     req : @http.Request,
@@ -38,7 +38,7 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
       let p_1_body : BodyModel = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h0.required_explicit(p_1_body)
+      body_optionality_handler.required_explicit(p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Post &&
@@ -50,7 +50,7 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
       let p_2_body : BodyModel0 = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h0.required_implicit(p_2_body)
+      body_optionality_handler.required_implicit(p_2_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Post &&
@@ -62,7 +62,7 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
       let p_3_body : BodyModel = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h1.set(p_3_body)
+      optional_explicit_handler.set(p_3_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else if req.meth == @http.Post &&
@@ -74,7 +74,7 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
       let p_4_body : BodyModel = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      h1.omit(p_4_body)
+      optional_explicit_handler.omit(p_4_body)
       conn.send_response(204, "No Content")
       conn.end_response()
     } else {

@@ -8,7 +8,7 @@ import {
 }
 
 // Values
-pub fn[H0 : NotDefinedHandler] create_router(H0) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+pub fn[H0 : NotDefinedHandler] create_router(not_defined_handler~ : H0) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 // Errors
 

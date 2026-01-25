@@ -8,7 +8,7 @@ import {
 }
 
 // Values
-pub fn[H0 : Int32ValueHandler, H1 : Int64ValueHandler, H2 : ModelValueHandler, H3 : StringValueHandler, H4 : BooleanValueHandler, H5 : Float32ValueHandler, H6 : UnknownValueHandler, H7 : DatetimeValueHandler, H8 : DurationValueHandler, H9 : NullableFloatValueHandler, H10 : NullableInt32ValueHandler, H11 : NullableModelValueHandler, H12 : NullableStringValueHandler, H13 : NullableBooleanValueHandler] create_router(H0, H1, H2, H3, H4, H5, H6, H7, H8, H9, H10, H11, H12, H13) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+pub fn[H0 : Int32ValueHandler, H1 : Int64ValueHandler, H2 : ModelValueHandler, H3 : StringValueHandler, H4 : BooleanValueHandler, H5 : Float32ValueHandler, H6 : UnknownValueHandler, H7 : DatetimeValueHandler, H8 : DurationValueHandler, H9 : NullableFloatValueHandler, H10 : NullableInt32ValueHandler, H11 : NullableModelValueHandler, H12 : NullableStringValueHandler, H13 : NullableBooleanValueHandler] create_router(int32_value_handler~ : H0, int64_value_handler~ : H1, model_value_handler~ : H2, string_value_handler~ : H3, boolean_value_handler~ : H4, float32_value_handler~ : H5, unknown_value_handler~ : H6, datetime_value_handler~ : H7, duration_value_handler~ : H8, nullable_float_value_handler~ : H9, nullable_int32_value_handler~ : H10, nullable_model_value_handler~ : H11, nullable_string_value_handler~ : H12, nullable_boolean_value_handler~ : H13) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 // Errors
 

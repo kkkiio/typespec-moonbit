@@ -11,7 +11,7 @@ pub(open) trait VersionedHandler {
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 ///|
-pub fn[H0 : VersionedHandler] create_router(h0 : H0) -> Router {
+pub fn[H0 : VersionedHandler] create_router(versioned_handler~ : H0) -> Router {
   async fn(
     req : @http.Request,
     body_stream : &@io.Reader,
@@ -26,7 +26,7 @@ pub fn[H0 : VersionedHandler] create_router(h0 : H0) -> Router {
         "/server/versions/versioned/without-api-version", path,
       ) {
       ignore(body_stream)
-      h0.without_api_version()
+      versioned_handler.without_api_version()
       conn.send_response(200, "OK")
       conn.end_response()
     } else if req.meth == @http.Head &&
@@ -35,7 +35,7 @@ pub fn[H0 : VersionedHandler] create_router(h0 : H0) -> Router {
       ) {
       ignore(body_stream)
       let p_2_api_version = get_query_param(full_path, "api-version")
-      h0.with_query_api_version(p_2_api_version)
+      versioned_handler.with_query_api_version(p_2_api_version)
       conn.send_response(200, "OK")
       conn.end_response()
     } else if req.meth == @http.Head &&
@@ -46,7 +46,7 @@ pub fn[H0 : VersionedHandler] create_router(h0 : H0) -> Router {
       let p_3_api_version = get_path_param(
         "/server/versions/versioned/with-path-api-version/{apiVersion}", path, "apiVersion",
       )
-      h0.with_path_api_version(p_3_api_version)
+      versioned_handler.with_path_api_version(p_3_api_version)
       conn.send_response(200, "OK")
       conn.end_response()
     } else if req.meth == @http.Head &&
@@ -55,7 +55,7 @@ pub fn[H0 : VersionedHandler] create_router(h0 : H0) -> Router {
       ) {
       ignore(body_stream)
       let p_4_api_version = get_query_param(full_path, "api-version")
-      h0.with_query_old_api_version(p_4_api_version)
+      versioned_handler.with_query_old_api_version(p_4_api_version)
       conn.send_response(200, "OK")
       conn.end_response()
     } else {

@@ -8,7 +8,7 @@ import {
 }
 
 // Values
-pub fn[H0 : StringHandler] create_router(H0) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+pub fn[H0 : StringHandler] create_router(string_handler~ : H0) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
 
 // Errors
 
