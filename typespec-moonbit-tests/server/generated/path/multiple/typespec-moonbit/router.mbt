@@ -130,29 +130,3 @@ fn get_path_param(template : String, path : String, name : String) -> String {
   }
   ""
 }
-
-///|
-fn get_header(headers : Map[String, String], name : String) -> String {
-  match headers.get(name.to_lower().to_string()) {
-    Some(v) => v
-    None => ""
-  }
-}
-
-///|
-fn get_query_param(full_path : String, name : String) -> String {
-  let parts = full_path.split("?").to_array()
-  if parts.length() < 2 {
-    return ""
-  }
-  let query = parts[1].to_string()
-  for pair in query.split("&") {
-    let kv = pair.split("=").to_array()
-    if kv.length() >= 2 {
-      if kv[0].to_string() == name {
-        return kv[1].to_string()
-      }
-    }
-  }
-  ""
-}

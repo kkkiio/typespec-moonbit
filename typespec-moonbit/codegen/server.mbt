@@ -333,16 +333,16 @@ fn emit_create_router(crate : @codemodel.Crate) -> String raise {
         "params": params_arr,
       })
     }
-	    clients_ctx.push({
-	      "handler_var": {
-	        let base = {
-	          let s = compact_alpha_digit_underscore(
-	            sanitize_identifier(@case.snake_case(client.name)),
-	          )
-	          if s == "" {
-	            "h\{i}"
-	          } else {
-	            "\{s}_handler"
+    clients_ctx.push({
+      "handler_var": {
+        let base = {
+          let s = compact_alpha_digit_underscore(
+            sanitize_identifier(@case.snake_case(client.name)),
+          )
+          if s == "" {
+            "h\{i}"
+          } else {
+            "\{s}_handler"
           }
         }
         let mut candidate = base
@@ -442,6 +442,22 @@ test "emit_server_router" {
 ///|
 fn emit_server_router(crate : @codemodel.Crate) -> String raise {
   let buf = StringBuilder::new(size_hint=8192)
+  let mut need_path_param = false
+  let mut need_header = false
+  let mut need_query = false
+  for client in crate.clients {
+    for op in client.methods {
+      for p in op.parameters {
+        if p.location == "path" {
+          need_path_param = true
+        } else if p.location == "header" {
+          need_header = true
+        } else if p.location == "query" {
+          need_query = true
+        }
+      }
+    }
+  }
   // 1. Generate Handler Traits
 
   let clients_json = crate.clients.map(fn(client) -> Json {
@@ -474,9 +490,15 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
   buf.write_string(emit_create_router(crate))
   buf.write_string(strip_request_query_code)
   buf.write_string(match_path_template_code)
-  buf.write_string(get_path_param_code)
-  buf.write_string(get_header_code)
-  buf.write_string(get_query_param_code)
+  if need_path_param {
+    buf.write_string(get_path_param_code)
+  }
+  if need_header {
+    buf.write_string(get_header_code)
+  }
+  if need_query {
+    buf.write_string(get_query_param_code)
+  }
   buf.to_string()
 }
 

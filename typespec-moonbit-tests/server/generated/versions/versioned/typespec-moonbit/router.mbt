@@ -156,14 +156,6 @@ fn get_path_param(template : String, path : String, name : String) -> String {
 }
 
 ///|
-fn get_header(headers : Map[String, String], name : String) -> String {
-  match headers.get(name.to_lower().to_string()) {
-    Some(v) => v
-    None => ""
-  }
-}
-
-///|
 fn get_query_param(full_path : String, name : String) -> String {
   let parts = full_path.split("?").to_array()
   if parts.length() < 2 {
