@@ -1,5 +1,6 @@
 {
   "name": "typespec-moonbit",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "main": "./index.js",
@@ -7,6 +8,12 @@
     ".": "./index.js"
   },
   "tspMain": "./index.js",
+  "files": [
+    "index.js",
+    "README.md",
+    "LICENSE",
+    "typespec-moonbit/_build/js/release/build/**"
+  ],
   "devDependencies": {
     "@azure-tools/azure-http-specs": "^0.1.0-alpha.36",
     "@azure-tools/typespec-autorest": "~0.64.0",
@@ -22,6 +29,8 @@
     "@typespec/xml": "~0.78.0"
   },
   "scripts": {
+    "build:js": "moon build -C typespec-moonbit --target js --release",
+    "prepare": "npm run build:js",
     "spector": "node .scripts/spector.js",
     "gen:client-test": "node .scripts/tspcompile.js",
     "gen:server-test": "node .scripts/emit_e2e_server.js",
