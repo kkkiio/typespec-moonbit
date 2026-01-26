@@ -1,82 +1,109 @@
 ///|
 /// Traits for operation handlers
 pub(open) trait Int32ValueHandler {
-  async get(Self) -> Map[String, Int]
-  async put(Self, body : Map[String, Int]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[String, Int]
+  async put(Self, group~ : @async.TaskGroup[Unit], body : Map[String, Int]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait Int64ValueHandler {
-  async get(Self) -> Map[String, Int64]
-  async put(Self, body : Map[String, Int64]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[String, Int64]
+  async put(Self, group~ : @async.TaskGroup[Unit], body : Map[String, Int64]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait ModelValueHandler {
-  async get(Self) -> Map[String, InnerModel]
-  async put(Self, body : Map[String, InnerModel]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[String, InnerModel]
+  async put(
+    Self,
+    group~ : @async.TaskGroup[Unit],
+    body : Map[String, InnerModel],
+  ) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait StringValueHandler {
-  async get(Self) -> Map[String, String]
-  async put(Self, body : Map[String, String]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[String, String]
+  async put(Self, group~ : @async.TaskGroup[Unit], body : Map[String, String]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait BooleanValueHandler {
-  async get(Self) -> Map[String, Bool]
-  async put(Self, body : Map[String, Bool]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[String, Bool]
+  async put(Self, group~ : @async.TaskGroup[Unit], body : Map[String, Bool]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait Float32ValueHandler {
-  async get(Self) -> Map[String, Double]
-  async put(Self, body : Map[String, Double]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[String, Double]
+  async put(Self, group~ : @async.TaskGroup[Unit], body : Map[String, Double]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait UnknownValueHandler {
-  async get(Self) -> Map[String, Json]
-  async put(Self, body : Map[String, Json]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[String, Json]
+  async put(Self, group~ : @async.TaskGroup[Unit], body : Map[String, Json]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait DatetimeValueHandler {
-  async get(Self) -> Map[String, String]
-  async put(Self, body : Map[String, String]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[String, String]
+  async put(Self, group~ : @async.TaskGroup[Unit], body : Map[String, String]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait DurationValueHandler {
-  async get(Self) -> Map[String, String]
-  async put(Self, body : Map[String, String]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[String, String]
+  async put(Self, group~ : @async.TaskGroup[Unit], body : Map[String, String]) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait NullableFloatValueHandler {
-  async get(Self) -> Map[String, Nullable[Double]]
-  async put(Self, body : Map[String, Nullable[Double]]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[
+    String,
+    Nullable[Double],
+  ]
+  async put(
+    Self,
+    group~ : @async.TaskGroup[Unit],
+    body : Map[String, Nullable[Double]],
+  ) -> Unit
 }
 
 ///|
 /// Traits for operation handlers
 pub(open) trait RecursiveModelValueHandler {
-  async get(Self) -> Map[String, InnerModel]
-  async put(Self, body : Map[String, InnerModel]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[String, InnerModel]
+  async put(
+    Self,
+    group~ : @async.TaskGroup[Unit],
+    body : Map[String, InnerModel],
+  ) -> Unit
 }
 
 ///|
-pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+/// 路由匹配结果。
+#warnings("-unused_constructor")
+pub enum RouteMatch {
+  /// 已命中并写入响应（或已开始 SSE）。
+  Handled
+  /// 路径完全不匹配。
+  NotMatched
+  /// 路径匹配但 method 不被支持（可用于返回 405）。
+  MethodNotAllowed
+}
+
+///|
+pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
 
 ///|
 pub fn[
@@ -103,23 +130,24 @@ pub fn[
   duration_value_handler~ : H8,
   nullable_float_value_handler~ : H9,
   recursive_model_value_handler~ : H10,
+  group~ : @async.TaskGroup[Unit],
 ) -> Router {
   async fn(
     req : @http.Request,
     body_stream : &@io.Reader,
     conn : @http.ServerConnection,
-  ) {
+  ) -> RouteMatch {
     let full_path = req.path
     let path = strip_request_query(full_path)
     if req.meth == @http.Get &&
       match_path_template("/type/dictionary/int32", path) {
       ignore(body_stream)
-      let resp_body = int32_value_handler.get()
+      let resp_body = int32_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
       match_path_template("/type/dictionary/int32", path) {
@@ -128,20 +156,20 @@ pub fn[
       let p_2_body : Map[String, Int] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      int32_value_handler.put(p_2_body)
+      int32_value_handler.put(group~, p_2_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
       match_path_template("/type/dictionary/int64", path) {
       ignore(body_stream)
-      let resp_body = int64_value_handler.get()
+      let resp_body = int64_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
       match_path_template("/type/dictionary/int64", path) {
@@ -150,20 +178,20 @@ pub fn[
       let p_4_body : Map[String, Int64] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      int64_value_handler.put(p_4_body)
+      int64_value_handler.put(group~, p_4_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
       match_path_template("/type/dictionary/model", path) {
       ignore(body_stream)
-      let resp_body = model_value_handler.get()
+      let resp_body = model_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
       match_path_template("/type/dictionary/model", path) {
@@ -174,20 +202,20 @@ pub fn[
       ) catch {
         _ => @json.from_json(null)
       }
-      model_value_handler.put(p_6_body)
+      model_value_handler.put(group~, p_6_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
       match_path_template("/type/dictionary/string", path) {
       ignore(body_stream)
-      let resp_body = string_value_handler.get()
+      let resp_body = string_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
       match_path_template("/type/dictionary/string", path) {
@@ -198,20 +226,20 @@ pub fn[
       ) catch {
         _ => @json.from_json(null)
       }
-      string_value_handler.put(p_8_body)
+      string_value_handler.put(group~, p_8_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
       match_path_template("/type/dictionary/boolean", path) {
       ignore(body_stream)
-      let resp_body = boolean_value_handler.get()
+      let resp_body = boolean_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
       match_path_template("/type/dictionary/boolean", path) {
@@ -220,20 +248,20 @@ pub fn[
       let p_10_body : Map[String, Bool] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      boolean_value_handler.put(p_10_body)
+      boolean_value_handler.put(group~, p_10_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
       match_path_template("/type/dictionary/float32", path) {
       ignore(body_stream)
-      let resp_body = float32_value_handler.get()
+      let resp_body = float32_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
       match_path_template("/type/dictionary/float32", path) {
@@ -244,20 +272,20 @@ pub fn[
       ) catch {
         _ => @json.from_json(null)
       }
-      float32_value_handler.put(p_12_body)
+      float32_value_handler.put(group~, p_12_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
       match_path_template("/type/dictionary/unknown", path) {
       ignore(body_stream)
-      let resp_body = unknown_value_handler.get()
+      let resp_body = unknown_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
       match_path_template("/type/dictionary/unknown", path) {
@@ -266,20 +294,20 @@ pub fn[
       let p_14_body : Map[String, Json] = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      unknown_value_handler.put(p_14_body)
+      unknown_value_handler.put(group~, p_14_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
       match_path_template("/type/dictionary/datetime", path) {
       ignore(body_stream)
-      let resp_body = datetime_value_handler.get()
+      let resp_body = datetime_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
       match_path_template("/type/dictionary/datetime", path) {
@@ -290,20 +318,20 @@ pub fn[
       ) catch {
         _ => @json.from_json(null)
       }
-      datetime_value_handler.put(p_16_body)
+      datetime_value_handler.put(group~, p_16_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
       match_path_template("/type/dictionary/duration", path) {
       ignore(body_stream)
-      let resp_body = duration_value_handler.get()
+      let resp_body = duration_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
       match_path_template("/type/dictionary/duration", path) {
@@ -314,20 +342,20 @@ pub fn[
       ) catch {
         _ => @json.from_json(null)
       }
-      duration_value_handler.put(p_18_body)
+      duration_value_handler.put(group~, p_18_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
       match_path_template("/type/dictionary/nullable-float", path) {
       ignore(body_stream)
-      let resp_body = nullable_float_value_handler.get()
+      let resp_body = nullable_float_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
       match_path_template("/type/dictionary/nullable-float", path) {
@@ -338,20 +366,20 @@ pub fn[
       ) catch {
         _ => @json.from_json(null)
       }
-      nullable_float_value_handler.put(p_20_body)
+      nullable_float_value_handler.put(group~, p_20_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
       match_path_template("/type/dictionary/model/recursive", path) {
       ignore(body_stream)
-      let resp_body = recursive_model_value_handler.get()
+      let resp_body = recursive_model_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
       match_path_template("/type/dictionary/model/recursive", path) {
@@ -362,13 +390,114 @@ pub fn[
       ) catch {
         _ => @json.from_json(null)
       }
-      recursive_model_value_handler.put(p_22_body)
+      recursive_model_value_handler.put(group~, p_22_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
-    conn.send_response(404, "NotFound")
-    conn.write("not found")
-    conn.end_response()
+
+    // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
+    let mut path_matched = false
+    if match_path_template("/type/dictionary/int32", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/int32", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/int64", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/int64", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/model", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/model", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/string", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/string", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/boolean", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/boolean", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/float32", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/float32", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/unknown", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/unknown", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/datetime", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/datetime", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/duration", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/duration", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/nullable-float", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/nullable-float", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/model/recursive", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/dictionary/model/recursive", path) {
+      path_matched = true
+    }
+    if path_matched {
+      RouteMatch::MethodNotAllowed
+    } else {
+      RouteMatch::NotMatched
+    }
+  }
+}
+
+///|
+/// 创建一个“带默认 fallback”的 dispatch（`async (...)->Unit`），便于直接挂到 http server。
+///
+/// - `Handled`：router 已写入响应
+/// - `MethodNotAllowed`：发送 405
+/// - `NotMatched`：发送 404
+pub fn create_dispatch(
+  router : Router,
+) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit {
+  async fn(
+    req : @http.Request,
+    body_stream : &@io.Reader,
+    conn : @http.ServerConnection,
+  ) {
+    let result = router(req, body_stream, conn)
+    match result {
+      RouteMatch::Handled => ()
+      RouteMatch::MethodNotAllowed => {
+        conn.send_response(405, "Method Not Allowed")
+        conn.end_response()
+      }
+      RouteMatch::NotMatched => {
+        conn.send_response(404, "Not Found")
+        conn.write("not found")
+        conn.end_response()
+      }
+    }
   }
 }

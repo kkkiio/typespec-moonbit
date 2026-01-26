@@ -13,21 +13,23 @@ async test "type/dictionary" {
   let duration_handler = DictDurationValueHandlerImpl::{  }
   let nullable_float_handler = DictNullableFloatValueHandlerImpl::{  }
   let recursive_model_handler = DictRecursiveModelValueHandlerImpl::{  }
-  let router = @type_dictionary.create_router(
-    int32_value_handler=int32_handler,
-    int64_value_handler=int64_handler,
-    model_value_handler=model_handler,
-    string_value_handler=string_handler,
-    boolean_value_handler=boolean_handler,
-    float32_value_handler=float32_handler,
-    unknown_value_handler=unknown_handler,
-    datetime_value_handler=datetime_handler,
-    duration_value_handler=duration_handler,
-    nullable_float_value_handler=nullable_float_handler,
-    recursive_model_value_handler=recursive_model_handler,
-  )
   @async.with_task_group(fn(group) {
-    let base_url = @server.start_server(group, router)
+    let router = @type_dictionary.create_router(
+      int32_value_handler=int32_handler,
+      int64_value_handler=int64_handler,
+      model_value_handler=model_handler,
+      string_value_handler=string_handler,
+      boolean_value_handler=boolean_handler,
+      float32_value_handler=float32_handler,
+      unknown_value_handler=unknown_handler,
+      datetime_value_handler=datetime_handler,
+      duration_value_handler=duration_handler,
+      nullable_float_value_handler=nullable_float_handler,
+      recursive_model_value_handler=recursive_model_handler,
+      group~,
+    )
+    let dispatch = @type_dictionary.create_dispatch(router)
+    let base_url = @server.start_server(group, dispatch)
     // Skip int64 value scenarios
     let status = @server.run_scenario(
       "type/dictionary/!(int64value)*/*", base_url,
@@ -42,6 +44,7 @@ struct DictInt32ValueHandlerImpl {}
 ///|
 impl @type_dictionary.Int32ValueHandler for DictInt32ValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return { k1: 1, k2: 2 }
   { "k1": 1, "k2": 2 }
@@ -50,6 +53,7 @@ impl @type_dictionary.Int32ValueHandler for DictInt32ValueHandlerImpl with get(
 ///|
 impl @type_dictionary.Int32ValueHandler for DictInt32ValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 2)
@@ -63,6 +67,7 @@ struct DictInt64ValueHandlerImpl {}
 ///|
 impl @type_dictionary.Int64ValueHandler for DictInt64ValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return { k1: 0x7fffffffffffffff, k2: -0x7fffffffffffffff }
   { "k1": 0x7fffffffffffffffL, "k2": -0x7fffffffffffffffL }
@@ -71,6 +76,7 @@ impl @type_dictionary.Int64ValueHandler for DictInt64ValueHandlerImpl with get(
 ///|
 impl @type_dictionary.Int64ValueHandler for DictInt64ValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 2)
@@ -84,6 +90,7 @@ struct DictModelValueHandlerImpl {}
 ///|
 impl @type_dictionary.ModelValueHandler for DictModelValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return { k1: { property: "hello" }, k2: { property: "world" } }
   {
@@ -95,6 +102,7 @@ impl @type_dictionary.ModelValueHandler for DictModelValueHandlerImpl with get(
 ///|
 impl @type_dictionary.ModelValueHandler for DictModelValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 2)
@@ -114,6 +122,7 @@ struct DictStringValueHandlerImpl {}
 ///|
 impl @type_dictionary.StringValueHandler for DictStringValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return { k1: "hello", k2: "" }
   { "k1": "hello", "k2": "" }
@@ -122,6 +131,7 @@ impl @type_dictionary.StringValueHandler for DictStringValueHandlerImpl with get
 ///|
 impl @type_dictionary.StringValueHandler for DictStringValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 2)
@@ -135,6 +145,7 @@ struct DictBooleanValueHandlerImpl {}
 ///|
 impl @type_dictionary.BooleanValueHandler for DictBooleanValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return { k1: true, k2: false }
   { "k1": true, "k2": false }
@@ -143,6 +154,7 @@ impl @type_dictionary.BooleanValueHandler for DictBooleanValueHandlerImpl with g
 ///|
 impl @type_dictionary.BooleanValueHandler for DictBooleanValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 2)
@@ -156,6 +168,7 @@ struct DictFloat32ValueHandlerImpl {}
 ///|
 impl @type_dictionary.Float32ValueHandler for DictFloat32ValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return { k1: 43.125 }
   { "k1": 43.125 }
@@ -164,6 +177,7 @@ impl @type_dictionary.Float32ValueHandler for DictFloat32ValueHandlerImpl with g
 ///|
 impl @type_dictionary.Float32ValueHandler for DictFloat32ValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 1)
@@ -176,6 +190,7 @@ struct DictUnknownValueHandlerImpl {}
 ///|
 impl @type_dictionary.UnknownValueHandler for DictUnknownValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return { k1: 1, k2: "hello", k3: null }
   {
@@ -188,6 +203,7 @@ impl @type_dictionary.UnknownValueHandler for DictUnknownValueHandlerImpl with g
 ///|
 impl @type_dictionary.UnknownValueHandler for DictUnknownValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 3)
@@ -211,6 +227,7 @@ struct DictDatetimeValueHandlerImpl {}
 ///|
 impl @type_dictionary.DatetimeValueHandler for DictDatetimeValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return { k1: Temporal.Instant.from("2022-08-26T18:38:00Z") }
   { "k1": "2022-08-26T18:38:00Z" }
@@ -219,6 +236,7 @@ impl @type_dictionary.DatetimeValueHandler for DictDatetimeValueHandlerImpl with
 ///|
 impl @type_dictionary.DatetimeValueHandler for DictDatetimeValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 1)
@@ -231,6 +249,7 @@ struct DictDurationValueHandlerImpl {}
 ///|
 impl @type_dictionary.DurationValueHandler for DictDurationValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return { k1: Temporal.Duration.from("P123DT22H14M12.011S") }
   { "k1": "P123DT22H14M12.011S" }
@@ -239,6 +258,7 @@ impl @type_dictionary.DurationValueHandler for DictDurationValueHandlerImpl with
 ///|
 impl @type_dictionary.DurationValueHandler for DictDurationValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 1)
@@ -251,6 +271,7 @@ struct DictNullableFloatValueHandlerImpl {}
 ///|
 impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return { k1: 1.25, k2: 0.5, k3: null }
   {
@@ -263,6 +284,7 @@ impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandle
 ///|
 impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 3)
@@ -286,6 +308,7 @@ struct DictRecursiveModelValueHandlerImpl {}
 ///|
 impl @type_dictionary.RecursiveModelValueHandler for DictRecursiveModelValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return:
   // {
@@ -312,6 +335,7 @@ impl @type_dictionary.RecursiveModelValueHandler for DictRecursiveModelValueHand
 ///|
 impl @type_dictionary.RecursiveModelValueHandler for DictRecursiveModelValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 2)

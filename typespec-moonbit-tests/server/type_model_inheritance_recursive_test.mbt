@@ -3,11 +3,13 @@
 /// Reference: .moonagent/repos/typespec/packages/http-server-js/test/e2e/http/type/model/inheritance/recursive/main.test.e2e.ts
 async test "type/model/inheritance/recursive" {
   let handler = RecursiveHandlerImpl::{  }
-  let router = @type_model_inheritance_recursive.create_router(
-    recursive_handler=handler,
-  )
   @async.with_task_group(fn(group) {
-    let base_url = @server.start_server(group, router)
+    let router = @type_model_inheritance_recursive.create_router(
+      recursive_handler=handler,
+      group~,
+    )
+    let dispatch = @type_model_inheritance_recursive.create_dispatch(router)
+    let base_url = @server.start_server(group, dispatch)
     let status = @server.run_scenario(
       "type/model/inheritance/recursive/**/*", base_url,
     )
@@ -21,6 +23,7 @@ struct RecursiveHandlerImpl {}
 ///|
 impl @type_model_inheritance_recursive.RecursiveHandler for RecursiveHandlerImpl with get(
   _self,
+  group~,
 ) {
   let leaf : @type_model_inheritance_recursive.Extension = {
     level: 2,
@@ -45,6 +48,7 @@ impl @type_model_inheritance_recursive.RecursiveHandler for RecursiveHandlerImpl
 ///|
 impl @type_model_inheritance_recursive.RecursiveHandler for RecursiveHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   // In TypeScript:

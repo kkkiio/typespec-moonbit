@@ -1,21 +1,40 @@
 ///|
 /// Traits for operation handlers
 pub(open) trait EmptyHandler {
-  async put_empty(Self, body : EmptyInput) -> Unit
-  async get_empty(Self) -> EmptyOutput
-  async post_round_trip_empty(Self, body : EmptyInputOutput) -> EmptyInputOutput
+  async put_empty(Self, group~ : @async.TaskGroup[Unit], body : EmptyInput) -> Unit
+  async get_empty(Self, group~ : @async.TaskGroup[Unit]) -> EmptyOutput
+  async post_round_trip_empty(
+    Self,
+    group~ : @async.TaskGroup[Unit],
+    body : EmptyInputOutput,
+  ) -> EmptyInputOutput
 }
 
 ///|
-pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+/// 路由匹配结果。
+#warnings("-unused_constructor")
+pub enum RouteMatch {
+  /// 已命中并写入响应（或已开始 SSE）。
+  Handled
+  /// 路径完全不匹配。
+  NotMatched
+  /// 路径匹配但 method 不被支持（可用于返回 405）。
+  MethodNotAllowed
+}
 
 ///|
-pub fn[H0 : EmptyHandler] create_router(empty_handler~ : H0) -> Router {
+pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
+
+///|
+pub fn[H0 : EmptyHandler] create_router(
+  empty_handler~ : H0,
+  group~ : @async.TaskGroup[Unit],
+) -> Router {
   async fn(
     req : @http.Request,
     body_stream : &@io.Reader,
     conn : @http.ServerConnection,
-  ) {
+  ) -> RouteMatch {
     let full_path = req.path
     let path = strip_request_query(full_path)
     if req.meth == @http.Put &&
@@ -25,20 +44,20 @@ pub fn[H0 : EmptyHandler] create_router(empty_handler~ : H0) -> Router {
       let p_1_body : EmptyInput = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      empty_handler.put_empty(p_1_body)
+      empty_handler.put_empty(group~, p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
       match_path_template("/type/model/empty/alone", path) {
       ignore(body_stream)
-      let resp_body = empty_handler.get_empty()
+      let resp_body = empty_handler.get_empty(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
     if req.meth == @http.Post &&
       match_path_template("/type/model/empty/round-trip", path) {
@@ -47,15 +66,59 @@ pub fn[H0 : EmptyHandler] create_router(empty_handler~ : H0) -> Router {
       let p_3_body : EmptyInputOutput = @json.from_json(@json.parse(body_str)) catch {
         _ => @json.from_json(null)
       }
-      let resp_body = empty_handler.post_round_trip_empty(p_3_body)
+      let resp_body = empty_handler.post_round_trip_empty(group~, p_3_body)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)
       conn.write(resp_body.to_json().stringify())
       conn.end_response()
-      return ()
+      return RouteMatch::Handled
     }
-    conn.send_response(404, "NotFound")
-    conn.write("not found")
-    conn.end_response()
+
+    // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
+    let mut path_matched = false
+    if match_path_template("/type/model/empty/alone", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/model/empty/alone", path) {
+      path_matched = true
+    }
+    if match_path_template("/type/model/empty/round-trip", path) {
+      path_matched = true
+    }
+    if path_matched {
+      RouteMatch::MethodNotAllowed
+    } else {
+      RouteMatch::NotMatched
+    }
+  }
+}
+
+///|
+/// 创建一个“带默认 fallback”的 dispatch（`async (...)->Unit`），便于直接挂到 http server。
+///
+/// - `Handled`：router 已写入响应
+/// - `MethodNotAllowed`：发送 405
+/// - `NotMatched`：发送 404
+pub fn create_dispatch(
+  router : Router,
+) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit {
+  async fn(
+    req : @http.Request,
+    body_stream : &@io.Reader,
+    conn : @http.ServerConnection,
+  ) {
+    let result = router(req, body_stream, conn)
+    match result {
+      RouteMatch::Handled => ()
+      RouteMatch::MethodNotAllowed => {
+        conn.send_response(405, "Method Not Allowed")
+        conn.end_response()
+      }
+      RouteMatch::NotMatched => {
+        conn.send_response(404, "Not Found")
+        conn.write("not found")
+        conn.end_response()
+      }
+    }
   }
 }

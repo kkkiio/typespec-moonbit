@@ -4,9 +4,14 @@
 async test "parameters/spread" {
   let alias_handler = SpreadAliasHandlerImpl::{  }
   let model_handler = SpreadModelHandlerImpl::{  }
-  let router = @parameters_spread.create_router(alias_handler~, model_handler~)
   @async.with_task_group(fn(group) {
-    let base_url = @server.start_server(group, router)
+    let router = @parameters_spread.create_router(
+      alias_handler~,
+      model_handler~,
+      group~,
+    )
+    let dispatch = @parameters_spread.create_dispatch(router)
+    let base_url = @server.start_server(group, dispatch)
     let status = @server.run_scenario("parameters/spread/**/*", base_url)
     assert_true(status is @server.Status::Pass)
   })
@@ -18,6 +23,7 @@ struct SpreadAliasHandlerImpl {}
 ///|
 impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_as_request_body(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.name, "foo", msg="alias.spread_as_request_body: name mismatch")
@@ -26,6 +32,7 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_as_r
 ///|
 impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_parameter_with_inner_model(
   _self,
+  group~,
   id,
   x_ms_test_header,
   body,
@@ -46,6 +53,7 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_para
 ///|
 impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_as_request_parameter(
   _self,
+  group~,
   id,
   x_ms_test_header,
   body,
@@ -66,6 +74,7 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_as_r
 ///|
 impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_with_multiple_parameters(
   _self,
+  group~,
   id,
   x_ms_test_header,
   body,
@@ -89,6 +98,7 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_with
 ///|
 impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_parameter_with_inner_alias(
   _self,
+  group~,
   id,
   x_ms_test_header,
   body,
@@ -113,6 +123,7 @@ struct SpreadModelHandlerImpl {}
 ///|
 impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_as_request_body(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.name, "foo", msg="model.spread_as_request_body: name mismatch")
@@ -121,6 +132,7 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_as_r
 ///|
 impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_composite_request_only_with_body(
   _self,
+  group~,
   body,
 ) {
   assert_eq(
@@ -133,6 +145,7 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_comp
 ///|
 impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_composite_request_without_body(
   _self,
+  group~,
   name,
   test_header,
 ) {
@@ -151,6 +164,7 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_comp
 ///|
 impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_composite_request(
   _self,
+  group~,
   name,
   test_header,
   body,
@@ -171,6 +185,7 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_comp
 ///|
 impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_composite_request_mix(
   _self,
+  group~,
   name,
   test_header,
   body,

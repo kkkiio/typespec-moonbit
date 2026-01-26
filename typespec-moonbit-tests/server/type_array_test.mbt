@@ -16,24 +16,26 @@ async test "type/array" {
   let nullable_model_handler = NullableModelValueHandlerImpl::{  }
   let nullable_string_handler = NullableStringValueHandlerImpl::{  }
   let nullable_boolean_handler = NullableBooleanValueHandlerImpl::{  }
-  let router = @type_array.create_router(
-    int32_value_handler=int32_handler,
-    int64_value_handler=int64_handler,
-    model_value_handler=model_handler,
-    string_value_handler=string_handler,
-    boolean_value_handler=boolean_handler,
-    float32_value_handler=float32_handler,
-    unknown_value_handler=unknown_handler,
-    datetime_value_handler=datetime_handler,
-    duration_value_handler=duration_handler,
-    nullable_float_value_handler=nullable_float_handler,
-    nullable_int32_value_handler=nullable_int32_handler,
-    nullable_model_value_handler=nullable_model_handler,
-    nullable_string_value_handler=nullable_string_handler,
-    nullable_boolean_value_handler=nullable_boolean_handler,
-  )
   @async.with_task_group(fn(group) {
-    let base_url = @server.start_server(group, router)
+    let router = @type_array.create_router(
+      int32_value_handler=int32_handler,
+      int64_value_handler=int64_handler,
+      model_value_handler=model_handler,
+      string_value_handler=string_handler,
+      boolean_value_handler=boolean_handler,
+      float32_value_handler=float32_handler,
+      unknown_value_handler=unknown_handler,
+      datetime_value_handler=datetime_handler,
+      duration_value_handler=duration_handler,
+      nullable_float_value_handler=nullable_float_handler,
+      nullable_int32_value_handler=nullable_int32_handler,
+      nullable_model_value_handler=nullable_model_handler,
+      nullable_string_value_handler=nullable_string_handler,
+      nullable_boolean_value_handler=nullable_boolean_handler,
+      group~,
+    )
+    let dispatch = @type_array.create_dispatch(router)
+    let base_url = @server.start_server(group, dispatch)
     // Skip int64 value scenarios (BigInt not fully supported)
     let status = @server.run_scenario("type/array/!(int64value)*/*", base_url)
     assert_true(status is @server.Status::Pass)
@@ -44,7 +46,10 @@ async test "type/array" {
 struct Int32ValueHandlerImpl {}
 
 ///|
-impl @type_array.Int32ValueHandler for Int32ValueHandlerImpl with get(_self) {
+impl @type_array.Int32ValueHandler for Int32ValueHandlerImpl with get(
+  _self,
+  group~,
+) {
   [
     // Should return [1, 2]
     1, 2,
@@ -54,6 +59,7 @@ impl @type_array.Int32ValueHandler for Int32ValueHandlerImpl with get(_self) {
 ///|
 impl @type_array.Int32ValueHandler for Int32ValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 2)
@@ -65,7 +71,10 @@ impl @type_array.Int32ValueHandler for Int32ValueHandlerImpl with put(
 struct Int64ValueHandlerImpl {}
 
 ///|
-impl @type_array.Int64ValueHandler for Int64ValueHandlerImpl with get(_self) {
+impl @type_array.Int64ValueHandler for Int64ValueHandlerImpl with get(
+  _self,
+  group~,
+) {
   [
     // Should return [0x7fffffffffffffff, -0x7fffffffffffffff]
     0x7fffffffffffffffL, -0x7fffffffffffffffL,
@@ -75,6 +84,7 @@ impl @type_array.Int64ValueHandler for Int64ValueHandlerImpl with get(_self) {
 ///|
 impl @type_array.Int64ValueHandler for Int64ValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 2)
@@ -86,7 +96,10 @@ impl @type_array.Int64ValueHandler for Int64ValueHandlerImpl with put(
 struct ModelValueHandlerImpl {}
 
 ///|
-impl @type_array.ModelValueHandler for ModelValueHandlerImpl with get(_self) {
+impl @type_array.ModelValueHandler for ModelValueHandlerImpl with get(
+  _self,
+  group~,
+) {
   [
     // Should return [{ property: "hello" }, { property: "world" }]
     { property: "hello", children: None },
@@ -97,6 +110,7 @@ impl @type_array.ModelValueHandler for ModelValueHandlerImpl with get(_self) {
 ///|
 impl @type_array.ModelValueHandler for ModelValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 2)
@@ -108,7 +122,10 @@ impl @type_array.ModelValueHandler for ModelValueHandlerImpl with put(
 struct StringValueHandlerImpl {}
 
 ///|
-impl @type_array.StringValueHandler for StringValueHandlerImpl with get(_self) {
+impl @type_array.StringValueHandler for StringValueHandlerImpl with get(
+  _self,
+  group~,
+) {
   [
     // Should return ["hello", ""]
     "hello", "",
@@ -118,6 +135,7 @@ impl @type_array.StringValueHandler for StringValueHandlerImpl with get(_self) {
 ///|
 impl @type_array.StringValueHandler for StringValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 2)
@@ -129,7 +147,10 @@ impl @type_array.StringValueHandler for StringValueHandlerImpl with put(
 struct BooleanValueHandlerImpl {}
 
 ///|
-impl @type_array.BooleanValueHandler for BooleanValueHandlerImpl with get(_self) {
+impl @type_array.BooleanValueHandler for BooleanValueHandlerImpl with get(
+  _self,
+  group~,
+) {
   [
     // Should return [true, false]
     true, false,
@@ -139,6 +160,7 @@ impl @type_array.BooleanValueHandler for BooleanValueHandlerImpl with get(_self)
 ///|
 impl @type_array.BooleanValueHandler for BooleanValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 2)
@@ -150,7 +172,10 @@ impl @type_array.BooleanValueHandler for BooleanValueHandlerImpl with put(
 struct Float32ValueHandlerImpl {}
 
 ///|
-impl @type_array.Float32ValueHandler for Float32ValueHandlerImpl with get(_self) {
+impl @type_array.Float32ValueHandler for Float32ValueHandlerImpl with get(
+  _self,
+  group~,
+) {
   [
     // Should return [43.125]
     43.125,
@@ -160,6 +185,7 @@ impl @type_array.Float32ValueHandler for Float32ValueHandlerImpl with get(_self)
 ///|
 impl @type_array.Float32ValueHandler for Float32ValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 1)
@@ -170,7 +196,10 @@ impl @type_array.Float32ValueHandler for Float32ValueHandlerImpl with put(
 struct UnknownValueHandlerImpl {}
 
 ///|
-impl @type_array.UnknownValueHandler for UnknownValueHandlerImpl with get(_self) {
+impl @type_array.UnknownValueHandler for UnknownValueHandlerImpl with get(
+  _self,
+  group~,
+) {
   // Should return [1, "hello", null]
   let j = @json.parse("[1, \"hello\", null]")
   @json.from_json(j)
@@ -179,6 +208,7 @@ impl @type_array.UnknownValueHandler for UnknownValueHandlerImpl with get(_self)
 ///|
 impl @type_array.UnknownValueHandler for UnknownValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 3)
@@ -193,6 +223,7 @@ struct DatetimeValueHandlerImpl {}
 ///|
 impl @type_array.DatetimeValueHandler for DatetimeValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return [Temporal.Instant.from("2022-08-26T18:38:00Z")]
   ["2022-08-26T18:38:00Z"]
@@ -201,6 +232,7 @@ impl @type_array.DatetimeValueHandler for DatetimeValueHandlerImpl with get(
 ///|
 impl @type_array.DatetimeValueHandler for DatetimeValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 1)
@@ -213,6 +245,7 @@ struct DurationValueHandlerImpl {}
 ///|
 impl @type_array.DurationValueHandler for DurationValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return [Temporal.Duration.from("P123DT22H14M12.011S")]
   ["P123DT22H14M12.011S"]
@@ -221,6 +254,7 @@ impl @type_array.DurationValueHandler for DurationValueHandlerImpl with get(
 ///|
 impl @type_array.DurationValueHandler for DurationValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 1)
@@ -233,6 +267,7 @@ struct NullableFloatValueHandlerImpl {}
 ///|
 impl @type_array.NullableFloatValueHandler for NullableFloatValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return [1.25, null, 3.0]
   [
@@ -245,6 +280,7 @@ impl @type_array.NullableFloatValueHandler for NullableFloatValueHandlerImpl wit
 ///|
 impl @type_array.NullableFloatValueHandler for NullableFloatValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 3)
@@ -259,6 +295,7 @@ struct NullableInt32ValueHandlerImpl {}
 ///|
 impl @type_array.NullableInt32ValueHandler for NullableInt32ValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return [1, null, 3]
   [
@@ -271,6 +308,7 @@ impl @type_array.NullableInt32ValueHandler for NullableInt32ValueHandlerImpl wit
 ///|
 impl @type_array.NullableInt32ValueHandler for NullableInt32ValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 3)
@@ -285,6 +323,7 @@ struct NullableModelValueHandlerImpl {}
 ///|
 impl @type_array.NullableModelValueHandler for NullableModelValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return [{ property: "hello" }, null, { property: "world" }]
   [
@@ -297,6 +336,7 @@ impl @type_array.NullableModelValueHandler for NullableModelValueHandlerImpl wit
 ///|
 impl @type_array.NullableModelValueHandler for NullableModelValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 3)
@@ -319,6 +359,7 @@ struct NullableStringValueHandlerImpl {}
 ///|
 impl @type_array.NullableStringValueHandler for NullableStringValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return ["hello", null, "world"]
   [
@@ -331,6 +372,7 @@ impl @type_array.NullableStringValueHandler for NullableStringValueHandlerImpl w
 ///|
 impl @type_array.NullableStringValueHandler for NullableStringValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 3)
@@ -345,6 +387,7 @@ struct NullableBooleanValueHandlerImpl {}
 ///|
 impl @type_array.NullableBooleanValueHandler for NullableBooleanValueHandlerImpl with get(
   _self,
+  group~,
 ) {
   // Should return [true, null, false]
   [
@@ -357,6 +400,7 @@ impl @type_array.NullableBooleanValueHandler for NullableBooleanValueHandlerImpl
 ///|
 impl @type_array.NullableBooleanValueHandler for NullableBooleanValueHandlerImpl with put(
   _self,
+  group~,
   body,
 ) {
   assert_eq(body.length(), 3)
