@@ -108,6 +108,7 @@ pub async fn Adapter::tcgc_to_crate(self : Adapter) -> @codemodel.Crate {
       http_method: "GET",
       status_code: 200,
       response_body: None,
+      is_sse: false,
       parameters: [],
     })
     [@codemodel.Client::{ name: self.service_name(), methods }]
@@ -153,9 +154,24 @@ fn build_method(
     op_name_val.cast()
   }
   let status_code = try_get_default_status_code(op).unwrap_or(200)
-  let response_body = try_get_default_response_body(
-    op, status_code, processed_models,
-  )
+  let mut is_sse = false
+  let body_payload = try_get_default_response_body_payload(op, status_code)
+  let response_body = match body_payload {
+    None => None
+    Some(body) => {
+      is_sse = body_payload_is_sse(body)
+      if is_sse {
+        None
+      } else {
+        let t = @ffi.get_value(body, "type")
+        if @ffi.is_undefined(t) || t.is_null() {
+          None
+        } else {
+          Some(resolve_type_ref(t, processed_models))
+        }
+      }
+    }
+  }
   let params = extract_parameters(op, processed_models)
   {
     name: op_name,
@@ -163,6 +179,7 @@ fn build_method(
     http_method: verb,
     status_code,
     response_body,
+    is_sse,
     parameters: params,
   }
 }
@@ -661,12 +678,11 @@ fn try_get_default_status_code(op : @ffi.JsValue) -> Int? {
 }
 
 ///|
-/// 尝试从“默认响应”（`status_code` 匹配的那个 response）里提取响应体类型。
-fn try_get_default_response_body(
+/// 尝试从“默认响应”（`status_code` 匹配的那个 response）里提取响应体 payload（@typespec/http 的 HttpPayload）。
+fn try_get_default_response_body_payload(
   op : @ffi.JsValue,
   status_code : Int,
-  processed_models : Map[String, @codemodel.Model],
-) -> @codemodel.TypeRef? {
+) -> @ffi.JsValue? {
   let responses_val = @ffi.get_value(op, "responses")
   if @ffi.is_undefined(responses_val) {
     return None
@@ -697,13 +713,9 @@ fn try_get_default_response_body(
     }
     let variants : Array[@ffi.JsValue] = variants_val.cast()
     for v in variants {
-      // Prefer `responses[*].body.type` when available.
       let body_val = @ffi.get_value(v, "body")
       if !@ffi.is_undefined(body_val) && !body_val.is_null() {
-        let body_type_val = @ffi.get_value(body_val, "type")
-        if !@ffi.is_undefined(body_type_val) && !body_type_val.is_null() {
-          return Some(resolve_type_ref(body_type_val, processed_models))
-        }
+        return Some(body_val)
       }
 
       // Fallback: scan `responses[*].properties[*]` for body-related entries.
@@ -725,14 +737,32 @@ fn try_get_default_response_body(
         if @ffi.is_undefined(prop_val) {
           continue
         }
-        let typ_val = @ffi.get_value(prop_val, "type")
-        if @ffi.is_undefined(typ_val) {
-          continue
-        }
-        return Some(resolve_type_ref(typ_val, processed_models))
+        // `property` is a ModelProperty. Treat it as payload-like value and let caller fetch its `type`.
+        return Some(prop_val)
       }
     }
     return None
   }
   None
+}
+
+///|
+/// 判断一个 HttpPayload 是否为 SSE（`text/event-stream`）。
+///
+/// @typespec/http 会在 payload 上计算出 `contentTypes`，SSEStream 会解析为 `["text/event-stream"]`。
+fn body_payload_is_sse(body : @ffi.JsValue) -> Bool {
+  let cts_val = @ffi.get_value(body, "contentTypes")
+  if @ffi.is_undefined(cts_val) || cts_val.is_null() {
+    return false
+  }
+  if !@ffi.is_array(cts_val) {
+    return false
+  }
+  let cts : Array[@ffi.JsValue] = cts_val.cast()
+  for ct in cts {
+    if @ffi.is_string(ct) && @ffi.cast_string(ct) == "text/event-stream" {
+      return true
+    }
+  }
+  false
 }

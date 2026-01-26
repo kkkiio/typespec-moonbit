@@ -3,7 +3,19 @@
 ///|
 /// 生成 server 包的文件列表。
 pub fn emit_server_files(crate : @codemodel.Crate) -> Array[OutputFile] raise {
-  let files = Array::new(capacity=5)
+  let mut has_sse = false
+  for client in crate.clients {
+    for op in client.methods {
+      if op.is_sse {
+        has_sse = true
+        break
+      }
+    }
+    if has_sse {
+      break
+    }
+  }
+  let files = Array::new(capacity=if has_sse { 6 } else { 5 })
   files.push(OutputFile::new("moon.pkg.json", emit_server_moon_pkg_json()))
   files.push(OutputFile::new("README.mbt.md", emit_server_readme(crate)))
   files.push(OutputFile::new("models.mbt", emit_server_models(crate)))
@@ -11,6 +23,9 @@ pub fn emit_server_files(crate : @codemodel.Crate) -> Array[OutputFile] raise {
   files.push(
     OutputFile::new("router_helpers.mbt", emit_server_router_helpers(crate)),
   )
+  if has_sse {
+    files.push(OutputFile::new("event_stream.mbt", emit_server_event_stream()))
+  }
   files
 }
 
@@ -37,6 +52,103 @@ fn emit_server_readme(crate : @codemodel.Crate) -> String {
     $|This MoonBit package can be imported by other packages to start a server.
   )
 }
+
+///|
+fn emit_server_event_stream() -> String {
+  server_event_stream_code
+}
+
+///|
+let server_event_stream_code : String =
+  #|///|
+  #|/// Server-Sent Events (SSE) 工具。
+  #|///
+  #|/// 提供 `text/event-stream` 响应的写入封装，方便 handler 端持续推送事件。
+  #|pub struct EventStreamWriter {
+  #|  conn : @http.ServerConnection
+  #|}
+  #|
+  #|///|
+  #|fn sse_default_headers() -> Map[String, String] {
+  #|  {
+  #|    "content-type": "text/event-stream",
+  #|    "cache-control": "no-cache",
+  #|    "connection": "keep-alive",
+  #|    "x-accel-buffering": "no",
+  #|  }
+  #|}
+  #|
+  #|///|
+  #|/// 启动 SSE 响应并返回写入器。
+  #|pub async fn EventStreamWriter::start(
+  #|  conn : @http.ServerConnection,
+  #|  status : Int,
+  #|  reason : String,
+  #|  extra_headers? : Map[String, String] = {},
+  #|) -> EventStreamWriter {
+  #|  let headers = sse_default_headers()
+  #|  for k, v in extra_headers {
+  #|    headers.set(k, v)
+  #|  }
+  #|  conn.send_response(status, reason, extra_headers=headers)
+  #|  EventStreamWriter::{ conn }
+  #|}
+  #|
+  #|///|
+  #|/// 发送一条 SSE event（按 SSE 行协议拼装）。
+  #|pub async fn EventStreamWriter::write_event(
+  #|  self : EventStreamWriter,
+  #|  id? : String,
+  #|  event? : String,
+  #|  data? : &@io.Data,
+  #|  flush? : Bool = true,
+  #|) -> Unit {
+  #|  if event is Some(event) {
+  #|    self.conn.write("event: \{event}\n")
+  #|  }
+  #|  if data is Some(data) {
+  #|    self.conn.write(b"data: ")
+  #|    self.conn.write(data)
+  #|    self.conn.write(b"\n")
+  #|  }
+  #|  if id is Some(id) {
+  #|    self.conn.write("id: \{id}\n")
+  #|  }
+  #|  self.conn.write(b"\n")
+  #|  if flush {
+  #|    self.conn.flush()
+  #|  }
+  #|}
+  #|
+  #|///|
+  #|/// 表示一条 SSE 事件（便于业务类型转换）。
+  #|pub struct SseEvent {
+  #|  event : String?
+  #|  data : String
+  #|} derive(ToJson)
+  #|
+  #|///|
+  #|pub fn SseEvent::new(event? : String, data~ : String) -> SseEvent {
+  #|  SseEvent::{ event, data }
+  #|}
+  #|
+  #|///|
+  #|/// 将业务类型转换为 SSE 事件。
+  #|pub(open) trait SseToEvent {
+  #|  to_event(self : Self) -> SseEvent
+  #|}
+  #|
+  #|///|
+  #|/// 将实现了 `SseToEvent` 的事件写入 SSE stream。
+  #|pub async fn[T : SseToEvent] EventStreamWriter::write(
+  #|  self : EventStreamWriter,
+  #|  event : T,
+  #|  flush? : Bool = true,
+  #|) -> Unit {
+  #|  let sse_event = event.to_event()
+  #|  self.write_event(event?=sse_event.event, data=sse_event.data, flush~)
+  #|}
+  #|
 
 ///|
 fn collect_models_from_crate(
@@ -89,7 +201,7 @@ let handler_trait_template : String =
   #|///|
   #|/// Traits for operation handlers
   #|pub(open) trait {{trait_name}} {
-  #|  {{#methods}}async {{method_name}}(Self{{#params}}, {{name}} : {{type}}{{/params}}) -> {{return_type}}
+  #|  {{#methods}}async {{method_name}}(Self{{#params}}, {{name}} : {{type}}{{/params}}{{#is_sse}}, sse : EventStreamWriter{{/is_sse}}) -> {{return_type}}
   #|  {{/methods}}
   #|}
   #|{{/clients}}
@@ -164,7 +276,7 @@ fn emit_server_models(crate : @codemodel.Crate) -> String raise {
 let router_template : String =
   #|pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
   #|
-  #|pub fn[{{#clients}}H{{client_index}} : {{trait_name}}{{^is_last}}, {{/is_last}}{{/clients}}] create_router(
+  #|pub fn[{{#clients}}H{{client_index}} : {{trait_name}}, {{/clients}}] create_router(
   #|  {{#clients}}{{handler_var}}~ : H{{client_index}},
   #|  {{/clients}}
   #|) -> Router {
@@ -186,18 +298,22 @@ let router_template : String =
   #|      {{#isQuery}}let {{var_name}} = get_query_param(full_path, "{{wire_name}}"){{/isQuery}}
   #|      {{^isBody}}{{^isPath}}{{^isHeader}}{{^isQuery}}let {{var_name}} = ""{{/isQuery}}{{/isHeader}}{{/isPath}}{{/isBody}}
   #|      {{/params}}
-  #|      {{#has_response_body}}let resp_body = {{{handler_var}}}.{{handler_method}}({{#params}}{{var_name}}{{^is_last}}, {{/is_last}}{{/params}})
+  #|      {{#is_sse}}let sse = EventStreamWriter::start(conn, {{status_code}}, "{{reason_phrase}}")
+  #|      {{{handler_var}}}.{{handler_method}}({{#call_args}}{{expr}},{{/call_args}})
+  #|      return ()
+  #|      {{/is_sse}}
+  #|      {{^is_sse}}{{#has_response_body}}let resp_body = {{{handler_var}}}.{{handler_method}}({{#call_args}}{{expr}},{{/call_args}})
   #|      let headers : Map[String, String] = { "content-type": "application/json" }
   #|      conn.send_response({{status_code}}, "{{reason_phrase}}", extra_headers=headers)
   #|      conn.write(resp_body.to_json().stringify())
   #|      conn.end_response()
   #|      return ()
   #|      {{/has_response_body}}
-  #|      {{^has_response_body}}{{{handler_var}}}.{{handler_method}}({{#params}}{{var_name}}{{^is_last}}, {{/is_last}}{{/params}})
+  #|      {{^has_response_body}}{{{handler_var}}}.{{handler_method}}({{#call_args}}{{expr}},{{/call_args}})
   #|      conn.send_response({{status_code}}, "{{reason_phrase}}")
   #|      conn.end_response()
   #|      return ()
-  #|      {{/has_response_body}}
+  #|      {{/has_response_body}}{{/is_sse}}
   #|    }
   #|      {{/methods}}
   #|    {{/clients}}
@@ -265,6 +381,36 @@ fn emit_create_router(crate : @codemodel.Crate) -> String raise {
   let clients_ctx : Array[Json] = Array::new()
   for i in 0..<clients.length() {
     let client = clients[i]
+    let handler_var = {
+      let base = {
+        let s = compact_alpha_digit_underscore(
+          sanitize_identifier(@case.snake_case(client.name)),
+        )
+        if s == "" {
+          "h\{i}"
+        } else {
+          "\{s}_handler"
+        }
+      }
+      let mut candidate = base
+      let mut suffix = 1
+      while true {
+        let mut exists = false
+        for name in used_handler_vars {
+          if name == candidate {
+            exists = true
+            break
+          }
+        }
+        if !exists {
+          break
+        }
+        candidate = "\{base}_\{suffix}"
+        suffix += 1
+      }
+      used_handler_vars.push(candidate)
+      candidate
+    }
     let methods_arr : Array[Json] = Array::new()
     for op in client.methods {
       op_counter += 1
@@ -283,6 +429,7 @@ fn emit_create_router(crate : @codemodel.Crate) -> String raise {
         false
       }
       let params_arr = Array::new()
+      let call_arg_exprs : Array[String] = Array::new()
       let param_count = op.parameters.length()
       for j in 0..<param_count {
         let param = op.parameters[j]
@@ -300,14 +447,23 @@ fn emit_create_router(crate : @codemodel.Crate) -> String raise {
           "isHeader": param.location == "header",
           "isQuery": param.location == "query",
           "isString": type_str == "String",
-          "is_last": j == param_count - 1,
         }
         params_arr.push(param_ctx)
+        call_arg_exprs.push(var_name)
       }
-      let has_response_body = op.response_body is Some(_)
-      let return_type = match op.response_body {
-        Some(t) => type_ref_to_string(t)
-        None => "Unit"
+      let is_sse = op.is_sse
+      let has_response_body = op.response_body is Some(_) && !is_sse
+      if is_sse {
+        call_arg_exprs.push("sse")
+      }
+      let call_args : Array[Json] = {
+        let args : Array[Json] = Array::new()
+        let n = call_arg_exprs.length()
+        for k in 0..<n {
+          let arg : Json = { "expr": call_arg_exprs[k] }
+          args.push(arg)
+        }
+        args
       }
       methods_arr.push({
         "method_name": @case.snake_case(op.name),
@@ -318,45 +474,16 @@ fn emit_create_router(crate : @codemodel.Crate) -> String raise {
         "status_code": op.status_code.to_double(),
         "reason_phrase": status_reason_phrase(op.status_code),
         "has_response_body": has_response_body,
-        "return_type": return_type,
+        "is_sse": is_sse,
         "params": params_arr,
+        "call_args": call_args,
       })
     }
     clients_ctx.push({
-      "handler_var": {
-        let base = {
-          let s = compact_alpha_digit_underscore(
-            sanitize_identifier(@case.snake_case(client.name)),
-          )
-          if s == "" {
-            "h\{i}"
-          } else {
-            "\{s}_handler"
-          }
-        }
-        let mut candidate = base
-        let mut suffix = 1
-        while true {
-          let mut exists = false
-          for name in used_handler_vars {
-            if name == candidate {
-              exists = true
-              break
-            }
-          }
-          if !exists {
-            break
-          }
-          candidate = "\{base}_\{suffix}"
-          suffix += 1
-        }
-        used_handler_vars.push(candidate)
-        candidate
-      },
+      "handler_var": handler_var,
       "trait_name": @case.pascal_case(sanitize_identifier(client.name)) +
       "Handler",
       "client_index": i.to_double(),
-      "is_last": i == clients.length() - 1,
       "methods": methods_arr,
     })
   }
@@ -378,6 +505,7 @@ test "emit_server_router" {
             path: "/items/{itemId}",
             status_code: 200,
             response_body: None,
+            is_sse: false,
             parameters: [
               @codemodel.Parameter::{
                 name: "itemId",
@@ -392,6 +520,7 @@ test "emit_server_router" {
             path: "/items",
             status_code: 200,
             response_body: None,
+            is_sse: false,
             parameters: [
               @codemodel.Parameter::{
                 name: "body",
@@ -427,7 +556,7 @@ test "emit_server_router" {
       #|}
       #|pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
       #|
-      #|pub fn[H0 : TestClientHandler] create_router(
+      #|pub fn[H0 : TestClientHandler, ] create_router(
       #|  test_client_handler~ : H0,
       #|  
       #|) -> Router {
@@ -448,7 +577,8 @@ test "emit_server_router" {
       #|      
       #|      
       #|      
-      #|      test_client_handler.get_item(p_1_item_id)
+      #|      
+      #|      test_client_handler.get_item(p_1_item_id,)
       #|      conn.send_response(200, "OK")
       #|      conn.end_response()
       #|      return ()
@@ -468,7 +598,8 @@ test "emit_server_router" {
       #|      
       #|      
       #|      
-      #|      test_client_handler.create_item(p_2_body)
+      #|      
+      #|      test_client_handler.create_item(p_2_body,)
       #|      conn.send_response(200, "OK")
       #|      conn.end_response()
       #|      return ()
@@ -505,7 +636,12 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
       }
       {
         "method_name": @case.snake_case(op.name),
-        "return_type": return_type,
+        "return_type": if op.is_sse {
+          "Unit"
+        } else {
+          return_type
+        },
+        "is_sse": op.is_sse,
         "params": params,
       }
     })
@@ -561,124 +697,6 @@ fn emit_server_router_helpers(crate : @codemodel.Crate) -> String {
     buf.write_string(get_query_param_code)
   }
   buf.to_string()
-}
-
-///|
-test "emit_server_router_helpers" {
-  let crate : @codemodel.Crate = {
-    name: "test_crate",
-    version: "0.1.0",
-    clients: [
-      @codemodel.Client::{
-        name: "TestClient",
-        methods: [
-          @codemodel.Method::{
-            name: "GetItem",
-            http_method: "GET",
-            path: "/items/{itemId}",
-            status_code: 200,
-            response_body: None,
-            parameters: [
-              @codemodel.Parameter::{
-                name: "itemId",
-                location: "path",
-                type_: @codemodel.TypeRef::String,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  }
-  let helpers_code = emit_server_router_helpers(crate)
-  inspect(
-    helpers_code,
-    content=(
-      #|///|
-      #|fn strip_request_query(path : String) -> String {
-      #|  let parts = path.split("?").to_array()
-      #|  if parts.length() == 0 { path } else { parts[0].to_string() }
-      #|}
-      #|///|
-      #|fn match_path_template(template : String, path : String) -> Bool {
-      #|  let tlen = template.length()
-      #|  let plen = path.length()
-      #|  let mut ti = 0
-      #|  let mut pi = 0
-      #|  while ti < tlen && pi < plen {
-      #|    if template.code_unit_at(ti) == '{' {
-      #|      // find matching `}` in template
-      #|      let mut close = ti + 1
-      #|      while close < tlen && template.code_unit_at(close) != '}' {
-      #|        close += 1
-      #|      }
-      #|      if close >= tlen {
-      #|        return false
-      #|      }
-      #|      // match a non-empty path segment
-      #|      let seg_start = pi
-      #|      while pi < plen && path.code_unit_at(pi) != '/' {
-      #|        pi += 1
-      #|      }
-      #|      if pi == seg_start {
-      #|        return false
-      #|      }
-      #|      ti = close + 1
-      #|    } else {
-      #|      if template.code_unit_at(ti) != path.code_unit_at(pi) {
-      #|        return false
-      #|      }
-      #|      ti += 1
-      #|      pi += 1
-      #|    }
-      #|  }
-      #|  ti == tlen && pi == plen
-      #|}
-      #|///|
-      #|fn get_path_param(template : String, path : String, name : String) -> String {
-      #|  let tlen = template.length()
-      #|  let plen = path.length()
-      #|  let mut ti = 0
-      #|  let mut pi = 0
-      #|  while ti < tlen && pi < plen {
-      #|    if template.code_unit_at(ti) == '{' {
-      #|      let mut close = ti + 1
-      #|      while close < tlen && template.code_unit_at(close) != '}' {
-      #|        close += 1
-      #|      }
-      #|      if close >= tlen {
-      #|        return ""
-      #|      }
-      #|      let key_sb = StringBuilder::new(size_hint=close - (ti + 1))
-      #|      for k in (ti + 1)..<close {
-      #|        key_sb.write_char(template.code_unit_at(k).to_int().unsafe_to_char())
-      #|      }
-      #|      let key = key_sb.to_string()
-      #|      let seg_start = pi
-      #|      while pi < plen && path.code_unit_at(pi) != '/' {
-      #|        pi += 1
-      #|      }
-      #|      if key == name {
-      #|        let seg_sb = StringBuilder::new(size_hint=pi - seg_start)
-      #|        for k in seg_start..<pi {
-      #|          seg_sb.write_char(path.code_unit_at(k).to_int().unsafe_to_char())
-      #|        }
-      #|        return seg_sb.to_string()
-      #|      }
-      #|      ti = close + 1
-      #|    } else {
-      #|      if template.code_unit_at(ti) != path.code_unit_at(pi) {
-      #|        return ""
-      #|      }
-      #|      ti += 1
-      #|      pi += 1
-      #|    }
-      #|  }
-      #|  ""
-      #|}
-      #|
-    ),
-  )
 }
 
 ///|

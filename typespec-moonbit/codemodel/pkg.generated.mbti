@@ -27,6 +27,7 @@ pub(all) struct Method {
   http_method : String
   status_code : Int
   response_body : TypeRef?
+  is_sse : Bool
   parameters : Array[Parameter]
 }
 
