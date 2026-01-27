@@ -323,6 +323,94 @@ fn resolve_type_ref(
           return Nullable(resolve_type_ref(non_null_types[0], processed_models))
         }
 
+        // If all variants collapse to the same primitive type, treat it as that type.
+        //
+        // This is common for "extensible enums" expressed as unions such as
+        // `string | "Monday" | "Tuesday" | ...`, where each variant is still
+        // serialized as a JSON string.
+        let mut prim0 : @codemodel.TypeRef? = None
+        let mut prim_tag0 : Int? = None
+        let mut all_same_primitive = true
+        for t in non_null_types {
+          let tr = resolve_type_ref(t, processed_models)
+          match tr {
+            @codemodel.TypeRef::String =>
+              match prim0 {
+                None => {
+                  prim0 = Some(tr)
+                  prim_tag0 = Some(0)
+                }
+                Some(_) =>
+                  if prim_tag0 != Some(0) {
+                    all_same_primitive = false
+                  }
+              }
+            @codemodel.TypeRef::Int32 =>
+              match prim0 {
+                None => {
+                  prim0 = Some(tr)
+                  prim_tag0 = Some(1)
+                }
+                Some(_) =>
+                  if prim_tag0 != Some(1) {
+                    all_same_primitive = false
+                  }
+              }
+            @codemodel.TypeRef::Int64 =>
+              match prim0 {
+                None => {
+                  prim0 = Some(tr)
+                  prim_tag0 = Some(2)
+                }
+                Some(_) =>
+                  if prim_tag0 != Some(2) {
+                    all_same_primitive = false
+                  }
+              }
+            @codemodel.TypeRef::Float64 =>
+              match prim0 {
+                None => {
+                  prim0 = Some(tr)
+                  prim_tag0 = Some(3)
+                }
+                Some(_) =>
+                  if prim_tag0 != Some(3) {
+                    all_same_primitive = false
+                  }
+              }
+            @codemodel.TypeRef::Bool =>
+              match prim0 {
+                None => {
+                  prim0 = Some(tr)
+                  prim_tag0 = Some(4)
+                }
+                Some(_) =>
+                  if prim_tag0 != Some(4) {
+                    all_same_primitive = false
+                  }
+              }
+            @codemodel.TypeRef::Json =>
+              match prim0 {
+                None => {
+                  prim0 = Some(tr)
+                  prim_tag0 = Some(5)
+                }
+                Some(_) =>
+                  if prim_tag0 != Some(5) {
+                    all_same_primitive = false
+                  }
+              }
+            _ => all_same_primitive = false
+          }
+          if !all_same_primitive {
+            break
+          }
+        }
+        match prim0 {
+          Some(p) if all_same_primitive => return p
+          _ => ()
+        }
+
         // Untagged union: represent it explicitly for server-side ToJson generation.
         // Note: server-side request decoding still needs to reject unions explicitly.
         let name_val = @ffi.get_value(prop, "name")

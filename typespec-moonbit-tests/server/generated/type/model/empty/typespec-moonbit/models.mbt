@@ -23,27 +23,12 @@ pub impl[T : @json.FromJson] @json.FromJson for Nullable[T] with from_json(
 
 ///|
 /// Model EmptyInput
-pub(all) struct EmptyInput {} derive (
-  Show,
-  Default,
-  ToJson,
-  @json.FromJson(rename_fields="camelCase"),
-)
+pub(all) struct EmptyInput {} derive(Show, Default, ToJson, @json.FromJson)
 
 ///|
 /// Model EmptyOutput
-pub(all) struct EmptyOutput {} derive (
-  Show,
-  Default,
-  ToJson,
-  @json.FromJson(rename_fields="camelCase"),
-)
+pub(all) struct EmptyOutput {} derive(Show, Default, ToJson)
 
 ///|
 /// Model EmptyInputOutput
-pub(all) struct EmptyInputOutput {} derive (
-  Show,
-  Default,
-  ToJson,
-  @json.FromJson(rename_fields="camelCase"),
-)
+pub(all) struct EmptyInputOutput {} derive(Show, Default, ToJson, @json.FromJson)

@@ -27,4 +27,4 @@ pub(all) struct Siamese {
   name : String
   age : Int
   smart : Bool
-} derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
+} derive(Show, Default, ToJson, @json.FromJson)

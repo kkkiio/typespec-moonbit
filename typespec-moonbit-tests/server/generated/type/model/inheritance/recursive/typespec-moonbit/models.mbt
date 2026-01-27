@@ -26,15 +26,4 @@ pub impl[T : @json.FromJson] @json.FromJson for Nullable[T] with from_json(
 pub(all) struct Extension {
   extension : Array[Extension]?
   level : Int
-} derive(Show, Default, @json.FromJson(rename_fields="camelCase"))
-
-///|
-pub impl ToJson for Extension with to_json(self : Extension) -> Json {
-  let m : Map[String, Json] = Map::new()
-  match self.extension {
-    Some(v) => m.set("extension", v.to_json())
-    None => ()
-  }
-  m.set("level", self.level.to_json())
-  Json::object(m)
-}
+} derive(Show, Default, ToJson, @json.FromJson)

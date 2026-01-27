@@ -35,7 +35,6 @@ pub(all) struct EmptyOutput {
 pub impl Default for EmptyOutput
 pub impl Show for EmptyOutput
 pub impl ToJson for EmptyOutput
-pub impl @json.FromJson for EmptyOutput
 
 pub(all) struct Nullable[T](T?)
 #deprecated

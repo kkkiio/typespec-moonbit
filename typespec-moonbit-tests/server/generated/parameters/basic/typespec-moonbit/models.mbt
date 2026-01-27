@@ -25,10 +25,10 @@ pub impl[T : @json.FromJson] @json.FromJson for Nullable[T] with from_json(
 /// Model User
 pub(all) struct User {
   name : String
-} derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
+} derive(Show, Default, ToJson, @json.FromJson)
 
 ///|
 /// Model Model0
 pub(all) struct Model0 {
   name : String
-} derive(Show, Default, ToJson, @json.FromJson(rename_fields="camelCase"))
+} derive(Show, Default, ToJson, @json.FromJson)

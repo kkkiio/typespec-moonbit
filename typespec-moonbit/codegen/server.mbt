@@ -179,22 +179,9 @@ let model_template : String =
   #|/// Model {{name}}
   #|pub(all) struct {{struct_name}} {
   #|{{#fields}}
-  #|  {{name}} : {{type}}{{#optional}}?{{/optional}}
+  #|  {{field_name}} : {{type}}{{#optional}}?{{/optional}}
   #|{{/fields}}
-  #|} derive(Show, Default{{#derive_tojson}}, ToJson{{/derive_tojson}}{{#derive_fromjson}}, @json.FromJson(rename_fields="camelCase"){{/derive_fromjson}})
-  #|
-  #|{{^derive_tojson}}
-  #|pub impl ToJson for {{struct_name}} with to_json(self : {{struct_name}}) -> Json {
-  #|  let m : Map[String, Json] = Map::new()
-  #|  {{#fields}}
-  #|  {{^optional}}m.set("{{json_name}}", self.{{name}}.to_json())
-  #|  {{/optional}}
-  #|  {{#optional}}match self.{{name}} { Some(v) => m.set("{{json_name}}", v.to_json()) ; None => () }
-  #|  {{/optional}}
-  #|  {{/fields}}
-  #|  Json::object(m)
-  #|}
-  #|{{/derive_tojson}}
+  #|} derive(Show, Default, {{^has_renames}}ToJson{{/has_renames}}{{#has_renames}}ToJson(fields({{#field_renames}}{{field_name}}(rename="{{wire_name}}"){{^is_last}}, {{/is_last}}{{/field_renames}})){{/has_renames}}{{#derive_fromjson}}, {{^has_renames}}@json.FromJson{{/has_renames}}{{#has_renames}}@json.FromJson(fields({{#field_renames}}{{field_name}}(rename="{{wire_name}}"){{^is_last}}, {{/is_last}}{{/field_renames}})){{/has_renames}}{{/derive_fromjson}})
   #|
   #|{{/models}}
 
@@ -320,25 +307,52 @@ fn emit_server_models(crate : @codemodel.Crate) -> String raise {
   model_list.sort_by_key(fn(m) { m.0 })
   let models_json = model_list.map(fn(item) -> Json {
     let m = item.1
-    let mut has_optional_fields = false
-    for f in m.fields {
-      if f.optional {
-        has_optional_fields = true
+    // Build snake_case MoonBit field names, but keep JSON keys as original TypeSpec field names.
+    // NOTE: 不考虑 @encodedName；wire name 直接用 TypeSpec property.name。
+    //
+    // 为避免歧义，若两个字段映射到同一个 snake_case 标识符，直接报错。
+    let seen_field_names : Map[String, String] = Map::new() // field_name -> wire_name
+    let fields_json : Array[Json] = Array::new()
+    let rename_entries : Array[(String, String)] = Array::new()
+    for i in 0..<m.fields.length() {
+      let f = m.fields[i]
+      let field_name = sanitize_identifier(@case.snake_case(f.name))
+      if seen_field_names.contains(field_name) {
+        let prev = seen_field_names.get(field_name).unwrap()
+        if prev != f.name {
+          raise Failure::Failure(
+            "model field name collision after snake_case: \{m.name}.\{prev} and \{m.name}.\{f.name} both map to \{field_name}",
+          )
+        }
+      } else {
+        seen_field_names.set(field_name, f.name)
       }
-    }
-    let fields = m.fields.map(fn(f) -> Json {
-      {
-        "name": @case.snake_case(f.name),
-        "json_name": @case.camel_case(f.name),
+      fields_json.push({
+        "field_name": field_name,
+        "wire_name": f.name,
         "type": type_ref_to_string(f.type_),
         "optional": f.optional,
+      })
+      if field_name != f.name {
+        rename_entries.push((field_name, f.name))
       }
-    })
+    }
+    let has_renames = rename_entries.length() > 0
+    let field_renames_json : Array[Json] = Array::new()
+    for j in 0..<rename_entries.length() {
+      let entry = rename_entries[j]
+      field_renames_json.push({
+        "field_name": entry.0,
+        "wire_name": entry.1,
+        "is_last": j == rename_entries.length() - 1,
+      })
+    }
     {
       "name": m.name,
       "struct_name": @case.pascal_case(m.name),
-      "fields": fields,
-      "derive_tojson": !has_optional_fields,
+      "fields": fields_json,
+      "field_renames": field_renames_json,
+      "has_renames": has_renames,
       "derive_fromjson": decode_models.contains(m.name),
     }
   })
