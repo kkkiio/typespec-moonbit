@@ -155,14 +155,16 @@ let server_event_stream_code : String =
 fn collect_models_from_crate(
   crate : @codemodel.Crate,
 ) -> Map[String, @codemodel.Model] {
+  // 兼容旧接口：仅收集所有模型（不区分请求/响应）。
   let models = Map::new()
+  let _unions = Map::new()
   for client in crate.clients {
     for op in client.methods {
       for param in op.parameters {
-        collect_models(param.type_, models)
+        collect_encode_types(param.type_, models, _unions)
       }
       match op.response_body {
-        Some(t) => collect_models(t, models)
+        Some(t) => collect_encode_types(t, models, _unions)
         None => ()
       }
     }
@@ -179,7 +181,7 @@ let model_template : String =
   #|{{#fields}}
   #|  {{name}} : {{type}}{{#optional}}?{{/optional}}
   #|{{/fields}}
-  #|} derive(Show, Default, {{#derive_tojson}}ToJson, {{/derive_tojson}}@json.FromJson(rename_fields="camelCase"))
+  #|} derive(Show, Default{{#derive_tojson}}, ToJson{{/derive_tojson}}{{#derive_fromjson}}, @json.FromJson(rename_fields="camelCase"){{/derive_fromjson}})
   #|
   #|{{^derive_tojson}}
   #|pub impl ToJson for {{struct_name}} with to_json(self : {{struct_name}}) -> Json {
@@ -195,6 +197,31 @@ let model_template : String =
   #|{{/derive_tojson}}
   #|
   #|{{/models}}
+
+///|
+let union_template : String =
+  #|{{#unions}}
+  #|///|
+  #|/// Union {{name}}
+  #|pub(all) enum {{enum_name}} {
+  #|  {{#variants}}{{ctor_name}}({{type}}){{^is_last}}
+  #|  {{/is_last}}{{/variants}}
+  #|} derive(Show)
+  #|
+  #|///|
+  #|pub impl Default for {{enum_name}} with default() {
+  #|  {{default_ctor}}({{default_ctor_type}}::default())
+  #|}
+  #|
+  #|///|
+  #|pub impl ToJson for {{enum_name}} with to_json(self : {{enum_name}}) -> Json {
+  #|  match self {
+  #|    {{#variants}}{{ctor_name}}(v) => v.to_json(){{^is_last}}
+  #|    {{/is_last}}{{/variants}}
+  #|  }
+  #|}
+  #|
+  #|{{/unions}}
 
 ///|
 let handler_trait_template : String =
@@ -237,13 +264,58 @@ let nullable_support_code : String =
 fn emit_server_models(crate : @codemodel.Crate) -> String raise {
   let buf = StringBuilder::new(size_hint=8192)
 
-  // 1. Collect Models
-  let models = collect_models_from_crate(crate)
+  // 1. Collect Models and Unions
+  let decode_models = collect_decode_models_from_crate(crate)
+  let (encode_models, encode_unions) = collect_encode_types_from_crate(crate)
+  let models = Map::new()
+  for k, v in encode_models {
+    models.set(k, v)
+  }
+  for k, v in decode_models {
+    models.set(k, v)
+  }
 
   // 2. Nullable helper (for `T | null`)
   buf.write_string(nullable_support_code)
 
-  // 3. Generate Model Structs
+  // 3. Generate Union Enums (ToJson only)
+  let union_list = encode_unions.to_array()
+  union_list.sort_by_key(fn(u) { u.0 })
+  let unions_json = union_list.map(fn(item) -> Json {
+    let u = item.1
+    let variants_json : Array[Json] = Array::new()
+    let n = u.variants.length()
+    for i in 0..<n {
+      let v = u.variants[i]
+      let variant_json : Json = {
+        "ctor_name": @case.pascal_case(sanitize_identifier(v.name)),
+        "type": type_ref_to_string(v.type_),
+        "is_last": i == n - 1,
+      }
+      variants_json.push(variant_json)
+    }
+    let default_variant = if n > 0 {
+      u.variants[0]
+    } else {
+      // 不应出现空 union；保持生成结果可编译，默认到 Json。
+      @codemodel.UnionVariant::{
+        name: "Default",
+        type_: @codemodel.TypeRef::Json,
+      }
+    }
+    {
+      "name": u.name,
+      "enum_name": @case.pascal_case(u.name),
+      "variants": variants_json,
+      "default_ctor": @case.pascal_case(
+        sanitize_identifier(default_variant.name),
+      ),
+      "default_ctor_type": type_ref_to_string(default_variant.type_),
+    }
+  })
+  buf.write_string(@mustache.parse(union_template, { "unions": unions_json }))
+
+  // 4. Generate Model Structs
   let model_list = models.to_array()
   model_list.sort_by_key(fn(m) { m.0 })
   let models_json = model_list.map(fn(item) -> Json {
@@ -267,6 +339,7 @@ fn emit_server_models(crate : @codemodel.Crate) -> String raise {
       "struct_name": @case.pascal_case(m.name),
       "fields": fields,
       "derive_tojson": !has_optional_fields,
+      "derive_fromjson": decode_models.contains(m.name),
     }
   })
   buf.write_string(@mustache.parse(model_template, { "models": models_json }))
@@ -919,17 +992,91 @@ fn collect_models(
   type_ : @codemodel.TypeRef,
   models : Map[String, @codemodel.Model],
 ) -> Unit {
+  // 兼容旧逻辑：仅收集模型，忽略 union。
+  let _unions = Map::new()
+  collect_encode_types(type_, models, _unions)
+}
+
+///|
+fn collect_decode_models_from_crate(
+  crate : @codemodel.Crate,
+) -> Map[String, @codemodel.Model] raise {
+  let models = Map::new()
+  for client in crate.clients {
+    for op in client.methods {
+      for param in op.parameters {
+        collect_decode_models(param.type_, models)
+      }
+    }
+  }
+  models
+}
+
+///|
+fn collect_encode_types_from_crate(
+  crate : @codemodel.Crate,
+) -> (Map[String, @codemodel.Model], Map[String, @codemodel.Union]) {
+  let models = Map::new()
+  let unions = Map::new()
+  for client in crate.clients {
+    for op in client.methods {
+      match op.response_body {
+        Some(t) => collect_encode_types(t, models, unions)
+        None => ()
+      }
+    }
+  }
+  (models, unions)
+}
+
+///|
+fn collect_encode_types(
+  type_ : @codemodel.TypeRef,
+  models : Map[String, @codemodel.Model],
+  unions : Map[String, @codemodel.Union],
+) -> Unit {
   match type_ {
     Model(m) =>
       if !models.contains(m.name) {
         models.set(m.name, m)
         for field in m.fields {
-          collect_models(field.type_, models)
+          collect_encode_types(field.type_, models, unions)
         }
       }
-    Array(t) => collect_models(t, models)
-    Record(t) => collect_models(t, models)
-    Nullable(t) => collect_models(t, models)
+    Union(u) =>
+      if !unions.contains(u.name) {
+        unions.set(u.name, u)
+        for v in u.variants {
+          collect_encode_types(v.type_, models, unions)
+        }
+      }
+    Array(t) => collect_encode_types(t, models, unions)
+    Record(t) => collect_encode_types(t, models, unions)
+    Nullable(t) => collect_encode_types(t, models, unions)
+    _ => ()
+  }
+}
+
+///|
+fn collect_decode_models(
+  type_ : @codemodel.TypeRef,
+  models : Map[String, @codemodel.Model],
+) -> Unit raise {
+  match type_ {
+    Union(u) =>
+      raise Failure::Failure(
+        "暂不支持 request 侧的 untagged union（遇到 Union '\{u.name}'）。",
+      )
+    Model(m) =>
+      if !models.contains(m.name) {
+        models.set(m.name, m)
+        for field in m.fields {
+          collect_decode_models(field.type_, models)
+        }
+      }
+    Array(t) => collect_decode_models(t, models)
+    Record(t) => collect_decode_models(t, models)
+    Nullable(t) => collect_decode_models(t, models)
     _ => ()
   }
 }

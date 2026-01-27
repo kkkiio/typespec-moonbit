@@ -8,6 +8,7 @@ fn type_ref_to_string(type_ : @codemodel.TypeRef) -> String {
     Bool => "Bool"
     Json => "Json"
     Model(m) => @case.pascal_case(m.name)
+    Union(u) => @case.pascal_case(u.name)
     Array(t) => "Array[\{type_ref_to_string(t)}]"
     Record(t) => "Map[String, \{type_ref_to_string(t)}]"
     Nullable(t) => "Nullable[\{type_ref_to_string(t)}]"

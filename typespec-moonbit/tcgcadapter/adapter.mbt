@@ -253,6 +253,31 @@ extern "js" fn set_cached_anon_model_name(
   #| }
 
 ///|
+extern "js" fn get_cached_anon_union_name(union_ : @ffi.JsValue) -> String? =
+  #| (union_) => {
+  #|   const cache = (globalThis.__typespec_moonbit_anon_union_names ??= new WeakMap());
+  #|   return cache.get(union_);
+  #| }
+
+///|
+extern "js" fn set_cached_anon_union_name(
+  union_ : @ffi.JsValue,
+  name : String,
+) -> Unit =
+  #| (union_, name) => {
+  #|   const cache = (globalThis.__typespec_moonbit_anon_union_names ??= new WeakMap());
+  #|   cache.set(union_, name);
+  #| }
+
+///|
+extern "js" fn next_anon_union_name() -> String =
+  #| () => {
+  #|   const n = (globalThis.__typespec_moonbit_anon_union_counter ??= 0);
+  #|   globalThis.__typespec_moonbit_anon_union_counter = n + 1;
+  #|   return `Union${n}`;
+  #| }
+
+///|
 fn resolve_type_ref(
   prop : @ffi.JsValue,
   processed_models : Map[String, @codemodel.Model],
@@ -297,8 +322,64 @@ fn resolve_type_ref(
         if saw_null && non_null_types.length() == 1 {
           return Nullable(resolve_type_ref(non_null_types[0], processed_models))
         }
+
+        // Untagged union: represent it explicitly for server-side ToJson generation.
+        // Note: server-side request decoding still needs to reject unions explicitly.
+        let name_val = @ffi.get_value(prop, "name")
+        let mut union_name = if @ffi.is_string(name_val) {
+          @ffi.cast_string(name_val)
+        } else {
+          ""
+        }
+        if union_name == "" {
+          match get_cached_anon_union_name(prop) {
+            Some(n) => union_name = n
+            None => {
+              let n = next_anon_union_name()
+              set_cached_anon_union_name(prop, n)
+              union_name = n
+            }
+          }
+        }
+        let variants_arr = Array::new()
+        for v in variants {
+          let t = @ffi.get_value(v, "type")
+          if @ffi.is_undefined(t) || t.is_null() {
+            continue
+          }
+          let tk = @ffi.get_value(t, "kind")
+          if @ffi.is_string(tk) && @ffi.cast_string(tk) == "Intrinsic" {
+            let tn = @ffi.get_value(t, "name")
+            if @ffi.is_string(tn) && @ffi.cast_string(tn) == "null" {
+              continue
+            }
+          }
+          let vn_val = @ffi.get_value(v, "name")
+          let mut variant_name = if @ffi.is_string(vn_val) {
+            @ffi.cast_string(vn_val)
+          } else {
+            ""
+          }
+          if variant_name == "" {
+            let tn_val = @ffi.get_value(t, "name")
+            variant_name = if @ffi.is_string(tn_val) {
+              @ffi.cast_string(tn_val)
+            } else {
+              "Variant"
+            }
+          }
+          let variant_type = resolve_type_ref(t, processed_models)
+          variants_arr.push(@codemodel.UnionVariant::{
+            name: variant_name,
+            type_: variant_type,
+          })
+        }
+        return @codemodel.TypeRef::Union(@codemodel.Union::{
+          name: union_name,
+          variants: variants_arr,
+        })
       }
-      return @codemodel.TypeRef::String
+      return @codemodel.TypeRef::Json
     }
     if kind == "Model" {
       // Array / Record types are represented as Models with an indexer.

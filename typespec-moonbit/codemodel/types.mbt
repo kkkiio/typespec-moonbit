@@ -8,6 +8,7 @@ pub(all) enum TypeRef {
   Bool
   Json
   Model(Model)
+  Union(Union)
   Array(TypeRef)
   Record(TypeRef)
   Nullable(TypeRef)
@@ -40,8 +41,14 @@ pub struct Enum {
 }
 
 ///|
-/// CodeModel 联合类型。
-#warnings("-struct_never_constructed")
-pub struct Union {
+/// CodeModel 联合类型（仅包含必要信息，便于 codegen 渲染）。
+pub(all) struct UnionVariant {
   name : String
+  type_ : TypeRef
+}
+
+///|
+pub(all) struct Union {
+  name : String
+  variants : Array[UnionVariant]
 }

@@ -57,13 +57,20 @@ pub(all) enum TypeRef {
   Bool
   Json
   Model(Model)
+  Union(Union)
   Array(TypeRef)
   Record(TypeRef)
   Nullable(TypeRef)
 }
 
-pub struct Union {
+pub(all) struct Union {
   name : String
+  variants : Array[UnionVariant]
+}
+
+pub(all) struct UnionVariant {
+  name : String
+  type_ : TypeRef
 }
 
 // Type aliases
