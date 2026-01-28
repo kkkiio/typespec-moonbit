@@ -41,9 +41,7 @@ pub fn[H0 : EmptyHandler] create_router(
       match_path_template("/type/model/empty/alone", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_1_body : EmptyInput = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_1_body : EmptyInput = @json.from_json(@json.parse(body_str))
       empty_handler.put_empty(group~, p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -63,9 +61,7 @@ pub fn[H0 : EmptyHandler] create_router(
       match_path_template("/type/model/empty/round-trip", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_3_body : EmptyInputOutput = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_3_body : EmptyInputOutput = @json.from_json(@json.parse(body_str))
       let resp_body = empty_handler.post_round_trip_empty(group~, p_3_body)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)

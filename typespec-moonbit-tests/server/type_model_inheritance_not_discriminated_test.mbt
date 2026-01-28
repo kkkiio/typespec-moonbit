@@ -38,13 +38,9 @@ impl @type_model_inheritance_not_discriminated.NotDiscriminatedHandler for NotDi
   body,
 ) {
   // In TypeScript: assert.deepStrictEqual(input, { name: "abc", age: 32, smart: true })
-  guard body.name == "abc" else {
-    fail("post_valid: body.name should be 'abc'")
-  }
-  guard body.age == 32 else { fail("post_valid: body.age should be 32") }
-  guard body.smart == true else {
-    fail("post_valid: body.smart should be true")
-  }
+  assert_eq(body.name, "abc")
+  assert_eq(body.age, 32)
+  assert_eq(body.smart, true)
 }
 
 ///|
@@ -55,8 +51,8 @@ impl @type_model_inheritance_not_discriminated.NotDiscriminatedHandler for NotDi
 ) {
   // In TypeScript: assert.deepStrictEqual(input, { name: "abc", age: 32, smart: true })
   // Should return: { name: "abc", age: 32, smart: true }
-  guard body.name == "abc" else { fail("put_valid: body.name should be 'abc'") }
-  guard body.age == 32 else { fail("put_valid: body.age should be 32") }
-  guard body.smart == true else { fail("put_valid: body.smart should be true") }
+  assert_eq(body.name, "abc")
+  assert_eq(body.age, 32)
+  assert_eq(body.smart, true)
   body
 }

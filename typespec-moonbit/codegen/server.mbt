@@ -365,7 +365,7 @@ let router_template : String =
   #|      {{^has_body}}ignore(body_stream)
   #|      {{/has_body}}
   #|      {{#params}}
-  #|      {{#isBody}}{{#isString}}let {{var_name}} = body_str{{/isString}}{{^isString}}let {{var_name}} : {{type_str}} = try { @json.from_json(@json.parse(body_str)) } catch { _ => @json.from_json(null) }{{/isString}}{{/isBody}}
+  #|      {{#isBody}}let {{var_name}} : {{type_str}} = @json.from_json(@json.parse(body_str)){{/isBody}}
   #|      {{#isPath}}let {{var_name}} = get_path_param("{{{path_template}}}", path, "{{wire_name}}"){{/isPath}}
   #|      {{#isHeader}}let {{var_name}} = get_header(req.headers, "{{wire_name}}"){{/isHeader}}
   #|      {{#isQuery}}let {{var_name}} = get_query_param(full_path, "{{wire_name}}"){{/isQuery}}

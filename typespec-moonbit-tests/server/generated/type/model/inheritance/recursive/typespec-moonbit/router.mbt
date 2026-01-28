@@ -36,9 +36,7 @@ pub fn[H0 : RecursiveHandler] create_router(
       match_path_template("/type/model/inheritance/recursive", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_1_body : Extension = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_1_body : Extension = @json.from_json(@json.parse(body_str))
       recursive_handler.put(group~, p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()

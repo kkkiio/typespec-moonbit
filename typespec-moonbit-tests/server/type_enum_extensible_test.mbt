@@ -38,6 +38,7 @@ impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with ge
   //   contentType: "application/json",
   //   body: "Weekend",
   // }
+  ignore(group)
   "Weekend"
 }
 
@@ -48,11 +49,9 @@ impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with pu
   _content_type,
   body,
 ) {
+  ignore(group)
   // In TypeScript: assert.equal(body, "Monday")
-  // The body is parsed as JSON string, so we need to check the value
-  guard body.contains("Monday") else {
-    fail("put_known_value: body should be 'Monday'")
-  }
+  assert_eq(body, "Monday")
 }
 
 ///|
@@ -62,8 +61,7 @@ impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with pu
   _content_type,
   body,
 ) {
+  ignore(group)
   // In TypeScript: assert.equal(body, "Weekend")
-  guard body.contains("Weekend") else {
-    fail("put_unknown_value: body should be 'Weekend'")
-  }
+  assert_eq(body, "Weekend")
 }

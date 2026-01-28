@@ -39,9 +39,7 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(
       ) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_1_body : Siamese = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_1_body : Siamese = @json.from_json(@json.parse(body_str))
       not_discriminated_handler.post_valid(group~, p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -65,9 +63,7 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(
       ) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_3_body : Siamese = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_3_body : Siamese = @json.from_json(@json.parse(body_str))
       let resp_body = not_discriminated_handler.put_valid(group~, p_3_body)
       let headers : Map[String, String] = { "content-type": "application/json" }
       conn.send_response(200, "OK", extra_headers=headers)

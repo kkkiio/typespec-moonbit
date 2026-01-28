@@ -30,6 +30,7 @@ impl @type_model_empty.EmptyHandler for EmptyHandlerImpl with get_empty(
   _self,
   group~,
 ) {
+  ignore(group)
   @type_model_empty.EmptyOutput::{  }
 }
 
@@ -39,6 +40,7 @@ impl @type_model_empty.EmptyHandler for EmptyHandlerImpl with post_round_trip_em
   group~,
   body,
 ) {
+  ignore(group)
   // Should return: { body }
   // EmptyInputOutput is an empty struct, round-trip the same empty object
   body

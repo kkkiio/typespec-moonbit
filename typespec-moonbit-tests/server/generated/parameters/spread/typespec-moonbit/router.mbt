@@ -103,9 +103,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       match_path_template("/parameters/spread/alias/request-body", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_1_body : Model0 = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_1_body : Model0 = @json.from_json(@json.parse(body_str))
       alias_handler.spread_as_request_body(group~, p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -121,9 +119,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
         "/parameters/spread/alias/inner-model-parameter/{id}", path, "id",
       )
       let p_2_x_ms_test_header = get_header(req.headers, "x-ms-test-header")
-      let p_2_body : Model1 = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_2_body : Model1 = @json.from_json(@json.parse(body_str))
       alias_handler.spread_parameter_with_inner_model(
         group~,
         p_2_id,
@@ -144,9 +140,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
         "/parameters/spread/alias/request-parameter/{id}", path, "id",
       )
       let p_3_x_ms_test_header = get_header(req.headers, "x-ms-test-header")
-      let p_3_body : Model2 = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_3_body : Model2 = @json.from_json(@json.parse(body_str))
       alias_handler.spread_as_request_parameter(
         group~,
         p_3_id,
@@ -167,9 +161,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
         "/parameters/spread/alias/multiple-parameters/{id}", path, "id",
       )
       let p_4_x_ms_test_header = get_header(req.headers, "x-ms-test-header")
-      let p_4_body : Model3 = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_4_body : Model3 = @json.from_json(@json.parse(body_str))
       alias_handler.spread_with_multiple_parameters(
         group~,
         p_4_id,
@@ -190,9 +182,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
         "/parameters/spread/alias/inner-alias-parameter/{id}", path, "id",
       )
       let p_5_x_ms_test_header = get_header(req.headers, "x-ms-test-header")
-      let p_5_body : Model4 = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_5_body : Model4 = @json.from_json(@json.parse(body_str))
       alias_handler.spread_parameter_with_inner_alias(
         group~,
         p_5_id,
@@ -207,9 +197,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       match_path_template("/parameters/spread/model/request-body", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_6_body : BodyParameter5 = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_6_body : BodyParameter5 = @json.from_json(@json.parse(body_str))
       model_handler.spread_as_request_body(group~, p_6_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -221,9 +209,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       ) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_7_body : BodyParameter = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_7_body : BodyParameter = @json.from_json(@json.parse(body_str))
       model_handler.spread_composite_request_only_with_body(group~, p_7_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -257,9 +243,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
         "/parameters/spread/model/composite-request/{name}", path, "name",
       )
       let p_9_test_header = get_header(req.headers, "test-header")
-      let p_9_body : BodyParameter = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_9_body : BodyParameter = @json.from_json(@json.parse(body_str))
       model_handler.spread_composite_request(
         group~,
         p_9_name,
@@ -280,9 +264,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
         "/parameters/spread/model/composite-request-mix/{name}", path, "name",
       )
       let p_10_test_header = get_header(req.headers, "test-header")
-      let p_10_body : Model6 = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_10_body : Model6 = @json.from_json(@json.parse(body_str))
       model_handler.spread_composite_request_mix(
         group~,
         p_10_name,

@@ -69,7 +69,7 @@ pub fn[H0 : StringHandler] create_router(
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_3_content_type = get_header(req.headers, "Content-Type")
-      let p_3_body = body_str
+      let p_3_body : String = @json.from_json(@json.parse(body_str))
       string_handler.put_known_value(group~, p_3_content_type, p_3_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -80,7 +80,7 @@ pub fn[H0 : StringHandler] create_router(
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_4_content_type = get_header(req.headers, "Content-Type")
-      let p_4_body = body_str
+      let p_4_body : String = @json.from_json(@json.parse(body_str))
       string_handler.put_unknown_value(group~, p_4_content_type, p_4_body)
       conn.send_response(204, "No Content")
       conn.end_response()

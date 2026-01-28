@@ -177,9 +177,7 @@ pub fn[
     if req.meth == @http.Put && match_path_template("/type/array/int32", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_2_body : Array[Int] = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_2_body : Array[Int] = @json.from_json(@json.parse(body_str))
       int32_value_handler.put(group~, p_2_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -197,9 +195,7 @@ pub fn[
     if req.meth == @http.Put && match_path_template("/type/array/int64", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_4_body : Array[Int64] = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_4_body : Array[Int64] = @json.from_json(@json.parse(body_str))
       int64_value_handler.put(group~, p_4_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -217,9 +213,7 @@ pub fn[
     if req.meth == @http.Put && match_path_template("/type/array/model", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_6_body : Array[InnerModel] = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_6_body : Array[InnerModel] = @json.from_json(@json.parse(body_str))
       model_value_handler.put(group~, p_6_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -237,9 +231,7 @@ pub fn[
     if req.meth == @http.Put && match_path_template("/type/array/string", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_8_body : Array[String] = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_8_body : Array[String] = @json.from_json(@json.parse(body_str))
       string_value_handler.put(group~, p_8_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -257,9 +249,7 @@ pub fn[
     if req.meth == @http.Put && match_path_template("/type/array/boolean", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_10_body : Array[Bool] = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_10_body : Array[Bool] = @json.from_json(@json.parse(body_str))
       boolean_value_handler.put(group~, p_10_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -277,9 +267,7 @@ pub fn[
     if req.meth == @http.Put && match_path_template("/type/array/float32", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_12_body : Array[Double] = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_12_body : Array[Double] = @json.from_json(@json.parse(body_str))
       float32_value_handler.put(group~, p_12_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -297,9 +285,7 @@ pub fn[
     if req.meth == @http.Put && match_path_template("/type/array/unknown", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_14_body : Array[Json] = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_14_body : Array[Json] = @json.from_json(@json.parse(body_str))
       unknown_value_handler.put(group~, p_14_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -319,9 +305,7 @@ pub fn[
       match_path_template("/type/array/datetime", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_16_body : Array[String] = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_16_body : Array[String] = @json.from_json(@json.parse(body_str))
       datetime_value_handler.put(group~, p_16_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -341,9 +325,7 @@ pub fn[
       match_path_template("/type/array/duration", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_18_body : Array[String] = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_18_body : Array[String] = @json.from_json(@json.parse(body_str))
       duration_value_handler.put(group~, p_18_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -365,9 +347,7 @@ pub fn[
       let body_str = body_bytes.text()
       let p_20_body : Array[Nullable[Double]] = @json.from_json(
         @json.parse(body_str),
-      ) catch {
-        _ => @json.from_json(null)
-      }
+      )
       nullable_float_value_handler.put(group~, p_20_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -389,9 +369,7 @@ pub fn[
       let body_str = body_bytes.text()
       let p_22_body : Array[Nullable[Int]] = @json.from_json(
         @json.parse(body_str),
-      ) catch {
-        _ => @json.from_json(null)
-      }
+      )
       nullable_int32_value_handler.put(group~, p_22_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -413,9 +391,7 @@ pub fn[
       let body_str = body_bytes.text()
       let p_24_body : Array[Nullable[InnerModel]] = @json.from_json(
         @json.parse(body_str),
-      ) catch {
-        _ => @json.from_json(null)
-      }
+      )
       nullable_model_value_handler.put(group~, p_24_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -437,9 +413,7 @@ pub fn[
       let body_str = body_bytes.text()
       let p_26_body : Array[Nullable[String]] = @json.from_json(
         @json.parse(body_str),
-      ) catch {
-        _ => @json.from_json(null)
-      }
+      )
       nullable_string_value_handler.put(group~, p_26_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -461,9 +435,7 @@ pub fn[
       let body_str = body_bytes.text()
       let p_28_body : Array[Nullable[Bool]] = @json.from_json(
         @json.parse(body_str),
-      ) catch {
-        _ => @json.from_json(null)
-      }
+      )
       nullable_boolean_value_handler.put(group~, p_28_body)
       conn.send_response(204, "No Content")
       conn.end_response()

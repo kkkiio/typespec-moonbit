@@ -5,6 +5,7 @@ Typespec MoonBit Emitter. Writen in MoonBit.
 ## Features
 
 - [x] http server
+    - [x] json body
 
 ## Architecture
 

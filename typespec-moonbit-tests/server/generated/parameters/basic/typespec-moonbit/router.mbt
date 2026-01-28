@@ -42,9 +42,7 @@ pub fn[H0 : ExplicitBodyHandler, H1 : ImplicitBodyHandler] create_router(
       match_path_template("/parameters/basic/explicit-body/simple", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_1_body : User = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_1_body : User = @json.from_json(@json.parse(body_str))
       explicit_body_handler.simple(group~, p_1_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -54,9 +52,7 @@ pub fn[H0 : ExplicitBodyHandler, H1 : ImplicitBodyHandler] create_router(
       match_path_template("/parameters/basic/implicit-body/simple", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_2_body : Model0 = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_2_body : Model0 = @json.from_json(@json.parse(body_str))
       implicit_body_handler.simple(group~, p_2_body)
       conn.send_response(204, "No Content")
       conn.end_response()

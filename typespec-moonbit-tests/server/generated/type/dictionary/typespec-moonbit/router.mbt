@@ -153,9 +153,7 @@ pub fn[
       match_path_template("/type/dictionary/int32", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_2_body : Map[String, Int] = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_2_body : Map[String, Int] = @json.from_json(@json.parse(body_str))
       int32_value_handler.put(group~, p_2_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -175,9 +173,7 @@ pub fn[
       match_path_template("/type/dictionary/int64", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_4_body : Map[String, Int64] = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_4_body : Map[String, Int64] = @json.from_json(@json.parse(body_str))
       int64_value_handler.put(group~, p_4_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -199,9 +195,7 @@ pub fn[
       let body_str = body_bytes.text()
       let p_6_body : Map[String, InnerModel] = @json.from_json(
         @json.parse(body_str),
-      ) catch {
-        _ => @json.from_json(null)
-      }
+      )
       model_value_handler.put(group~, p_6_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -223,9 +217,7 @@ pub fn[
       let body_str = body_bytes.text()
       let p_8_body : Map[String, String] = @json.from_json(
         @json.parse(body_str),
-      ) catch {
-        _ => @json.from_json(null)
-      }
+      )
       string_value_handler.put(group~, p_8_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -245,9 +237,7 @@ pub fn[
       match_path_template("/type/dictionary/boolean", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_10_body : Map[String, Bool] = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_10_body : Map[String, Bool] = @json.from_json(@json.parse(body_str))
       boolean_value_handler.put(group~, p_10_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -269,9 +259,7 @@ pub fn[
       let body_str = body_bytes.text()
       let p_12_body : Map[String, Double] = @json.from_json(
         @json.parse(body_str),
-      ) catch {
-        _ => @json.from_json(null)
-      }
+      )
       float32_value_handler.put(group~, p_12_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -291,9 +279,7 @@ pub fn[
       match_path_template("/type/dictionary/unknown", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_14_body : Map[String, Json] = @json.from_json(@json.parse(body_str)) catch {
-        _ => @json.from_json(null)
-      }
+      let p_14_body : Map[String, Json] = @json.from_json(@json.parse(body_str))
       unknown_value_handler.put(group~, p_14_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -315,9 +301,7 @@ pub fn[
       let body_str = body_bytes.text()
       let p_16_body : Map[String, String] = @json.from_json(
         @json.parse(body_str),
-      ) catch {
-        _ => @json.from_json(null)
-      }
+      )
       datetime_value_handler.put(group~, p_16_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -339,9 +323,7 @@ pub fn[
       let body_str = body_bytes.text()
       let p_18_body : Map[String, String] = @json.from_json(
         @json.parse(body_str),
-      ) catch {
-        _ => @json.from_json(null)
-      }
+      )
       duration_value_handler.put(group~, p_18_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -363,9 +345,7 @@ pub fn[
       let body_str = body_bytes.text()
       let p_20_body : Map[String, Nullable[Double]] = @json.from_json(
         @json.parse(body_str),
-      ) catch {
-        _ => @json.from_json(null)
-      }
+      )
       nullable_float_value_handler.put(group~, p_20_body)
       conn.send_response(204, "No Content")
       conn.end_response()
@@ -387,9 +367,7 @@ pub fn[
       let body_str = body_bytes.text()
       let p_22_body : Map[String, InnerModel] = @json.from_json(
         @json.parse(body_str),
-      ) catch {
-        _ => @json.from_json(null)
-      }
+      )
       recursive_model_value_handler.put(group~, p_22_body)
       conn.send_response(204, "No Content")
       conn.end_response()
