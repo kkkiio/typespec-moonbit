@@ -3,30 +3,22 @@
 ///|
 /// 生成 server 包的文件列表。
 pub fn emit_server_files(crate : @codemodel.Crate) -> Array[OutputFile] raise {
-  let mut has_sse = false
-  for client in crate.clients {
-    for op in client.methods {
-      if op.is_sse {
-        has_sse = true
-        break
-      }
-    }
-    if has_sse {
-      break
-    }
-  }
-  let files = Array::new(capacity=if has_sse { 6 } else { 5 })
-  files.push(OutputFile::new("moon.pkg.json", emit_server_moon_pkg_json()))
-  files.push(OutputFile::new("README.mbt.md", emit_server_readme(crate)))
-  files.push(OutputFile::new("models.mbt", emit_server_models(crate)))
-  files.push(OutputFile::new("router.mbt", emit_server_router(crate)))
-  files.push(
+  let has_sse = crate.clients
+    .iter()
+    .flat_map(fn(c) { c.methods.iter() })
+    .any(fn(m) { m.is_sse })
+  [
+    OutputFile::new("moon.pkg.json", emit_server_moon_pkg_json()),
+    OutputFile::new("README.mbt.md", emit_server_readme(crate)),
+    OutputFile::new("models.mbt", emit_server_models(crate)),
+    OutputFile::new("router.mbt", emit_server_router(crate)),
     OutputFile::new("router_helpers.mbt", emit_server_router_helpers(crate)),
-  )
-  if has_sse {
-    files.push(OutputFile::new("event_stream.mbt", emit_server_event_stream()))
-  }
-  files
+  ] +
+  (if has_sse {
+    [OutputFile::new("event_stream.mbt", emit_server_event_stream())]
+  } else {
+    []
+  })
 }
 
 ///|
@@ -150,27 +142,6 @@ let server_event_stream_code : String =
   #|  self.write_event(event?=sse_event.event, data=sse_event.data, flush~)
   #|}
   #|
-
-///|
-fn collect_models_from_crate(
-  crate : @codemodel.Crate,
-) -> Map[String, @codemodel.Model] {
-  // 兼容旧接口：仅收集所有模型（不区分请求/响应）。
-  let models = Map::new()
-  let _unions = Map::new()
-  for client in crate.clients {
-    for op in client.methods {
-      for param in op.parameters {
-        collect_encode_types(param.type_, models, _unions)
-      }
-      match op.response_body {
-        Some(t) => collect_encode_types(t, models, _unions)
-        None => ()
-      }
-    }
-  }
-  models
-}
 
 ///|
 let model_template : String =
@@ -485,145 +456,6 @@ fn status_reason_phrase(code : Int) -> String {
 }
 
 ///|
-fn emit_create_router(crate : @codemodel.Crate) -> String raise {
-  fn compact_alpha_digit_underscore(s : String) -> String {
-    let n = s.length()
-    let sb = StringBuilder::new(size_hint=n)
-    let mut i = 0
-    while i < n {
-      let ch = s.code_unit_at(i)
-      if ch == '_' && i > 0 && i + 1 < n {
-        let prev = s.code_unit_at(i - 1)
-        let next = s.code_unit_at(i + 1)
-        let prev_is_lower = prev >= 'a' && prev <= 'z'
-        let next_is_digit = next >= '0' && next <= '9'
-        if prev_is_lower && next_is_digit {
-          i += 1
-          continue
-        }
-      }
-      sb.write_char(ch.to_int().unsafe_to_char())
-      i += 1
-    }
-    sb.to_string()
-  }
-
-  let clients = crate.clients
-  let mut op_counter = 0
-  let used_handler_vars : Array[String] = Array::new()
-  let clients_ctx : Array[Json] = Array::new()
-  for i in 0..<clients.length() {
-    let client = clients[i]
-    let handler_var = {
-      let base = {
-        let s = compact_alpha_digit_underscore(
-          sanitize_identifier(@case.snake_case(client.name)),
-        )
-        if s == "" {
-          "h\{i}"
-        } else {
-          "\{s}_handler"
-        }
-      }
-      let mut candidate = base
-      let mut suffix = 1
-      while true {
-        let mut exists = false
-        for name in used_handler_vars {
-          if name == candidate {
-            exists = true
-            break
-          }
-        }
-        if !exists {
-          break
-        }
-        candidate = "\{base}_\{suffix}"
-        suffix += 1
-      }
-      used_handler_vars.push(candidate)
-      candidate
-    }
-    let methods_arr : Array[Json] = Array::new()
-    for op in client.methods {
-      op_counter += 1
-      let meth = server_meth_ctor(op.http_method)
-      let normalized_tmpl = normalize_uri_template(op.path)
-      let tmpl = normalized_tmpl
-        .replace_all(old="\\", new="\\\\")
-        .replace_all(old="\"", new="\\\"")
-
-      // detect body presence
-      let has_body = for param in op.parameters {
-        if param.location == "body" {
-          break true
-        }
-      } else {
-        false
-      }
-      let params_arr = Array::new()
-      let call_arg_exprs : Array[String] = Array::new()
-      let param_count = op.parameters.length()
-      for j in 0..<param_count {
-        let param = op.parameters[j]
-        let pname = sanitize_identifier(@case.snake_case(param.name))
-        let var_name = "p_\{op_counter}_\{pname}"
-        let type_str = type_ref_to_string(param.type_)
-        let param_ctx : Json = {
-          "name": @case.snake_case(param.name),
-          "wire_name": param.name,
-          "var_name": var_name,
-          "location": param.location,
-          "type_str": type_str,
-          "isBody": param.location == "body",
-          "isPath": param.location == "path",
-          "isHeader": param.location == "header",
-          "isQuery": param.location == "query",
-          "isString": type_str == "String",
-        }
-        params_arr.push(param_ctx)
-        call_arg_exprs.push(var_name)
-      }
-      let is_sse = op.is_sse
-      let has_response_body = op.response_body is Some(_) && !is_sse
-      if is_sse {
-        call_arg_exprs.push("sse")
-      }
-      let call_args : Array[Json] = {
-        let args : Array[Json] = Array::new()
-        let n = call_arg_exprs.length()
-        for k in 0..<n {
-          let arg : Json = { "expr": call_arg_exprs[k] }
-          args.push(arg)
-        }
-        args
-      }
-      methods_arr.push({
-        "method_name": @case.snake_case(op.name),
-        "handler_method": @case.snake_case(op.name),
-        "http_meth_token": meth,
-        "path_template": tmpl,
-        "has_body": has_body,
-        "status_code": op.status_code.to_double(),
-        "reason_phrase": status_reason_phrase(op.status_code),
-        "has_response_body": has_response_body,
-        "is_sse": is_sse,
-        "params": params_arr,
-        "call_args": call_args,
-      })
-    }
-    clients_ctx.push({
-      "handler_var": handler_var,
-      "trait_name": @case.pascal_case(sanitize_identifier(client.name)) +
-      "Handler",
-      "client_index": i.to_double(),
-      "methods": methods_arr,
-    })
-  }
-  @mustache.parse(router_template, { "clients": clients_ctx })
-}
-
-///|
 test "emit_server_router" {
   let crate : @codemodel.Crate = {
     name: "test_crate",
@@ -834,7 +666,141 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
     @mustache.parse(handler_trait_template, { "clients": clients_json }),
   )
   // 2. Generate Router
-  buf.write_string(emit_create_router(crate))
+  fn compact_alpha_digit_underscore(s : String) -> String {
+    let n = s.length()
+    let sb = StringBuilder::new(size_hint=n)
+    let mut i = 0
+    while i < n {
+      let ch = s.code_unit_at(i)
+      if ch == '_' && i > 0 && i + 1 < n {
+        let prev = s.code_unit_at(i - 1)
+        let next = s.code_unit_at(i + 1)
+        let prev_is_lower = prev >= 'a' && prev <= 'z'
+        let next_is_digit = next >= '0' && next <= '9'
+        if prev_is_lower && next_is_digit {
+          i += 1
+          continue
+        }
+      }
+      sb.write_char(ch.to_int().unsafe_to_char())
+      i += 1
+    }
+    sb.to_string()
+  }
+
+  let clients = crate.clients
+  let mut op_counter = 0
+  let used_handler_vars : Array[String] = Array::new()
+  let clients_ctx : Array[Json] = Array::new()
+  for i in 0..<clients.length() {
+    let client = clients[i]
+    let handler_var = {
+      let base = {
+        let s = compact_alpha_digit_underscore(
+          sanitize_identifier(@case.snake_case(client.name)),
+        )
+        if s == "" {
+          "h\{i}"
+        } else {
+          "\{s}_handler"
+        }
+      }
+      let mut candidate = base
+      let mut suffix = 1
+      while true {
+        let mut exists = false
+        for name in used_handler_vars {
+          if name == candidate {
+            exists = true
+            break
+          }
+        }
+        if !exists {
+          break
+        }
+        candidate = "\{base}_\{suffix}"
+        suffix += 1
+      }
+      used_handler_vars.push(candidate)
+      candidate
+    }
+    let methods_arr : Array[Json] = Array::new()
+    for op in client.methods {
+      op_counter += 1
+      let meth = server_meth_ctor(op.http_method)
+      let normalized_tmpl = normalize_uri_template(op.path)
+      let tmpl = normalized_tmpl
+        .replace_all(old="\\", new="\\\\")
+        .replace_all(old="\"", new="\\\"")
+
+      // detect body presence
+      let has_body = for param in op.parameters {
+        if param.location == "body" {
+          break true
+        }
+      } else {
+        false
+      }
+      let params_arr = Array::new()
+      let call_arg_exprs : Array[String] = Array::new()
+      let param_count = op.parameters.length()
+      for j in 0..<param_count {
+        let param = op.parameters[j]
+        let pname = sanitize_identifier(@case.snake_case(param.name))
+        let var_name = "p_\{op_counter}_\{pname}"
+        let type_str = type_ref_to_string(param.type_)
+        let param_ctx : Json = {
+          "name": @case.snake_case(param.name),
+          "wire_name": param.name,
+          "var_name": var_name,
+          "location": param.location,
+          "type_str": type_str,
+          "isBody": param.location == "body",
+          "isPath": param.location == "path",
+          "isHeader": param.location == "header",
+          "isQuery": param.location == "query",
+          "isString": type_str == "String",
+        }
+        params_arr.push(param_ctx)
+        call_arg_exprs.push(var_name)
+      }
+      let is_sse = op.is_sse
+      let has_response_body = op.response_body is Some(_) && !is_sse
+      if is_sse {
+        call_arg_exprs.push("sse")
+      }
+      let call_args : Array[Json] = {
+        let args : Array[Json] = Array::new()
+        let n = call_arg_exprs.length()
+        for k in 0..<n {
+          let arg : Json = { "expr": call_arg_exprs[k] }
+          args.push(arg)
+        }
+        args
+      }
+      methods_arr.push({
+        "method_name": @case.snake_case(op.name),
+        "handler_method": @case.snake_case(op.name),
+        "http_meth_token": meth,
+        "path_template": tmpl,
+        "has_body": has_body,
+        "status_code": op.status_code.to_double(),
+        "reason_phrase": status_reason_phrase(op.status_code),
+        "has_response_body": has_response_body,
+        "is_sse": is_sse,
+        "params": params_arr,
+        "call_args": call_args,
+      })
+    }
+    clients_ctx.push({
+      "handler_var": handler_var,
+      "trait_name": @case.pascal_case(sanitize_identifier(client.name)) +
+      "Handler",
+      "client_index": i.to_double(),
+      "methods": methods_arr,
+    })
+  }
+  buf.write_string(@mustache.parse(router_template, { "clients": clients_ctx }))
   buf.to_string()
 }
 
@@ -880,146 +846,34 @@ fn emit_server_router_helpers(crate : @codemodel.Crate) -> String {
 }
 
 ///|
-let strip_request_query_code =
-  #|///|
-  #|fn strip_request_query(path : String) -> String {
-  #|  let parts = path.split("?").to_array()
-  #|  if parts.length() == 0 { path } else { parts[0].to_string() }
-  #|}
-  #|
-
-///|
-let match_path_template_code =
-  #|///|
-  #|fn match_path_template(template : String, path : String) -> Bool {
-  #|  let tlen = template.length()
-  #|  let plen = path.length()
-  #|  let mut ti = 0
-  #|  let mut pi = 0
-  #|  while ti < tlen && pi < plen {
-  #|    if template.code_unit_at(ti) == '{' {
-  #|      // find matching `}` in template
-  #|      let mut close = ti + 1
-  #|      while close < tlen && template.code_unit_at(close) != '}' {
-  #|        close += 1
-  #|      }
-  #|      if close >= tlen {
-  #|        return false
-  #|      }
-  #|      // match a non-empty path segment
-  #|      let seg_start = pi
-  #|      while pi < plen && path.code_unit_at(pi) != '/' {
-  #|        pi += 1
-  #|      }
-  #|      if pi == seg_start {
-  #|        return false
-  #|      }
-  #|      ti = close + 1
-  #|    } else {
-  #|      if template.code_unit_at(ti) != path.code_unit_at(pi) {
-  #|        return false
-  #|      }
-  #|      ti += 1
-  #|      pi += 1
-  #|    }
-  #|  }
-  #|  ti == tlen && pi == plen
-  #|}
-  #|
-
-///|
-let get_path_param_code =
-  #|///|
-  #|fn get_path_param(template : String, path : String, name : String) -> String {
-  #|  let tlen = template.length()
-  #|  let plen = path.length()
-  #|  let mut ti = 0
-  #|  let mut pi = 0
-  #|  while ti < tlen && pi < plen {
-  #|    if template.code_unit_at(ti) == '{' {
-  #|      let mut close = ti + 1
-  #|      while close < tlen && template.code_unit_at(close) != '}' {
-  #|        close += 1
-  #|      }
-  #|      if close >= tlen {
-  #|        return ""
-  #|      }
-  #|      let key_sb = StringBuilder::new(size_hint=close - (ti + 1))
-  #|      for k in (ti + 1)..<close {
-  #|        key_sb.write_char(template.code_unit_at(k).to_int().unsafe_to_char())
-  #|      }
-  #|      let key = key_sb.to_string()
-  #|      let seg_start = pi
-  #|      while pi < plen && path.code_unit_at(pi) != '/' {
-  #|        pi += 1
-  #|      }
-  #|      if key == name {
-  #|        let seg_sb = StringBuilder::new(size_hint=pi - seg_start)
-  #|        for k in seg_start..<pi {
-  #|          seg_sb.write_char(path.code_unit_at(k).to_int().unsafe_to_char())
-  #|        }
-  #|        return seg_sb.to_string()
-  #|      }
-  #|      ti = close + 1
-  #|    } else {
-  #|      if template.code_unit_at(ti) != path.code_unit_at(pi) {
-  #|        return ""
-  #|      }
-  #|      ti += 1
-  #|      pi += 1
-  #|    }
-  #|  }
-  #|  ""
-  #|}
-  #|
-
-///|
-let get_header_code =
-  #|///|
-  #|fn get_header(headers : Map[String, String], name : String) -> String {
-  #|  match headers.get(name.to_lower().to_string()) {
-  #|    Some(v) => v
-  #|    None => ""
-  #|  }
-  #|}
-  #|
-
-///|
-let get_query_param_code =
-  #|///|
-  #|fn get_query_param(full_path : String, name : String) -> String {
-  #|  let parts = full_path.split("?").to_array()
-  #|  if parts.length() < 2 { return "" }
-  #|  let query = parts[1].to_string()
-  #|  for pair in query.split("&") {
-  #|    let kv = pair.split("=").to_array()
-  #|    if kv.length() >= 2 {
-  #|      if kv[0].to_string() == name { return kv[1].to_string() }
-  #|    }
-  #|  }
-  #|  ""
-  #|}
-  #|
-
-///|
-fn collect_models(
-  type_ : @codemodel.TypeRef,
-  models : Map[String, @codemodel.Model],
-) -> Unit {
-  // 兼容旧逻辑：仅收集模型，忽略 union。
-  let _unions = Map::new()
-  collect_encode_types(type_, models, _unions)
-}
-
-///|
 fn collect_decode_models_from_crate(
   crate : @codemodel.Crate,
 ) -> Map[String, @codemodel.Model] raise {
   let models = Map::new()
+  fn collect_decode_models(type_ : @codemodel.TypeRef) -> Unit raise {
+    match type_ {
+      Union(u) =>
+        fail(
+          "Not supported: request-side untagged union \{u.name} in server code generation",
+        )
+      Model(m) =>
+        if !models.contains(m.name) {
+          models.set(m.name, m)
+          for field in m.fields {
+            collect_decode_models(field.type_)
+          }
+        }
+      Array(t) => collect_decode_models(t)
+      Record(t) => collect_decode_models(t)
+      Nullable(t) => collect_decode_models(t)
+      _ => ()
+    }
+  }
+
   for client in crate.clients {
     for op in client.methods {
       for param in op.parameters {
-        collect_decode_models(param.type_, models)
+        collect_decode_models(param.type_)
       }
     }
   }
@@ -1067,30 +921,6 @@ fn collect_encode_types(
     Array(t) => collect_encode_types(t, models, unions)
     Record(t) => collect_encode_types(t, models, unions)
     Nullable(t) => collect_encode_types(t, models, unions)
-    _ => ()
-  }
-}
-
-///|
-fn collect_decode_models(
-  type_ : @codemodel.TypeRef,
-  models : Map[String, @codemodel.Model],
-) -> Unit raise {
-  match type_ {
-    Union(u) =>
-      raise Failure::Failure(
-        "暂不支持 request 侧的 untagged union（遇到 Union '\{u.name}'）。",
-      )
-    Model(m) =>
-      if !models.contains(m.name) {
-        models.set(m.name, m)
-        for field in m.fields {
-          collect_decode_models(field.type_, models)
-        }
-      }
-    Array(t) => collect_decode_models(t, models)
-    Record(t) => collect_decode_models(t, models)
-    Nullable(t) => collect_decode_models(t, models)
     _ => ()
   }
 }
