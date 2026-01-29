@@ -17,9 +17,11 @@
 - `typespec-moonbit/codegen/`：把 CodeModel 渲染成 MoonBit 源码文本与文件列表。
 - `typespec-moonbit/ffi/`：Node.js 与 TypeSpec 编译器 API 的 JS FFI 包装（EmitContext 辅助）。
 
-执行 `moon test` 运行单元测试, 执行 `moon test -u` 更新单元测试快照.
+执行 `moon test` 运行单元测试, 执行 `moon test --update` 更新单元测试快照.
 
 不要写非规范的 fallback 代码，所有不支持的场景都应该报错.
+
+生成的代码不使用 `catch` , 让使用者自行决定错误处理策略.
 
 ## typespec-moonbit-tests
 
@@ -61,9 +63,6 @@ E2E 测试模块（native target），负责运行时验证与维护生成用例
   the order of each block is irrelevant. In some refactorings, you can process
   block by block independently.
 
-- Try to keep deprecated blocks in file called `deprecated.mbt` in each
-  directory.
-
 ## Tooling
 
 - `moon fmt` is used to format your code properly.
@@ -89,6 +88,3 @@ E2E 测试模块（native target），负责运行时验证与维护生成用例
   `assert_eq` when you are in some loops where each snapshot may vary. You can
   use `moon coverage analyze > uncovered.log` to see which parts of your code
   are not covered by tests.
-
-- agent-todo.md has some small tasks that are easy for AI to pick up, agent is
-  welcome to finish the tasks and check the box when you are done

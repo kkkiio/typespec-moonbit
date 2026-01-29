@@ -15,7 +15,7 @@ pub fn emit_server_files(crate : @codemodel.Crate) -> Array[OutputFile] raise {
     OutputFile::new("router_helpers.mbt", emit_server_router_helpers(crate)),
   ] +
   (if has_sse {
-    [OutputFile::new("event_stream.mbt", emit_server_event_stream())]
+    [OutputFile::new("event_stream.mbt", server_event_stream_code)]
   } else {
     []
   })
@@ -45,103 +45,6 @@ fn emit_server_readme(crate : @codemodel.Crate) -> String {
     $|This MoonBit package can be imported by other packages to start a server.
   )
 }
-
-///|
-fn emit_server_event_stream() -> String {
-  server_event_stream_code
-}
-
-///|
-let server_event_stream_code : String =
-  #|///|
-  #|/// Server-Sent Events (SSE) 工具。
-  #|///
-  #|/// 提供 `text/event-stream` 响应的写入封装，方便 handler 端持续推送事件。
-  #|pub struct EventStreamWriter {
-  #|  conn : @http.ServerConnection
-  #|}
-  #|
-  #|///|
-  #|fn sse_default_headers() -> Map[String, String] {
-  #|  {
-  #|    "content-type": "text/event-stream",
-  #|    "cache-control": "no-cache",
-  #|    "connection": "keep-alive",
-  #|    "x-accel-buffering": "no",
-  #|  }
-  #|}
-  #|
-  #|///|
-  #|/// 启动 SSE 响应并返回写入器。
-  #|pub async fn EventStreamWriter::start(
-  #|  conn : @http.ServerConnection,
-  #|  status : Int,
-  #|  reason : String,
-  #|  extra_headers? : Map[String, String] = {},
-  #|) -> EventStreamWriter {
-  #|  let headers = sse_default_headers()
-  #|  for k, v in extra_headers {
-  #|    headers.set(k, v)
-  #|  }
-  #|  conn.send_response(status, reason, extra_headers=headers)
-  #|  EventStreamWriter::{ conn }
-  #|}
-  #|
-  #|///|
-  #|/// 发送一条 SSE event（按 SSE 行协议拼装）。
-  #|pub async fn EventStreamWriter::write_event(
-  #|  self : EventStreamWriter,
-  #|  id? : String,
-  #|  event? : String,
-  #|  data? : &@io.Data,
-  #|  flush? : Bool = true,
-  #|) -> Unit {
-  #|  if event is Some(event) {
-  #|    self.conn.write("event: \{event}\n")
-  #|  }
-  #|  if data is Some(data) {
-  #|    self.conn.write(b"data: ")
-  #|    self.conn.write(data)
-  #|    self.conn.write(b"\n")
-  #|  }
-  #|  if id is Some(id) {
-  #|    self.conn.write("id: \{id}\n")
-  #|  }
-  #|  self.conn.write(b"\n")
-  #|  if flush {
-  #|    self.conn.flush()
-  #|  }
-  #|}
-  #|
-  #|///|
-  #|/// 表示一条 SSE 事件（便于业务类型转换）。
-  #|pub struct SseEvent {
-  #|  event : String?
-  #|  data : String
-  #|} derive(ToJson)
-  #|
-  #|///|
-  #|pub fn SseEvent::new(event? : String, data~ : String) -> SseEvent {
-  #|  SseEvent::{ event, data }
-  #|}
-  #|
-  #|///|
-  #|/// 将业务类型转换为 SSE 事件。
-  #|pub(open) trait SseToEvent {
-  #|  to_event(self : Self) -> SseEvent
-  #|}
-  #|
-  #|///|
-  #|/// 将实现了 `SseToEvent` 的事件写入 SSE stream。
-  #|pub async fn[T : SseToEvent] EventStreamWriter::write(
-  #|  self : EventStreamWriter,
-  #|  event : T,
-  #|  flush? : Bool = true,
-  #|) -> Unit {
-  #|  let sse_event = event.to_event()
-  #|  self.write_event(event?=sse_event.event, data=sse_event.data, flush~)
-  #|}
-  #|
 
 ///|
 let model_template : String =
@@ -193,45 +96,16 @@ let handler_trait_template : String =
   #|{{/clients}}
 
 ///|
-let nullable_support_code : String =
-  #|///|
-  #|/// Nullable helper used for `T | null`.
-  #|pub(all) struct Nullable[T](T?) derive(Show, Default, Eq, Compare)
-  #|
-  #|///|
-  #|pub impl[T : ToJson] ToJson for Nullable[T] with to_json(self : Nullable[T]) -> Json {
-  #|  match self.0 {
-  #|    Some(v) => v.to_json()
-  #|    None => Json::null()
-  #|  }
-  #|}
-  #|
-  #|///|
-  #|pub impl[T : @json.FromJson] @json.FromJson for Nullable[T] with from_json(
-  #|  j : Json,
-  #|  path : @json.JsonPath,
-  #|) -> Nullable[T] raise @json.JsonDecodeError {
-  #|  match j {
-  #|    Null => Nullable(None)
-  #|    _ => Nullable(Some(@json.from_json(j, path~)))
-  #|  }
-  #|}
-  #|
-
-///|
+/// emit server models (structs and unions)
+/// 
+/// Build snake_case MoonBit field names, but keep JSON keys as original TypeSpec field names.
 fn emit_server_models(crate : @codemodel.Crate) -> String raise {
   let buf = StringBuilder::new(size_hint=8192)
 
   // 1. Collect Models and Unions
   let decode_models = collect_decode_models_from_crate(crate)
   let (encode_models, encode_unions) = collect_encode_types_from_crate(crate)
-  let models = Map::new()
-  for k, v in encode_models {
-    models.set(k, v)
-  }
-  for k, v in decode_models {
-    models.set(k, v)
-  }
+  let models = encode_models.merge(decode_models)
 
   // 2. Nullable helper (for `T | null`)
   buf.write_string(nullable_support_code)
@@ -252,15 +126,8 @@ fn emit_server_models(crate : @codemodel.Crate) -> String raise {
       }
       variants_json.push(variant_json)
     }
-    let default_variant = if n > 0 {
-      u.variants[0]
-    } else {
-      // 不应出现空 union；保持生成结果可编译，默认到 Json。
-      @codemodel.UnionVariant::{
-        name: "Default",
-        type_: @codemodel.TypeRef::Json,
-      }
-    }
+    guard n > 0 else { raise fail("union \{u.name} has no variants") }
+    let default_variant = u.variants[0]
     {
       "name": u.name,
       "enum_name": @case.pascal_case(u.name),
@@ -278,7 +145,6 @@ fn emit_server_models(crate : @codemodel.Crate) -> String raise {
   model_list.sort_by_key(fn(m) { m.0 })
   let models_json = model_list.map(fn(item) -> Json {
     let m = item.1
-    // Build snake_case MoonBit field names, but keep JSON keys as original TypeSpec field names.
     // NOTE: 不考虑 @encodedName；wire name 直接用 TypeSpec property.name。
     //
     // 为避免歧义，若两个字段映射到同一个 snake_case 标识符，直接报错。

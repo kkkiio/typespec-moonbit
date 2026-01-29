@@ -4,8 +4,9 @@ Typespec MoonBit Emitter. Writen in MoonBit.
 
 ## Features
 
+- [x] Json Models. 
+    - snake_case for MoonBit field names, keep JSON keys as original TypeSpec field names.
 - [x] http server
-    - [x] json body
 
 ## Architecture
 

@@ -421,3 +421,121 @@ let get_query_param_code =
   #|  ""
   #|}
   #|
+
+///|
+let server_event_stream_code : String =
+  #|///|
+  #|/// Server-Sent Events (SSE) 工具。
+  #|///
+  #|/// 提供 `text/event-stream` 响应的写入封装，方便 handler 端持续推送事件。
+  #|pub struct EventStreamWriter {
+  #|  conn : @http.ServerConnection
+  #|}
+  #|
+  #|///|
+  #|fn sse_default_headers() -> Map[String, String] {
+  #|  {
+  #|    "content-type": "text/event-stream",
+  #|    "cache-control": "no-cache",
+  #|    "connection": "keep-alive",
+  #|    "x-accel-buffering": "no",
+  #|  }
+  #|}
+  #|
+  #|///|
+  #|/// 启动 SSE 响应并返回写入器。
+  #|pub async fn EventStreamWriter::start(
+  #|  conn : @http.ServerConnection,
+  #|  status : Int,
+  #|  reason : String,
+  #|  extra_headers? : Map[String, String] = {},
+  #|) -> EventStreamWriter {
+  #|  let headers = sse_default_headers()
+  #|  for k, v in extra_headers {
+  #|    headers.set(k, v)
+  #|  }
+  #|  conn.send_response(status, reason, extra_headers=headers)
+  #|  EventStreamWriter::{ conn }
+  #|}
+  #|
+  #|///|
+  #|/// 发送一条 SSE event（按 SSE 行协议拼装）。
+  #|pub async fn EventStreamWriter::write_event(
+  #|  self : EventStreamWriter,
+  #|  id? : String,
+  #|  event? : String,
+  #|  data? : &@io.Data,
+  #|  flush? : Bool = true,
+  #|) -> Unit {
+  #|  if event is Some(event) {
+  #|    self.conn.write("event: \{event}\n")
+  #|  }
+  #|  if data is Some(data) {
+  #|    self.conn.write(b"data: ")
+  #|    self.conn.write(data)
+  #|    self.conn.write(b"\n")
+  #|  }
+  #|  if id is Some(id) {
+  #|    self.conn.write("id: \{id}\n")
+  #|  }
+  #|  self.conn.write(b"\n")
+  #|  if flush {
+  #|    self.conn.flush()
+  #|  }
+  #|}
+  #|
+  #|///|
+  #|/// 表示一条 SSE 事件（便于业务类型转换）。
+  #|pub struct SseEvent {
+  #|  event : String?
+  #|  data : String
+  #|} derive(ToJson)
+  #|
+  #|///|
+  #|pub fn SseEvent::new(event? : String, data~ : String) -> SseEvent {
+  #|  SseEvent::{ event, data }
+  #|}
+  #|
+  #|///|
+  #|/// 将业务类型转换为 SSE 事件。
+  #|pub(open) trait SseToEvent {
+  #|  to_event(self : Self) -> SseEvent
+  #|}
+  #|
+  #|///|
+  #|/// 将实现了 `SseToEvent` 的事件写入 SSE stream。
+  #|pub async fn[T : SseToEvent] EventStreamWriter::write(
+  #|  self : EventStreamWriter,
+  #|  event : T,
+  #|  flush? : Bool = true,
+  #|) -> Unit {
+  #|  let sse_event = event.to_event()
+  #|  self.write_event(event?=sse_event.event, data=sse_event.data, flush~)
+  #|}
+  #|
+
+///|
+let nullable_support_code : String =
+  #|///|
+  #|/// Nullable helper used for `T | null`.
+  #|pub(all) struct Nullable[T](T?) derive(Show, Default, Eq, Compare)
+  #|
+  #|///|
+  #|pub impl[T : ToJson] ToJson for Nullable[T] with to_json(self : Nullable[T]) -> Json {
+  #|  match self.0 {
+  #|    Some(v) => v.to_json()
+  #|    None => Json::null()
+  #|  }
+  #|}
+  #|
+  #|///|
+  #|pub impl[T : @json.FromJson] @json.FromJson for Nullable[T] with from_json(
+  #|  j : Json,
+  #|  path : @json.JsonPath,
+  #|) -> Nullable[T] raise @json.JsonDecodeError {
+  #|  match j {
+  #|    Null => Nullable(None)
+  #|    _ => Nullable(Some(@json.from_json(j, path~)))
+  #|  }
+  #|}
+  #|
