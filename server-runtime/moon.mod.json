@@ -1,0 +1,13 @@
+{
+  "name": "kkkiio/typespec-moonbit-server-runtime",
+  "version": "0.1.0",
+  "deps": {},
+  "license": "Apache-2.0",
+  "keywords": [
+    "typespec",
+    "server",
+    "runtime"
+  ],
+  "description": "Runtime helpers for typespec-moonbit server generator",
+  "preferred-target": "native"
+}

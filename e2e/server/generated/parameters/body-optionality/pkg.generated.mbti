@@ -2,6 +2,7 @@
 package "kkkiio/typespec-moonbit-tests/server/generated/parameters/body-optionality"
 
 import {
+  "kkkiio/typespec-moonbit-server-runtime/runtime",
   "moonbitlang/async",
   "moonbitlang/async/http",
   "moonbitlang/async/io",
@@ -32,16 +33,6 @@ pub impl Show for BodyModel0
 pub impl ToJson for BodyModel0
 pub impl @json.FromJson for BodyModel0
 
-pub(all) struct Nullable[T](T?)
-#deprecated
-pub fn[T] Nullable::inner(Self[T]) -> T?
-pub impl[T : Compare] Compare for Nullable[T]
-pub impl[T : Default] Default for Nullable[T]
-pub impl[T : Eq] Eq for Nullable[T]
-pub impl[T : Show] Show for Nullable[T]
-pub impl[T : ToJson] ToJson for Nullable[T]
-pub impl[T : @json.FromJson] @json.FromJson for Nullable[T]
-
 pub enum RouteMatch {
   Handled
   NotMatched
@@ -49,6 +40,8 @@ pub enum RouteMatch {
 }
 
 // Type aliases
+pub using @runtime {type Nullable}
+
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
 
 // Traits

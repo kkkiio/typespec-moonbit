@@ -1,0 +1,26 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-moonbit-server-runtime/runtime"
+
+import {
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct Nullable[T](T?)
+#deprecated
+pub fn[T] Nullable::inner(Self[T]) -> T?
+pub impl[T : Compare] Compare for Nullable[T]
+pub impl[T : Default] Default for Nullable[T]
+pub impl[T : Eq] Eq for Nullable[T]
+pub impl[T : Show] Show for Nullable[T]
+pub impl[T : ToJson] ToJson for Nullable[T]
+pub impl[T : @json.FromJson] @json.FromJson for Nullable[T]
+
+// Type aliases
+
+// Traits
+

@@ -3,6 +3,7 @@
     "moonbitlang/async",
     "moonbitlang/async/http",
     "moonbitlang/async/io",
+    "kkkiio/typespec-moonbit-server-runtime/runtime",
     "moonbitlang/core/json"
   ]
 }

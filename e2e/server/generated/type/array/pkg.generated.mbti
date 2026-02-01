@@ -2,6 +2,7 @@
 package "kkkiio/typespec-moonbit-tests/server/generated/type/array"
 
 import {
+  "kkkiio/typespec-moonbit-server-runtime/runtime",
   "moonbitlang/async",
   "moonbitlang/async/http",
   "moonbitlang/async/io",
@@ -25,16 +26,6 @@ pub impl Show for InnerModel
 pub impl ToJson for InnerModel
 pub impl @json.FromJson for InnerModel
 
-pub(all) struct Nullable[T](T?)
-#deprecated
-pub fn[T] Nullable::inner(Self[T]) -> T?
-pub impl[T : Compare] Compare for Nullable[T]
-pub impl[T : Default] Default for Nullable[T]
-pub impl[T : Eq] Eq for Nullable[T]
-pub impl[T : Show] Show for Nullable[T]
-pub impl[T : ToJson] ToJson for Nullable[T]
-pub impl[T : @json.FromJson] @json.FromJson for Nullable[T]
-
 pub enum RouteMatch {
   Handled
   NotMatched
@@ -42,6 +33,8 @@ pub enum RouteMatch {
 }
 
 // Type aliases
+pub using @runtime {type Nullable}
+
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
 
 // Traits
@@ -81,28 +74,28 @@ pub(open) trait ModelValueHandler {
 }
 
 pub(open) trait NullableBooleanValueHandler {
-  async get(Self, group~ : @async.TaskGroup[Unit]) -> Array[Nullable[Bool]]
-  async put(Self, group~ : @async.TaskGroup[Unit], Array[Nullable[Bool]]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Array[@runtime.Nullable[Bool]]
+  async put(Self, group~ : @async.TaskGroup[Unit], Array[@runtime.Nullable[Bool]]) -> Unit
 }
 
 pub(open) trait NullableFloatValueHandler {
-  async get(Self, group~ : @async.TaskGroup[Unit]) -> Array[Nullable[Double]]
-  async put(Self, group~ : @async.TaskGroup[Unit], Array[Nullable[Double]]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Array[@runtime.Nullable[Double]]
+  async put(Self, group~ : @async.TaskGroup[Unit], Array[@runtime.Nullable[Double]]) -> Unit
 }
 
 pub(open) trait NullableInt32ValueHandler {
-  async get(Self, group~ : @async.TaskGroup[Unit]) -> Array[Nullable[Int]]
-  async put(Self, group~ : @async.TaskGroup[Unit], Array[Nullable[Int]]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Array[@runtime.Nullable[Int]]
+  async put(Self, group~ : @async.TaskGroup[Unit], Array[@runtime.Nullable[Int]]) -> Unit
 }
 
 pub(open) trait NullableModelValueHandler {
-  async get(Self, group~ : @async.TaskGroup[Unit]) -> Array[Nullable[InnerModel]]
-  async put(Self, group~ : @async.TaskGroup[Unit], Array[Nullable[InnerModel]]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Array[@runtime.Nullable[InnerModel]]
+  async put(Self, group~ : @async.TaskGroup[Unit], Array[@runtime.Nullable[InnerModel]]) -> Unit
 }
 
 pub(open) trait NullableStringValueHandler {
-  async get(Self, group~ : @async.TaskGroup[Unit]) -> Array[Nullable[String]]
-  async put(Self, group~ : @async.TaskGroup[Unit], Array[Nullable[String]]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Array[@runtime.Nullable[String]]
+  async put(Self, group~ : @async.TaskGroup[Unit], Array[@runtime.Nullable[String]]) -> Unit
 }
 
 pub(open) trait StringValueHandler {
