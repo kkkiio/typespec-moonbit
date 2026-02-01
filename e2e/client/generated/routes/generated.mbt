@@ -327,21 +327,21 @@ fn __tsmb_expand_record_inner(
 }
 
 ///|
-/// ROUTESCLIENT HTTP 客户端。
-pub struct ROUTESCLIENT {
+/// RoutesClient HTTP 客户端。
+pub struct RoutesClient {
   base_url : String
 }
 
 ///|
-/// 创建 ROUTESCLIENT。
-pub fn ROUTESCLIENT::new(base_url : String) -> ROUTESCLIENT {
+/// 创建 RoutesClient。
+pub fn RoutesClient::new(base_url : String) -> RoutesClient {
   { base_url, }
 }
 
 ///|
 /// 调用 get /routes/fixed。
-pub async fn ROUTESCLIENT::get_routes_fixed(
-  self : ROUTESCLIENT,
+pub async fn RoutesClient::get_routes_fixed(
+  self : RoutesClient,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -349,21 +349,21 @@ pub async fn ROUTESCLIENT::get_routes_fixed(
 }
 
 ///|
-/// EXPLODECLIENT HTTP 客户端。
-pub struct EXPLODECLIENT {
+/// ExplodeClient HTTP 客户端。
+pub struct ExplodeClient {
   base_url : String
 }
 
 ///|
-/// 创建 EXPLODECLIENT。
-pub fn EXPLODECLIENT::new(base_url : String) -> EXPLODECLIENT {
+/// 创建 ExplodeClient。
+pub fn ExplodeClient::new(base_url : String) -> ExplodeClient {
   { base_url, }
 }
 
 ///|
 /// 调用 get /routes/path/simple/explode/primitive{param*}。
-pub async fn EXPLODECLIENT::get_routes_path_simple_explode_primitive_param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_path_simple_explode_primitive_param__(
+  self : ExplodeClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -378,8 +378,8 @@ pub async fn EXPLODECLIENT::get_routes_path_simple_explode_primitive_param__(
 
 ///|
 /// 调用 get /routes/path/simple/explode/array{param*}。
-pub async fn EXPLODECLIENT::get_routes_path_simple_explode_array_param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_path_simple_explode_array_param__(
+  self : ExplodeClient,
   param : Array[String],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -394,8 +394,8 @@ pub async fn EXPLODECLIENT::get_routes_path_simple_explode_array_param__(
 
 ///|
 /// 调用 get /routes/path/simple/explode/record{param*}。
-pub async fn EXPLODECLIENT::get_routes_path_simple_explode_record_param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_path_simple_explode_record_param__(
+  self : ExplodeClient,
   param : Map[String, Int],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -410,8 +410,8 @@ pub async fn EXPLODECLIENT::get_routes_path_simple_explode_record_param__(
 
 ///|
 /// 调用 get /routes/path/path/explode/primitive{/param*}。
-pub async fn EXPLODECLIENT::get_routes_path_path_explode_primitive__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_path_path_explode_primitive__param__(
+  self : ExplodeClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -426,8 +426,8 @@ pub async fn EXPLODECLIENT::get_routes_path_path_explode_primitive__param__(
 
 ///|
 /// 调用 get /routes/path/path/explode/array{/param*}。
-pub async fn EXPLODECLIENT::get_routes_path_path_explode_array__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_path_path_explode_array__param__(
+  self : ExplodeClient,
   param : Array[String],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -442,8 +442,8 @@ pub async fn EXPLODECLIENT::get_routes_path_path_explode_array__param__(
 
 ///|
 /// 调用 get /routes/path/path/explode/record{/param*}。
-pub async fn EXPLODECLIENT::get_routes_path_path_explode_record__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_path_path_explode_record__param__(
+  self : ExplodeClient,
   param : Map[String, Int],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -458,8 +458,8 @@ pub async fn EXPLODECLIENT::get_routes_path_path_explode_record__param__(
 
 ///|
 /// 调用 get /routes/path/label/explode/primitive{.param*}。
-pub async fn EXPLODECLIENT::get_routes_path_label_explode_primitive__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_path_label_explode_primitive__param__(
+  self : ExplodeClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -474,8 +474,8 @@ pub async fn EXPLODECLIENT::get_routes_path_label_explode_primitive__param__(
 
 ///|
 /// 调用 get /routes/path/label/explode/array{.param*}。
-pub async fn EXPLODECLIENT::get_routes_path_label_explode_array__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_path_label_explode_array__param__(
+  self : ExplodeClient,
   param : Array[String],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -490,8 +490,8 @@ pub async fn EXPLODECLIENT::get_routes_path_label_explode_array__param__(
 
 ///|
 /// 调用 get /routes/path/label/explode/record{.param*}。
-pub async fn EXPLODECLIENT::get_routes_path_label_explode_record__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_path_label_explode_record__param__(
+  self : ExplodeClient,
   param : Map[String, Int],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -506,8 +506,8 @@ pub async fn EXPLODECLIENT::get_routes_path_label_explode_record__param__(
 
 ///|
 /// 调用 get /routes/path/matrix/explode/primitive{;param*}。
-pub async fn EXPLODECLIENT::get_routes_path_matrix_explode_primitive__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_path_matrix_explode_primitive__param__(
+  self : ExplodeClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -522,8 +522,8 @@ pub async fn EXPLODECLIENT::get_routes_path_matrix_explode_primitive__param__(
 
 ///|
 /// 调用 get /routes/path/matrix/explode/array{;param*}。
-pub async fn EXPLODECLIENT::get_routes_path_matrix_explode_array__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_path_matrix_explode_array__param__(
+  self : ExplodeClient,
   param : Array[String],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -538,8 +538,8 @@ pub async fn EXPLODECLIENT::get_routes_path_matrix_explode_array__param__(
 
 ///|
 /// 调用 get /routes/path/matrix/explode/record{;param*}。
-pub async fn EXPLODECLIENT::get_routes_path_matrix_explode_record__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_path_matrix_explode_record__param__(
+  self : ExplodeClient,
   param : Map[String, Int],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -554,8 +554,8 @@ pub async fn EXPLODECLIENT::get_routes_path_matrix_explode_record__param__(
 
 ///|
 /// 调用 get /routes/query/query-expansion/explode/primitive{?param*}。
-pub async fn EXPLODECLIENT::get_routes_query_query_expansion_explode_primitive__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_query_query_expansion_explode_primitive__param__(
+  self : ExplodeClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -570,8 +570,8 @@ pub async fn EXPLODECLIENT::get_routes_query_query_expansion_explode_primitive__
 
 ///|
 /// 调用 get /routes/query/query-expansion/explode/array{?param*}。
-pub async fn EXPLODECLIENT::get_routes_query_query_expansion_explode_array__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_query_query_expansion_explode_array__param__(
+  self : ExplodeClient,
   param : Array[String],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -586,8 +586,8 @@ pub async fn EXPLODECLIENT::get_routes_query_query_expansion_explode_array__para
 
 ///|
 /// 调用 get /routes/query/query-expansion/explode/record{?param*}。
-pub async fn EXPLODECLIENT::get_routes_query_query_expansion_explode_record__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_query_query_expansion_explode_record__param__(
+  self : ExplodeClient,
   param : Map[String, Int],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -602,8 +602,8 @@ pub async fn EXPLODECLIENT::get_routes_query_query_expansion_explode_record__par
 
 ///|
 /// 调用 get /routes/query/query-continuation/explode/primitive?fixed=true{&param*}。
-pub async fn EXPLODECLIENT::get_routes_query_query_continuation_explode_primitive_fixed_true__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_query_query_continuation_explode_primitive_fixed_true__param__(
+  self : ExplodeClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -620,8 +620,8 @@ pub async fn EXPLODECLIENT::get_routes_query_query_continuation_explode_primitiv
 
 ///|
 /// 调用 get /routes/query/query-continuation/explode/array?fixed=true{&param*}。
-pub async fn EXPLODECLIENT::get_routes_query_query_continuation_explode_array_fixed_true__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_query_query_continuation_explode_array_fixed_true__param__(
+  self : ExplodeClient,
   param : Array[String],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -636,8 +636,8 @@ pub async fn EXPLODECLIENT::get_routes_query_query_continuation_explode_array_fi
 
 ///|
 /// 调用 get /routes/query/query-continuation/explode/record?fixed=true{&param*}。
-pub async fn EXPLODECLIENT::get_routes_query_query_continuation_explode_record_fixed_true__param__(
-  self : EXPLODECLIENT,
+pub async fn ExplodeClient::get_routes_query_query_continuation_explode_record_fixed_true__param__(
+  self : ExplodeClient,
   param : Map[String, Int],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -651,21 +651,21 @@ pub async fn EXPLODECLIENT::get_routes_query_query_continuation_explode_record_f
 }
 
 ///|
-/// STANDARDCLIENT HTTP 客户端。
-pub struct STANDARDCLIENT {
+/// StandardClient HTTP 客户端。
+pub struct StandardClient {
   base_url : String
 }
 
 ///|
-/// 创建 STANDARDCLIENT。
-pub fn STANDARDCLIENT::new(base_url : String) -> STANDARDCLIENT {
+/// 创建 StandardClient。
+pub fn StandardClient::new(base_url : String) -> StandardClient {
   { base_url, }
 }
 
 ///|
 /// 调用 get /routes/path/simple/standard/primitive{param}。
-pub async fn STANDARDCLIENT::get_routes_path_simple_standard_primitive_param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_path_simple_standard_primitive_param_(
+  self : StandardClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -680,8 +680,8 @@ pub async fn STANDARDCLIENT::get_routes_path_simple_standard_primitive_param_(
 
 ///|
 /// 调用 get /routes/path/simple/standard/array{param}。
-pub async fn STANDARDCLIENT::get_routes_path_simple_standard_array_param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_path_simple_standard_array_param_(
+  self : StandardClient,
   param : Array[String],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -696,8 +696,8 @@ pub async fn STANDARDCLIENT::get_routes_path_simple_standard_array_param_(
 
 ///|
 /// 调用 get /routes/path/simple/standard/record{param}。
-pub async fn STANDARDCLIENT::get_routes_path_simple_standard_record_param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_path_simple_standard_record_param_(
+  self : StandardClient,
   param : Map[String, Int],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -712,8 +712,8 @@ pub async fn STANDARDCLIENT::get_routes_path_simple_standard_record_param_(
 
 ///|
 /// 调用 get /routes/path/path/standard/primitive{/param}。
-pub async fn STANDARDCLIENT::get_routes_path_path_standard_primitive__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_path_path_standard_primitive__param_(
+  self : StandardClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -728,8 +728,8 @@ pub async fn STANDARDCLIENT::get_routes_path_path_standard_primitive__param_(
 
 ///|
 /// 调用 get /routes/path/path/standard/array{/param}。
-pub async fn STANDARDCLIENT::get_routes_path_path_standard_array__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_path_path_standard_array__param_(
+  self : StandardClient,
   param : Array[String],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -744,8 +744,8 @@ pub async fn STANDARDCLIENT::get_routes_path_path_standard_array__param_(
 
 ///|
 /// 调用 get /routes/path/path/standard/record{/param}。
-pub async fn STANDARDCLIENT::get_routes_path_path_standard_record__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_path_path_standard_record__param_(
+  self : StandardClient,
   param : Map[String, Int],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -760,8 +760,8 @@ pub async fn STANDARDCLIENT::get_routes_path_path_standard_record__param_(
 
 ///|
 /// 调用 get /routes/path/label/standard/primitive{.param}。
-pub async fn STANDARDCLIENT::get_routes_path_label_standard_primitive__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_path_label_standard_primitive__param_(
+  self : StandardClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -776,8 +776,8 @@ pub async fn STANDARDCLIENT::get_routes_path_label_standard_primitive__param_(
 
 ///|
 /// 调用 get /routes/path/label/standard/array{.param}。
-pub async fn STANDARDCLIENT::get_routes_path_label_standard_array__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_path_label_standard_array__param_(
+  self : StandardClient,
   param : Array[String],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -792,8 +792,8 @@ pub async fn STANDARDCLIENT::get_routes_path_label_standard_array__param_(
 
 ///|
 /// 调用 get /routes/path/label/standard/record{.param}。
-pub async fn STANDARDCLIENT::get_routes_path_label_standard_record__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_path_label_standard_record__param_(
+  self : StandardClient,
   param : Map[String, Int],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -808,8 +808,8 @@ pub async fn STANDARDCLIENT::get_routes_path_label_standard_record__param_(
 
 ///|
 /// 调用 get /routes/path/matrix/standard/primitive{;param}。
-pub async fn STANDARDCLIENT::get_routes_path_matrix_standard_primitive__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_path_matrix_standard_primitive__param_(
+  self : StandardClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -824,8 +824,8 @@ pub async fn STANDARDCLIENT::get_routes_path_matrix_standard_primitive__param_(
 
 ///|
 /// 调用 get /routes/path/matrix/standard/array{;param}。
-pub async fn STANDARDCLIENT::get_routes_path_matrix_standard_array__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_path_matrix_standard_array__param_(
+  self : StandardClient,
   param : Array[String],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -840,8 +840,8 @@ pub async fn STANDARDCLIENT::get_routes_path_matrix_standard_array__param_(
 
 ///|
 /// 调用 get /routes/path/matrix/standard/record{;param}。
-pub async fn STANDARDCLIENT::get_routes_path_matrix_standard_record__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_path_matrix_standard_record__param_(
+  self : StandardClient,
   param : Map[String, Int],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -856,8 +856,8 @@ pub async fn STANDARDCLIENT::get_routes_path_matrix_standard_record__param_(
 
 ///|
 /// 调用 get /routes/query/query-expansion/standard/primitive{?param}。
-pub async fn STANDARDCLIENT::get_routes_query_query_expansion_standard_primitive__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_query_query_expansion_standard_primitive__param_(
+  self : StandardClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -872,8 +872,8 @@ pub async fn STANDARDCLIENT::get_routes_query_query_expansion_standard_primitive
 
 ///|
 /// 调用 get /routes/query/query-expansion/standard/array{?param}。
-pub async fn STANDARDCLIENT::get_routes_query_query_expansion_standard_array__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_query_query_expansion_standard_array__param_(
+  self : StandardClient,
   param : Array[String],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -888,8 +888,8 @@ pub async fn STANDARDCLIENT::get_routes_query_query_expansion_standard_array__pa
 
 ///|
 /// 调用 get /routes/query/query-expansion/standard/record{?param}。
-pub async fn STANDARDCLIENT::get_routes_query_query_expansion_standard_record__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_query_query_expansion_standard_record__param_(
+  self : StandardClient,
   param : Map[String, Int],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -904,8 +904,8 @@ pub async fn STANDARDCLIENT::get_routes_query_query_expansion_standard_record__p
 
 ///|
 /// 调用 get /routes/query/query-continuation/standard/primitive?fixed=true{&param}。
-pub async fn STANDARDCLIENT::get_routes_query_query_continuation_standard_primitive_fixed_true__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_query_query_continuation_standard_primitive_fixed_true__param_(
+  self : StandardClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -922,8 +922,8 @@ pub async fn STANDARDCLIENT::get_routes_query_query_continuation_standard_primit
 
 ///|
 /// 调用 get /routes/query/query-continuation/standard/array?fixed=true{&param}。
-pub async fn STANDARDCLIENT::get_routes_query_query_continuation_standard_array_fixed_true__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_query_query_continuation_standard_array_fixed_true__param_(
+  self : StandardClient,
   param : Array[String],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -938,8 +938,8 @@ pub async fn STANDARDCLIENT::get_routes_query_query_continuation_standard_array_
 
 ///|
 /// 调用 get /routes/query/query-continuation/standard/record?fixed=true{&param}。
-pub async fn STANDARDCLIENT::get_routes_query_query_continuation_standard_record_fixed_true__param_(
-  self : STANDARDCLIENT,
+pub async fn StandardClient::get_routes_query_query_continuation_standard_record_fixed_true__param_(
+  self : StandardClient,
   param : Map[String, Int],
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -953,21 +953,21 @@ pub async fn STANDARDCLIENT::get_routes_query_query_continuation_standard_record
 }
 
 ///|
-/// ININTERFACECLIENT HTTP 客户端。
-pub struct ININTERFACECLIENT {
+/// InInterfaceClient HTTP 客户端。
+pub struct InInterfaceClient {
   base_url : String
 }
 
 ///|
-/// 创建 ININTERFACECLIENT。
-pub fn ININTERFACECLIENT::new(base_url : String) -> ININTERFACECLIENT {
+/// 创建 InInterfaceClient。
+pub fn InInterfaceClient::new(base_url : String) -> InInterfaceClient {
   { base_url, }
 }
 
 ///|
 /// 调用 get /routes/in-interface/fixed。
-pub async fn ININTERFACECLIENT::get_routes_in_interface_fixed(
-  self : ININTERFACECLIENT,
+pub async fn InInterfaceClient::get_routes_in_interface_fixed(
+  self : InInterfaceClient,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -975,21 +975,21 @@ pub async fn ININTERFACECLIENT::get_routes_in_interface_fixed(
 }
 
 ///|
-/// PATHPARAMETERSCLIENT HTTP 客户端。
-pub struct PATHPARAMETERSCLIENT {
+/// PathParametersClient HTTP 客户端。
+pub struct PathParametersClient {
   base_url : String
 }
 
 ///|
-/// 创建 PATHPARAMETERSCLIENT。
-pub fn PATHPARAMETERSCLIENT::new(base_url : String) -> PATHPARAMETERSCLIENT {
+/// 创建 PathParametersClient。
+pub fn PathParametersClient::new(base_url : String) -> PathParametersClient {
   { base_url, }
 }
 
 ///|
 /// 调用 get /routes/path/template-only/{param}。
-pub async fn PATHPARAMETERSCLIENT::get_routes_path_template_only__param_(
-  self : PATHPARAMETERSCLIENT,
+pub async fn PathParametersClient::get_routes_path_template_only__param_(
+  self : PathParametersClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -1004,8 +1004,8 @@ pub async fn PATHPARAMETERSCLIENT::get_routes_path_template_only__param_(
 
 ///|
 /// 调用 get /routes/path/explicit/{param}。
-pub async fn PATHPARAMETERSCLIENT::get_routes_path_explicit__param_(
-  self : PATHPARAMETERSCLIENT,
+pub async fn PathParametersClient::get_routes_path_explicit__param_(
+  self : PathParametersClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -1020,8 +1020,8 @@ pub async fn PATHPARAMETERSCLIENT::get_routes_path_explicit__param_(
 
 ///|
 /// 调用 get /routes/path/annotation-only/{param}。
-pub async fn PATHPARAMETERSCLIENT::get_routes_path_annotation_only__param_(
-  self : PATHPARAMETERSCLIENT,
+pub async fn PathParametersClient::get_routes_path_annotation_only__param_(
+  self : PathParametersClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -1035,21 +1035,21 @@ pub async fn PATHPARAMETERSCLIENT::get_routes_path_annotation_only__param_(
 }
 
 ///|
-/// QUERYPARAMETERSCLIENT HTTP 客户端。
-pub struct QUERYPARAMETERSCLIENT {
+/// QueryParametersClient HTTP 客户端。
+pub struct QueryParametersClient {
   base_url : String
 }
 
 ///|
-/// 创建 QUERYPARAMETERSCLIENT。
-pub fn QUERYPARAMETERSCLIENT::new(base_url : String) -> QUERYPARAMETERSCLIENT {
+/// 创建 QueryParametersClient。
+pub fn QueryParametersClient::new(base_url : String) -> QueryParametersClient {
   { base_url, }
 }
 
 ///|
 /// 调用 get /routes/query/template-only{?param}。
-pub async fn QUERYPARAMETERSCLIENT::get_routes_query_template_only__param_(
-  self : QUERYPARAMETERSCLIENT,
+pub async fn QueryParametersClient::get_routes_query_template_only__param_(
+  self : QueryParametersClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -1064,8 +1064,8 @@ pub async fn QUERYPARAMETERSCLIENT::get_routes_query_template_only__param_(
 
 ///|
 /// 调用 get /routes/query/explicit{?param}。
-pub async fn QUERYPARAMETERSCLIENT::get_routes_query_explicit__param_(
-  self : QUERYPARAMETERSCLIENT,
+pub async fn QueryParametersClient::get_routes_query_explicit__param_(
+  self : QueryParametersClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -1080,8 +1080,8 @@ pub async fn QUERYPARAMETERSCLIENT::get_routes_query_explicit__param_(
 
 ///|
 /// 调用 get /routes/query/annotation-only{?param}。
-pub async fn QUERYPARAMETERSCLIENT::get_routes_query_annotation_only__param_(
-  self : QUERYPARAMETERSCLIENT,
+pub async fn QueryParametersClient::get_routes_query_annotation_only__param_(
+  self : QueryParametersClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -1095,23 +1095,23 @@ pub async fn QUERYPARAMETERSCLIENT::get_routes_query_annotation_only__param_(
 }
 
 ///|
-/// RESERVEDEXPANSIONCLIENT HTTP 客户端。
-pub struct RESERVEDEXPANSIONCLIENT {
+/// ReservedExpansionClient HTTP 客户端。
+pub struct ReservedExpansionClient {
   base_url : String
 }
 
 ///|
-/// 创建 RESERVEDEXPANSIONCLIENT。
-pub fn RESERVEDEXPANSIONCLIENT::new(
+/// 创建 ReservedExpansionClient。
+pub fn ReservedExpansionClient::new(
   base_url : String,
-) -> RESERVEDEXPANSIONCLIENT {
+) -> ReservedExpansionClient {
   { base_url, }
 }
 
 ///|
 /// 调用 get /routes/path/reserved-expansion/template/{+param}。
-pub async fn RESERVEDEXPANSIONCLIENT::get_routes_path_reserved_expansion_template___param_(
-  self : RESERVEDEXPANSIONCLIENT,
+pub async fn ReservedExpansionClient::get_routes_path_reserved_expansion_template___param_(
+  self : ReservedExpansionClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
@@ -1126,8 +1126,8 @@ pub async fn RESERVEDEXPANSIONCLIENT::get_routes_path_reserved_expansion_templat
 
 ///|
 /// 调用 get /routes/path/reserved-expansion/annotation/{+param}。
-pub async fn RESERVEDEXPANSIONCLIENT::get_routes_path_reserved_expansion_annotation___param_(
-  self : RESERVEDEXPANSIONCLIENT,
+pub async fn ReservedExpansionClient::get_routes_path_reserved_expansion_annotation___param_(
+  self : ReservedExpansionClient,
   param : String,
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)

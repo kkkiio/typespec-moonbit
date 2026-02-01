@@ -1,6 +1,7 @@
 {
   "import": [
     "kkkiio/typespec-moonbit/codemodel",
+    "justjavac/case",
     "moonbitlang/core/cmp"
   ],
   "targets": {

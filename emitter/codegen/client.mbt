@@ -162,11 +162,12 @@ fn emit_method(
 ///|
 fn make_client_type_name(raw : String) -> String {
   let cleaned = sanitize_identifier(raw)
-  let base = if cleaned.length() == 0 { "CLIENT" } else { cleaned.to_upper() }
-  if base.has_suffix("CLIENT") {
+  let base0 = @case.pascal_case(cleaned)
+  let base = if base0 == "" { "Client" } else { base0 }
+  if base.has_suffix("Client") {
     base
   } else {
-    base + "CLIENT"
+    base + "Client"
   }
 }
 

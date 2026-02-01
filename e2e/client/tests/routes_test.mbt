@@ -8,17 +8,17 @@ async test "runtime routes: fixed + path basic" {
   // 结束后：
   //   npm run spector -- --stop
   wait_server_ready()
-  let client = @routes.ROUTESCLIENT::new("http://localhost:3000")
+  let client = @routes.RoutesClient::new("http://localhost:3000")
   assert_204(client.get_routes_fixed())
-  let client = @routes.ININTERFACECLIENT::new("http://localhost:3000")
+  let client = @routes.InInterfaceClient::new("http://localhost:3000")
   assert_204(client.get_routes_in_interface_fixed())
-  let client = @routes.PATHPARAMETERSCLIENT::new("http://localhost:3000")
+  let client = @routes.PathParametersClient::new("http://localhost:3000")
   assert_204(client.get_routes_path_template_only__param_("a"))
   assert_204(client.get_routes_path_explicit__param_("a"))
   assert_204(client.get_routes_path_annotation_only__param_("a"))
 
   // 关键：reserved expansion 不应编码 '/'，但应编码空格 -> %20。
-  let client = @routes.RESERVEDEXPANSIONCLIENT::new("http://localhost:3000")
+  let client = @routes.ReservedExpansionClient::new("http://localhost:3000")
   assert_204(
     client.get_routes_path_reserved_expansion_template___param_("foo/bar baz"),
   )
@@ -30,8 +30,8 @@ async test "runtime routes: fixed + path basic" {
 ///|
 async test "runtime routes: path simple/path/label/matrix expansions" {
   wait_server_ready()
-  let standard_client = @routes.STANDARDCLIENT::new("http://localhost:3000")
-  let explode_client = @routes.EXPLODECLIENT::new("http://localhost:3000")
+  let standard_client = @routes.StandardClient::new("http://localhost:3000")
+  let explode_client = @routes.ExplodeClient::new("http://localhost:3000")
 
   // simple - standard
   assert_204(
@@ -125,9 +125,9 @@ async test "runtime routes: path simple/path/label/matrix expansions" {
 ///|
 async test "runtime routes: query expansions" {
   wait_server_ready()
-  let query_client = @routes.QUERYPARAMETERSCLIENT::new("http://localhost:3000")
-  let standard_client = @routes.STANDARDCLIENT::new("http://localhost:3000")
-  let explode_client = @routes.EXPLODECLIENT::new("http://localhost:3000")
+  let query_client = @routes.QueryParametersClient::new("http://localhost:3000")
+  let standard_client = @routes.StandardClient::new("http://localhost:3000")
+  let explode_client = @routes.ExplodeClient::new("http://localhost:3000")
   assert_204(query_client.get_routes_query_template_only__param_("a"))
   assert_204(query_client.get_routes_query_explicit__param_("a"))
   assert_204(query_client.get_routes_query_annotation_only__param_("a"))
@@ -220,7 +220,7 @@ async fn wait_server_ready() -> Unit {
 
 ///|
 async fn probe_status() -> Int {
-  let client = @routes.ROUTESCLIENT::new("http://localhost:3000")
+  let client = @routes.RoutesClient::new("http://localhost:3000")
   let response = client.get_routes_fixed()
   response.code
 }
