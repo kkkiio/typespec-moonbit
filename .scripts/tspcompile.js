@@ -1,7 +1,7 @@
 // Regenerate TypeSpec spector test cases (aligned with typespec-rust's `tspcompile` idea).
 //
 // Output layout (committed to git):
-//   typespec-moonbit-tests/generated_cases/<case>/
+//   e2e/generated_cases/<case>/
 //
 import { execSync } from "child_process";
 import fs from "fs";
@@ -29,17 +29,17 @@ for (const arg of args) {
 }
 
 const compiler = path.join(repoRoot, "node_modules/@typespec/compiler/cmd/tsp.js");
-const emitterEntry = path.join(repoRoot, "index.js");
+const emitterDir = path.join(repoRoot, "packages/typespec-moonbit-client");
 
 if (!fs.existsSync(compiler)) {
   throw new Error(`tsp 未安装: 缺少 ${compiler}`);
 }
-if (!fs.existsSync(emitterEntry)) {
-  throw new Error(`缺少 emitter 入口: ${emitterEntry}`);
+if (!fs.existsSync(emitterDir)) {
+  throw new Error(`缺少 client emitter 目录: ${emitterDir}`);
 }
 
-// 1) build emitter (MoonBit -> JS)
-execSync("moon build -C typespec-moonbit --target js", { stdio: "inherit" });
+// 1) build emitters (MoonBit -> JS)
+execSync("npm run build:emitters", { stdio: "inherit" });
 
 const cases = [
   {
@@ -50,7 +50,7 @@ const cases = [
     ),
     outputDir: path.join(
       repoRoot,
-      "typespec-moonbit-tests/client/generated/routes",
+      "e2e/client/generated/routes",
     ),
   },
 ];
@@ -76,7 +76,9 @@ for (const c of limited) {
     "compile",
     c.input,
     "--emit",
-    emitterEntry,
+    emitterDir,
+    "--option",
+    `typespec-moonbit-client.emitter-output-dir=${c.outputDir}`,
     "--output-dir",
     c.outputDir,
   ];

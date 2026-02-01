@@ -7,3 +7,6 @@ target
 node_modules/
 
 .agent
+emitter/_build/
+emitter/target
+packages/*/dist/

@@ -13,79 +13,79 @@ if (!fs.existsSync(compiler)) {
   throw new Error(`tsp 未安装: 缺少 ${compiler}`);
 }
 
-// 1) build emitter (MoonBit -> JS)
-execSync("moon build -C typespec-moonbit --target js", { stdio: "inherit" });
+// 1) build emitters (MoonBit -> JS)
+execSync("npm run build:emitters", { stdio: "inherit" });
 
 const cases = [
   {
     name: "http-specs_server_endpoint_not_defined",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/endpoint/not-defined/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/endpoint/not-defined"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/endpoint/not-defined"),
   },
   {
     name: "http-specs_server_path_multiple",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/path/multiple/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/path/multiple"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/path/multiple"),
   },
   {
     name: "http-specs_server_path_single",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/path/single/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/path/single"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/path/single"),
   },
   {
     name: "http-specs_server_versions_not_versioned",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/versions/not-versioned/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/versions/not-versioned"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/versions/not-versioned"),
   },
   {
     name: "http-specs_server_versions_versioned",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/versions/versioned/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/versions/versioned"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/versions/versioned"),
   },
   {
     name: "http-specs_parameters_basic",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/parameters/basic/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/parameters/basic"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/parameters/basic"),
   },
   {
     name: "http-specs_parameters_body_optionality",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/parameters/body-optionality/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/parameters/body-optionality"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/parameters/body-optionality"),
   },
   {
     name: "http-specs_parameters_spread",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/parameters/spread/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/parameters/spread"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/parameters/spread"),
   },
   {
     name: "http-specs_type_array",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/type/array/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/type/array"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/type/array"),
   },
   {
     name: "http-specs_type_dictionary",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/type/dictionary/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/type/dictionary"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/type/dictionary"),
   },
   {
     name: "http-specs_type_enum_extensible",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/type/enum/extensible/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/type/enum/extensible"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/type/enum/extensible"),
   },
   {
     name: "http-specs_type_model_empty",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/type/model/empty/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/type/model/empty"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/type/model/empty"),
   },
   {
     name: "http-specs_type_model_inheritance_not_discriminated",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/type/model/inheritance/not-discriminated/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/type/model/inheritance/not-discriminated"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/type/model/inheritance/not-discriminated"),
   },
   {
     name: "http-specs_type_model_inheritance_recursive",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/type/model/inheritance/recursive/main.tsp"),
-    outputDir: path.join(repoRoot, "typespec-moonbit-tests/server/generated/type/model/inheritance/recursive"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/type/model/inheritance/recursive"),
   },
 ];
 
@@ -102,9 +102,9 @@ for (const c of cases) {
     compiler,
     "compile",
     c.input,
-    `--emit=${repoRoot}`,
-    `--option=typespec-moonbit.package-name=${c.name}`,
-    `--option=typespec-moonbit.emit-kind=server`,
+    `--emit=${path.join(repoRoot, "packages/typespec-moonbit-server")}`,
+    `--option=typespec-moonbit-server.package-name=${c.name}`,
+    `--option=typespec-moonbit-server.emitter-output-dir=${c.outputDir}`,
     `--output-dir=${c.outputDir}`,
   ];
   console.log(`generating ${c.name}`);

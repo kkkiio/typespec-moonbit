@@ -3,17 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "./index.js",
-  "exports": {
-    ".": "./index.js"
-  },
-  "tspMain": "./index.js",
-  "files": [
-    "index.js",
-    "README.md",
-    "LICENSE",
-    "typespec-moonbit/_build/js/release/build/**"
-  ],
   "devDependencies": {
     "@azure-tools/azure-http-specs": "^0.1.0-alpha.36",
     "@azure-tools/typespec-autorest": "~0.64.0",
@@ -29,13 +18,15 @@
     "@typespec/xml": "~0.78.0"
   },
   "scripts": {
-    "build:js": "moon build -C typespec-moonbit --target js --release",
-    "prepare": "npm run build:js",
+    "build:client": "node .scripts/build_emitters.js --client",
+    "build:server": "node .scripts/build_emitters.js --server",
+    "build:emitters": "node .scripts/build_emitters.js --all",
+    "prepare": "npm run build:emitters",
     "spector": "node .scripts/spector.js",
     "gen:client-test": "node .scripts/tspcompile.js",
     "gen:server-test": "node .scripts/emit_e2e_server.js",
-    "test:server:run": "moon test -C typespec-moonbit-tests -p kkkiio/typespec-moonbit-tests/server",
+    "test:server:run": "moon test -C e2e -p kkkiio/typespec-moonbit-tests/server",
     "test:server": "npm run gen:server-test && npm run test:server:run",
-    "test:client": "npm run gen:client-test -- --filter=spector_routes --limit=1 && moon test -C typespec-moonbit-tests --target native -p kkkiio/typespec-moonbit-tests/client/tests"
+    "test:client": "npm run gen:client-test -- --filter=spector_routes --limit=1 && moon test -C e2e --target native -p kkkiio/typespec-moonbit-tests/client/tests"
   }
 }
