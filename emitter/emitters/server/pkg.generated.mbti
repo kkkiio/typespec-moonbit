@@ -2,10 +2,14 @@
 package "kkkiio/typespec-moonbit/emitters/server"
 
 import {
+  "kkkiio/typespec-moonbit/codegen",
+  "kkkiio/typespec-moonbit/codemodel",
   "moonbit-community/js-ffi/js",
 }
 
 // Values
+pub fn emit_server_files(@codemodel.Crate) -> Array[@codegen.OutputFile] raise
+
 pub fn on_emit(@js.Value) -> @js.Promise
 
 pub async fn on_emit_async(@js.Value) -> Unit

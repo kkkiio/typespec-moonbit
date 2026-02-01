@@ -10,7 +10,7 @@ pub async fn on_emit_async(context : @ffi.EmitContext) -> Unit {
   let options = @config.EmitterOptions::from_context(context)
   let adapter = @tcgcadapter.Adapter::create(context)
   let crate_ = adapter.tcgc_to_crate()
-  let files = @codegen.emit_server_files(crate_)
+  let files = emit_server_files(crate_)
   let out_dir : @path.Path = @ffi.emitter_output_dir(context)
   @fs.create_dir(out_dir.to_string())
   for file in files {

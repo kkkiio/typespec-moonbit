@@ -1,9 +1,7 @@
 {
   "import": [
     "kkkiio/typespec-moonbit/codemodel",
-    "justjavac/case",
-    "moonbitlang/core/cmp",
-    "ryota0624/mustache"
+    "moonbitlang/core/cmp"
   ],
   "targets": {
     "*": "js"
