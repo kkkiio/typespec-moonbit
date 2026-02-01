@@ -1,5 +1,12 @@
 {
   "import": [
-    { "path": "moonbitlang/async/http", "alias": "http" }
+    {
+      "path": "moonbitlang/async/http",
+      "alias": "http"
+    },
+    {
+      "path": "moonbitlang/core/encoding/utf8",
+      "alias": "encoding/utf8"
+    }
   ]
 }

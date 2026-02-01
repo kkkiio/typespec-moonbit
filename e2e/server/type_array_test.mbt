@@ -271,9 +271,9 @@ impl @type_array.NullableFloatValueHandler for NullableFloatValueHandlerImpl wit
 ) {
   // Should return [1.25, null, 3.0]
   [
-    @type_array.Nullable(Some(1.25)),
-    @type_array.Nullable(None),
-    @type_array.Nullable(Some(3.0)),
+    @runtime.Nullable(Some(1.25)),
+    @runtime.Nullable(None),
+    @runtime.Nullable(Some(3.0)),
   ]
 }
 
@@ -284,9 +284,9 @@ impl @type_array.NullableFloatValueHandler for NullableFloatValueHandlerImpl wit
   body,
 ) {
   assert_eq(body.length(), 3)
-  assert_eq(body[0], @type_array.Nullable(Some(1.25)))
-  assert_eq(body[1], @type_array.Nullable(None))
-  assert_eq(body[2], @type_array.Nullable(Some(3.0)))
+  assert_eq(body[0], @runtime.Nullable(Some(1.25)))
+  assert_eq(body[1], @runtime.Nullable(None))
+  assert_eq(body[2], @runtime.Nullable(Some(3.0)))
 }
 
 ///|
@@ -299,9 +299,9 @@ impl @type_array.NullableInt32ValueHandler for NullableInt32ValueHandlerImpl wit
 ) {
   // Should return [1, null, 3]
   [
-    @type_array.Nullable(Some(1)),
-    @type_array.Nullable(None),
-    @type_array.Nullable(Some(3)),
+    @runtime.Nullable(Some(1)),
+    @runtime.Nullable(None),
+    @runtime.Nullable(Some(3)),
   ]
 }
 
@@ -312,9 +312,9 @@ impl @type_array.NullableInt32ValueHandler for NullableInt32ValueHandlerImpl wit
   body,
 ) {
   assert_eq(body.length(), 3)
-  assert_eq(body[0], @type_array.Nullable(Some(1)))
-  assert_eq(body[1], @type_array.Nullable(None))
-  assert_eq(body[2], @type_array.Nullable(Some(3)))
+  assert_eq(body[0], @runtime.Nullable(Some(1)))
+  assert_eq(body[1], @runtime.Nullable(None))
+  assert_eq(body[2], @runtime.Nullable(Some(3)))
 }
 
 ///|
@@ -327,9 +327,9 @@ impl @type_array.NullableModelValueHandler for NullableModelValueHandlerImpl wit
 ) {
   // Should return [{ property: "hello" }, null, { property: "world" }]
   [
-    @type_array.Nullable(Some({ property: "hello", children: None })),
-    @type_array.Nullable(None),
-    @type_array.Nullable(Some({ property: "world", children: None })),
+    @runtime.Nullable(Some({ property: "hello", children: None })),
+    @runtime.Nullable(None),
+    @runtime.Nullable(Some({ property: "world", children: None })),
   ]
 }
 
@@ -363,9 +363,9 @@ impl @type_array.NullableStringValueHandler for NullableStringValueHandlerImpl w
 ) {
   // Should return ["hello", null, "world"]
   [
-    @type_array.Nullable(Some("hello")),
-    @type_array.Nullable(None),
-    @type_array.Nullable(Some("world")),
+    @runtime.Nullable(Some("hello")),
+    @runtime.Nullable(None),
+    @runtime.Nullable(Some("world")),
   ]
 }
 
@@ -376,9 +376,9 @@ impl @type_array.NullableStringValueHandler for NullableStringValueHandlerImpl w
   body,
 ) {
   assert_eq(body.length(), 3)
-  assert_eq(body[0], @type_array.Nullable(Some("hello")))
-  assert_eq(body[1], @type_array.Nullable(None))
-  assert_eq(body[2], @type_array.Nullable(Some("world")))
+  assert_eq(body[0], @runtime.Nullable(Some("hello")))
+  assert_eq(body[1], @runtime.Nullable(None))
+  assert_eq(body[2], @runtime.Nullable(Some("world")))
 }
 
 ///|
@@ -391,9 +391,9 @@ impl @type_array.NullableBooleanValueHandler for NullableBooleanValueHandlerImpl
 ) {
   // Should return [true, null, false]
   [
-    @type_array.Nullable(Some(true)),
-    @type_array.Nullable(None),
-    @type_array.Nullable(Some(false)),
+    @runtime.Nullable(Some(true)),
+    @runtime.Nullable(None),
+    @runtime.Nullable(Some(false)),
   ]
 }
 
@@ -404,7 +404,7 @@ impl @type_array.NullableBooleanValueHandler for NullableBooleanValueHandlerImpl
   body,
 ) {
   assert_eq(body.length(), 3)
-  assert_eq(body[0], @type_array.Nullable(Some(true)))
-  assert_eq(body[1], @type_array.Nullable(None))
-  assert_eq(body[2], @type_array.Nullable(Some(false)))
+  assert_eq(body[0], @runtime.Nullable(Some(true)))
+  assert_eq(body[1], @runtime.Nullable(None))
+  assert_eq(body[2], @runtime.Nullable(Some(false)))
 }

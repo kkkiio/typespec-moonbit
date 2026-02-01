@@ -26,6 +26,10 @@
   "test-import": [
     "moonbitlang/core/json",
     {
+      "path": "kkkiio/typespec-moonbit-server-runtime/runtime",
+      "alias": "runtime"
+    },
+    {
       "path": "kkkiio/typespec-moonbit-tests/server/generated/parameters/basic",
       "alias": "parameters_basic"
     },

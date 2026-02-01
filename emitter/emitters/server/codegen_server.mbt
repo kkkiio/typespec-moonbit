@@ -74,6 +74,7 @@ fn emit_server_moon_pkg_json() -> String {
     #|    "moonbitlang/async",
     #|    "moonbitlang/async/http",
     #|    "moonbitlang/async/io",
+    #|    "kkkiio/typespec-moonbit-server-runtime/runtime",
     #|    "moonbitlang/core/json"
     #|  ]
     #|}
@@ -291,8 +292,8 @@ fn collect_encode_types(
 fn emit_server_models(crate : @codemodel.Crate) -> String raise {
   let buf = StringBuilder::new(size_hint=8192)
 
-  // Nullable helper (for `T | null`)
-  buf.write_string(nullable_support_code)
+  // Nullable helper (for `T | null`) is provided by runtime.
+  buf.write_string("///|\n#warnings(\"-unused_type_declaration\")\npub using @runtime {type Nullable}\n\n")
   let decode_models = collect_decode_models_from_crate(crate)
   let (encode_models, encode_unions) = collect_encode_types_from_crate(crate)
   let models = encode_models.merge(decode_models)
@@ -929,27 +930,3 @@ let server_event_stream_code : String =
   #|
 
 ///|
-let nullable_support_code : String =
-  #|///|
-  #|/// Nullable helper used for `T | null`.
-  #|pub(all) struct Nullable[T](T?) derive(Show, Default, Eq, Compare)
-  #|
-  #|///|
-  #|pub impl[T : ToJson] ToJson for Nullable[T] with to_json(self : Nullable[T]) -> Json {
-  #|  match self.0 {
-  #|    Some(v) => v.to_json()
-  #|    None => Json::null()
-  #|  }
-  #|}
-  #|
-  #|///|
-  #|pub impl[T : @json.FromJson] @json.FromJson for Nullable[T] with from_json(
-  #|  j : Json,
-  #|  path : @json.JsonPath,
-  #|) -> Nullable[T] raise @json.JsonDecodeError {
-  #|  match j {
-  #|    Null => Nullable(None)
-  #|    _ => Nullable(Some(@json.from_json(j, path~)))
-  #|  }
-  #|}
-  #|

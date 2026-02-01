@@ -275,9 +275,9 @@ impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandle
 ) {
   // Should return { k1: 1.25, k2: 0.5, k3: null }
   {
-    "k1": @type_dictionary.Nullable(Some(1.25)),
-    "k2": @type_dictionary.Nullable(Some(0.5)),
-    "k3": @type_dictionary.Nullable(None),
+    "k1": @runtime.Nullable(Some(1.25)),
+    "k2": @runtime.Nullable(Some(0.5)),
+    "k3": @runtime.Nullable(None),
   }
 }
 
@@ -289,15 +289,15 @@ impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandle
 ) {
   assert_eq(body.length(), 3)
   match body.get("k1") {
-    Some(v) => assert_eq(v, @type_dictionary.Nullable(Some(1.25)))
+    Some(v) => assert_eq(v, @runtime.Nullable(Some(1.25)))
     None => assert_true(false, msg="nullable-float.put: missing key k1")
   }
   match body.get("k2") {
-    Some(v) => assert_eq(v, @type_dictionary.Nullable(Some(0.5)))
+    Some(v) => assert_eq(v, @runtime.Nullable(Some(0.5)))
     None => assert_true(false, msg="nullable-float.put: missing key k2")
   }
   match body.get("k3") {
-    Some(v) => assert_eq(v, @type_dictionary.Nullable(None))
+    Some(v) => assert_eq(v, @runtime.Nullable(None))
     None => assert_true(false, msg="nullable-float.put: missing key k3")
   }
 }

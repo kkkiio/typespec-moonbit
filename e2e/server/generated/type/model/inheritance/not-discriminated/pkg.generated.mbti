@@ -2,6 +2,7 @@
 package "kkkiio/typespec-moonbit-tests/server/generated/type/model/inheritance/not-discriminated"
 
 import {
+  "kkkiio/typespec-moonbit-server-runtime/runtime",
   "moonbitlang/async",
   "moonbitlang/async/http",
   "moonbitlang/async/io",
@@ -16,16 +17,6 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(not_discriminated_handler~ : 
 // Errors
 
 // Types and methods
-pub(all) struct Nullable[T](T?)
-#deprecated
-pub fn[T] Nullable::inner(Self[T]) -> T?
-pub impl[T : Compare] Compare for Nullable[T]
-pub impl[T : Default] Default for Nullable[T]
-pub impl[T : Eq] Eq for Nullable[T]
-pub impl[T : Show] Show for Nullable[T]
-pub impl[T : ToJson] ToJson for Nullable[T]
-pub impl[T : @json.FromJson] @json.FromJson for Nullable[T]
-
 pub enum RouteMatch {
   Handled
   NotMatched
@@ -43,6 +34,8 @@ pub impl ToJson for Siamese
 pub impl @json.FromJson for Siamese
 
 // Type aliases
+pub using @runtime {type Nullable}
+
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
 
 // Traits
