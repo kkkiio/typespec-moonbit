@@ -45,9 +45,9 @@ pub fn[H0 : VersionedHandler] create_router(
     conn : @http.ServerConnection,
   ) -> RouteMatch {
     let full_path = req.path
-    let path = strip_request_query(full_path)
+    let path = @runtime.strip_request_query(full_path)
     if req.meth == @http.Head &&
-      match_path_template(
+      @runtime.match_path_template(
         "/server/versions/versioned/without-api-version", path,
       ) {
       ignore(body_stream)
@@ -57,22 +57,22 @@ pub fn[H0 : VersionedHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Head &&
-      match_path_template(
+      @runtime.match_path_template(
         "/server/versions/versioned/with-query-api-version", path,
       ) {
       ignore(body_stream)
-      let p_2_api_version = get_query_param(full_path, "api-version")
+      let p_2_api_version = @runtime.get_query_param(full_path, "api-version")
       versioned_handler.with_query_api_version(group~, p_2_api_version)
       conn.send_response(200, "OK")
       conn.end_response()
       return RouteMatch::Handled
     }
     if req.meth == @http.Head &&
-      match_path_template(
+      @runtime.match_path_template(
         "/server/versions/versioned/with-path-api-version/{apiVersion}", path,
       ) {
       ignore(body_stream)
-      let p_3_api_version = get_path_param(
+      let p_3_api_version = @runtime.get_path_param(
         "/server/versions/versioned/with-path-api-version/{apiVersion}", path, "apiVersion",
       )
       versioned_handler.with_path_api_version(group~, p_3_api_version)
@@ -81,11 +81,11 @@ pub fn[H0 : VersionedHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Head &&
-      match_path_template(
+      @runtime.match_path_template(
         "/server/versions/versioned/with-query-old-api-version", path,
       ) {
       ignore(body_stream)
-      let p_4_api_version = get_query_param(full_path, "api-version")
+      let p_4_api_version = @runtime.get_query_param(full_path, "api-version")
       versioned_handler.with_query_old_api_version(group~, p_4_api_version)
       conn.send_response(200, "OK")
       conn.end_response()
@@ -94,22 +94,22 @@ pub fn[H0 : VersionedHandler] create_router(
 
     // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
     let mut path_matched = false
-    if match_path_template(
+    if @runtime.match_path_template(
         "/server/versions/versioned/without-api-version", path,
       ) {
       path_matched = true
     }
-    if match_path_template(
+    if @runtime.match_path_template(
         "/server/versions/versioned/with-query-api-version", path,
       ) {
       path_matched = true
     }
-    if match_path_template(
+    if @runtime.match_path_template(
         "/server/versions/versioned/with-path-api-version/{apiVersion}", path,
       ) {
       path_matched = true
     }
-    if match_path_template(
+    if @runtime.match_path_template(
         "/server/versions/versioned/with-query-old-api-version", path,
       ) {
       path_matched = true

@@ -35,9 +35,9 @@ pub fn[H0 : MultipleHandler] create_router(
     conn : @http.ServerConnection,
   ) -> RouteMatch {
     let full_path = req.path
-    let path = strip_request_query(full_path)
+    let path = @runtime.strip_request_query(full_path)
     if req.meth == @http.Get &&
-      match_path_template("/server/path/multiple/{apiVersion}", path) {
+      @runtime.match_path_template("/server/path/multiple/{apiVersion}", path) {
       ignore(body_stream)
       multiple_handler.no_operation_params(group~)
       conn.send_response(204, "No Content")
@@ -45,9 +45,11 @@ pub fn[H0 : MultipleHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/server/path/multiple/{apiVersion}/{keyword}", path) {
+      @runtime.match_path_template(
+        "/server/path/multiple/{apiVersion}/{keyword}", path,
+      ) {
       ignore(body_stream)
-      let p_2_keyword = get_path_param(
+      let p_2_keyword = @runtime.get_path_param(
         "/server/path/multiple/{apiVersion}/{keyword}", path, "keyword",
       )
       multiple_handler.with_operation_path_param(group~, p_2_keyword)
@@ -58,10 +60,12 @@ pub fn[H0 : MultipleHandler] create_router(
 
     // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
     let mut path_matched = false
-    if match_path_template("/server/path/multiple/{apiVersion}", path) {
+    if @runtime.match_path_template("/server/path/multiple/{apiVersion}", path) {
       path_matched = true
     }
-    if match_path_template("/server/path/multiple/{apiVersion}/{keyword}", path) {
+    if @runtime.match_path_template(
+        "/server/path/multiple/{apiVersion}/{keyword}", path,
+      ) {
       path_matched = true
     }
     if path_matched {

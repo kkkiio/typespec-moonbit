@@ -138,9 +138,9 @@ pub fn[
     conn : @http.ServerConnection,
   ) -> RouteMatch {
     let full_path = req.path
-    let path = strip_request_query(full_path)
+    let path = @runtime.strip_request_query(full_path)
     if req.meth == @http.Get &&
-      match_path_template("/type/dictionary/int32", path) {
+      @runtime.match_path_template("/type/dictionary/int32", path) {
       ignore(body_stream)
       let resp_body = int32_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -150,7 +150,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/dictionary/int32", path) {
+      @runtime.match_path_template("/type/dictionary/int32", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_2_body : Map[String, Int] = @json.from_json(@json.parse(body_str))
@@ -160,7 +160,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/dictionary/int64", path) {
+      @runtime.match_path_template("/type/dictionary/int64", path) {
       ignore(body_stream)
       let resp_body = int64_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -170,7 +170,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/dictionary/int64", path) {
+      @runtime.match_path_template("/type/dictionary/int64", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_4_body : Map[String, Int64] = @json.from_json(@json.parse(body_str))
@@ -180,7 +180,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/dictionary/model", path) {
+      @runtime.match_path_template("/type/dictionary/model", path) {
       ignore(body_stream)
       let resp_body = model_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -190,7 +190,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/dictionary/model", path) {
+      @runtime.match_path_template("/type/dictionary/model", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_6_body : Map[String, InnerModel] = @json.from_json(
@@ -202,7 +202,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/dictionary/string", path) {
+      @runtime.match_path_template("/type/dictionary/string", path) {
       ignore(body_stream)
       let resp_body = string_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -212,7 +212,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/dictionary/string", path) {
+      @runtime.match_path_template("/type/dictionary/string", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_8_body : Map[String, String] = @json.from_json(
@@ -224,7 +224,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/dictionary/boolean", path) {
+      @runtime.match_path_template("/type/dictionary/boolean", path) {
       ignore(body_stream)
       let resp_body = boolean_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -234,7 +234,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/dictionary/boolean", path) {
+      @runtime.match_path_template("/type/dictionary/boolean", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_10_body : Map[String, Bool] = @json.from_json(@json.parse(body_str))
@@ -244,7 +244,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/dictionary/float32", path) {
+      @runtime.match_path_template("/type/dictionary/float32", path) {
       ignore(body_stream)
       let resp_body = float32_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -254,7 +254,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/dictionary/float32", path) {
+      @runtime.match_path_template("/type/dictionary/float32", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_12_body : Map[String, Double] = @json.from_json(
@@ -266,7 +266,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/dictionary/unknown", path) {
+      @runtime.match_path_template("/type/dictionary/unknown", path) {
       ignore(body_stream)
       let resp_body = unknown_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -276,7 +276,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/dictionary/unknown", path) {
+      @runtime.match_path_template("/type/dictionary/unknown", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_14_body : Map[String, Json] = @json.from_json(@json.parse(body_str))
@@ -286,7 +286,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/dictionary/datetime", path) {
+      @runtime.match_path_template("/type/dictionary/datetime", path) {
       ignore(body_stream)
       let resp_body = datetime_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -296,7 +296,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/dictionary/datetime", path) {
+      @runtime.match_path_template("/type/dictionary/datetime", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_16_body : Map[String, String] = @json.from_json(
@@ -308,7 +308,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/dictionary/duration", path) {
+      @runtime.match_path_template("/type/dictionary/duration", path) {
       ignore(body_stream)
       let resp_body = duration_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -318,7 +318,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/dictionary/duration", path) {
+      @runtime.match_path_template("/type/dictionary/duration", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_18_body : Map[String, String] = @json.from_json(
@@ -330,7 +330,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/dictionary/nullable-float", path) {
+      @runtime.match_path_template("/type/dictionary/nullable-float", path) {
       ignore(body_stream)
       let resp_body = nullable_float_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -340,7 +340,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/dictionary/nullable-float", path) {
+      @runtime.match_path_template("/type/dictionary/nullable-float", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_20_body : Map[String, Nullable[Double]] = @json.from_json(
@@ -352,7 +352,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/dictionary/model/recursive", path) {
+      @runtime.match_path_template("/type/dictionary/model/recursive", path) {
       ignore(body_stream)
       let resp_body = recursive_model_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -362,7 +362,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/dictionary/model/recursive", path) {
+      @runtime.match_path_template("/type/dictionary/model/recursive", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_22_body : Map[String, InnerModel] = @json.from_json(
@@ -376,70 +376,70 @@ pub fn[
 
     // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
     let mut path_matched = false
-    if match_path_template("/type/dictionary/int32", path) {
+    if @runtime.match_path_template("/type/dictionary/int32", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/int32", path) {
+    if @runtime.match_path_template("/type/dictionary/int32", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/int64", path) {
+    if @runtime.match_path_template("/type/dictionary/int64", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/int64", path) {
+    if @runtime.match_path_template("/type/dictionary/int64", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/model", path) {
+    if @runtime.match_path_template("/type/dictionary/model", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/model", path) {
+    if @runtime.match_path_template("/type/dictionary/model", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/string", path) {
+    if @runtime.match_path_template("/type/dictionary/string", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/string", path) {
+    if @runtime.match_path_template("/type/dictionary/string", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/boolean", path) {
+    if @runtime.match_path_template("/type/dictionary/boolean", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/boolean", path) {
+    if @runtime.match_path_template("/type/dictionary/boolean", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/float32", path) {
+    if @runtime.match_path_template("/type/dictionary/float32", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/float32", path) {
+    if @runtime.match_path_template("/type/dictionary/float32", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/unknown", path) {
+    if @runtime.match_path_template("/type/dictionary/unknown", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/unknown", path) {
+    if @runtime.match_path_template("/type/dictionary/unknown", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/datetime", path) {
+    if @runtime.match_path_template("/type/dictionary/datetime", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/datetime", path) {
+    if @runtime.match_path_template("/type/dictionary/datetime", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/duration", path) {
+    if @runtime.match_path_template("/type/dictionary/duration", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/duration", path) {
+    if @runtime.match_path_template("/type/dictionary/duration", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/nullable-float", path) {
+    if @runtime.match_path_template("/type/dictionary/nullable-float", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/nullable-float", path) {
+    if @runtime.match_path_template("/type/dictionary/nullable-float", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/model/recursive", path) {
+    if @runtime.match_path_template("/type/dictionary/model/recursive", path) {
       path_matched = true
     }
-    if match_path_template("/type/dictionary/model/recursive", path) {
+    if @runtime.match_path_template("/type/dictionary/model/recursive", path) {
       path_matched = true
     }
     if path_matched {

@@ -36,9 +36,9 @@ pub fn[H0 : EmptyHandler] create_router(
     conn : @http.ServerConnection,
   ) -> RouteMatch {
     let full_path = req.path
-    let path = strip_request_query(full_path)
+    let path = @runtime.strip_request_query(full_path)
     if req.meth == @http.Put &&
-      match_path_template("/type/model/empty/alone", path) {
+      @runtime.match_path_template("/type/model/empty/alone", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_1_body : EmptyInput = @json.from_json(@json.parse(body_str))
@@ -48,7 +48,7 @@ pub fn[H0 : EmptyHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/model/empty/alone", path) {
+      @runtime.match_path_template("/type/model/empty/alone", path) {
       ignore(body_stream)
       let resp_body = empty_handler.get_empty(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -58,7 +58,7 @@ pub fn[H0 : EmptyHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Post &&
-      match_path_template("/type/model/empty/round-trip", path) {
+      @runtime.match_path_template("/type/model/empty/round-trip", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_3_body : EmptyInputOutput = @json.from_json(@json.parse(body_str))
@@ -72,13 +72,13 @@ pub fn[H0 : EmptyHandler] create_router(
 
     // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
     let mut path_matched = false
-    if match_path_template("/type/model/empty/alone", path) {
+    if @runtime.match_path_template("/type/model/empty/alone", path) {
       path_matched = true
     }
-    if match_path_template("/type/model/empty/alone", path) {
+    if @runtime.match_path_template("/type/model/empty/alone", path) {
       path_matched = true
     }
-    if match_path_template("/type/model/empty/round-trip", path) {
+    if @runtime.match_path_template("/type/model/empty/round-trip", path) {
       path_matched = true
     }
     if path_matched {

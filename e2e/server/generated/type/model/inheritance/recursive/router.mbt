@@ -31,9 +31,9 @@ pub fn[H0 : RecursiveHandler] create_router(
     conn : @http.ServerConnection,
   ) -> RouteMatch {
     let full_path = req.path
-    let path = strip_request_query(full_path)
+    let path = @runtime.strip_request_query(full_path)
     if req.meth == @http.Put &&
-      match_path_template("/type/model/inheritance/recursive", path) {
+      @runtime.match_path_template("/type/model/inheritance/recursive", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_1_body : Extension = @json.from_json(@json.parse(body_str))
@@ -43,7 +43,7 @@ pub fn[H0 : RecursiveHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/model/inheritance/recursive", path) {
+      @runtime.match_path_template("/type/model/inheritance/recursive", path) {
       ignore(body_stream)
       let resp_body = recursive_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -55,10 +55,10 @@ pub fn[H0 : RecursiveHandler] create_router(
 
     // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
     let mut path_matched = false
-    if match_path_template("/type/model/inheritance/recursive", path) {
+    if @runtime.match_path_template("/type/model/inheritance/recursive", path) {
       path_matched = true
     }
-    if match_path_template("/type/model/inheritance/recursive", path) {
+    if @runtime.match_path_template("/type/model/inheritance/recursive", path) {
       path_matched = true
     }
     if path_matched {

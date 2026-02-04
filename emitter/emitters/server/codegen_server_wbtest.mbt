@@ -25,7 +25,7 @@ test "emit_server_files include sse" {
   inspect(
     paths,
     content=(
-      #|["moon.pkg.json", "README.mbt.md", "models.mbt", "router.mbt", "router_helpers.mbt", "event_stream.mbt"]
+      #|["moon.pkg.json", "README.mbt.md", "models.mbt", "router.mbt"]
     ),
   )
 }
@@ -51,6 +51,9 @@ test "emit_server_router snapshot" {
                 name: "itemId",
                 location: "path",
                 type_: @codemodel.TypeRef::String,
+                optional: false,
+                explode: false,
+                array_encoding: None,
               },
             ],
           },
@@ -75,6 +78,9 @@ test "emit_server_router snapshot" {
                     },
                   ],
                 }),
+                optional: false,
+                explode: false,
+                array_encoding: None,
               },
             ],
           },
@@ -115,19 +121,19 @@ test "emit_server_router snapshot" {
       #|) -> Router {
       #|  async fn(req : @http.Request, body_stream : &@io.Reader, conn : @http.ServerConnection) -> RouteMatch {
       #|    let full_path = req.path
-      #|    let path = strip_request_query(full_path)
+      #|    let path = @runtime.strip_request_query(full_path)
       #|    
-      #|    if req.meth == @http.Get && match_path_template("/items/{itemId}", path) {
+      #|    if req.meth == @http.Get && @runtime.match_path_template("/items/{itemId}", path) {
       #|      ignore(body_stream)
       #|      
-      #|      let p_1_item_id = get_path_param("/items/{itemId}", path, "itemId")
+      #|      let p_1_item_id = @runtime.get_path_param("/items/{itemId}", path, "itemId")
       #|      test_client_handler.get_item(group~, p_1_item_id,)
       #|      conn.send_response(200, "OK")
       #|      conn.end_response()
       #|      return RouteMatch::Handled
       #|    }
       #|    
-      #|    if req.meth == @http.Post && match_path_template("/items", path) {
+      #|    if req.meth == @http.Post && @runtime.match_path_template("/items", path) {
       #|      let body_bytes = body_stream.read_all()
       #|      let body_str = body_bytes.text()
       #|      
@@ -140,8 +146,8 @@ test "emit_server_router snapshot" {
       #|    
       #|    // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
       #|    let mut path_matched = false
-      #|    if match_path_template("/items/{itemId}", path) { path_matched = true }
-      #|    if match_path_template("/items", path) { path_matched = true }
+      #|    if @runtime.match_path_template("/items/{itemId}", path) { path_matched = true }
+      #|    if @runtime.match_path_template("/items", path) { path_matched = true }
       #|    if path_matched { RouteMatch::MethodNotAllowed } else { RouteMatch::NotMatched }
       #|  }
       #|}
@@ -195,6 +201,9 @@ test "server codegen has no mustache markers" {
                 name: "itemId",
                 location: "path",
                 type_: @codemodel.TypeRef::String,
+                optional: false,
+                explode: false,
+                array_encoding: None,
               },
             ],
           },

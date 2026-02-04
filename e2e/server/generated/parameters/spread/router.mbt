@@ -98,9 +98,11 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
     conn : @http.ServerConnection,
   ) -> RouteMatch {
     let full_path = req.path
-    let path = strip_request_query(full_path)
+    let path = @runtime.strip_request_query(full_path)
     if req.meth == @http.Put &&
-      match_path_template("/parameters/spread/alias/request-body", path) {
+      @runtime.match_path_template(
+        "/parameters/spread/alias/request-body", path,
+      ) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_1_body : Model0 = @json.from_json(@json.parse(body_str))
@@ -110,15 +112,18 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Post &&
-      match_path_template(
+      @runtime.match_path_template(
         "/parameters/spread/alias/inner-model-parameter/{id}", path,
       ) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_2_id = get_path_param(
+      let p_2_id = @runtime.get_path_param(
         "/parameters/spread/alias/inner-model-parameter/{id}", path, "id",
       )
-      let p_2_x_ms_test_header = get_header(req.headers, "x-ms-test-header")
+      let p_2_x_ms_test_header = @runtime.get_header(
+        req.headers,
+        "x-ms-test-header",
+      )
       let p_2_body : Model1 = @json.from_json(@json.parse(body_str))
       alias_handler.spread_parameter_with_inner_model(
         group~,
@@ -131,15 +136,18 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template(
+      @runtime.match_path_template(
         "/parameters/spread/alias/request-parameter/{id}", path,
       ) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_3_id = get_path_param(
+      let p_3_id = @runtime.get_path_param(
         "/parameters/spread/alias/request-parameter/{id}", path, "id",
       )
-      let p_3_x_ms_test_header = get_header(req.headers, "x-ms-test-header")
+      let p_3_x_ms_test_header = @runtime.get_header(
+        req.headers,
+        "x-ms-test-header",
+      )
       let p_3_body : Model2 = @json.from_json(@json.parse(body_str))
       alias_handler.spread_as_request_parameter(
         group~,
@@ -152,15 +160,18 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template(
+      @runtime.match_path_template(
         "/parameters/spread/alias/multiple-parameters/{id}", path,
       ) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_4_id = get_path_param(
+      let p_4_id = @runtime.get_path_param(
         "/parameters/spread/alias/multiple-parameters/{id}", path, "id",
       )
-      let p_4_x_ms_test_header = get_header(req.headers, "x-ms-test-header")
+      let p_4_x_ms_test_header = @runtime.get_header(
+        req.headers,
+        "x-ms-test-header",
+      )
       let p_4_body : Model3 = @json.from_json(@json.parse(body_str))
       alias_handler.spread_with_multiple_parameters(
         group~,
@@ -173,15 +184,18 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Post &&
-      match_path_template(
+      @runtime.match_path_template(
         "/parameters/spread/alias/inner-alias-parameter/{id}", path,
       ) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_5_id = get_path_param(
+      let p_5_id = @runtime.get_path_param(
         "/parameters/spread/alias/inner-alias-parameter/{id}", path, "id",
       )
-      let p_5_x_ms_test_header = get_header(req.headers, "x-ms-test-header")
+      let p_5_x_ms_test_header = @runtime.get_header(
+        req.headers,
+        "x-ms-test-header",
+      )
       let p_5_body : Model4 = @json.from_json(@json.parse(body_str))
       alias_handler.spread_parameter_with_inner_alias(
         group~,
@@ -194,7 +208,9 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/parameters/spread/model/request-body", path) {
+      @runtime.match_path_template(
+        "/parameters/spread/model/request-body", path,
+      ) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_6_body : BodyParameter5 = @json.from_json(@json.parse(body_str))
@@ -204,7 +220,7 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template(
+      @runtime.match_path_template(
         "/parameters/spread/model/composite-request-only-with-body", path,
       ) {
       let body_bytes = body_stream.read_all()
@@ -216,14 +232,14 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template(
+      @runtime.match_path_template(
         "/parameters/spread/model/composite-request-without-body/{name}", path,
       ) {
       ignore(body_stream)
-      let p_8_name = get_path_param(
+      let p_8_name = @runtime.get_path_param(
         "/parameters/spread/model/composite-request-without-body/{name}", path, "name",
       )
-      let p_8_test_header = get_header(req.headers, "test-header")
+      let p_8_test_header = @runtime.get_header(req.headers, "test-header")
       model_handler.spread_composite_request_without_body(
         group~,
         p_8_name,
@@ -234,15 +250,15 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template(
+      @runtime.match_path_template(
         "/parameters/spread/model/composite-request/{name}", path,
       ) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_9_name = get_path_param(
+      let p_9_name = @runtime.get_path_param(
         "/parameters/spread/model/composite-request/{name}", path, "name",
       )
-      let p_9_test_header = get_header(req.headers, "test-header")
+      let p_9_test_header = @runtime.get_header(req.headers, "test-header")
       let p_9_body : BodyParameter = @json.from_json(@json.parse(body_str))
       model_handler.spread_composite_request(
         group~,
@@ -255,15 +271,15 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template(
+      @runtime.match_path_template(
         "/parameters/spread/model/composite-request-mix/{name}", path,
       ) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_10_name = get_path_param(
+      let p_10_name = @runtime.get_path_param(
         "/parameters/spread/model/composite-request-mix/{name}", path, "name",
       )
-      let p_10_test_header = get_header(req.headers, "test-header")
+      let p_10_test_header = @runtime.get_header(req.headers, "test-header")
       let p_10_body : Model6 = @json.from_json(@json.parse(body_str))
       model_handler.spread_composite_request_mix(
         group~,
@@ -278,48 +294,52 @@ pub fn[H0 : AliasHandler, H1 : ModelHandler] create_router(
 
     // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
     let mut path_matched = false
-    if match_path_template("/parameters/spread/alias/request-body", path) {
+    if @runtime.match_path_template(
+        "/parameters/spread/alias/request-body", path,
+      ) {
       path_matched = true
     }
-    if match_path_template(
+    if @runtime.match_path_template(
         "/parameters/spread/alias/inner-model-parameter/{id}", path,
       ) {
       path_matched = true
     }
-    if match_path_template(
+    if @runtime.match_path_template(
         "/parameters/spread/alias/request-parameter/{id}", path,
       ) {
       path_matched = true
     }
-    if match_path_template(
+    if @runtime.match_path_template(
         "/parameters/spread/alias/multiple-parameters/{id}", path,
       ) {
       path_matched = true
     }
-    if match_path_template(
+    if @runtime.match_path_template(
         "/parameters/spread/alias/inner-alias-parameter/{id}", path,
       ) {
       path_matched = true
     }
-    if match_path_template("/parameters/spread/model/request-body", path) {
+    if @runtime.match_path_template(
+        "/parameters/spread/model/request-body", path,
+      ) {
       path_matched = true
     }
-    if match_path_template(
+    if @runtime.match_path_template(
         "/parameters/spread/model/composite-request-only-with-body", path,
       ) {
       path_matched = true
     }
-    if match_path_template(
+    if @runtime.match_path_template(
         "/parameters/spread/model/composite-request-without-body/{name}", path,
       ) {
       path_matched = true
     }
-    if match_path_template(
+    if @runtime.match_path_template(
         "/parameters/spread/model/composite-request/{name}", path,
       ) {
       path_matched = true
     }
-    if match_path_template(
+    if @runtime.match_path_template(
         "/parameters/spread/model/composite-request-mix/{name}", path,
       ) {
       path_matched = true

@@ -43,9 +43,11 @@ pub fn[H0 : StringHandler] create_router(
     conn : @http.ServerConnection,
   ) -> RouteMatch {
     let full_path = req.path
-    let path = strip_request_query(full_path)
+    let path = @runtime.strip_request_query(full_path)
     if req.meth == @http.Get &&
-      match_path_template("/type/enum/extensible/string/known-value", path) {
+      @runtime.match_path_template(
+        "/type/enum/extensible/string/known-value", path,
+      ) {
       ignore(body_stream)
       let resp_body = string_handler.get_known_value(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -55,7 +57,9 @@ pub fn[H0 : StringHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/enum/extensible/string/unknown-value", path) {
+      @runtime.match_path_template(
+        "/type/enum/extensible/string/unknown-value", path,
+      ) {
       ignore(body_stream)
       let resp_body = string_handler.get_unknown_value(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -65,10 +69,12 @@ pub fn[H0 : StringHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/enum/extensible/string/known-value", path) {
+      @runtime.match_path_template(
+        "/type/enum/extensible/string/known-value", path,
+      ) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_3_content_type = get_header(req.headers, "Content-Type")
+      let p_3_content_type = @runtime.get_header(req.headers, "Content-Type")
       let p_3_body : String = @json.from_json(@json.parse(body_str))
       string_handler.put_known_value(group~, p_3_content_type, p_3_body)
       conn.send_response(204, "No Content")
@@ -76,10 +82,12 @@ pub fn[H0 : StringHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/enum/extensible/string/unknown-value", path) {
+      @runtime.match_path_template(
+        "/type/enum/extensible/string/unknown-value", path,
+      ) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
-      let p_4_content_type = get_header(req.headers, "Content-Type")
+      let p_4_content_type = @runtime.get_header(req.headers, "Content-Type")
       let p_4_body : String = @json.from_json(@json.parse(body_str))
       string_handler.put_unknown_value(group~, p_4_content_type, p_4_body)
       conn.send_response(204, "No Content")
@@ -89,16 +97,24 @@ pub fn[H0 : StringHandler] create_router(
 
     // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
     let mut path_matched = false
-    if match_path_template("/type/enum/extensible/string/known-value", path) {
+    if @runtime.match_path_template(
+        "/type/enum/extensible/string/known-value", path,
+      ) {
       path_matched = true
     }
-    if match_path_template("/type/enum/extensible/string/unknown-value", path) {
+    if @runtime.match_path_template(
+        "/type/enum/extensible/string/unknown-value", path,
+      ) {
       path_matched = true
     }
-    if match_path_template("/type/enum/extensible/string/known-value", path) {
+    if @runtime.match_path_template(
+        "/type/enum/extensible/string/known-value", path,
+      ) {
       path_matched = true
     }
-    if match_path_template("/type/enum/extensible/string/unknown-value", path) {
+    if @runtime.match_path_template(
+        "/type/enum/extensible/string/unknown-value", path,
+      ) {
       path_matched = true
     }
     if path_matched {
