@@ -30,9 +30,9 @@ pub fn[H0 : NotDefinedHandler] create_router(
     conn : @http.ServerConnection,
   ) -> RouteMatch {
     let full_path = req.path
-    let path = strip_request_query(full_path)
+    let path = @runtime.strip_request_query(full_path)
     if req.meth == @http.Head &&
-      match_path_template("/server/endpoint/not-defined/valid", path) {
+      @runtime.match_path_template("/server/endpoint/not-defined/valid", path) {
       ignore(body_stream)
       not_defined_handler.valid(group~)
       conn.send_response(200, "OK")
@@ -42,7 +42,7 @@ pub fn[H0 : NotDefinedHandler] create_router(
 
     // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
     let mut path_matched = false
-    if match_path_template("/server/endpoint/not-defined/valid", path) {
+    if @runtime.match_path_template("/server/endpoint/not-defined/valid", path) {
       path_matched = true
     }
     if path_matched {

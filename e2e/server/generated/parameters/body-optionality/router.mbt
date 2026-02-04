@@ -47,9 +47,9 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
     conn : @http.ServerConnection,
   ) -> RouteMatch {
     let full_path = req.path
-    let path = strip_request_query(full_path)
+    let path = @runtime.strip_request_query(full_path)
     if req.meth == @http.Post &&
-      match_path_template(
+      @runtime.match_path_template(
         "/parameters/body-optionality/required-explicit", path,
       ) {
       let body_bytes = body_stream.read_all()
@@ -61,7 +61,7 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Post &&
-      match_path_template(
+      @runtime.match_path_template(
         "/parameters/body-optionality/required-implicit", path,
       ) {
       let body_bytes = body_stream.read_all()
@@ -73,7 +73,7 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Post &&
-      match_path_template(
+      @runtime.match_path_template(
         "/parameters/body-optionality/optional-explicit/set", path,
       ) {
       let body_bytes = body_stream.read_all()
@@ -85,7 +85,7 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
       return RouteMatch::Handled
     }
     if req.meth == @http.Post &&
-      match_path_template(
+      @runtime.match_path_template(
         "/parameters/body-optionality/optional-explicit/omit", path,
       ) {
       let body_bytes = body_stream.read_all()
@@ -99,22 +99,22 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
 
     // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
     let mut path_matched = false
-    if match_path_template(
+    if @runtime.match_path_template(
         "/parameters/body-optionality/required-explicit", path,
       ) {
       path_matched = true
     }
-    if match_path_template(
+    if @runtime.match_path_template(
         "/parameters/body-optionality/required-implicit", path,
       ) {
       path_matched = true
     }
-    if match_path_template(
+    if @runtime.match_path_template(
         "/parameters/body-optionality/optional-explicit/set", path,
       ) {
       path_matched = true
     }
-    if match_path_template(
+    if @runtime.match_path_template(
         "/parameters/body-optionality/optional-explicit/omit", path,
       ) {
       path_matched = true

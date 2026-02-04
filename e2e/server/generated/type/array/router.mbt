@@ -164,8 +164,9 @@ pub fn[
     conn : @http.ServerConnection,
   ) -> RouteMatch {
     let full_path = req.path
-    let path = strip_request_query(full_path)
-    if req.meth == @http.Get && match_path_template("/type/array/int32", path) {
+    let path = @runtime.strip_request_query(full_path)
+    if req.meth == @http.Get &&
+      @runtime.match_path_template("/type/array/int32", path) {
       ignore(body_stream)
       let resp_body = int32_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -174,7 +175,8 @@ pub fn[
       conn.end_response()
       return RouteMatch::Handled
     }
-    if req.meth == @http.Put && match_path_template("/type/array/int32", path) {
+    if req.meth == @http.Put &&
+      @runtime.match_path_template("/type/array/int32", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_2_body : Array[Int] = @json.from_json(@json.parse(body_str))
@@ -183,7 +185,8 @@ pub fn[
       conn.end_response()
       return RouteMatch::Handled
     }
-    if req.meth == @http.Get && match_path_template("/type/array/int64", path) {
+    if req.meth == @http.Get &&
+      @runtime.match_path_template("/type/array/int64", path) {
       ignore(body_stream)
       let resp_body = int64_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -192,7 +195,8 @@ pub fn[
       conn.end_response()
       return RouteMatch::Handled
     }
-    if req.meth == @http.Put && match_path_template("/type/array/int64", path) {
+    if req.meth == @http.Put &&
+      @runtime.match_path_template("/type/array/int64", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_4_body : Array[Int64] = @json.from_json(@json.parse(body_str))
@@ -201,7 +205,8 @@ pub fn[
       conn.end_response()
       return RouteMatch::Handled
     }
-    if req.meth == @http.Get && match_path_template("/type/array/model", path) {
+    if req.meth == @http.Get &&
+      @runtime.match_path_template("/type/array/model", path) {
       ignore(body_stream)
       let resp_body = model_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -210,7 +215,8 @@ pub fn[
       conn.end_response()
       return RouteMatch::Handled
     }
-    if req.meth == @http.Put && match_path_template("/type/array/model", path) {
+    if req.meth == @http.Put &&
+      @runtime.match_path_template("/type/array/model", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_6_body : Array[InnerModel] = @json.from_json(@json.parse(body_str))
@@ -219,7 +225,8 @@ pub fn[
       conn.end_response()
       return RouteMatch::Handled
     }
-    if req.meth == @http.Get && match_path_template("/type/array/string", path) {
+    if req.meth == @http.Get &&
+      @runtime.match_path_template("/type/array/string", path) {
       ignore(body_stream)
       let resp_body = string_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -228,7 +235,8 @@ pub fn[
       conn.end_response()
       return RouteMatch::Handled
     }
-    if req.meth == @http.Put && match_path_template("/type/array/string", path) {
+    if req.meth == @http.Put &&
+      @runtime.match_path_template("/type/array/string", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_8_body : Array[String] = @json.from_json(@json.parse(body_str))
@@ -237,7 +245,8 @@ pub fn[
       conn.end_response()
       return RouteMatch::Handled
     }
-    if req.meth == @http.Get && match_path_template("/type/array/boolean", path) {
+    if req.meth == @http.Get &&
+      @runtime.match_path_template("/type/array/boolean", path) {
       ignore(body_stream)
       let resp_body = boolean_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -246,7 +255,8 @@ pub fn[
       conn.end_response()
       return RouteMatch::Handled
     }
-    if req.meth == @http.Put && match_path_template("/type/array/boolean", path) {
+    if req.meth == @http.Put &&
+      @runtime.match_path_template("/type/array/boolean", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_10_body : Array[Bool] = @json.from_json(@json.parse(body_str))
@@ -255,7 +265,8 @@ pub fn[
       conn.end_response()
       return RouteMatch::Handled
     }
-    if req.meth == @http.Get && match_path_template("/type/array/float32", path) {
+    if req.meth == @http.Get &&
+      @runtime.match_path_template("/type/array/float32", path) {
       ignore(body_stream)
       let resp_body = float32_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -264,7 +275,8 @@ pub fn[
       conn.end_response()
       return RouteMatch::Handled
     }
-    if req.meth == @http.Put && match_path_template("/type/array/float32", path) {
+    if req.meth == @http.Put &&
+      @runtime.match_path_template("/type/array/float32", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_12_body : Array[Double] = @json.from_json(@json.parse(body_str))
@@ -273,7 +285,8 @@ pub fn[
       conn.end_response()
       return RouteMatch::Handled
     }
-    if req.meth == @http.Get && match_path_template("/type/array/unknown", path) {
+    if req.meth == @http.Get &&
+      @runtime.match_path_template("/type/array/unknown", path) {
       ignore(body_stream)
       let resp_body = unknown_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -282,7 +295,8 @@ pub fn[
       conn.end_response()
       return RouteMatch::Handled
     }
-    if req.meth == @http.Put && match_path_template("/type/array/unknown", path) {
+    if req.meth == @http.Put &&
+      @runtime.match_path_template("/type/array/unknown", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_14_body : Array[Json] = @json.from_json(@json.parse(body_str))
@@ -292,7 +306,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/array/datetime", path) {
+      @runtime.match_path_template("/type/array/datetime", path) {
       ignore(body_stream)
       let resp_body = datetime_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -302,7 +316,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/array/datetime", path) {
+      @runtime.match_path_template("/type/array/datetime", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_16_body : Array[String] = @json.from_json(@json.parse(body_str))
@@ -312,7 +326,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/array/duration", path) {
+      @runtime.match_path_template("/type/array/duration", path) {
       ignore(body_stream)
       let resp_body = duration_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -322,7 +336,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/array/duration", path) {
+      @runtime.match_path_template("/type/array/duration", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_18_body : Array[String] = @json.from_json(@json.parse(body_str))
@@ -332,7 +346,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/array/nullable-float", path) {
+      @runtime.match_path_template("/type/array/nullable-float", path) {
       ignore(body_stream)
       let resp_body = nullable_float_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -342,7 +356,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/array/nullable-float", path) {
+      @runtime.match_path_template("/type/array/nullable-float", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_20_body : Array[Nullable[Double]] = @json.from_json(
@@ -354,7 +368,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/array/nullable-int32", path) {
+      @runtime.match_path_template("/type/array/nullable-int32", path) {
       ignore(body_stream)
       let resp_body = nullable_int32_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -364,7 +378,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/array/nullable-int32", path) {
+      @runtime.match_path_template("/type/array/nullable-int32", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_22_body : Array[Nullable[Int]] = @json.from_json(
@@ -376,7 +390,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/array/nullable-model", path) {
+      @runtime.match_path_template("/type/array/nullable-model", path) {
       ignore(body_stream)
       let resp_body = nullable_model_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -386,7 +400,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/array/nullable-model", path) {
+      @runtime.match_path_template("/type/array/nullable-model", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_24_body : Array[Nullable[InnerModel]] = @json.from_json(
@@ -398,7 +412,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/array/nullable-string", path) {
+      @runtime.match_path_template("/type/array/nullable-string", path) {
       ignore(body_stream)
       let resp_body = nullable_string_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -408,7 +422,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/array/nullable-string", path) {
+      @runtime.match_path_template("/type/array/nullable-string", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_26_body : Array[Nullable[String]] = @json.from_json(
@@ -420,7 +434,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Get &&
-      match_path_template("/type/array/nullable-boolean", path) {
+      @runtime.match_path_template("/type/array/nullable-boolean", path) {
       ignore(body_stream)
       let resp_body = nullable_boolean_value_handler.get(group~)
       let headers : Map[String, String] = { "content-type": "application/json" }
@@ -430,7 +444,7 @@ pub fn[
       return RouteMatch::Handled
     }
     if req.meth == @http.Put &&
-      match_path_template("/type/array/nullable-boolean", path) {
+      @runtime.match_path_template("/type/array/nullable-boolean", path) {
       let body_bytes = body_stream.read_all()
       let body_str = body_bytes.text()
       let p_28_body : Array[Nullable[Bool]] = @json.from_json(
@@ -444,88 +458,88 @@ pub fn[
 
     // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
     let mut path_matched = false
-    if match_path_template("/type/array/int32", path) {
+    if @runtime.match_path_template("/type/array/int32", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/int32", path) {
+    if @runtime.match_path_template("/type/array/int32", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/int64", path) {
+    if @runtime.match_path_template("/type/array/int64", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/int64", path) {
+    if @runtime.match_path_template("/type/array/int64", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/model", path) {
+    if @runtime.match_path_template("/type/array/model", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/model", path) {
+    if @runtime.match_path_template("/type/array/model", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/string", path) {
+    if @runtime.match_path_template("/type/array/string", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/string", path) {
+    if @runtime.match_path_template("/type/array/string", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/boolean", path) {
+    if @runtime.match_path_template("/type/array/boolean", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/boolean", path) {
+    if @runtime.match_path_template("/type/array/boolean", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/float32", path) {
+    if @runtime.match_path_template("/type/array/float32", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/float32", path) {
+    if @runtime.match_path_template("/type/array/float32", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/unknown", path) {
+    if @runtime.match_path_template("/type/array/unknown", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/unknown", path) {
+    if @runtime.match_path_template("/type/array/unknown", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/datetime", path) {
+    if @runtime.match_path_template("/type/array/datetime", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/datetime", path) {
+    if @runtime.match_path_template("/type/array/datetime", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/duration", path) {
+    if @runtime.match_path_template("/type/array/duration", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/duration", path) {
+    if @runtime.match_path_template("/type/array/duration", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/nullable-float", path) {
+    if @runtime.match_path_template("/type/array/nullable-float", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/nullable-float", path) {
+    if @runtime.match_path_template("/type/array/nullable-float", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/nullable-int32", path) {
+    if @runtime.match_path_template("/type/array/nullable-int32", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/nullable-int32", path) {
+    if @runtime.match_path_template("/type/array/nullable-int32", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/nullable-model", path) {
+    if @runtime.match_path_template("/type/array/nullable-model", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/nullable-model", path) {
+    if @runtime.match_path_template("/type/array/nullable-model", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/nullable-string", path) {
+    if @runtime.match_path_template("/type/array/nullable-string", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/nullable-string", path) {
+    if @runtime.match_path_template("/type/array/nullable-string", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/nullable-boolean", path) {
+    if @runtime.match_path_template("/type/array/nullable-boolean", path) {
       path_matched = true
     }
-    if match_path_template("/type/array/nullable-boolean", path) {
+    if @runtime.match_path_template("/type/array/nullable-boolean", path) {
       path_matched = true
     }
     if path_matched {

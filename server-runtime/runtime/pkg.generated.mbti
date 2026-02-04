@@ -2,14 +2,32 @@
 package "kkkiio/typespec-moonbit-server-runtime/runtime"
 
 import {
+  "moonbitlang/async/http",
+  "moonbitlang/async/io",
   "moonbitlang/core/json",
 }
 
 // Values
+pub fn get_header(Map[String, String], String) -> String
+
+pub fn get_path_param(String, String, String) -> String
+
+pub fn get_query_param(String, String) -> String
+
+pub fn match_path_template(String, String) -> Bool
+
+pub fn strip_request_query(String) -> String
 
 // Errors
 
 // Types and methods
+pub struct EventStreamWriter {
+  conn : @http.ServerConnection
+}
+pub async fn EventStreamWriter::start(@http.ServerConnection, Int, String, extra_headers? : Map[String, String]) -> Self
+pub async fn[T : SseToEvent] EventStreamWriter::write(Self, T, flush? : Bool) -> Unit
+pub async fn EventStreamWriter::write_event(Self, id? : String, event? : String, data? : &@io.Data, flush? : Bool) -> Unit
+
 pub(all) struct Nullable[T](T?)
 #deprecated
 pub fn[T] Nullable::inner(Self[T]) -> T?
@@ -20,7 +38,17 @@ pub impl[T : Show] Show for Nullable[T]
 pub impl[T : ToJson] ToJson for Nullable[T]
 pub impl[T : @json.FromJson] @json.FromJson for Nullable[T]
 
+pub struct SseEvent {
+  event : String?
+  data : String
+}
+pub fn SseEvent::new(event? : String, data~ : String) -> Self
+pub impl ToJson for SseEvent
+
 // Type aliases
 
 // Traits
+pub(open) trait SseToEvent {
+  to_event(Self) -> SseEvent
+}
 

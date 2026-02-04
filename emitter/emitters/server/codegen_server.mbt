@@ -45,25 +45,12 @@ fn write_escaped_string_literal(sb : StringBuilder, s : String) -> Unit {
 pub fn emit_server_files(
   crate : @codemodel.Crate,
 ) -> Array[@codegen.OutputFile] raise {
-  let has_sse = crate.clients
-    .iter()
-    .flat_map(fn(c) { c.methods.iter() })
-    .any(fn(m) { m.is_sse })
   [
     @codegen.OutputFile::new("moon.pkg.json", emit_server_moon_pkg_json()),
     @codegen.OutputFile::new("README.mbt.md", emit_server_readme(crate)),
     @codegen.OutputFile::new("models.mbt", emit_server_models(crate)),
     @codegen.OutputFile::new("router.mbt", emit_server_router(crate)),
-    @codegen.OutputFile::new(
-      "router_helpers.mbt",
-      emit_server_router_helpers(crate),
-    ),
-  ] +
-  (if has_sse {
-    [@codegen.OutputFile::new("event_stream.mbt", server_event_stream_code)]
-  } else {
-    []
-  })
+  ]
 }
 
 ///|
@@ -443,7 +430,7 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
         buf.write_string(type_ref_to_string(p.type_))
       }
       if op.is_sse {
-        buf.write_string(", sse : EventStreamWriter")
+        buf.write_string(", sse : @runtime.EventStreamWriter")
       }
       buf.write_string(") -> ")
       if op.is_sse {
@@ -512,7 +499,7 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
     buf, "  async fn(req : @http.Request, body_stream : &@io.Reader, conn : @http.ServerConnection) -> RouteMatch {",
   )
   wln(buf, "    let full_path = req.path")
-  wln(buf, "    let path = strip_request_query(full_path)")
+  wln(buf, "    let path = @runtime.strip_request_query(full_path)")
   wln(buf, "    ")
   let mut op_counter = 0
   for ci in 0..<crate.clients.length() {
@@ -522,7 +509,9 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
       op_counter += 1
       let meth = server_meth_ctor(op.http_method)
       let normalized_tmpl = normalize_uri_template(op.path)
-      buf.write_string("    if req.meth == \{meth} && match_path_template(\"")
+      buf.write_string(
+        "    if req.meth == \{meth} && @runtime.match_path_template(\"",
+      )
       write_escaped_string_literal(buf, normalized_tmpl)
       wln(buf, "\", path) {")
 
@@ -553,19 +542,21 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
               "      let \{var_name} : \{type_ref_to_string(param.type_)} = @json.from_json(@json.parse(body_str))",
             )
           "path" => {
-            buf.write_string("      let \{var_name} = get_path_param(\"")
+            buf.write_string(
+              "      let \{var_name} = @runtime.get_path_param(\"",
+            )
             write_escaped_string_literal(buf, normalized_tmpl)
             buf.write_string("\", path, \"\{param.name}\")\n")
           }
           "header" =>
             wln(
               buf,
-              "      let \{var_name} = get_header(req.headers, \"\{param.name}\")",
+              "      let \{var_name} = @runtime.get_header(req.headers, \"\{param.name}\")",
             )
           "query" =>
             wln(
               buf,
-              "      let \{var_name} = get_query_param(full_path, \"\{param.name}\")",
+              "      let \{var_name} = @runtime.get_query_param(full_path, \"\{param.name}\")",
             )
           _ => fail("unsupported parameter location: \{param.location}")
         }
@@ -573,7 +564,7 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
       if op.is_sse {
         wln(
           buf,
-          "      let sse = EventStreamWriter::start(conn, \{op.status_code.to_string()}, \"\{status_reason_phrase(op.status_code)}\")",
+          "      let sse = @runtime.EventStreamWriter::start(conn, \{op.status_code.to_string()}, \"\{status_reason_phrase(op.status_code)}\")",
         )
         call_arg_exprs.push("sse")
         buf.write_string(
@@ -634,7 +625,7 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
   wln(buf, "    let mut path_matched = false")
   for client in crate.clients {
     for op in client.methods {
-      buf.write_string("    if match_path_template(\"")
+      buf.write_string("    if @runtime.match_path_template(\"")
       write_escaped_string_literal(buf, normalize_uri_template(op.path))
       buf.write_string("\", path) { path_matched = true }\n")
     }
@@ -675,260 +666,3 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
   )
   buf.to_string()
 }
-
-///|
-fn analyze_router_helper_needs(crate : @codemodel.Crate) -> (Bool, Bool, Bool) {
-  let mut need_path_param = false
-  let mut need_header = false
-  let mut need_query = false
-  for client in crate.clients {
-    for op in client.methods {
-      for p in op.parameters {
-        if p.location == "path" {
-          need_path_param = true
-        } else if p.location == "header" {
-          need_header = true
-        } else if p.location == "query" {
-          need_query = true
-        }
-      }
-    }
-  }
-  (need_path_param, need_header, need_query)
-}
-
-///|
-fn emit_server_router_helpers(crate : @codemodel.Crate) -> String {
-  let buf = StringBuilder::new(size_hint=2048)
-  let (need_path_param, need_header, need_query) = analyze_router_helper_needs(
-    crate,
-  )
-  buf.write_string(strip_request_query_code)
-  buf.write_string(match_path_template_code)
-  if need_path_param {
-    buf.write_string(get_path_param_code)
-  }
-  if need_header {
-    buf.write_string(get_header_code)
-  }
-  if need_query {
-    buf.write_string(get_query_param_code)
-  }
-  buf.to_string()
-}
-
-///|
-let strip_request_query_code =
-  #|///|
-  #|fn strip_request_query(path : String) -> String {
-  #|  let parts = path.split("?").to_array()
-  #|  if parts.length() == 0 { path } else { parts[0].to_string() }
-  #|}
-  #|
-
-///|
-let match_path_template_code =
-  #|///|
-  #|fn match_path_template(template : String, path : String) -> Bool {
-  #|  let tlen = template.length()
-  #|  let plen = path.length()
-  #|  let mut ti = 0
-  #|  let mut pi = 0
-  #|  while ti < tlen && pi < plen {
-  #|    if template.code_unit_at(ti) == '{' {
-  #|      // find matching `}` in template
-  #|      let mut close = ti + 1
-  #|      while close < tlen && template.code_unit_at(close) != '}' {
-  #|        close += 1
-  #|      }
-  #|      if close >= tlen {
-  #|        return false
-  #|      }
-  #|      // match a non-empty path segment
-  #|      let seg_start = pi
-  #|      while pi < plen && path.code_unit_at(pi) != '/' {
-  #|        pi += 1
-  #|      }
-  #|      if pi == seg_start {
-  #|        return false
-  #|      }
-  #|      ti = close + 1
-  #|    } else {
-  #|      if template.code_unit_at(ti) != path.code_unit_at(pi) {
-  #|        return false
-  #|      }
-  #|      ti += 1
-  #|      pi += 1
-  #|    }
-  #|  }
-  #|  ti == tlen && pi == plen
-  #|}
-  #|
-
-///|
-let get_path_param_code =
-  #|///|
-  #|fn get_path_param(template : String, path : String, name : String) -> String {
-  #|  let tlen = template.length()
-  #|  let plen = path.length()
-  #|  let mut ti = 0
-  #|  let mut pi = 0
-  #|  while ti < tlen && pi < plen {
-  #|    if template.code_unit_at(ti) == '{' {
-  #|      let mut close = ti + 1
-  #|      while close < tlen && template.code_unit_at(close) != '}' {
-  #|        close += 1
-  #|      }
-  #|      if close >= tlen {
-  #|        return ""
-  #|      }
-  #|      let key_sb = StringBuilder::new(size_hint=close - (ti + 1))
-  #|      for k in (ti + 1)..<close {
-  #|        key_sb.write_char(template.code_unit_at(k).to_int().unsafe_to_char())
-  #|      }
-  #|      let key = key_sb.to_string()
-  #|      let seg_start = pi
-  #|      while pi < plen && path.code_unit_at(pi) != '/' {
-  #|        pi += 1
-  #|      }
-  #|      if key == name {
-  #|        let seg_sb = StringBuilder::new(size_hint=pi - seg_start)
-  #|        for k in seg_start..<pi {
-  #|          seg_sb.write_char(path.code_unit_at(k).to_int().unsafe_to_char())
-  #|        }
-  #|        return seg_sb.to_string()
-  #|      }
-  #|      ti = close + 1
-  #|    } else {
-  #|      if template.code_unit_at(ti) != path.code_unit_at(pi) {
-  #|        return ""
-  #|      }
-  #|      ti += 1
-  #|      pi += 1
-  #|    }
-  #|  }
-  #|  ""
-  #|}
-  #|
-
-///|
-let get_header_code =
-  #|///|
-  #|fn get_header(headers : Map[String, String], name : String) -> String {
-  #|  match headers.get(name.to_lower().to_string()) {
-  #|    Some(v) => v
-  #|    None => ""
-  #|  }
-  #|}
-  #|
-
-///|
-let get_query_param_code =
-  #|///|
-  #|fn get_query_param(full_path : String, name : String) -> String {
-  #|  let parts = full_path.split("?").to_array()
-  #|  if parts.length() < 2 { return "" }
-  #|  let query = parts[1].to_string()
-  #|  for pair in query.split("&") {
-  #|    let kv = pair.split("=").to_array()
-  #|    if kv.length() >= 2 {
-  #|      if kv[0].to_string() == name { return kv[1].to_string() }
-  #|    }
-  #|  }
-  #|  ""
-  #|}
-  #|
-
-///|
-let server_event_stream_code : String =
-  #|///|
-  #|/// Server-Sent Events (SSE) 工具。
-  #|///
-  #|/// 提供 `text/event-stream` 响应的写入封装，方便 handler 端持续推送事件。
-  #|pub struct EventStreamWriter {
-  #|  conn : @http.ServerConnection
-  #|}
-  #|
-  #|///|
-  #|fn sse_default_headers() -> Map[String, String] {
-  #|  {
-  #|    "content-type": "text/event-stream",
-  #|    "cache-control": "no-cache",
-  #|    "connection": "keep-alive",
-  #|    "x-accel-buffering": "no",
-  #|  }
-  #|}
-  #|
-  #|///|
-  #|/// 启动 SSE 响应并返回写入器。
-  #|pub async fn EventStreamWriter::start(
-  #|  conn : @http.ServerConnection,
-  #|  status : Int,
-  #|  reason : String,
-  #|  extra_headers? : Map[String, String] = {},
-  #|) -> EventStreamWriter {
-  #|  let headers = sse_default_headers()
-  #|  for k, v in extra_headers {
-  #|    headers.set(k, v)
-  #|  }
-  #|  conn.send_response(status, reason, extra_headers=headers)
-  #|  EventStreamWriter::{ conn }
-  #|}
-  #|
-  #|///|
-  #|/// 发送一条 SSE event（按 SSE 行协议拼装）。
-  #|pub async fn EventStreamWriter::write_event(
-  #|  self : EventStreamWriter,
-  #|  id? : String,
-  #|  event? : String,
-  #|  data? : &@io.Data,
-  #|  flush? : Bool = true,
-  #|) -> Unit {
-  #|  if event is Some(event) {
-  #|    self.conn.write("event: \{event}\n")
-  #|  }
-  #|  if data is Some(data) {
-  #|    self.conn.write(b"data: ")
-  #|    self.conn.write(data)
-  #|    self.conn.write(b"\n")
-  #|  }
-  #|  if id is Some(id) {
-  #|    self.conn.write("id: \{id}\n")
-  #|  }
-  #|  self.conn.write(b"\n")
-  #|  if flush {
-  #|    self.conn.flush()
-  #|  }
-  #|}
-  #|
-  #|///|
-  #|/// 表示一条 SSE 事件（便于业务类型转换）。
-  #|pub struct SseEvent {
-  #|  event : String?
-  #|  data : String
-  #|} derive(ToJson)
-  #|
-  #|///|
-  #|pub fn SseEvent::new(event? : String, data~ : String) -> SseEvent {
-  #|  SseEvent::{ event, data }
-  #|}
-  #|
-  #|///|
-  #|/// 将业务类型转换为 SSE 事件。
-  #|pub(open) trait SseToEvent {
-  #|  to_event(self : Self) -> SseEvent
-  #|}
-  #|
-  #|///|
-  #|/// 将实现了 `SseToEvent` 的事件写入 SSE stream。
-  #|pub async fn[T : SseToEvent] EventStreamWriter::write(
-  #|  self : EventStreamWriter,
-  #|  event : T,
-  #|  flush? : Bool = true,
-  #|) -> Unit {
-  #|  let sse_event = event.to_event()
-  #|  self.write_event(event?=sse_event.event, data=sse_event.data, flush~)
-  #|}
-  #|
-
-///|
