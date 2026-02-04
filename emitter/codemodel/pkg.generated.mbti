@@ -47,6 +47,9 @@ pub(all) struct Parameter {
   name : String
   type_ : TypeRef
   location : String
+  optional : Bool
+  explode : Bool
+  array_encoding : String?
 }
 
 pub(all) enum TypeRef {

@@ -4,6 +4,9 @@
   "deps": {
     "moonbitlang/async": "0.16.1",
     "moonbitlang/x": "0.4.38",
+    "kkkiio/typespec-moonbit-client-runtime": {
+      "path": "../client-runtime"
+    },
     "kkkiio/typespec-moonbit-server-runtime": {
       "path": "../server-runtime"
     }

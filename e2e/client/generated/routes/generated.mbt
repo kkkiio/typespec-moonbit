@@ -1,332 +1,4 @@
 ///|
-/// 将 path 字符串按 WHATWG URL Standard 的 path percent-encode set 做编码（类似 Rust `url::Url::set_path`）。
-///
-/// - 保留 `/` 作为路径分隔符（不会被编码为 `%2F`）
-/// - 对空格等不安全字符编码为 `%XX`
-/// - 如果已经存在合法的 `%XX`，不会 double-encode
-fn __tsmb_encode_path(path : String) -> String {
-  let bytes = @encoding/utf8.encode(path)
-  let out = StringBuilder::new(size_hint=bytes.length() * 3)
-  let mut i = 0
-  while i < bytes.length() {
-    let b = bytes[i]
-    // keep %XX
-    if b.to_int() == 0x25 &&
-      i + 2 < bytes.length() &&
-      __tsmb_is_hex_digit(bytes[i + 1]) &&
-      __tsmb_is_hex_digit(bytes[i + 2]) {
-      out.write_char('%')
-      out.write_char(bytes[i + 1].to_int().unsafe_to_char())
-      out.write_char(bytes[i + 2].to_int().unsafe_to_char())
-      i += 3
-      continue
-    }
-    // '/' as separator
-    if b.to_int() == 0x2F {
-      out.write_char('/')
-      i += 1
-      continue
-    }
-    // for special URLs, backslash is treated as separator
-    if b.to_int() == 0x5C {
-      out.write_char('/')
-      i += 1
-      continue
-    }
-    if __tsmb_should_encode_path_byte(b) {
-      out.write_char('%')
-      out.write_string(__tsmb_hex2(b))
-    } else {
-      out.write_char(b.to_int().unsafe_to_char())
-    }
-    i += 1
-  }
-  out.to_string()
-}
-
-///|
-/// 将 request target 编码为可用于 HTTP 请求的路径字符串。
-///
-/// - 仅对 `?` 或 `#` 之前的 path 部分做 `__tsmb_encode_path` 等价处理
-/// - `?query` 与 `#fragment` 部分保持原样（至少保证 `?` 不会被编码为 `%3F`）
-fn __tsmb_encode_request_target(target : String) -> String {
-  let bytes = @encoding/utf8.encode(target)
-  let out = StringBuilder::new(size_hint=bytes.length() * 3)
-  let mut i = 0
-  while i < bytes.length() {
-    let b = bytes[i]
-    // query/fragment separator: keep as-is, and keep the tail as-is
-    if b.to_int() == 0x3F || b.to_int() == 0x23 {
-      out.write_char(b.to_int().unsafe_to_char())
-      i += 1
-      while i < bytes.length() {
-        let bb = bytes[i]
-        // keep %XX
-        if bb.to_int() == 0x25 &&
-          i + 2 < bytes.length() &&
-          __tsmb_is_hex_digit(bytes[i + 1]) &&
-          __tsmb_is_hex_digit(bytes[i + 2]) {
-          out.write_char('%')
-          out.write_char(bytes[i + 1].to_int().unsafe_to_char())
-          out.write_char(bytes[i + 2].to_int().unsafe_to_char())
-          i += 3
-          continue
-        }
-        // keep ASCII bytes as-is, percent-encode others
-        let x = bb.to_int()
-        if x <= 0x1F || x == 0x7F || x >= 0x80 {
-          out.write_char('%')
-          out.write_string(__tsmb_hex2(bb))
-        } else {
-          out.write_char(x.unsafe_to_char())
-        }
-        i += 1
-      }
-      break
-    }
-    // keep %XX
-    if b.to_int() == 0x25 &&
-      i + 2 < bytes.length() &&
-      __tsmb_is_hex_digit(bytes[i + 1]) &&
-      __tsmb_is_hex_digit(bytes[i + 2]) {
-      out.write_char('%')
-      out.write_char(bytes[i + 1].to_int().unsafe_to_char())
-      out.write_char(bytes[i + 2].to_int().unsafe_to_char())
-      i += 3
-      continue
-    }
-    // '/' as separator
-    if b.to_int() == 0x2F {
-      out.write_char('/')
-      i += 1
-      continue
-    }
-    // for special URLs, backslash is treated as separator
-    if b.to_int() == 0x5C {
-      out.write_char('/')
-      i += 1
-      continue
-    }
-    if __tsmb_should_encode_path_byte(b) {
-      out.write_char('%')
-      out.write_string(__tsmb_hex2(b))
-    } else {
-      out.write_char(b.to_int().unsafe_to_char())
-    }
-    i += 1
-  }
-  out.to_string()
-}
-
-///|
-fn __tsmb_is_hex_digit(b : Byte) -> Bool {
-  match b.to_int() {
-    0x30..=0x39 => true // 0-9
-    0x41..=0x46 => true // A-F
-    0x61..=0x66 => true // a-f
-    _ => false
-  }
-}
-
-///|
-fn __tsmb_hex2(byte : Byte) -> String {
-  let mut s = byte.to_int().to_string(radix=16).to_upper()
-  if s.length() == 1 {
-    s = "0" + s
-  }
-  s
-}
-
-///|
-fn __tsmb_should_encode_path_byte(b : Byte) -> Bool {
-  // WHATWG URL Standard: path percent-encode set:
-  // controls + space + " < > ` + # ? { }
-  let x = b.to_int()
-  match x {
-    0x00..=0x1F => true
-    0x7F => true
-    0x20 => true // space
-    0x22 => true // "
-    0x3C => true // <
-    0x3E => true // >
-    0x60 => true // `
-    0x23 => true // #
-    0x3F => true // ?
-    0x7B => true // {
-    0x7D => true // }
-    0x25 => true // %
-    // for simplicity: encode non-ascii bytes
-    0x80..=0xFF => true
-    _ => false
-  }
-}
-
-///|
-fn __tsmb_join(xs : Array[String], sep : String) -> String {
-  let sb = StringBuilder::new(size_hint=32)
-  for i in 0..<xs.length() {
-    if i > 0 {
-      sb.write_string(sep)
-    }
-    sb.write_string(xs[i])
-  }
-  sb.to_string()
-}
-
-///|
-fn __tsmb_expand_string(
-  op : String,
-  name : String,
-  _explode : Bool,
-  value : String,
-) -> String {
-  match op {
-    "?" => "?" + name + "=" + value
-    "&" => "&" + name + "=" + value
-    "/" => "/" + value
-    "." => "." + value
-    ";" => ";" + name + "=" + value
-    _ => value
-  }
-}
-
-///|
-fn __tsmb_expand_array(
-  op : String,
-  name : String,
-  explode : Bool,
-  value : Array[String],
-) -> String {
-  match op {
-    "?" =>
-      if explode {
-        let parts = Array::new(capacity=value.length())
-        for x in value {
-          parts.push(name + "=" + x)
-        }
-        "?" + __tsmb_join(parts, "&")
-      } else {
-        "?" + name + "=" + __tsmb_join(value, ",")
-      }
-    "&" =>
-      if explode {
-        let parts = Array::new(capacity=value.length())
-        for x in value {
-          parts.push("&" + name + "=" + x)
-        }
-        __tsmb_join(parts, "")
-      } else {
-        "&" + name + "=" + __tsmb_join(value, ",")
-      }
-    "/" => "/" + __tsmb_join(value, if explode { "/" } else { "," })
-    "." => "." + __tsmb_join(value, if explode { "." } else { "," })
-    ";" =>
-      if explode {
-        let parts = Array::new(capacity=value.length())
-        for x in value {
-          parts.push(";" + name + "=" + x)
-        }
-        __tsmb_join(parts, "")
-      } else {
-        ";" + name + "=" + __tsmb_join(value, ",")
-      }
-    _ => __tsmb_join(value, ",")
-  }
-}
-
-///|
-fn __tsmb_expand_record(
-  op : String,
-  name : String,
-  explode : Bool,
-  value : Map[String, Int],
-) -> String {
-  let pairs = value.to_array()
-  // Keep output stable by sorting by key.
-  pairs.sort_by_key(p => p.0)
-  match op {
-    "?" =>
-      if explode {
-        "?" + __tsmb_expand_record_inner(pairs, true, "&")
-      } else {
-        "?" + name + "=" + __tsmb_expand_record_inner(pairs, false, ",")
-      }
-    "&" =>
-      if explode {
-        let parts = Array::new()
-        for kv in pairs {
-          let k = kv.0
-          let v = kv.1
-          parts.push("&" + k + "=" + v.to_string())
-        }
-        __tsmb_join(parts, "")
-      } else {
-        "&" + name + "=" + __tsmb_expand_record_inner(pairs, false, ",")
-      }
-    "/" =>
-      "/" +
-      __tsmb_expand_record_inner(
-        pairs,
-        explode,
-        if explode {
-          "/"
-        } else {
-          ","
-        },
-      )
-    "." =>
-      "." +
-      __tsmb_expand_record_inner(
-        pairs,
-        explode,
-        if explode {
-          "."
-        } else {
-          ","
-        },
-      )
-    ";" =>
-      if explode {
-        let parts = Array::new()
-        for kv in pairs {
-          let k = kv.0
-          let v = kv.1
-          parts.push(";" + k + "=" + v.to_string())
-        }
-        __tsmb_join(parts, "")
-      } else {
-        ";" + name + "=" + __tsmb_expand_record_inner(pairs, false, ",")
-      }
-    _ => __tsmb_expand_record_inner(pairs, explode, ",")
-  }
-}
-
-///|
-fn __tsmb_expand_record_inner(
-  pairs : Array[(String, Int)],
-  explode : Bool,
-  sep : String,
-) -> String {
-  let parts = Array::new()
-  if explode {
-    for kv in pairs {
-      let k = kv.0
-      let v = kv.1
-      parts.push(k + "=" + v.to_string())
-    }
-    __tsmb_join(parts, sep)
-  } else {
-    for kv in pairs {
-      let k = kv.0
-      let v = kv.1
-      parts.push(k)
-      parts.push(v.to_string())
-    }
-    __tsmb_join(parts, ",")
-  }
-}
-
-///|
 /// RoutesClient HTTP 客户端。
 pub struct RoutesClient {
   base_url : String
@@ -345,7 +17,13 @@ pub async fn RoutesClient::get_routes_fixed(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  client.get("/routes/fixed")
+  let headers : Map[String, String] = {}
+  let base_path = @client_runtime.encode_request_target("/routes/fixed")
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
+  let path = sb.to_string()
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -368,12 +46,17 @@ pub async fn ExplodeClient::get_routes_path_simple_explode_primitive_param__(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=77)
-  sb.write_string("/routes/path/simple/explode/primitive")
-  sb.write_string(__tsmb_expand_string("", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=109)
+  sb0.write_string("/routes/path/simple/explode/primitive")
+  sb0.write_string(@client_runtime.expand_string("", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -384,12 +67,17 @@ pub async fn ExplodeClient::get_routes_path_simple_explode_array_param__(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=73)
-  sb.write_string("/routes/path/simple/explode/array")
-  sb.write_string(__tsmb_expand_array("", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=105)
+  sb0.write_string("/routes/path/simple/explode/array")
+  sb0.write_string(@client_runtime.expand_array("", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -400,12 +88,17 @@ pub async fn ExplodeClient::get_routes_path_simple_explode_record_param__(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=74)
-  sb.write_string("/routes/path/simple/explode/record")
-  sb.write_string(__tsmb_expand_record("", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=106)
+  sb0.write_string("/routes/path/simple/explode/record")
+  sb0.write_string(@client_runtime.expand_record("", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -416,12 +109,17 @@ pub async fn ExplodeClient::get_routes_path_path_explode_primitive__param__(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=76)
-  sb.write_string("/routes/path/path/explode/primitive")
-  sb.write_string(__tsmb_expand_string("/", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=108)
+  sb0.write_string("/routes/path/path/explode/primitive")
+  sb0.write_string(@client_runtime.expand_string("/", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -432,12 +130,17 @@ pub async fn ExplodeClient::get_routes_path_path_explode_array__param__(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=72)
-  sb.write_string("/routes/path/path/explode/array")
-  sb.write_string(__tsmb_expand_array("/", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=104)
+  sb0.write_string("/routes/path/path/explode/array")
+  sb0.write_string(@client_runtime.expand_array("/", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -448,12 +151,17 @@ pub async fn ExplodeClient::get_routes_path_path_explode_record__param__(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=73)
-  sb.write_string("/routes/path/path/explode/record")
-  sb.write_string(__tsmb_expand_record("/", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=105)
+  sb0.write_string("/routes/path/path/explode/record")
+  sb0.write_string(@client_runtime.expand_record("/", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -464,12 +172,17 @@ pub async fn ExplodeClient::get_routes_path_label_explode_primitive__param__(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=77)
-  sb.write_string("/routes/path/label/explode/primitive")
-  sb.write_string(__tsmb_expand_string(".", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=109)
+  sb0.write_string("/routes/path/label/explode/primitive")
+  sb0.write_string(@client_runtime.expand_string(".", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -480,12 +193,17 @@ pub async fn ExplodeClient::get_routes_path_label_explode_array__param__(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=73)
-  sb.write_string("/routes/path/label/explode/array")
-  sb.write_string(__tsmb_expand_array(".", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=105)
+  sb0.write_string("/routes/path/label/explode/array")
+  sb0.write_string(@client_runtime.expand_array(".", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -496,12 +214,17 @@ pub async fn ExplodeClient::get_routes_path_label_explode_record__param__(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=74)
-  sb.write_string("/routes/path/label/explode/record")
-  sb.write_string(__tsmb_expand_record(".", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=106)
+  sb0.write_string("/routes/path/label/explode/record")
+  sb0.write_string(@client_runtime.expand_record(".", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -512,12 +235,17 @@ pub async fn ExplodeClient::get_routes_path_matrix_explode_primitive__param__(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=78)
-  sb.write_string("/routes/path/matrix/explode/primitive")
-  sb.write_string(__tsmb_expand_string(";", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=110)
+  sb0.write_string("/routes/path/matrix/explode/primitive")
+  sb0.write_string(@client_runtime.expand_string(";", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -528,12 +256,17 @@ pub async fn ExplodeClient::get_routes_path_matrix_explode_array__param__(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=74)
-  sb.write_string("/routes/path/matrix/explode/array")
-  sb.write_string(__tsmb_expand_array(";", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=106)
+  sb0.write_string("/routes/path/matrix/explode/array")
+  sb0.write_string(@client_runtime.expand_array(";", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -544,12 +277,17 @@ pub async fn ExplodeClient::get_routes_path_matrix_explode_record__param__(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=75)
-  sb.write_string("/routes/path/matrix/explode/record")
-  sb.write_string(__tsmb_expand_record(";", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=107)
+  sb0.write_string("/routes/path/matrix/explode/record")
+  sb0.write_string(@client_runtime.expand_record(";", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -560,12 +298,17 @@ pub async fn ExplodeClient::get_routes_query_query_expansion_explode_primitive__
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=88)
-  sb.write_string("/routes/query/query-expansion/explode/primitive")
-  sb.write_string(__tsmb_expand_string("?", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=120)
+  sb0.write_string("/routes/query/query-expansion/explode/primitive")
+  sb0.write_string(@client_runtime.expand_string("?", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -576,12 +319,17 @@ pub async fn ExplodeClient::get_routes_query_query_expansion_explode_array__para
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=84)
-  sb.write_string("/routes/query/query-expansion/explode/array")
-  sb.write_string(__tsmb_expand_array("?", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=116)
+  sb0.write_string("/routes/query/query-expansion/explode/array")
+  sb0.write_string(@client_runtime.expand_array("?", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -592,12 +340,17 @@ pub async fn ExplodeClient::get_routes_query_query_expansion_explode_record__par
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=85)
-  sb.write_string("/routes/query/query-expansion/explode/record")
-  sb.write_string(__tsmb_expand_record("?", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=117)
+  sb0.write_string("/routes/query/query-expansion/explode/record")
+  sb0.write_string(@client_runtime.expand_record("?", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -608,14 +361,19 @@ pub async fn ExplodeClient::get_routes_query_query_continuation_explode_primitiv
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=102)
-  sb.write_string(
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=134)
+  sb0.write_string(
     "/routes/query/query-continuation/explode/primitive?fixed=true",
   )
-  sb.write_string(__tsmb_expand_string("&", "param", true, param))
+  sb0.write_string(@client_runtime.expand_string("&", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -626,12 +384,17 @@ pub async fn ExplodeClient::get_routes_query_query_continuation_explode_array_fi
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=98)
-  sb.write_string("/routes/query/query-continuation/explode/array?fixed=true")
-  sb.write_string(__tsmb_expand_array("&", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=130)
+  sb0.write_string("/routes/query/query-continuation/explode/array?fixed=true")
+  sb0.write_string(@client_runtime.expand_array("&", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -642,12 +405,17 @@ pub async fn ExplodeClient::get_routes_query_query_continuation_explode_record_f
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=99)
-  sb.write_string("/routes/query/query-continuation/explode/record?fixed=true")
-  sb.write_string(__tsmb_expand_record("&", "param", true, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=131)
+  sb0.write_string("/routes/query/query-continuation/explode/record?fixed=true")
+  sb0.write_string(@client_runtime.expand_record("&", "param", true, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -670,12 +438,17 @@ pub async fn StandardClient::get_routes_path_simple_standard_primitive_param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=77)
-  sb.write_string("/routes/path/simple/standard/primitive")
-  sb.write_string(__tsmb_expand_string("", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=109)
+  sb0.write_string("/routes/path/simple/standard/primitive")
+  sb0.write_string(@client_runtime.expand_string("", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -686,12 +459,17 @@ pub async fn StandardClient::get_routes_path_simple_standard_array_param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=73)
-  sb.write_string("/routes/path/simple/standard/array")
-  sb.write_string(__tsmb_expand_array("", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=105)
+  sb0.write_string("/routes/path/simple/standard/array")
+  sb0.write_string(@client_runtime.expand_array("", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -702,12 +480,17 @@ pub async fn StandardClient::get_routes_path_simple_standard_record_param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=74)
-  sb.write_string("/routes/path/simple/standard/record")
-  sb.write_string(__tsmb_expand_record("", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=106)
+  sb0.write_string("/routes/path/simple/standard/record")
+  sb0.write_string(@client_runtime.expand_record("", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -718,12 +501,17 @@ pub async fn StandardClient::get_routes_path_path_standard_primitive__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=76)
-  sb.write_string("/routes/path/path/standard/primitive")
-  sb.write_string(__tsmb_expand_string("/", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=108)
+  sb0.write_string("/routes/path/path/standard/primitive")
+  sb0.write_string(@client_runtime.expand_string("/", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -734,12 +522,17 @@ pub async fn StandardClient::get_routes_path_path_standard_array__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=72)
-  sb.write_string("/routes/path/path/standard/array")
-  sb.write_string(__tsmb_expand_array("/", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=104)
+  sb0.write_string("/routes/path/path/standard/array")
+  sb0.write_string(@client_runtime.expand_array("/", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -750,12 +543,17 @@ pub async fn StandardClient::get_routes_path_path_standard_record__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=73)
-  sb.write_string("/routes/path/path/standard/record")
-  sb.write_string(__tsmb_expand_record("/", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=105)
+  sb0.write_string("/routes/path/path/standard/record")
+  sb0.write_string(@client_runtime.expand_record("/", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -766,12 +564,17 @@ pub async fn StandardClient::get_routes_path_label_standard_primitive__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=77)
-  sb.write_string("/routes/path/label/standard/primitive")
-  sb.write_string(__tsmb_expand_string(".", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=109)
+  sb0.write_string("/routes/path/label/standard/primitive")
+  sb0.write_string(@client_runtime.expand_string(".", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -782,12 +585,17 @@ pub async fn StandardClient::get_routes_path_label_standard_array__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=73)
-  sb.write_string("/routes/path/label/standard/array")
-  sb.write_string(__tsmb_expand_array(".", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=105)
+  sb0.write_string("/routes/path/label/standard/array")
+  sb0.write_string(@client_runtime.expand_array(".", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -798,12 +606,17 @@ pub async fn StandardClient::get_routes_path_label_standard_record__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=74)
-  sb.write_string("/routes/path/label/standard/record")
-  sb.write_string(__tsmb_expand_record(".", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=106)
+  sb0.write_string("/routes/path/label/standard/record")
+  sb0.write_string(@client_runtime.expand_record(".", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -814,12 +627,17 @@ pub async fn StandardClient::get_routes_path_matrix_standard_primitive__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=78)
-  sb.write_string("/routes/path/matrix/standard/primitive")
-  sb.write_string(__tsmb_expand_string(";", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=110)
+  sb0.write_string("/routes/path/matrix/standard/primitive")
+  sb0.write_string(@client_runtime.expand_string(";", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -830,12 +648,17 @@ pub async fn StandardClient::get_routes_path_matrix_standard_array__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=74)
-  sb.write_string("/routes/path/matrix/standard/array")
-  sb.write_string(__tsmb_expand_array(";", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=106)
+  sb0.write_string("/routes/path/matrix/standard/array")
+  sb0.write_string(@client_runtime.expand_array(";", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -846,12 +669,17 @@ pub async fn StandardClient::get_routes_path_matrix_standard_record__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=75)
-  sb.write_string("/routes/path/matrix/standard/record")
-  sb.write_string(__tsmb_expand_record(";", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=107)
+  sb0.write_string("/routes/path/matrix/standard/record")
+  sb0.write_string(@client_runtime.expand_record(";", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -862,12 +690,17 @@ pub async fn StandardClient::get_routes_query_query_expansion_standard_primitive
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=88)
-  sb.write_string("/routes/query/query-expansion/standard/primitive")
-  sb.write_string(__tsmb_expand_string("?", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=120)
+  sb0.write_string("/routes/query/query-expansion/standard/primitive")
+  sb0.write_string(@client_runtime.expand_string("?", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -878,12 +711,17 @@ pub async fn StandardClient::get_routes_query_query_expansion_standard_array__pa
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=84)
-  sb.write_string("/routes/query/query-expansion/standard/array")
-  sb.write_string(__tsmb_expand_array("?", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=116)
+  sb0.write_string("/routes/query/query-expansion/standard/array")
+  sb0.write_string(@client_runtime.expand_array("?", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -894,12 +732,17 @@ pub async fn StandardClient::get_routes_query_query_expansion_standard_record__p
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=85)
-  sb.write_string("/routes/query/query-expansion/standard/record")
-  sb.write_string(__tsmb_expand_record("?", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=117)
+  sb0.write_string("/routes/query/query-expansion/standard/record")
+  sb0.write_string(@client_runtime.expand_record("?", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -910,14 +753,19 @@ pub async fn StandardClient::get_routes_query_query_continuation_standard_primit
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=102)
-  sb.write_string(
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=134)
+  sb0.write_string(
     "/routes/query/query-continuation/standard/primitive?fixed=true",
   )
-  sb.write_string(__tsmb_expand_string("&", "param", false, param))
+  sb0.write_string(@client_runtime.expand_string("&", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -928,12 +776,17 @@ pub async fn StandardClient::get_routes_query_query_continuation_standard_array_
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=98)
-  sb.write_string("/routes/query/query-continuation/standard/array?fixed=true")
-  sb.write_string(__tsmb_expand_array("&", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=130)
+  sb0.write_string("/routes/query/query-continuation/standard/array?fixed=true")
+  sb0.write_string(@client_runtime.expand_array("&", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -944,12 +797,19 @@ pub async fn StandardClient::get_routes_query_query_continuation_standard_record
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=99)
-  sb.write_string("/routes/query/query-continuation/standard/record?fixed=true")
-  sb.write_string(__tsmb_expand_record("&", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=131)
+  sb0.write_string(
+    "/routes/query/query-continuation/standard/record?fixed=true",
+  )
+  sb0.write_string(@client_runtime.expand_record("&", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -971,7 +831,15 @@ pub async fn InInterfaceClient::get_routes_in_interface_fixed(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  client.get("/routes/in-interface/fixed")
+  let headers : Map[String, String] = {}
+  let base_path = @client_runtime.encode_request_target(
+    "/routes/in-interface/fixed",
+  )
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
+  let path = sb.to_string()
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -994,12 +862,17 @@ pub async fn PathParametersClient::get_routes_path_template_only__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=66)
-  sb.write_string("/routes/path/template-only/")
-  sb.write_string(__tsmb_expand_string("", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=98)
+  sb0.write_string("/routes/path/template-only/")
+  sb0.write_string(@client_runtime.expand_string("", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -1010,12 +883,17 @@ pub async fn PathParametersClient::get_routes_path_explicit__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=61)
-  sb.write_string("/routes/path/explicit/")
-  sb.write_string(__tsmb_expand_string("", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=93)
+  sb0.write_string("/routes/path/explicit/")
+  sb0.write_string(@client_runtime.expand_string("", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -1026,12 +904,17 @@ pub async fn PathParametersClient::get_routes_path_annotation_only__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=68)
-  sb.write_string("/routes/path/annotation-only/")
-  sb.write_string(__tsmb_expand_string("", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=100)
+  sb0.write_string("/routes/path/annotation-only/")
+  sb0.write_string(@client_runtime.expand_string("", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -1054,12 +937,17 @@ pub async fn QueryParametersClient::get_routes_query_template_only__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=67)
-  sb.write_string("/routes/query/template-only")
-  sb.write_string(__tsmb_expand_string("?", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=99)
+  sb0.write_string("/routes/query/template-only")
+  sb0.write_string(@client_runtime.expand_string("?", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -1070,12 +958,17 @@ pub async fn QueryParametersClient::get_routes_query_explicit__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=62)
-  sb.write_string("/routes/query/explicit")
-  sb.write_string(__tsmb_expand_string("?", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=94)
+  sb0.write_string("/routes/query/explicit")
+  sb0.write_string(@client_runtime.expand_string("?", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -1086,12 +979,17 @@ pub async fn QueryParametersClient::get_routes_query_annotation_only__param_(
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=69)
-  sb.write_string("/routes/query/annotation-only")
-  sb.write_string(__tsmb_expand_string("?", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=101)
+  sb0.write_string("/routes/query/annotation-only")
+  sb0.write_string(@client_runtime.expand_string("?", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -1116,12 +1014,17 @@ pub async fn ReservedExpansionClient::get_routes_path_reserved_expansion_templat
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=81)
-  sb.write_string("/routes/path/reserved-expansion/template/")
-  sb.write_string(__tsmb_expand_string("+", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=113)
+  sb0.write_string("/routes/path/reserved-expansion/template/")
+  sb0.write_string(@client_runtime.expand_string("+", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }
 
 ///|
@@ -1132,10 +1035,15 @@ pub async fn ReservedExpansionClient::get_routes_path_reserved_expansion_annotat
 ) -> @http.Response {
   let client = @http.Client::new(self.base_url)
   defer client.close()
-  let sb = StringBuilder::new(size_hint=83)
-  sb.write_string("/routes/path/reserved-expansion/annotation/")
-  sb.write_string(__tsmb_expand_string("+", "param", false, param))
+  let headers : Map[String, String] = {}
+  let sb0 = StringBuilder::new(size_hint=115)
+  sb0.write_string("/routes/path/reserved-expansion/annotation/")
+  sb0.write_string(@client_runtime.expand_string("+", "param", false, param))
+  let base_path = sb0.to_string()
+  let base_path = @client_runtime.encode_request_target(base_path)
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
   let path = sb.to_string()
-  let path = __tsmb_encode_request_target(path)
-  client.get(path)
+  client.request(@http.Get, path, extra_headers=headers)
+  client.end_request()
 }

@@ -196,6 +196,17 @@ fn extract_parameters(
   if @ffi.is_undefined(params_obj) {
     return params
   }
+  fn get_optional_bool(obj : @ffi.JsValue, key : String) -> Bool {
+    if @ffi.is_undefined(obj) || obj.is_null() {
+      return false
+    }
+    let v = @ffi.get_value(obj, key)
+    if @ffi.is_bool(v) {
+      v.cast()
+    } else {
+      false
+    }
+  }
 
   // Extract explicit parameters
   let list_val = @ffi.get_value(params_obj, "parameters")
@@ -214,9 +225,19 @@ fn extract_parameters(
       } else {
         "_"
       }
+      let explode = get_optional_bool(p, "explode")
       let param_val = @ffi.get_value(p, "param")
       let type_ref = resolve_type_ref(param_val, processed_models)
-      params.push({ name, type_: type_ref, location: loc })
+      let optional = get_optional_bool(param_val, "optional")
+      let array_encoding = try_get_array_encoding(param_val)
+      params.push({
+        name,
+        type_: type_ref,
+        location: loc,
+        optional,
+        explode,
+        array_encoding,
+      })
     }
   }
 
@@ -225,10 +246,37 @@ fn extract_parameters(
   if !@ffi.is_undefined(body_val) {
     let body_type_val = @ffi.get_value(body_val, "type")
     let type_ref = resolve_type_ref(body_type_val, processed_models)
-    params.push({ name: "body", type_: type_ref, location: "body" })
+    let body_prop = @ffi.get_value(body_val, "property")
+    let optional = get_optional_bool(body_prop, "optional")
+    params.push({
+      name: "body",
+      type_: type_ref,
+      location: "body",
+      optional,
+      explode: false,
+      array_encoding: None,
+    })
   }
   params
 }
+
+///|
+/// Detect `@encode(ArrayEncoding.*)` on a ModelProperty.
+///
+/// - `spaceDelimited` => join with `" "`
+/// - `pipeDelimited` => join with `"|"`
+/// - `commaDelimited` => join with `","` (default)
+extern "js" fn try_get_array_encoding(p : @ffi.JsValue) -> String? =
+  #| (p) => {
+  #|   const decs = p?.decorators;
+  #|   if (!Array.isArray(decs)) return undefined;
+  #|   const enc = decs.find((d) => d?.decorator?.name === "$encode");
+  #|   const v = enc?.args?.[0]?.value; // compiler Value
+  #|   const enumType = v?.value?.enum?.name ?? v?.value?.enumType?.name;
+  #|   if (enumType !== "ArrayEncoding") return undefined;
+  #|   const member = v?.value?.symbol?.name ?? v?.value?.name ?? v?.value?.enumMember?.name;
+  #|   return typeof member === "string" ? member : undefined;
+  #| }
 
 // Simple counter for anonymous models
 

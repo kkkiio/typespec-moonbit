@@ -4,6 +4,14 @@ pub(all) struct Parameter {
   name : String
   type_ : TypeRef
   location : String
+  optional : Bool
+  /// Query parameter explode (e.g. `colors=blue&colors=red`).
+  explode : Bool
+  /// Array encoding strategy for query/header arrays (when known).
+  /// - `spaceDelimited` => join with `" "`
+  /// - `pipeDelimited` => join with `"|"`
+  /// - `commaDelimited` => join with `","` (default)
+  array_encoding : String?
 }
 
 ///|

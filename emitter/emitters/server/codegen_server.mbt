@@ -293,7 +293,9 @@ fn emit_server_models(crate : @codemodel.Crate) -> String raise {
   let buf = StringBuilder::new(size_hint=8192)
 
   // Nullable helper (for `T | null`) is provided by runtime.
-  buf.write_string("///|\n#warnings(\"-unused_type_declaration\")\npub using @runtime {type Nullable}\n\n")
+  buf.write_string(
+    "///|\n#warnings(\"-unused_type_declaration\")\npub using @runtime {type Nullable}\n\n",
+  )
   let decode_models = collect_decode_models_from_crate(crate)
   let (encode_models, encode_unions) = collect_encode_types_from_crate(crate)
   let models = encode_models.merge(decode_models)

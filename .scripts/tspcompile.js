@@ -53,6 +53,50 @@ const cases = [
       "e2e/client/generated/routes",
     ),
   },
+  {
+    name: "parameters_basic",
+    input: path.join(
+      repoRoot,
+      "node_modules/@typespec/http-specs/specs/parameters/basic/main.tsp",
+    ),
+    outputDir: path.join(
+      repoRoot,
+      "e2e/client/generated/parameters/basic",
+    ),
+  },
+  {
+    name: "parameters_body_optionality",
+    input: path.join(
+      repoRoot,
+      "node_modules/@typespec/http-specs/specs/parameters/body-optionality/main.tsp",
+    ),
+    outputDir: path.join(
+      repoRoot,
+      "e2e/client/generated/parameters/body-optionality",
+    ),
+  },
+  {
+    name: "parameters_collection_format",
+    input: path.join(
+      repoRoot,
+      "node_modules/@typespec/http-specs/specs/parameters/collection-format/main.tsp",
+    ),
+    outputDir: path.join(
+      repoRoot,
+      "e2e/client/generated/parameters/collection-format",
+    ),
+  },
+  {
+    name: "parameters_spread",
+    input: path.join(
+      repoRoot,
+      "node_modules/@typespec/http-specs/specs/parameters/spread/main.tsp",
+    ),
+    outputDir: path.join(
+      repoRoot,
+      "e2e/client/generated/parameters/spread",
+    ),
+  },
 ];
 
 

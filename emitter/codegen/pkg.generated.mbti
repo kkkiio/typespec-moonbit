@@ -6,7 +6,7 @@ import {
 }
 
 // Values
-pub fn emit_client_files(@codemodel.Crate) -> Array[OutputFile]
+pub fn emit_client_files(@codemodel.Crate) -> Array[OutputFile] raise
 
 pub fn indent(String, Int) -> String
 
