@@ -1,0 +1,52 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-moonbit-tests/server/generated/versions/versioned"
+
+import {
+  "kkkiio/typespec-moonbit-server-runtime/runtime",
+  "moonbitlang/async",
+  "moonbitlang/async/http",
+  "moonbitlang/async/io",
+}
+
+// Values
+pub fn create_dispatch(async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+
+pub fn[H0 : VersionedHandler] create_router(versioned_handler~ : H0, group~ : @async.TaskGroup[Unit]) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
+
+pub fn match_route(@http.RequestMethod, String) -> MatchRouteResult
+
+// Errors
+
+// Types and methods
+pub enum MatchRouteResult {
+  NotMatched
+  MethodNotAllowed
+  Matched(RouteId)
+}
+
+pub enum RouteId {
+  VersionedWithoutApiVersion
+  VersionedWithQueryApiVersion
+  VersionedWithPathApiVersion(api_version~ : String)
+  VersionedWithQueryOldApiVersion
+}
+
+pub enum RouteMatch {
+  Handled
+  NotMatched
+  MethodNotAllowed
+}
+
+// Type aliases
+pub using @runtime {type Nullable}
+
+pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
+
+// Traits
+pub(open) trait VersionedHandler {
+  async without_api_version(Self, group~ : @async.TaskGroup[Unit]) -> Unit
+  async with_query_api_version(Self, group~ : @async.TaskGroup[Unit], String) -> Unit
+  async with_path_api_version(Self, group~ : @async.TaskGroup[Unit], String) -> Unit
+  async with_query_old_api_version(Self, group~ : @async.TaskGroup[Unit], String) -> Unit
+}
+

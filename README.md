@@ -2,6 +2,16 @@
 
 Typespec MoonBit Emitter. Writen in MoonBit.
 
+## 开发
+
+本仓库使用 `npm` 管理 Node.js 依赖。
+
+- 安装依赖：`npm install`
+- 构建 emitters：`npm run build:emitters`
+- 生成 server e2e 用例：`npm run gen:server-test`
+- 生成 client e2e 用例：`npm run gen:client-test`
+- 运行 server e2e：`npm run test:server:run`
+
 ## Features
 
 - [x] Json Models. 

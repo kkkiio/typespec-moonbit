@@ -12,7 +12,8 @@ const azureHttpSpecs = nodeModulesRoot + "@azure-tools/azure-http-specs/specs";
 const switches = [];
 let execSyncOptions;
 
-switch (process.argv[2]) {
+const arg = process.argv.slice(2).find((a) => a != "--" && a.startsWith("--"));
+switch (arg) {
   case "--serve":
     switches.push("serve", httpSpecs, azureHttpSpecs);
     execSyncOptions = { stdio: "inherit" };

@@ -10,13 +10,11 @@ import {
 // Values
 pub fn get_header(Map[String, String], String) -> String
 
-pub fn get_path_param(String, String, String) -> String
-
 pub fn get_query_param(String, String) -> String
 
-pub fn match_path_template(String, String) -> Bool
+pub fn index_of_slash(StringView) -> Int
 
-pub fn strip_request_query(String) -> String
+pub fn strip_request_query(String) -> StringView
 
 // Errors
 

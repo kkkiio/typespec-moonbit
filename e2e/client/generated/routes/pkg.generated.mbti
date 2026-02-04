@@ -1,0 +1,99 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-moonbit-tests/client/generated/routes"
+
+import {
+  "kkkiio/typespec-moonbit-server-runtime/runtime",
+  "moonbitlang/async/http",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct ExplodeClient {
+  base_url : String
+}
+pub async fn ExplodeClient::get_routes_path_label_explode_array__param__(Self, Array[String]) -> @http.Response
+pub async fn ExplodeClient::get_routes_path_label_explode_primitive__param__(Self, String) -> @http.Response
+pub async fn ExplodeClient::get_routes_path_label_explode_record__param__(Self, Map[String, Int]) -> @http.Response
+pub async fn ExplodeClient::get_routes_path_matrix_explode_array__param__(Self, Array[String]) -> @http.Response
+pub async fn ExplodeClient::get_routes_path_matrix_explode_primitive__param__(Self, String) -> @http.Response
+pub async fn ExplodeClient::get_routes_path_matrix_explode_record__param__(Self, Map[String, Int]) -> @http.Response
+pub async fn ExplodeClient::get_routes_path_path_explode_array__param__(Self, Array[String]) -> @http.Response
+pub async fn ExplodeClient::get_routes_path_path_explode_primitive__param__(Self, String) -> @http.Response
+pub async fn ExplodeClient::get_routes_path_path_explode_record__param__(Self, Map[String, Int]) -> @http.Response
+pub async fn ExplodeClient::get_routes_path_simple_explode_array_param__(Self, Array[String]) -> @http.Response
+pub async fn ExplodeClient::get_routes_path_simple_explode_primitive_param__(Self, String) -> @http.Response
+pub async fn ExplodeClient::get_routes_path_simple_explode_record_param__(Self, Map[String, Int]) -> @http.Response
+pub async fn ExplodeClient::get_routes_query_query_continuation_explode_array_fixed_true__param__(Self, Array[String]) -> @http.Response
+pub async fn ExplodeClient::get_routes_query_query_continuation_explode_primitive_fixed_true__param__(Self, String) -> @http.Response
+pub async fn ExplodeClient::get_routes_query_query_continuation_explode_record_fixed_true__param__(Self, Map[String, Int]) -> @http.Response
+pub async fn ExplodeClient::get_routes_query_query_expansion_explode_array__param__(Self, Array[String]) -> @http.Response
+pub async fn ExplodeClient::get_routes_query_query_expansion_explode_primitive__param__(Self, String) -> @http.Response
+pub async fn ExplodeClient::get_routes_query_query_expansion_explode_record__param__(Self, Map[String, Int]) -> @http.Response
+pub fn ExplodeClient::new(String) -> Self
+
+pub struct InInterfaceClient {
+  base_url : String
+}
+pub async fn InInterfaceClient::get_routes_in_interface_fixed(Self) -> @http.Response
+pub fn InInterfaceClient::new(String) -> Self
+
+pub struct PathParametersClient {
+  base_url : String
+}
+pub async fn PathParametersClient::get_routes_path_annotation_only__param_(Self, String) -> @http.Response
+pub async fn PathParametersClient::get_routes_path_explicit__param_(Self, String) -> @http.Response
+pub async fn PathParametersClient::get_routes_path_template_only__param_(Self, String) -> @http.Response
+pub fn PathParametersClient::new(String) -> Self
+
+pub struct QueryParametersClient {
+  base_url : String
+}
+pub async fn QueryParametersClient::get_routes_query_annotation_only__param_(Self, String) -> @http.Response
+pub async fn QueryParametersClient::get_routes_query_explicit__param_(Self, String) -> @http.Response
+pub async fn QueryParametersClient::get_routes_query_template_only__param_(Self, String) -> @http.Response
+pub fn QueryParametersClient::new(String) -> Self
+
+pub struct ReservedExpansionClient {
+  base_url : String
+}
+pub async fn ReservedExpansionClient::get_routes_path_reserved_expansion_annotation___param_(Self, String) -> @http.Response
+pub async fn ReservedExpansionClient::get_routes_path_reserved_expansion_template___param_(Self, String) -> @http.Response
+pub fn ReservedExpansionClient::new(String) -> Self
+
+pub struct RoutesClient {
+  base_url : String
+}
+pub async fn RoutesClient::get_routes_fixed(Self) -> @http.Response
+pub fn RoutesClient::new(String) -> Self
+
+pub struct StandardClient {
+  base_url : String
+}
+pub async fn StandardClient::get_routes_path_label_standard_array__param_(Self, Array[String]) -> @http.Response
+pub async fn StandardClient::get_routes_path_label_standard_primitive__param_(Self, String) -> @http.Response
+pub async fn StandardClient::get_routes_path_label_standard_record__param_(Self, Map[String, Int]) -> @http.Response
+pub async fn StandardClient::get_routes_path_matrix_standard_array__param_(Self, Array[String]) -> @http.Response
+pub async fn StandardClient::get_routes_path_matrix_standard_primitive__param_(Self, String) -> @http.Response
+pub async fn StandardClient::get_routes_path_matrix_standard_record__param_(Self, Map[String, Int]) -> @http.Response
+pub async fn StandardClient::get_routes_path_path_standard_array__param_(Self, Array[String]) -> @http.Response
+pub async fn StandardClient::get_routes_path_path_standard_primitive__param_(Self, String) -> @http.Response
+pub async fn StandardClient::get_routes_path_path_standard_record__param_(Self, Map[String, Int]) -> @http.Response
+pub async fn StandardClient::get_routes_path_simple_standard_array_param_(Self, Array[String]) -> @http.Response
+pub async fn StandardClient::get_routes_path_simple_standard_primitive_param_(Self, String) -> @http.Response
+pub async fn StandardClient::get_routes_path_simple_standard_record_param_(Self, Map[String, Int]) -> @http.Response
+pub async fn StandardClient::get_routes_query_query_continuation_standard_array_fixed_true__param_(Self, Array[String]) -> @http.Response
+pub async fn StandardClient::get_routes_query_query_continuation_standard_primitive_fixed_true__param_(Self, String) -> @http.Response
+pub async fn StandardClient::get_routes_query_query_continuation_standard_record_fixed_true__param_(Self, Map[String, Int]) -> @http.Response
+pub async fn StandardClient::get_routes_query_query_expansion_standard_array__param_(Self, Array[String]) -> @http.Response
+pub async fn StandardClient::get_routes_query_query_expansion_standard_primitive__param_(Self, String) -> @http.Response
+pub async fn StandardClient::get_routes_query_query_expansion_standard_record__param_(Self, Map[String, Int]) -> @http.Response
+pub fn StandardClient::new(String) -> Self
+
+// Type aliases
+pub using @runtime {type Nullable}
+
+// Traits
+

@@ -26,6 +26,71 @@ pub enum RouteMatch {
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
 
 ///|
+/// 生成期固定的路由 ID（用于 match_route 的返回值）。
+#warnings("-unused_constructor")
+pub enum RouteId {
+  ExplicitBodySimple
+  ImplicitBodySimple
+}
+
+///|
+/// 路由匹配结果（纯匹配：不读 body、不写响应、不调用 handler）。
+#warnings("-unused_constructor")
+pub enum MatchRouteResult {
+  NotMatched
+  MethodNotAllowed
+  Matched(RouteId)
+}
+
+///|
+/// 匹配 method + path，并返回命中的 RouteId（若命中）。
+///
+/// 约定：
+/// - `NotMatched`：path 不匹配任何 route
+/// - `MethodNotAllowed`：path 匹配但 method 不支持
+/// - `Matched`：method+path 匹配（并包含必要的 path 参数）
+pub fn match_route(
+  meth : @http.RequestMethod,
+  full_path : String,
+) -> MatchRouteResult {
+  let path = @runtime.strip_request_query(full_path)
+  if path.length() == 0 {
+    return MatchRouteResult::NotMatched
+  }
+  match path {
+    [.. "/parameters/basic/", .. path] => {
+      if path.length() == 0 {
+        return MatchRouteResult::NotMatched
+      }
+      match path {
+        [.. "explicit-body/simple", .. path] => {
+          if path.length() == 0 {
+            match meth {
+              @http.Put =>
+                return MatchRouteResult::Matched(RouteId::ExplicitBodySimple)
+              _ => return MatchRouteResult::MethodNotAllowed
+            }
+          }
+          return MatchRouteResult::NotMatched
+        }
+        [.. "implicit-body/simple", .. path] => {
+          if path.length() == 0 {
+            match meth {
+              @http.Put =>
+                return MatchRouteResult::Matched(RouteId::ImplicitBodySimple)
+              _ => return MatchRouteResult::MethodNotAllowed
+            }
+          }
+          return MatchRouteResult::NotMatched
+        }
+        _ => return MatchRouteResult::NotMatched
+      }
+    }
+    _ => return MatchRouteResult::NotMatched
+  }
+}
+
+///|
 pub fn[H0 : ExplicitBodyHandler, H1 : ImplicitBodyHandler] create_router(
   explicit_body_handler~ : H0,
   implicit_body_handler~ : H1,
@@ -37,48 +102,30 @@ pub fn[H0 : ExplicitBodyHandler, H1 : ImplicitBodyHandler] create_router(
     conn : @http.ServerConnection,
   ) -> RouteMatch {
     let full_path = req.path
-    let path = @runtime.strip_request_query(full_path)
-    if req.meth == @http.Put &&
-      @runtime.match_path_template(
-        "/parameters/basic/explicit-body/simple", path,
-      ) {
-      let body_bytes = body_stream.read_all()
-      let body_str = body_bytes.text()
-      let p_1_body : User = @json.from_json(@json.parse(body_str))
-      explicit_body_handler.simple(group~, p_1_body)
-      conn.send_response(204, "No Content")
-      conn.end_response()
-      return RouteMatch::Handled
-    }
-    if req.meth == @http.Put &&
-      @runtime.match_path_template(
-        "/parameters/basic/implicit-body/simple", path,
-      ) {
-      let body_bytes = body_stream.read_all()
-      let body_str = body_bytes.text()
-      let p_2_body : Model0 = @json.from_json(@json.parse(body_str))
-      implicit_body_handler.simple(group~, p_2_body)
-      conn.send_response(204, "No Content")
-      conn.end_response()
-      return RouteMatch::Handled
-    }
-
-    // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
-    let mut path_matched = false
-    if @runtime.match_path_template(
-        "/parameters/basic/explicit-body/simple", path,
-      ) {
-      path_matched = true
-    }
-    if @runtime.match_path_template(
-        "/parameters/basic/implicit-body/simple", path,
-      ) {
-      path_matched = true
-    }
-    if path_matched {
-      RouteMatch::MethodNotAllowed
-    } else {
-      RouteMatch::NotMatched
+    match match_route(req.meth, full_path) {
+      MatchRouteResult::Matched(route_id) =>
+        match route_id {
+          RouteId::ExplicitBodySimple => {
+            let body_bytes = body_stream.read_all()
+            let body_str = body_bytes.text()
+            let p_1_body : User = @json.from_json(@json.parse(body_str))
+            explicit_body_handler.simple(group~, p_1_body)
+            conn.send_response(204, "No Content")
+            conn.end_response()
+            RouteMatch::Handled
+          }
+          RouteId::ImplicitBodySimple => {
+            let body_bytes = body_stream.read_all()
+            let body_str = body_bytes.text()
+            let p_2_body : Model0 = @json.from_json(@json.parse(body_str))
+            implicit_body_handler.simple(group~, p_2_body)
+            conn.send_response(204, "No Content")
+            conn.end_response()
+            RouteMatch::Handled
+          }
+        }
+      MatchRouteResult::MethodNotAllowed => RouteMatch::MethodNotAllowed
+      MatchRouteResult::NotMatched => RouteMatch::NotMatched
     }
   }
 }

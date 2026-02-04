@@ -14,7 +14,7 @@ if (!fs.existsSync(compiler)) {
 }
 
 // 1) build emitters (MoonBit -> JS)
-execSync("npm run build:emitters", { stdio: "inherit" });
+execSync("node .scripts/build_emitters.js --all", { stdio: "inherit" });
 
 const cases = [
   {

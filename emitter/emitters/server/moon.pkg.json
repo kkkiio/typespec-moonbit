@@ -8,6 +8,7 @@
     "justjavac/case",
     "moonbit-community/js-ffi/js",
     "moonbitlang/core/cmp",
+    "moonbitlang/core/test",
     "moonbitlang/x/fs",
     "moonbitlang/x/path"
   ],
@@ -20,8 +21,8 @@
     }
   },
   "targets": {
-    "emitter.mbt": ["js"],
-    "codegen_server.mbt": ["js"],
-    "codegen_server_wbtest.mbt": ["js"]
+    "*": [
+      "js"
+    ]
   }
 }
