@@ -4,7 +4,6 @@ package "kkkiio/typespec-moonbit-tests/client/generated/parameters/body-optional
 import {
   "kkkiio/typespec-moonbit-server-runtime/runtime",
   "moonbitlang/async/http",
-  "moonbitlang/core/json",
 }
 
 // Values
@@ -15,18 +14,14 @@ import {
 pub(all) struct BodyModel {
   name : String
 }
-pub impl Default for BodyModel
 pub impl Show for BodyModel
 pub impl ToJson for BodyModel
-pub impl @json.FromJson for BodyModel
 
 pub(all) struct BodyModel0 {
   name : String
 }
-pub impl Default for BodyModel0
 pub impl Show for BodyModel0
 pub impl ToJson for BodyModel0
-pub impl @json.FromJson for BodyModel0
 
 pub struct BodyOptionalityClient {
   base_url : String

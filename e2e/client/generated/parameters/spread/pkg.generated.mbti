@@ -4,7 +4,6 @@ package "kkkiio/typespec-moonbit-tests/client/generated/parameters/spread"
 import {
   "kkkiio/typespec-moonbit-server-runtime/runtime",
   "moonbitlang/async/http",
-  "moonbitlang/core/json",
 }
 
 // Values
@@ -25,42 +24,32 @@ pub async fn AliasClient::put_parameters_spread_alias_request_parameter__id_(Sel
 pub(all) struct BodyParameter {
   name : String
 }
-pub impl Default for BodyParameter
 pub impl Show for BodyParameter
 pub impl ToJson for BodyParameter
-pub impl @json.FromJson for BodyParameter
 
 pub(all) struct BodyParameter5 {
   name : String
 }
-pub impl Default for BodyParameter5
 pub impl Show for BodyParameter5
 pub impl ToJson for BodyParameter5
-pub impl @json.FromJson for BodyParameter5
 
 pub(all) struct Model0 {
   name : String
 }
-pub impl Default for Model0
 pub impl Show for Model0
 pub impl ToJson for Model0
-pub impl @json.FromJson for Model0
 
 pub(all) struct Model1 {
   name : String
 }
-pub impl Default for Model1
 pub impl Show for Model1
 pub impl ToJson for Model1
-pub impl @json.FromJson for Model1
 
 pub(all) struct Model2 {
   name : String
 }
-pub impl Default for Model2
 pub impl Show for Model2
 pub impl ToJson for Model2
-pub impl @json.FromJson for Model2
 
 pub(all) struct Model3 {
   required_string : String
@@ -68,27 +57,21 @@ pub(all) struct Model3 {
   required_int_list : Array[Int]
   optional_string_list : Array[String]?
 }
-pub impl Default for Model3
 pub impl Show for Model3
 pub impl ToJson for Model3
-pub impl @json.FromJson for Model3
 
 pub(all) struct Model4 {
   name : String
   age : Int
 }
-pub impl Default for Model4
 pub impl Show for Model4
 pub impl ToJson for Model4
-pub impl @json.FromJson for Model4
 
 pub(all) struct Model6 {
   prop : String
 }
-pub impl Default for Model6
 pub impl Show for Model6
 pub impl ToJson for Model6
-pub impl @json.FromJson for Model6
 
 pub struct ModelClient {
   base_url : String

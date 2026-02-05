@@ -27,6 +27,6 @@
     "gen:server-test": "node .scripts/gen_server_test.js",
     "test:server:run": "moon test -C e2e -p kkkiio/typespec-moonbit-tests/server",
     "test:server": "npm run gen:server-test && npm run test:server:run",
-    "test:client": "npm run gen:client-test -- --filter=spector_routes --limit=1 && moon test -C e2e --target native -p kkkiio/typespec-moonbit-tests/client/tests"
+    "test:client": "npm run gen:client-test && moon test -C e2e --target native -p kkkiio/typespec-moonbit-tests/client/tests"
   }
 }

@@ -4,7 +4,6 @@ package "kkkiio/typespec-moonbit-tests/client/generated/parameters/basic"
 import {
   "kkkiio/typespec-moonbit-server-runtime/runtime",
   "moonbitlang/async/http",
-  "moonbitlang/core/json",
 }
 
 // Values
@@ -27,18 +26,14 @@ pub async fn ImplicitBodyClient::put_parameters_basic_implicit_body_simple(Self,
 pub(all) struct Model0 {
   name : String
 }
-pub impl Default for Model0
 pub impl Show for Model0
 pub impl ToJson for Model0
-pub impl @json.FromJson for Model0
 
 pub(all) struct User {
   name : String
 }
-pub impl Default for User
 pub impl Show for User
 pub impl ToJson for User
-pub impl @json.FromJson for User
 
 // Type aliases
 pub using @runtime {type Nullable}

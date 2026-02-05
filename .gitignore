@@ -5,6 +5,8 @@ target
 .mooncakes/
 .moonagent/
 node_modules/
+temp/
+spec-coverage.json
 
 .agent
 emitter/_build/

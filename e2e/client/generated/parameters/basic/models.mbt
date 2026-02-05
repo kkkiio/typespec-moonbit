@@ -6,10 +6,10 @@ pub using @runtime {type Nullable}
 /// Model User
 pub(all) struct User {
   name : String
-} derive(Show, Default, ToJson, @json.FromJson)
+} derive(Show, ToJson)
 
 ///|
 /// Model Model0
 pub(all) struct Model0 {
   name : String
-} derive(Show, Default, ToJson, @json.FromJson)
+} derive(Show, ToJson)
