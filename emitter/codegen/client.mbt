@@ -570,21 +570,13 @@ fn write_model(sb : StringBuilder, m : @codemodel.Model) -> Unit raise {
       rename_entries.push((field_name, f.name))
     }
   }
-  sb.write_string("} derive(Show, Default, ")
+  sb.write_string("} derive(Show, ")
   let has_renames = rename_entries.length() > 0
   if !has_renames {
-    sb.write_string("ToJson, @json.FromJson")
+    sb.write_string("ToJson")
   } else {
     sb.write_string("ToJson(fields(")
     let n = rename_entries.length()
-    for i in 0..<n {
-      let entry = rename_entries[i]
-      sb.write_string("\{entry.0}(rename=\"\{entry.1}\")")
-      if i != n - 1 {
-        sb.write_string(", ")
-      }
-    }
-    sb.write_string(")), @json.FromJson(fields(")
     for i in 0..<n {
       let entry = rename_entries[i]
       sb.write_string("\{entry.0}(rename=\"\{entry.1}\")")
@@ -652,7 +644,7 @@ fn write_union(sb : StringBuilder, u : @codemodel.Union) -> Unit raise {
     let ctor = @case.pascal_case(sanitize_identifier(v.name))
     wln(sb, "  \{ctor}(\{type_ref_to_string(v.type_)})")
   }
-  wln(sb, "}")
+  wln(sb, "} derive(Show)")
   wln(sb, "")
   wln(
     sb,
