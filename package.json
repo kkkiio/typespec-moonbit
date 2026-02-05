@@ -21,10 +21,10 @@
     "build:client": "node .scripts/build_emitters.js --client",
     "build:server": "node .scripts/build_emitters.js --server",
     "build:emitters": "node .scripts/build_emitters.js --all",
-    "prepare": "npm run build:emitters",
+    "prepare": "node .scripts/build_emitters.js --all",
     "spector": "node .scripts/spector.js",
-    "gen:client-test": "node .scripts/tspcompile.js",
-    "gen:server-test": "node .scripts/emit_e2e_server.js",
+    "gen:client-test": "node .scripts/gen_client_test.js",
+    "gen:server-test": "node .scripts/gen_server_test.js",
     "test:server:run": "moon test -C e2e -p kkkiio/typespec-moonbit-tests/server",
     "test:server": "npm run gen:server-test && npm run test:server:run",
     "test:client": "npm run gen:client-test -- --filter=spector_routes --limit=1 && moon test -C e2e --target native -p kkkiio/typespec-moonbit-tests/client/tests"

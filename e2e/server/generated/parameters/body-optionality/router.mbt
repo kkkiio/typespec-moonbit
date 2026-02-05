@@ -36,6 +36,117 @@ pub enum RouteMatch {
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
 
 ///|
+/// 生成期固定的路由 ID（用于 match_route 的返回值）。
+#warnings("-unused_constructor")
+pub enum RouteId {
+  BodyOptionalityRequiredExplicit
+  BodyOptionalityRequiredImplicit
+  OptionalExplicitSet
+  OptionalExplicitOmit
+}
+
+///|
+/// 路由匹配结果（纯匹配：不读 body、不写响应、不调用 handler）。
+#warnings("-unused_constructor")
+pub enum MatchRouteResult {
+  NotMatched
+  MethodNotAllowed
+  Matched(RouteId)
+}
+
+///|
+/// 匹配 method + path，并返回命中的 RouteId（若命中）。
+///
+/// 约定：
+/// - `NotMatched`：path 不匹配任何 route
+/// - `MethodNotAllowed`：path 匹配但 method 不支持
+/// - `Matched`：method+path 匹配（并包含必要的 path 参数）
+pub fn match_route(
+  meth : @http.RequestMethod,
+  full_path : String,
+) -> MatchRouteResult {
+  let path = @runtime.strip_request_query(full_path)
+  if path.length() == 0 {
+    return MatchRouteResult::NotMatched
+  }
+  match path {
+    [.. "/parameters/body-optionality/", .. path] => {
+      if path.length() == 0 {
+        return MatchRouteResult::NotMatched
+      }
+      match path {
+        [.. "required-", .. path] => {
+          if path.length() == 0 {
+            return MatchRouteResult::NotMatched
+          }
+          match path {
+            [.. "explicit", .. path] => {
+              if path.length() == 0 {
+                match meth {
+                  @http.Post =>
+                    return MatchRouteResult::Matched(
+                      RouteId::BodyOptionalityRequiredExplicit,
+                    )
+                  _ => return MatchRouteResult::MethodNotAllowed
+                }
+              }
+              return MatchRouteResult::NotMatched
+            }
+            [.. "implicit", .. path] => {
+              if path.length() == 0 {
+                match meth {
+                  @http.Post =>
+                    return MatchRouteResult::Matched(
+                      RouteId::BodyOptionalityRequiredImplicit,
+                    )
+                  _ => return MatchRouteResult::MethodNotAllowed
+                }
+              }
+              return MatchRouteResult::NotMatched
+            }
+            _ => return MatchRouteResult::NotMatched
+          }
+        }
+        [.. "optional-explicit/", .. path] => {
+          if path.length() == 0 {
+            return MatchRouteResult::NotMatched
+          }
+          match path {
+            [.. "set", .. path] => {
+              if path.length() == 0 {
+                match meth {
+                  @http.Post =>
+                    return MatchRouteResult::Matched(
+                      RouteId::OptionalExplicitSet,
+                    )
+                  _ => return MatchRouteResult::MethodNotAllowed
+                }
+              }
+              return MatchRouteResult::NotMatched
+            }
+            [.. "omit", .. path] => {
+              if path.length() == 0 {
+                match meth {
+                  @http.Post =>
+                    return MatchRouteResult::Matched(
+                      RouteId::OptionalExplicitOmit,
+                    )
+                  _ => return MatchRouteResult::MethodNotAllowed
+                }
+              }
+              return MatchRouteResult::NotMatched
+            }
+            _ => return MatchRouteResult::NotMatched
+          }
+        }
+        _ => return MatchRouteResult::NotMatched
+      }
+    }
+    _ => return MatchRouteResult::NotMatched
+  }
+}
+
+///|
 pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
   body_optionality_handler~ : H0,
   optional_explicit_handler~ : H1,
@@ -47,82 +158,48 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
     conn : @http.ServerConnection,
   ) -> RouteMatch {
     let full_path = req.path
-    let path = @runtime.strip_request_query(full_path)
-    if req.meth == @http.Post &&
-      @runtime.match_path_template(
-        "/parameters/body-optionality/required-explicit", path,
-      ) {
-      let body_bytes = body_stream.read_all()
-      let body_str = body_bytes.text()
-      let p_1_body : BodyModel = @json.from_json(@json.parse(body_str))
-      body_optionality_handler.required_explicit(group~, p_1_body)
-      conn.send_response(204, "No Content")
-      conn.end_response()
-      return RouteMatch::Handled
-    }
-    if req.meth == @http.Post &&
-      @runtime.match_path_template(
-        "/parameters/body-optionality/required-implicit", path,
-      ) {
-      let body_bytes = body_stream.read_all()
-      let body_str = body_bytes.text()
-      let p_2_body : BodyModel0 = @json.from_json(@json.parse(body_str))
-      body_optionality_handler.required_implicit(group~, p_2_body)
-      conn.send_response(204, "No Content")
-      conn.end_response()
-      return RouteMatch::Handled
-    }
-    if req.meth == @http.Post &&
-      @runtime.match_path_template(
-        "/parameters/body-optionality/optional-explicit/set", path,
-      ) {
-      let body_bytes = body_stream.read_all()
-      let body_str = body_bytes.text()
-      let p_3_body : BodyModel = @json.from_json(@json.parse(body_str))
-      optional_explicit_handler.set(group~, p_3_body)
-      conn.send_response(204, "No Content")
-      conn.end_response()
-      return RouteMatch::Handled
-    }
-    if req.meth == @http.Post &&
-      @runtime.match_path_template(
-        "/parameters/body-optionality/optional-explicit/omit", path,
-      ) {
-      let body_bytes = body_stream.read_all()
-      let body_str = body_bytes.text()
-      let p_4_body : BodyModel = @json.from_json(@json.parse(body_str))
-      optional_explicit_handler.omit(group~, p_4_body)
-      conn.send_response(204, "No Content")
-      conn.end_response()
-      return RouteMatch::Handled
-    }
-
-    // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
-    let mut path_matched = false
-    if @runtime.match_path_template(
-        "/parameters/body-optionality/required-explicit", path,
-      ) {
-      path_matched = true
-    }
-    if @runtime.match_path_template(
-        "/parameters/body-optionality/required-implicit", path,
-      ) {
-      path_matched = true
-    }
-    if @runtime.match_path_template(
-        "/parameters/body-optionality/optional-explicit/set", path,
-      ) {
-      path_matched = true
-    }
-    if @runtime.match_path_template(
-        "/parameters/body-optionality/optional-explicit/omit", path,
-      ) {
-      path_matched = true
-    }
-    if path_matched {
-      RouteMatch::MethodNotAllowed
-    } else {
-      RouteMatch::NotMatched
+    match match_route(req.meth, full_path) {
+      MatchRouteResult::Matched(route_id) =>
+        match route_id {
+          RouteId::BodyOptionalityRequiredExplicit => {
+            let body_bytes = body_stream.read_all()
+            let body_str = body_bytes.text()
+            let p_1_body : BodyModel = @json.from_json(@json.parse(body_str))
+            body_optionality_handler.required_explicit(group~, p_1_body)
+            conn.send_response(204, "No Content")
+            conn.end_response()
+            RouteMatch::Handled
+          }
+          RouteId::BodyOptionalityRequiredImplicit => {
+            let body_bytes = body_stream.read_all()
+            let body_str = body_bytes.text()
+            let p_2_body : BodyModel0 = @json.from_json(@json.parse(body_str))
+            body_optionality_handler.required_implicit(group~, p_2_body)
+            conn.send_response(204, "No Content")
+            conn.end_response()
+            RouteMatch::Handled
+          }
+          RouteId::OptionalExplicitSet => {
+            let body_bytes = body_stream.read_all()
+            let body_str = body_bytes.text()
+            let p_3_body : BodyModel = @json.from_json(@json.parse(body_str))
+            optional_explicit_handler.set(group~, p_3_body)
+            conn.send_response(204, "No Content")
+            conn.end_response()
+            RouteMatch::Handled
+          }
+          RouteId::OptionalExplicitOmit => {
+            let body_bytes = body_stream.read_all()
+            let body_str = body_bytes.text()
+            let p_4_body : BodyModel = @json.from_json(@json.parse(body_str))
+            optional_explicit_handler.omit(group~, p_4_body)
+            conn.send_response(204, "No Content")
+            conn.end_response()
+            RouteMatch::Handled
+          }
+        }
+      MatchRouteResult::MethodNotAllowed => RouteMatch::MethodNotAllowed
+      MatchRouteResult::NotMatched => RouteMatch::NotMatched
     }
   }
 }

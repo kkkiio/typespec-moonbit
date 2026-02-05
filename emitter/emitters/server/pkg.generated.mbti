@@ -17,6 +17,14 @@ pub async fn on_emit_async(@js.Value) -> Unit
 // Errors
 
 // Types and methods
+type RouteSegment
+pub impl Show for RouteSegment
+
+type RouteSpec
+pub impl Show for RouteSpec
+
+type RouteTree
+pub impl Show for RouteTree
 
 // Type aliases
 

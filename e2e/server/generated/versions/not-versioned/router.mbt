@@ -30,6 +30,109 @@ pub enum RouteMatch {
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
 
 ///|
+/// 生成期固定的路由 ID（用于 match_route 的返回值）。
+#warnings("-unused_constructor")
+pub enum RouteId {
+  NotVersionedWithoutApiVersion
+  NotVersionedWithQueryApiVersion
+  NotVersionedWithPathApiVersion(api_version~ : String)
+}
+
+///|
+/// 路由匹配结果（纯匹配：不读 body、不写响应、不调用 handler）。
+#warnings("-unused_constructor")
+pub enum MatchRouteResult {
+  NotMatched
+  MethodNotAllowed
+  Matched(RouteId)
+}
+
+///|
+/// 匹配 method + path，并返回命中的 RouteId（若命中）。
+///
+/// 约定：
+/// - `NotMatched`：path 不匹配任何 route
+/// - `MethodNotAllowed`：path 匹配但 method 不支持
+/// - `Matched`：method+path 匹配（并包含必要的 path 参数）
+pub fn match_route(
+  meth : @http.RequestMethod,
+  full_path : String,
+) -> MatchRouteResult {
+  let path = @runtime.strip_request_query(full_path)
+  if path.length() == 0 {
+    return MatchRouteResult::NotMatched
+  }
+  match path {
+    [.. "/server/versions/not-versioned/with", .. path] => {
+      if path.length() == 0 {
+        return MatchRouteResult::NotMatched
+      }
+      match path {
+        [.. "out-api-version", .. path] => {
+          if path.length() == 0 {
+            match meth {
+              @http.Head =>
+                return MatchRouteResult::Matched(
+                  RouteId::NotVersionedWithoutApiVersion,
+                )
+              _ => return MatchRouteResult::MethodNotAllowed
+            }
+          }
+          return MatchRouteResult::NotMatched
+        }
+        [.. "-", .. path] => {
+          if path.length() == 0 {
+            return MatchRouteResult::NotMatched
+          }
+          match path {
+            [.. "query-api-version", .. path] => {
+              if path.length() == 0 {
+                match meth {
+                  @http.Head =>
+                    return MatchRouteResult::Matched(
+                      RouteId::NotVersionedWithQueryApiVersion,
+                    )
+                  _ => return MatchRouteResult::MethodNotAllowed
+                }
+              }
+              return MatchRouteResult::NotMatched
+            }
+            [.. "path-api-version/", .. path] => {
+              if path.length() == 0 {
+                return MatchRouteResult::NotMatched
+              }
+              let mut __api_version_idx = @runtime.index_of_slash(path)
+              __api_version_idx = if __api_version_idx == -1 {
+                path.length()
+              } else {
+                __api_version_idx
+              }
+              let api_version = path.view(end_offset=__api_version_idx)
+              let path = path.view(start_offset=__api_version_idx)
+              if path.length() == 0 {
+                match meth {
+                  @http.Head =>
+                    return MatchRouteResult::Matched(
+                      RouteId::NotVersionedWithPathApiVersion(
+                        api_version=api_version.to_string(),
+                      ),
+                    )
+                  _ => return MatchRouteResult::MethodNotAllowed
+                }
+              }
+              return MatchRouteResult::NotMatched
+            }
+            _ => return MatchRouteResult::NotMatched
+          }
+        }
+        _ => return MatchRouteResult::NotMatched
+      }
+    }
+    _ => return MatchRouteResult::NotMatched
+  }
+}
+
+///|
 pub fn[H0 : NotVersionedHandler] create_router(
   not_versioned_handler~ : H0,
   group~ : @async.TaskGroup[Unit],
@@ -40,64 +143,39 @@ pub fn[H0 : NotVersionedHandler] create_router(
     conn : @http.ServerConnection,
   ) -> RouteMatch {
     let full_path = req.path
-    let path = @runtime.strip_request_query(full_path)
-    if req.meth == @http.Head &&
-      @runtime.match_path_template(
-        "/server/versions/not-versioned/without-api-version", path,
-      ) {
-      ignore(body_stream)
-      not_versioned_handler.without_api_version(group~)
-      conn.send_response(200, "OK")
-      conn.end_response()
-      return RouteMatch::Handled
-    }
-    if req.meth == @http.Head &&
-      @runtime.match_path_template(
-        "/server/versions/not-versioned/with-query-api-version", path,
-      ) {
-      ignore(body_stream)
-      let p_2_api_version = @runtime.get_query_param(full_path, "api-version")
-      not_versioned_handler.with_query_api_version(group~, p_2_api_version)
-      conn.send_response(200, "OK")
-      conn.end_response()
-      return RouteMatch::Handled
-    }
-    if req.meth == @http.Head &&
-      @runtime.match_path_template(
-        "/server/versions/not-versioned/with-path-api-version/{apiVersion}", path,
-      ) {
-      ignore(body_stream)
-      let p_3_api_version = @runtime.get_path_param(
-        "/server/versions/not-versioned/with-path-api-version/{apiVersion}", path,
-        "apiVersion",
-      )
-      not_versioned_handler.with_path_api_version(group~, p_3_api_version)
-      conn.send_response(200, "OK")
-      conn.end_response()
-      return RouteMatch::Handled
-    }
-
-    // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
-    let mut path_matched = false
-    if @runtime.match_path_template(
-        "/server/versions/not-versioned/without-api-version", path,
-      ) {
-      path_matched = true
-    }
-    if @runtime.match_path_template(
-        "/server/versions/not-versioned/with-query-api-version", path,
-      ) {
-      path_matched = true
-    }
-    if @runtime.match_path_template(
-        "/server/versions/not-versioned/with-path-api-version/{apiVersion}", path,
-      ) {
-      path_matched = true
-    }
-    if path_matched {
-      RouteMatch::MethodNotAllowed
-    } else {
-      RouteMatch::NotMatched
+    match match_route(req.meth, full_path) {
+      MatchRouteResult::Matched(route_id) =>
+        match route_id {
+          RouteId::NotVersionedWithoutApiVersion => {
+            ignore(body_stream)
+            not_versioned_handler.without_api_version(group~)
+            conn.send_response(200, "OK")
+            conn.end_response()
+            RouteMatch::Handled
+          }
+          RouteId::NotVersionedWithQueryApiVersion => {
+            ignore(body_stream)
+            let p_2_api_version = @runtime.get_query_param(
+              full_path, "api-version",
+            )
+            not_versioned_handler.with_query_api_version(
+              group~,
+              p_2_api_version,
+            )
+            conn.send_response(200, "OK")
+            conn.end_response()
+            RouteMatch::Handled
+          }
+          RouteId::NotVersionedWithPathApiVersion(api_version~) => {
+            ignore(body_stream)
+            not_versioned_handler.with_path_api_version(group~, api_version)
+            conn.send_response(200, "OK")
+            conn.end_response()
+            RouteMatch::Handled
+          }
+        }
+      MatchRouteResult::MethodNotAllowed => RouteMatch::MethodNotAllowed
+      MatchRouteResult::NotMatched => RouteMatch::NotMatched
     }
   }
 }

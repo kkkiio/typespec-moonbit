@@ -26,6 +26,76 @@ pub enum RouteMatch {
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
 
 ///|
+/// 生成期固定的路由 ID（用于 match_route 的返回值）。
+#warnings("-unused_constructor")
+pub enum RouteId {
+  EmptyPutEmpty
+  EmptyGetEmpty
+  EmptyPostRoundTripEmpty
+}
+
+///|
+/// 路由匹配结果（纯匹配：不读 body、不写响应、不调用 handler）。
+#warnings("-unused_constructor")
+pub enum MatchRouteResult {
+  NotMatched
+  MethodNotAllowed
+  Matched(RouteId)
+}
+
+///|
+/// 匹配 method + path，并返回命中的 RouteId（若命中）。
+///
+/// 约定：
+/// - `NotMatched`：path 不匹配任何 route
+/// - `MethodNotAllowed`：path 匹配但 method 不支持
+/// - `Matched`：method+path 匹配（并包含必要的 path 参数）
+pub fn match_route(
+  meth : @http.RequestMethod,
+  full_path : String,
+) -> MatchRouteResult {
+  let path = @runtime.strip_request_query(full_path)
+  if path.length() == 0 {
+    return MatchRouteResult::NotMatched
+  }
+  match path {
+    [.. "/type/model/empty/", .. path] => {
+      if path.length() == 0 {
+        return MatchRouteResult::NotMatched
+      }
+      match path {
+        [.. "alone", .. path] => {
+          if path.length() == 0 {
+            match meth {
+              @http.Put =>
+                return MatchRouteResult::Matched(RouteId::EmptyPutEmpty)
+              @http.Get =>
+                return MatchRouteResult::Matched(RouteId::EmptyGetEmpty)
+              _ => return MatchRouteResult::MethodNotAllowed
+            }
+          }
+          return MatchRouteResult::NotMatched
+        }
+        [.. "round-trip", .. path] => {
+          if path.length() == 0 {
+            match meth {
+              @http.Post =>
+                return MatchRouteResult::Matched(
+                  RouteId::EmptyPostRoundTripEmpty,
+                )
+              _ => return MatchRouteResult::MethodNotAllowed
+            }
+          }
+          return MatchRouteResult::NotMatched
+        }
+        _ => return MatchRouteResult::NotMatched
+      }
+    }
+    _ => return MatchRouteResult::NotMatched
+  }
+}
+
+///|
 pub fn[H0 : EmptyHandler] create_router(
   empty_handler~ : H0,
   group~ : @async.TaskGroup[Unit],
@@ -36,55 +106,50 @@ pub fn[H0 : EmptyHandler] create_router(
     conn : @http.ServerConnection,
   ) -> RouteMatch {
     let full_path = req.path
-    let path = @runtime.strip_request_query(full_path)
-    if req.meth == @http.Put &&
-      @runtime.match_path_template("/type/model/empty/alone", path) {
-      let body_bytes = body_stream.read_all()
-      let body_str = body_bytes.text()
-      let p_1_body : EmptyInput = @json.from_json(@json.parse(body_str))
-      empty_handler.put_empty(group~, p_1_body)
-      conn.send_response(204, "No Content")
-      conn.end_response()
-      return RouteMatch::Handled
-    }
-    if req.meth == @http.Get &&
-      @runtime.match_path_template("/type/model/empty/alone", path) {
-      ignore(body_stream)
-      let resp_body = empty_handler.get_empty(group~)
-      let headers : Map[String, String] = { "content-type": "application/json" }
-      conn.send_response(200, "OK", extra_headers=headers)
-      conn.write(resp_body.to_json().stringify())
-      conn.end_response()
-      return RouteMatch::Handled
-    }
-    if req.meth == @http.Post &&
-      @runtime.match_path_template("/type/model/empty/round-trip", path) {
-      let body_bytes = body_stream.read_all()
-      let body_str = body_bytes.text()
-      let p_3_body : EmptyInputOutput = @json.from_json(@json.parse(body_str))
-      let resp_body = empty_handler.post_round_trip_empty(group~, p_3_body)
-      let headers : Map[String, String] = { "content-type": "application/json" }
-      conn.send_response(200, "OK", extra_headers=headers)
-      conn.write(resp_body.to_json().stringify())
-      conn.end_response()
-      return RouteMatch::Handled
-    }
-
-    // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。
-    let mut path_matched = false
-    if @runtime.match_path_template("/type/model/empty/alone", path) {
-      path_matched = true
-    }
-    if @runtime.match_path_template("/type/model/empty/alone", path) {
-      path_matched = true
-    }
-    if @runtime.match_path_template("/type/model/empty/round-trip", path) {
-      path_matched = true
-    }
-    if path_matched {
-      RouteMatch::MethodNotAllowed
-    } else {
-      RouteMatch::NotMatched
+    match match_route(req.meth, full_path) {
+      MatchRouteResult::Matched(route_id) =>
+        match route_id {
+          RouteId::EmptyPutEmpty => {
+            let body_bytes = body_stream.read_all()
+            let body_str = body_bytes.text()
+            let p_1_body : EmptyInput = @json.from_json(@json.parse(body_str))
+            empty_handler.put_empty(group~, p_1_body)
+            conn.send_response(204, "No Content")
+            conn.end_response()
+            RouteMatch::Handled
+          }
+          RouteId::EmptyGetEmpty => {
+            ignore(body_stream)
+            let resp_body = empty_handler.get_empty(group~)
+            let headers : Map[String, String] = {
+              "content-type": "application/json",
+            }
+            conn.send_response(200, "OK", extra_headers=headers)
+            conn.write(resp_body.to_json().stringify())
+            conn.end_response()
+            RouteMatch::Handled
+          }
+          RouteId::EmptyPostRoundTripEmpty => {
+            let body_bytes = body_stream.read_all()
+            let body_str = body_bytes.text()
+            let p_3_body : EmptyInputOutput = @json.from_json(
+              @json.parse(body_str),
+            )
+            let resp_body = empty_handler.post_round_trip_empty(
+              group~,
+              p_3_body,
+            )
+            let headers : Map[String, String] = {
+              "content-type": "application/json",
+            }
+            conn.send_response(200, "OK", extra_headers=headers)
+            conn.write(resp_body.to_json().stringify())
+            conn.end_response()
+            RouteMatch::Handled
+          }
+        }
+      MatchRouteResult::MethodNotAllowed => RouteMatch::MethodNotAllowed
+      MatchRouteResult::NotMatched => RouteMatch::NotMatched
     }
   }
 }

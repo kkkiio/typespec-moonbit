@@ -24,6 +24,7 @@
     "moonbitlang/async/stdio"
   ],
   "test-import": [
+    "moonbitlang/core/bench",
     "moonbitlang/core/json",
     {
       "path": "kkkiio/typespec-moonbit-server-runtime/runtime",

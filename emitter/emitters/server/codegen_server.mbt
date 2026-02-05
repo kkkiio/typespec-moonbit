@@ -158,7 +158,7 @@ fn write_model(
       rename_entries.push((field_name, f.name))
     }
   }
-  sb.write_string("} derive(Show, ")
+  sb.write_string("} derive(Show, Default, ")
   let has_renames = rename_entries.length() > 0
   if !has_renames {
     sb.write_string("ToJson")
@@ -463,6 +463,133 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
     buf, "pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch",
   )
   wln(buf, "")
+
+  // 2.1) match_route (可基准测试的纯匹配逻辑)
+  wln(buf, "///|")
+  wln(
+    buf, "/// 生成期固定的路由 ID（用于 match_route 的返回值）。",
+  )
+  wln(buf, "#warnings(\"-unused_constructor\")")
+  wln(buf, "pub enum RouteId {")
+  for client in crate.clients {
+    let client_prefix = @case.pascal_case(
+      @codegen.sanitize_identifier(client.name),
+    )
+    for op in client.methods {
+      let op_part = @case.pascal_case(@codegen.sanitize_identifier(op.name))
+      let ctor = client_prefix + op_part
+      let path_params = op.parameters.filter(fn(p) { p.location == "path" })
+      if path_params.length() == 0 {
+        wln(buf, "  \{ctor}")
+      } else {
+        buf.write_string("  \{ctor}(")
+        let mut first = true
+        for p in path_params {
+          if !first {
+            buf.write_string(", ")
+          }
+          first = false
+          // enum payload 可以使用 label 参数：`name~ : Type`，调用侧用 `name=...` 传参。
+          let pname = @codegen.sanitize_identifier(@case.snake_case(p.name))
+          buf.write_string("\{pname}~ : String")
+        }
+        wln(buf, ")")
+      }
+    }
+  }
+  wln(buf, "}")
+  wln(buf, "")
+  wln(buf, "///|")
+  wln(
+    buf, "/// 路由匹配结果（纯匹配：不读 body、不写响应、不调用 handler）。",
+  )
+  wln(buf, "#warnings(\"-unused_constructor\")")
+  wln(buf, "pub enum MatchRouteResult {")
+  wln(buf, "  NotMatched")
+  wln(buf, "  MethodNotAllowed")
+  wln(buf, "  Matched(RouteId)")
+  wln(buf, "}")
+  wln(buf, "")
+  wln(buf, "///|")
+  wln(
+    buf, "/// 匹配 method + path，并返回命中的 RouteId（若命中）。",
+  )
+  wln(buf, "///")
+  wln(buf, "/// 约定：")
+  wln(buf, "/// - `NotMatched`：path 不匹配任何 route")
+  wln(buf, "/// - `MethodNotAllowed`：path 匹配但 method 不支持")
+  wln(
+    buf, "/// - `Matched`：method+path 匹配（并包含必要的 path 参数）",
+  )
+  wln(
+    buf, "pub fn match_route(meth : @http.RequestMethod, full_path : String) -> MatchRouteResult {",
+  )
+  // 生成期构建 prefix string trie（radix trie），运行时使用 StringView 进行前缀匹配与 slice。
+  let routes : Array[RouteSpec] = Array::new()
+  for client in crate.clients {
+    let client_prefix = @case.pascal_case(
+      @codegen.sanitize_identifier(client.name),
+    )
+    for op in client.methods {
+      let meth_ctor = server_meth_ctor(op.http_method)
+      let normalized_tmpl = normalize_uri_template(op.path)
+      let segments = parse_route_segments(normalized_tmpl)
+
+      // 校验：template 里出现的 `{param}` 与 operation.path 参数集合一致（名字必须相同）。
+      let tmpl_param_names : Array[String] = Array::new()
+      for seg in segments {
+        match seg {
+          Param(name) => tmpl_param_names.push(name)
+          _ => ()
+        }
+      }
+      let tmpl_param_set : Map[String, Unit] = Map::new()
+      for name in tmpl_param_names {
+        if tmpl_param_set.contains(name) {
+          fail("duplicate path parameter name in template: \{normalized_tmpl}")
+        }
+        tmpl_param_set.set(name, ())
+      }
+      let op_param_names : Array[String] = Array::new()
+      let path_param_vars : Array[String] = Array::new()
+      let op_param_set : Map[String, Unit] = Map::new()
+      for p in op.parameters {
+        if p.location == "path" {
+          op_param_names.push(p.name)
+          path_param_vars.push(sanitize_path_param_var(p.name))
+          if op_param_set.contains(p.name) {
+            fail(
+              "duplicate path parameter name in operation parameters: \{normalized_tmpl}",
+            )
+          }
+          op_param_set.set(p.name, ())
+        }
+      }
+      // op.parameters(path) ⊆ template
+      let tmpl_list = join_strings(tmpl_param_names, ", ")
+      let op_list = join_strings(op_param_names, ", ")
+      for name in op_param_names {
+        if !tmpl_param_set.contains(name) {
+          fail(
+            "path parameters mismatch between template and operation parameters: \{normalized_tmpl} (template=[\{tmpl_list}], op=[\{op_list}])",
+          )
+        }
+      }
+      let op_part = @case.pascal_case(@codegen.sanitize_identifier(op.name))
+      let route_id_ctor = client_prefix + op_part
+      routes.push(RouteSpec::{
+        segments,
+        meth_ctor,
+        route_id_ctor,
+        path_param_vars,
+      })
+    }
+  }
+  let route_tree = into_route_tree(routes)
+  wln(buf, "  let path = @runtime.strip_request_query(full_path)")
+  emit_match_route_handler(buf, 1, route_tree)
+  wln(buf, "}")
+  wln(buf, "")
   buf.write_string("pub fn[")
   for i in 0..<crate.clients.length() {
     let client = crate.clients[i]
@@ -499,21 +626,36 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
     buf, "  async fn(req : @http.Request, body_stream : &@io.Reader, conn : @http.ServerConnection) -> RouteMatch {",
   )
   wln(buf, "    let full_path = req.path")
-  wln(buf, "    let path = @runtime.strip_request_query(full_path)")
-  wln(buf, "    ")
+  wln(buf, "    match match_route(req.meth, full_path) {")
+  wln(buf, "      MatchRouteResult::Matched(route_id) => {")
+  wln(buf, "        match route_id {")
   let mut op_counter = 0
   for ci in 0..<crate.clients.length() {
     let client = crate.clients[ci]
     let handler_var = client_handler_vars[ci]
+    let client_prefix = @case.pascal_case(
+      @codegen.sanitize_identifier(client.name),
+    )
     for op in client.methods {
       op_counter += 1
-      let meth = server_meth_ctor(op.http_method)
-      let normalized_tmpl = normalize_uri_template(op.path)
-      buf.write_string(
-        "    if req.meth == \{meth} && @runtime.match_path_template(\"",
-      )
-      write_escaped_string_literal(buf, normalized_tmpl)
-      wln(buf, "\", path) {")
+      let op_part = @case.pascal_case(@codegen.sanitize_identifier(op.name))
+      let ctor = client_prefix + op_part
+      let path_params = op.parameters.filter(fn(p) { p.location == "path" })
+      if path_params.length() == 0 {
+        wln(buf, "          RouteId::\{ctor} => {")
+      } else {
+        buf.write_string("          RouteId::\{ctor}(")
+        for i in 0..<path_params.length() {
+          if i > 0 {
+            buf.write_string(", ")
+          }
+          let pname = @codegen.sanitize_identifier(
+            @case.snake_case(path_params[i].name),
+          )
+          buf.write_string("\{pname}~")
+        }
+        wln(buf, ") => {")
+      }
 
       // detect body presence
       let has_body = for param in op.parameters {
@@ -524,85 +666,81 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
         false
       }
       if has_body {
-        wln(buf, "      let body_bytes = body_stream.read_all()")
-        wln(buf, "      let body_str = body_bytes.text()")
+        wln(buf, "            let body_bytes = body_stream.read_all()")
+        wln(buf, "            let body_str = body_bytes.text()")
       } else {
-        wln(buf, "      ignore(body_stream)")
+        wln(buf, "            ignore(body_stream)")
       }
-      wln(buf, "      ")
+      wln(buf, "            ")
       let call_arg_exprs : Array[String] = Array::new()
       for param in op.parameters {
         let pname = @codegen.sanitize_identifier(@case.snake_case(param.name))
-        let var_name = "p_\{op_counter.to_string()}_\{pname}"
-        call_arg_exprs.push(var_name)
         match param.location {
-          "body" =>
-            wln(
-              buf,
-              "      let \{var_name} : \{type_ref_to_string(param.type_)} = @json.from_json(@json.parse(body_str))",
-            )
-          "path" => {
-            buf.write_string(
-              "      let \{var_name} = @runtime.get_path_param(\"",
-            )
-            write_escaped_string_literal(buf, normalized_tmpl)
-            buf.write_string("\", path, \"\{param.name}\")\n")
+          "path" => call_arg_exprs.push(pname)
+          _ => {
+            let var_name = "p_\{op_counter.to_string()}_\{pname}"
+            call_arg_exprs.push(var_name)
+            match param.location {
+              "body" =>
+                wln(
+                  buf,
+                  "            let \{var_name} : \{type_ref_to_string(param.type_)} = @json.from_json(@json.parse(body_str))",
+                )
+              "header" =>
+                wln(
+                  buf,
+                  "            let \{var_name} = @runtime.get_header(req.headers, \"\{param.name}\")",
+                )
+              "query" =>
+                wln(
+                  buf,
+                  "            let \{var_name} = @runtime.get_query_param(full_path, \"\{param.name}\")",
+                )
+              _ => fail("unsupported parameter location: \{param.location}")
+            }
           }
-          "header" =>
-            wln(
-              buf,
-              "      let \{var_name} = @runtime.get_header(req.headers, \"\{param.name}\")",
-            )
-          "query" =>
-            wln(
-              buf,
-              "      let \{var_name} = @runtime.get_query_param(full_path, \"\{param.name}\")",
-            )
-          _ => fail("unsupported parameter location: \{param.location}")
         }
       }
       if op.is_sse {
         wln(
           buf,
-          "      let sse = @runtime.EventStreamWriter::start(conn, \{op.status_code.to_string()}, \"\{status_reason_phrase(op.status_code)}\")",
+          "            let sse = @runtime.EventStreamWriter::start(conn, \{op.status_code.to_string()}, \"\{status_reason_phrase(op.status_code)}\")",
         )
         call_arg_exprs.push("sse")
         buf.write_string(
-          "      \{handler_var}.\{@case.snake_case(op.name)}(group~, ",
+          "            \{handler_var}.\{@case.snake_case(op.name)}(group~, ",
         )
         for arg in call_arg_exprs {
           buf.write_string("\{arg},")
         }
         wln(buf, ")")
-        wln(buf, "      return RouteMatch::Handled")
-        wln(buf, "    }")
-        wln(buf, "    ")
+        wln(buf, "            RouteMatch::Handled")
+        wln(buf, "          }")
         continue
       }
       let has_response_body = op.response_body is Some(_)
       if has_response_body {
         buf.write_string(
-          "      let resp_body = \{handler_var}.\{@case.snake_case(op.name)}(group~, ",
+          "            let resp_body = \{handler_var}.\{@case.snake_case(op.name)}(group~, ",
         )
         for arg in call_arg_exprs {
           buf.write_string("\{arg},")
         }
         wln(buf, ")")
         wln(
-          buf, "      let headers : Map[String, String] = { \"content-type\": \"application/json\" }",
+          buf, "            let headers : Map[String, String] = { \"content-type\": \"application/json\" }",
         )
         wln(
           buf,
-          "      conn.send_response(\{op.status_code.to_string()}, \"\{status_reason_phrase(op.status_code)}\", extra_headers=headers)",
+          "            conn.send_response(\{op.status_code.to_string()}, \"\{status_reason_phrase(op.status_code)}\", extra_headers=headers)",
         )
-        wln(buf, "      conn.write(resp_body.to_json().stringify())")
-        wln(buf, "      conn.end_response()")
-        wln(buf, "      return RouteMatch::Handled")
-        wln(buf, "    }")
-        wln(buf, "    ")
+        wln(buf, "            conn.write(resp_body.to_json().stringify())")
+        wln(buf, "            conn.end_response()")
+        wln(buf, "            RouteMatch::Handled")
+        wln(buf, "          }")
       } else {
         buf.write_string(
-          "      \{handler_var}.\{@case.snake_case(op.name)}(group~, ",
+          "            \{handler_var}.\{@case.snake_case(op.name)}(group~, ",
         )
         for arg in call_arg_exprs {
           buf.write_string("\{arg},")
@@ -610,29 +748,21 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
         wln(buf, ")")
         wln(
           buf,
-          "      conn.send_response(\{op.status_code.to_string()}, \"\{status_reason_phrase(op.status_code)}\")",
+          "            conn.send_response(\{op.status_code.to_string()}, \"\{status_reason_phrase(op.status_code)}\")",
         )
-        wln(buf, "      conn.end_response()")
-        wln(buf, "      return RouteMatch::Handled")
-        wln(buf, "    }")
-        wln(buf, "    ")
+        wln(buf, "            conn.end_response()")
+        wln(buf, "            RouteMatch::Handled")
+        wln(buf, "          }")
       }
     }
   }
+  wln(buf, "        }")
+  wln(buf, "      }")
   wln(
-    buf, "    // 未找到“method+path 完全匹配”的 handler。再判定是否是“path 匹配但 method 不支持”。",
+    buf, "      MatchRouteResult::MethodNotAllowed => RouteMatch::MethodNotAllowed",
   )
-  wln(buf, "    let mut path_matched = false")
-  for client in crate.clients {
-    for op in client.methods {
-      buf.write_string("    if @runtime.match_path_template(\"")
-      write_escaped_string_literal(buf, normalize_uri_template(op.path))
-      buf.write_string("\", path) { path_matched = true }\n")
-    }
-  }
-  wln(
-    buf, "    if path_matched { RouteMatch::MethodNotAllowed } else { RouteMatch::NotMatched }",
-  )
+  wln(buf, "      MatchRouteResult::NotMatched => RouteMatch::NotMatched")
+  wln(buf, "    }")
   wln(buf, "  }")
   wln(buf, "}")
   wln(buf, "")
