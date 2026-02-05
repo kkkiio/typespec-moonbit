@@ -3,4 +3,4 @@ version = 1
 name = "typespec-moonbit"
 
 [setup]
-script = "moon update"
+script = "npm install"
