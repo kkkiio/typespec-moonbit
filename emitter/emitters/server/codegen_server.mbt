@@ -158,7 +158,7 @@ fn write_model(
       rename_entries.push((field_name, f.name))
     }
   }
-  sb.write_string("} derive(Show, Default, ")
+  sb.write_string("} derive(Show, ")
   let has_renames = rename_entries.length() > 0
   if !has_renames {
     sb.write_string("ToJson")
