@@ -109,6 +109,8 @@ pub async fn Adapter::tcgc_to_crate(self : Adapter) -> @codemodel.Crate {
       status_code: 200,
       response_body: None,
       is_sse: false,
+      sse_event_union: None,
+      sse_error_responses: [],
       parameters: [],
     })
     [@codemodel.Client::{ name: self.service_name(), methods }]
@@ -155,12 +157,18 @@ fn build_method(
   }
   let status_code = try_get_default_status_code(op).unwrap_or(200)
   let mut is_sse = false
+  let mut sse_event_union : @codemodel.Union? = None
+  let mut sse_error_responses : Array[@codemodel.SseErrorResponse] = []
   let body_payload = try_get_default_response_body_payload(op, status_code)
   let response_body = match body_payload {
     None => None
     Some(body) => {
       is_sse = body_payload_is_sse(body)
       if is_sse {
+        sse_event_union = try_get_sse_event_union(op_ref, processed_models)
+        sse_error_responses = collect_sse_error_responses(
+          op, status_code, processed_models,
+        )
         None
       } else {
         let t = @ffi.get_value(body, "type")
@@ -180,6 +188,8 @@ fn build_method(
     status_code,
     response_body,
     is_sse,
+    sse_event_union,
+    sse_error_responses,
     parameters: params,
   }
 }
@@ -924,43 +934,120 @@ fn try_get_default_response_body_payload(
     if !matched {
       continue
     }
-    let variants_val = @ffi.get_value(r, "responses")
-    if @ffi.is_undefined(variants_val) {
-      return None
-    }
-    let variants : Array[@ffi.JsValue] = variants_val.cast()
-    for v in variants {
-      let body_val = @ffi.get_value(v, "body")
-      if !@ffi.is_undefined(body_val) && !body_val.is_null() {
-        return Some(body_val)
-      }
-
-      // Fallback: scan `responses[*].properties[*]` for body-related entries.
-      let props_val = @ffi.get_value(v, "properties")
-      if @ffi.is_undefined(props_val) {
-        continue
-      }
-      let props : Array[@ffi.JsValue] = props_val.cast()
-      for p in props {
-        let kind_val = @ffi.get_value(p, "kind")
-        if !@ffi.is_string(kind_val) {
-          continue
-        }
-        let kind = @ffi.cast_string(kind_val)
-        if kind != "body" && kind != "bodyProperty" {
-          continue
-        }
-        let prop_val = @ffi.get_value(p, "property")
-        if @ffi.is_undefined(prop_val) {
-          continue
-        }
-        // `property` is a ModelProperty. Treat it as payload-like value and let caller fetch its `type`.
-        return Some(prop_val)
-      }
-    }
-    return None
+    return try_get_response_body_payload_from_response(r)
   }
   None
+}
+
+///|
+fn try_get_response_body_payload_from_response(
+  response : @ffi.JsValue,
+) -> @ffi.JsValue? {
+  let variants_val = @ffi.get_value(response, "responses")
+  if @ffi.is_undefined(variants_val) {
+    return None
+  }
+  let variants : Array[@ffi.JsValue] = variants_val.cast()
+  for v in variants {
+    let body_val = @ffi.get_value(v, "body")
+    if !@ffi.is_undefined(body_val) && !body_val.is_null() {
+      return Some(body_val)
+    }
+
+    // Fallback: scan `responses[*].properties[*]` for body-related entries.
+    let props_val = @ffi.get_value(v, "properties")
+    if @ffi.is_undefined(props_val) {
+      continue
+    }
+    let props : Array[@ffi.JsValue] = props_val.cast()
+    for p in props {
+      let kind_val = @ffi.get_value(p, "kind")
+      if !@ffi.is_string(kind_val) {
+        continue
+      }
+      let kind = @ffi.cast_string(kind_val)
+      if kind != "body" && kind != "bodyProperty" {
+        continue
+      }
+      let prop_val = @ffi.get_value(p, "property")
+      if @ffi.is_undefined(prop_val) {
+        continue
+      }
+      // `property` is a ModelProperty. Treat it as payload-like value and let caller fetch its `type`.
+      return Some(prop_val)
+    }
+  }
+  None
+}
+
+///|
+fn get_response_status_codes(response : @ffi.JsValue) -> Array[Int] {
+  let status_val = @ffi.get_value(response, "statusCodes")
+  if @ffi.is_undefined(status_val) {
+    return []
+  }
+  let codes = Array::new()
+  if @ffi.is_number(status_val) {
+    codes.push(@ffi.cast_int(status_val))
+    return codes
+  }
+  if @ffi.is_array(status_val) {
+    let status_arr : Array[@ffi.JsValue] = status_val.cast()
+    for c in status_arr {
+      if @ffi.is_number(c) {
+        codes.push(@ffi.cast_int(c))
+      }
+    }
+  }
+  codes
+}
+
+///|
+fn collect_sse_error_responses(
+  op : @ffi.JsValue,
+  sse_status_code : Int,
+  processed_models : Map[String, @codemodel.Model],
+) -> Array[@codemodel.SseErrorResponse] {
+  let responses_val = @ffi.get_value(op, "responses")
+  if @ffi.is_undefined(responses_val) {
+    return []
+  }
+  let responses : Array[@ffi.JsValue] = responses_val.cast()
+  let seen_codes = Map::new()
+  let errors : Array[@codemodel.SseErrorResponse] = []
+  for r in responses {
+    let codes = get_response_status_codes(r)
+    if codes.length() == 0 {
+      continue
+    }
+    let payload = try_get_response_body_payload_from_response(r)
+    let mut payload_is_sse = false
+    let mut body_type : @codemodel.TypeRef? = None
+    match payload {
+      Some(body) => {
+        payload_is_sse = body_payload_is_sse(body)
+        if !payload_is_sse {
+          let t = @ffi.get_value(body, "type")
+          if !(@ffi.is_undefined(t) || t.is_null()) {
+            body_type = Some(resolve_type_ref(t, processed_models))
+          }
+        }
+      }
+      None => ()
+    }
+    for code in codes {
+      if payload_is_sse && code == sse_status_code {
+        continue
+      }
+      if seen_codes.contains(code.to_string()) {
+        continue
+      }
+      seen_codes.set(code.to_string(), ())
+      errors.push({ status_code: code, body: body_type })
+    }
+  }
+  errors.sort_by_key(fn(e) { e.status_code })
+  errors
 }
 
 ///|
@@ -983,3 +1070,148 @@ fn body_payload_is_sse(body : @ffi.JsValue) -> Bool {
   }
   false
 }
+
+///|
+fn resolve_union_name(union_type : @ffi.JsValue) -> String {
+  let name_val = @ffi.get_value(union_type, "name")
+  let union_name = if @ffi.is_string(name_val) {
+    @ffi.cast_string(name_val)
+  } else {
+    ""
+  }
+  if union_name != "" {
+    return union_name
+  }
+  match get_cached_anon_union_name(union_type) {
+    Some(n) => n
+    None => {
+      let n = next_anon_union_name()
+      set_cached_anon_union_name(union_type, n)
+      n
+    }
+  }
+}
+
+///|
+fn try_resolve_union(
+  union_type : @ffi.JsValue,
+  processed_models : Map[String, @codemodel.Model],
+) -> @codemodel.Union? {
+  let kind_val = @ffi.get_value(union_type, "kind")
+  guard @ffi.is_string(kind_val) && @ffi.cast_string(kind_val) == "Union" else {
+    return None
+  }
+  let variants_val = @ffi.get_value(union_type, "variants")
+  guard !@ffi.is_undefined(variants_val) && !variants_val.is_null() else {
+    return None
+  }
+  let variants = get_union_variants_as_array(variants_val)
+  let union_name = resolve_union_name(union_type)
+  let variants_arr = Array::new()
+  let mut i = 0
+  for v in variants {
+    let t = @ffi.get_value(v, "type")
+    if @ffi.is_undefined(t) || t.is_null() {
+      i += 1
+      continue
+    }
+    let tk = @ffi.get_value(t, "kind")
+    if @ffi.is_string(tk) && @ffi.cast_string(tk) == "Intrinsic" {
+      let tn = @ffi.get_value(t, "name")
+      if @ffi.is_string(tn) && @ffi.cast_string(tn) == "null" {
+        i += 1
+        continue
+      }
+    }
+    let vn_val = @ffi.get_value(v, "name")
+    let mut variant_name = if @ffi.is_string(vn_val) {
+      @ffi.cast_string(vn_val)
+    } else {
+      ""
+    }
+    if variant_name == "" {
+      let tn_val = @ffi.get_value(t, "name")
+      variant_name = if @ffi.is_string(tn_val) && @ffi.cast_string(tn_val) != "" {
+        @ffi.cast_string(tn_val)
+      } else {
+        "Variant\{i.to_string()}"
+      }
+    }
+    let variant_type = resolve_type_ref(t, processed_models)
+    variants_arr.push(@codemodel.UnionVariant::{
+      name: variant_name,
+      type_: variant_type,
+    })
+    i += 1
+  }
+  if variants_arr.length() == 0 {
+    None
+  } else {
+    Some(@codemodel.Union::{ name: union_name, variants: variants_arr })
+  }
+}
+
+///|
+/// 从 operation.returnType 提取 `SSEStream<EventsUnion>` 的 `EventsUnion`。
+fn try_get_sse_event_union(
+  op_ref : @ffi.JsValue,
+  processed_models : Map[String, @codemodel.Model],
+) -> @codemodel.Union? {
+  let ret = @ffi.get_value(op_ref, "returnType")
+  if @ffi.is_undefined(ret) || ret.is_null() {
+    return None
+  }
+  let events_union = find_sse_events_union_type(ret)
+  if @ffi.is_undefined(events_union) || events_union.is_null() {
+    return None
+  }
+  try_resolve_union(events_union, processed_models)
+}
+
+///|
+extern "js" fn find_sse_events_union_type(t : @ffi.JsValue) -> @ffi.JsValue =
+  #| (t) => {
+  #|   const getMappedUnion = (model) => {
+  #|     const map = model?.templateMapper?.map;
+  #|     if (map && typeof map.values === "function") {
+  #|       for (const v of map.values()) {
+  #|         if (v?.kind === "Union") return v;
+  #|       }
+  #|     }
+  #|     return undefined;
+  #|   };
+  #|
+  #|   const isSSEModel = (x) => {
+  #|     if (!x || x.kind !== "Model") return false;
+  #|     if (x.name === "SSEStream") return true;
+  #|     const src = x.sourceModel;
+  #|     return src?.kind === "Model" && src?.name === "HttpStream";
+  #|   };
+  #|
+  #|   const getVariants = (u) => {
+  #|     const variants = u?.variants;
+  #|     if (!variants) return [];
+  #|     if (typeof variants.values === "function") return [...variants.values()];
+  #|     if (Array.isArray(variants)) return variants;
+  #|     return [];
+  #|   };
+  #|
+  #|   const walk = (x) => {
+  #|     if (!x) return undefined;
+  #|     if (isSSEModel(x)) {
+  #|       const mapped = getMappedUnion(x);
+  #|       if (mapped) return mapped;
+  #|     }
+  #|     if (x.kind === "Union") {
+  #|       for (const v of getVariants(x)) {
+  #|         const found = walk(v?.type);
+  #|         if (found) return found;
+  #|       }
+  #|       return undefined;
+  #|     }
+  #|     if (x.type) return walk(x.type);
+  #|     return undefined;
+  #|   }
+  #|
+  #|   return walk(t);
+  #| }

@@ -18,6 +18,11 @@ execSync("node .scripts/build_emitters.js --all", { stdio: "inherit" });
 
 const cases = [
   {
+    name: "local_server_events_dotted_name",
+    input: path.join(repoRoot, "e2e/server/specs/events/dotted-name/main.tsp"),
+    outputDir: path.join(repoRoot, "e2e/server/generated/events/dotted-name"),
+  },
+  {
     name: "http-specs_server_endpoint_not_defined",
     input: path.join(repoRoot, "node_modules/@typespec/http-specs/specs/server/endpoint/not-defined/main.tsp"),
     outputDir: path.join(repoRoot, "e2e/server/generated/endpoint/not-defined"),

@@ -22,6 +22,7 @@ pub fn strip_request_query(String) -> StringView
 pub struct EventStreamWriter {
   conn : @http.ServerConnection
 }
+pub async fn EventStreamWriter::close(Self) -> Unit
 pub async fn EventStreamWriter::start(@http.ServerConnection, Int, String, extra_headers? : Map[String, String]) -> Self
 pub async fn[T : SseToEvent] EventStreamWriter::write(Self, T, flush? : Bool) -> Unit
 pub async fn EventStreamWriter::write_event(Self, id? : String, event? : String, data? : &@io.Data, flush? : Bool) -> Unit

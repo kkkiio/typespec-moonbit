@@ -83,7 +83,6 @@ pub fn match_route(meth : @http.RequestMethod, full_path : String) -> MatchRoute
 
 pub fn[H0 : TestClientHandler, ] create_router(
   test_client_handler~ : H0,
-  
   group~ : @async.TaskGroup[Unit],
 ) -> Router {
   async fn(req : @http.Request, body_stream : &@io.Reader, conn : @http.ServerConnection) -> RouteMatch {

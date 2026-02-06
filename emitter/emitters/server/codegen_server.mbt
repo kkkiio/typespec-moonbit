@@ -58,11 +58,12 @@ fn emit_server_moon_pkg_json() -> String {
   (
     #|{
     #|  "import": [
+    #|    "moonbitlang/core/json",
     #|    "moonbitlang/async",
     #|    "moonbitlang/async/http",
     #|    "moonbitlang/async/io",
-    #|    "kkkiio/typespec-moonbit-server-runtime/runtime",
-    #|    "moonbitlang/core/json"
+    #|    "moonbitlang/async/aqueue",
+    #|    "kkkiio/typespec-moonbit-server-runtime/runtime"
     #|  ]
     #|}
   )
@@ -80,228 +81,112 @@ fn emit_server_readme(crate : @codemodel.Crate) -> String {
 }
 
 ///|
-fn write_union(sb : StringBuilder, u : @codemodel.Union) -> Unit raise {
+fn collect_sse_unions(
+  crate : @codemodel.Crate,
+) -> Map[String, @codemodel.Union] raise {
+  let sse_unions = Map::new()
+  for client in crate.clients {
+    for op in client.methods {
+      if !op.is_sse {
+        continue
+      }
+      match op.sse_event_union {
+        Some(u) => if !sse_unions.contains(u.name) { sse_unions.set(u.name, u) }
+        None =>
+          fail("sse operation \{client.name}.\{op.name} missing events union")
+      }
+    }
+  }
+  sse_unions
+}
+
+///|
+fn sse_stream_name(u : @codemodel.Union) -> String {
+  "\{@case.pascal_case(u.name)}Stream"
+}
+
+///|
+fn sse_result_name(
+  client : @codemodel.Client,
+  op : @codemodel.Method,
+) -> String {
+  "\{@case.pascal_case(client.name)}\{@case.pascal_case(op.name)}Result"
+}
+
+///|
+fn status_variant_name(code : Int) -> String {
+  "Status\{code.to_string()}"
+}
+
+///|
+fn write_sse_event_stream(sb : StringBuilder, u : @codemodel.Union) -> Unit {
   let enum_name = @case.pascal_case(u.name)
-  wln(sb, "///|")
-  wln(sb, "/// Union \{u.name}")
-  wln(sb, "pub(all) enum \{enum_name} {")
-  let n = u.variants.length()
-  guard n > 0 else { fail("union \{u.name} has no variants") }
-  for i in 0..<n {
-    let v = u.variants[i]
-    let ctor = @case.pascal_case(@codegen.sanitize_identifier(v.name))
-    wln(sb, "  \{ctor}(\{type_ref_to_string(v.type_)})")
-  }
-  wln(sb, "} derive(Show)")
-  wln(sb, "")
-  wln(sb, "///|")
-  wln(sb, "pub impl Default for \{enum_name} with default() {")
-  let default_variant = u.variants[0]
-  let default_ctor = @case.pascal_case(
-    @codegen.sanitize_identifier(default_variant.name),
+  let stream_name = sse_stream_name(u)
+  sb.write_string(
+    (
+      $|///|
+      $|/// SSE stream for \{enum_name}
+      $|pub struct \{stream_name} {
+      $|  queue : @async.Queue[\{enum_name}]
+      $|}
+      $|
+      $|///|
+      $|pub fn \{stream_name}::new() -> \{stream_name} {
+      $|  \{stream_name}::{ queue: @async.Queue::new(kind=Blocking(0)) }
+      $|}
+      $|
+      $|///|
+      $|pub async fn \{stream_name}::write_event(self : \{stream_name}, event : \{enum_name}) -> Unit {
+      $|  self.queue.put(event)
+      $|}
+      $|
+      $|///|
+      $|pub fn \{stream_name}::close(self : \{stream_name}) -> Unit {
+      $|  self.queue.close()
+      $|}
+      $|
+      $|///|
+      $|async fn \{stream_name}::next(self : \{stream_name}) -> \{enum_name}? {
+      $|  Some(self.queue.get()) catch {
+      $|    @aqueue.QueueAlreadyClosed => None
+      $|    err => raise err
+      $|  }
+      $|}
+      $|
+    ),
   )
-  wln(
-    sb,
-    "  \{default_ctor}(\{type_ref_to_string(default_variant.type_)}::default())",
-  )
-  wln(sb, "}")
-  wln(sb, "")
-  wln(sb, "///|")
-  wln(
-    sb,
-    "pub impl ToJson for \{enum_name} with to_json(self : \{enum_name}) -> Json {",
-  )
-  wln(sb, "  match self {")
-  for i in 0..<n {
-    let v = u.variants[i]
-    let ctor = @case.pascal_case(@codegen.sanitize_identifier(v.name))
-    wln(sb, "    \{ctor}(v) => v.to_json()")
-  }
-  wln(sb, "  }")
-  wln(sb, "}")
-  wln(sb, "")
 }
 
 ///|
-fn write_model(
+fn write_sse_result_enum(
   sb : StringBuilder,
-  m : @codemodel.Model,
-  derive_fromjson : Bool,
-) -> Unit raise {
-  wln(sb, "///|")
-  wln(sb, "/// Model \{m.name}")
-  let struct_name = @case.pascal_case(m.name)
-  wln(sb, "pub(all) struct \{struct_name} {")
-
-  // NOTE: 不考虑 @encodedName；wire name 直接用 TypeSpec property.name。
-  // 为避免歧义，若两个字段映射到同一个 snake_case 标识符，直接报错。
-  let seen_field_names : Map[String, String] = Map::new() // field_name -> wire_name
-  let rename_entries : Array[(String, String)] = Array::new()
-  for f in m.fields {
-    let field_name = @codegen.sanitize_identifier(@case.snake_case(f.name))
-    if seen_field_names.contains(field_name) {
-      let prev = seen_field_names.get(field_name).unwrap()
-      if prev != f.name {
-        fail(
-          "model field name collision after snake_case: \{m.name}.\{prev} and \{m.name}.\{f.name} both map to \{field_name}",
-        )
-      }
-    } else {
-      seen_field_names.set(field_name, f.name)
-    }
-    let mut line = "  \{field_name} : \{type_ref_to_string(f.type_)}"
-    if f.optional {
-      line = line + "?"
-    }
-    wln(sb, line)
-    if field_name != f.name {
-      rename_entries.push((field_name, f.name))
-    }
-  }
-  sb.write_string("} derive(Show, Default, ")
-  let has_renames = rename_entries.length() > 0
-  if !has_renames {
-    sb.write_string("ToJson")
-  } else {
-    sb.write_string("ToJson(fields(")
-    let n = rename_entries.length()
-    for i in 0..<n {
-      let entry = rename_entries[i]
-      sb.write_string("\{entry.0}(rename=\"\{entry.1}\")")
-      if i != n - 1 {
-        sb.write_string(", ")
-      }
-    }
-    sb.write_string("))")
-  }
-  if derive_fromjson {
-    sb.write_string(", ")
-    if !has_renames {
-      sb.write_string("@json.FromJson")
-    } else {
-      sb.write_string("@json.FromJson(fields(")
-      let n = rename_entries.length()
-      for i in 0..<n {
-        let entry = rename_entries[i]
-        sb.write_string("\{entry.0}(rename=\"\{entry.1}\")")
-        if i != n - 1 {
-          sb.write_string(", ")
-        }
-      }
-      sb.write_string("))")
-    }
-  }
-  wln(sb, ")")
-  wln(sb, "")
-}
-
-///|
-fn collect_decode_models_from_crate(
-  crate : @codemodel.Crate,
-) -> Map[String, @codemodel.Model] raise {
-  let models = Map::new()
-  fn collect_decode_models(type_ : @codemodel.TypeRef) -> Unit raise {
-    match type_ {
-      Union(u) =>
-        fail(
-          "Not supported: request-side untagged union \{u.name} in server code generation",
-        )
-      Model(m) =>
-        if !models.contains(m.name) {
-          models.set(m.name, m)
-          for field in m.fields {
-            collect_decode_models(field.type_)
-          }
-        }
-      Array(t) => collect_decode_models(t)
-      Record(t) => collect_decode_models(t)
-      Nullable(t) => collect_decode_models(t)
-      _ => ()
-    }
-  }
-
-  for client in crate.clients {
-    for op in client.methods {
-      for param in op.parameters {
-        collect_decode_models(param.type_)
-      }
-    }
-  }
-  models
-}
-
-///|
-fn collect_encode_types_from_crate(
-  crate : @codemodel.Crate,
-) -> (Map[String, @codemodel.Model], Map[String, @codemodel.Union]) {
-  let models = Map::new()
-  let unions = Map::new()
-  for client in crate.clients {
-    for op in client.methods {
-      match op.response_body {
-        Some(t) => collect_encode_types(t, models, unions)
-        None => ()
-      }
-    }
-  }
-  (models, unions)
-}
-
-///|
-fn collect_encode_types(
-  type_ : @codemodel.TypeRef,
-  models : Map[String, @codemodel.Model],
-  unions : Map[String, @codemodel.Union],
+  client : @codemodel.Client,
+  op : @codemodel.Method,
+  u : @codemodel.Union,
 ) -> Unit {
-  match type_ {
-    Model(m) =>
-      if !models.contains(m.name) {
-        models.set(m.name, m)
-        for field in m.fields {
-          collect_encode_types(field.type_, models, unions)
-        }
-      }
-    Union(u) =>
-      if !unions.contains(u.name) {
-        unions.set(u.name, u)
-        for v in u.variants {
-          collect_encode_types(v.type_, models, unions)
-        }
-      }
-    Array(t) => collect_encode_types(t, models, unions)
-    Record(t) => collect_encode_types(t, models, unions)
-    Nullable(t) => collect_encode_types(t, models, unions)
-    _ => ()
-  }
-}
-
-///|
-fn emit_server_models(crate : @codemodel.Crate) -> String raise {
-  let buf = StringBuilder::new(size_hint=8192)
-
-  // Nullable helper (for `T | null`) is provided by runtime.
-  buf.write_string(
-    "///|\n#warnings(\"-unused_type_declaration\")\npub using @runtime {type Nullable}\n\n",
+  let result_name = sse_result_name(client, op)
+  let stream_name = sse_stream_name(u)
+  sb.write_string(
+    (
+      $|///|
+      $|pub(all) enum \{result_name} {
+      $|  Stream(\{stream_name})
+      $|
+    ),
   )
-  let decode_models = collect_decode_models_from_crate(crate)
-  let (encode_models, encode_unions) = collect_encode_types_from_crate(crate)
-  let models = encode_models.merge(decode_models)
-
-  // Union Enums (ToJson only)
-  let union_list = encode_unions.to_array()
-  union_list.sort_by_key(fn(u) { u.0 })
-  for item in union_list {
-    write_union(buf, item.1)
+  for err in op.sse_error_responses {
+    let ctor = status_variant_name(err.status_code)
+    match err.body {
+      Some(body_type) => wln(sb, "  \{ctor}(\{type_ref_to_string(body_type)})")
+      None => wln(sb, "  \{ctor}")
+    }
   }
-
-  // Model Structs
-  let model_list = models.to_array()
-  model_list.sort_by_key(fn(m) { m.0 })
-  for item in model_list {
-    let m = item.1
-    write_model(buf, m, decode_models.contains(m.name))
-  }
-  buf.to_string()
+  sb.write_string(
+    (
+      #|}
+      #|
+    ),
+  )
 }
 
 ///|
@@ -409,12 +294,39 @@ fn pick_handler_var(used : Array[String], base : String) -> String {
 fn emit_server_router(crate : @codemodel.Crate) -> String raise {
   let buf = StringBuilder::new(size_hint=8192)
 
-  // 1) Handler Traits
+  // 1) SSE typed streams/writers
+  let sse_unions = collect_sse_unions(crate)
+  let sse_union_list = sse_unions.to_array()
+  sse_union_list.sort_by_key(fn(u) { u.0 })
+  for item in sse_union_list {
+    write_sse_event_stream(buf, item.1)
+  }
+
+  // 2) SSE operation result enums
   for client in crate.clients {
-    wln(buf, "///|")
-    wln(buf, "/// Traits for operation handlers")
+    for op in client.methods {
+      if !op.is_sse {
+        continue
+      }
+      match op.sse_event_union {
+        Some(u) => write_sse_result_enum(buf, client, op, u)
+        None =>
+          fail("sse operation \{client.name}.\{op.name} missing events union")
+      }
+    }
+  }
+
+  // 3) Handler Traits
+  for client in crate.clients {
     let trait_name = @case.pascal_case(client.name) + "Handler"
-    wln(buf, "pub(open) trait \{trait_name} {")
+    buf.write_string(
+      (
+        $|///|
+        $|/// Traits for operation handlers
+        $|pub(open) trait \{trait_name} {
+      ),
+    )
+    buf.write_char('\n')
     for op in client.methods {
       let return_type = match op.response_body {
         Some(t) => type_ref_to_string(t)
@@ -429,48 +341,54 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
         buf.write_string(" : ")
         buf.write_string(type_ref_to_string(p.type_))
       }
-      if op.is_sse {
-        buf.write_string(", sse : @runtime.EventStreamWriter")
-      }
       buf.write_string(") -> ")
       if op.is_sse {
-        wln(buf, "Unit")
+        wln(buf, sse_result_name(client, op))
       } else {
         wln(buf, return_type)
       }
     }
-    wln(buf, "  ")
-    wln(buf, "}")
+    buf.write_string(
+      (
+        #|  
+        #|}
+      ),
+    )
+    buf.write_char('\n')
   }
 
-  // 2) RouteMatch + create_router + create_dispatch
-  wln(buf, "///|")
-  wln(buf, "/// 路由匹配结果。")
-  wln(buf, "#warnings(\"-unused_constructor\")")
-  wln(buf, "pub enum RouteMatch {")
-  wln(buf, "  /// 已命中并写入响应（或已开始 SSE）。")
-  wln(buf, "  Handled")
-  wln(buf, "  /// 路径完全不匹配。")
-  wln(buf, "  NotMatched")
-  wln(
-    buf, "  /// 路径匹配但 method 不被支持（可用于返回 405）。",
-  )
-  wln(buf, "  MethodNotAllowed")
-  wln(buf, "}")
-  wln(buf, "")
-  wln(buf, "///|")
-  wln(
-    buf, "pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch",
+  // 4) RouteMatch + create_router + create_dispatch
+  buf.write_string(
+    (
+      #|///|
+      #|/// 路由匹配结果。
+      #|#warnings("-unused_constructor")
+      #|pub enum RouteMatch {
+      #|  /// 已命中并写入响应（或已开始 SSE）。
+      #|  Handled
+      #|  /// 路径完全不匹配。
+      #|  NotMatched
+      #|  /// 路径匹配但 method 不被支持（可用于返回 405）。
+      #|  MethodNotAllowed
+      #|}
+      #|
+      #|///|
+      #|pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
+      #|
+    ),
   )
   wln(buf, "")
 
   // 2.1) match_route (可基准测试的纯匹配逻辑)
-  wln(buf, "///|")
-  wln(
-    buf, "/// 生成期固定的路由 ID（用于 match_route 的返回值）。",
+  buf.write_string(
+    (
+      #|///|
+      #|/// 生成期固定的路由 ID（用于 match_route 的返回值）。
+      #|#warnings("-unused_constructor")
+      #|pub enum RouteId {
+    ),
   )
-  wln(buf, "#warnings(\"-unused_constructor\")")
-  wln(buf, "pub enum RouteId {")
+  buf.write_char('\n')
   for client in crate.clients {
     let client_prefix = @case.pascal_case(
       @codegen.sanitize_identifier(client.name),
@@ -499,31 +417,28 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
   }
   wln(buf, "}")
   wln(buf, "")
-  wln(buf, "///|")
-  wln(
-    buf, "/// 路由匹配结果（纯匹配：不读 body、不写响应、不调用 handler）。",
+  buf.write_string(
+    (
+      #|///|
+      #|/// 路由匹配结果（纯匹配：不读 body、不写响应、不调用 handler）。
+      #|#warnings("-unused_constructor")
+      #|pub enum MatchRouteResult {
+      #|  NotMatched
+      #|  MethodNotAllowed
+      #|  Matched(RouteId)
+      #|}
+      #|
+      #|///|
+      #|/// 匹配 method + path，并返回命中的 RouteId（若命中）。
+      #|///
+      #|/// 约定：
+      #|/// - `NotMatched`：path 不匹配任何 route
+      #|/// - `MethodNotAllowed`：path 匹配但 method 不支持
+      #|/// - `Matched`：method+path 匹配（并包含必要的 path 参数）
+      #|pub fn match_route(meth : @http.RequestMethod, full_path : String) -> MatchRouteResult {
+    ),
   )
-  wln(buf, "#warnings(\"-unused_constructor\")")
-  wln(buf, "pub enum MatchRouteResult {")
-  wln(buf, "  NotMatched")
-  wln(buf, "  MethodNotAllowed")
-  wln(buf, "  Matched(RouteId)")
-  wln(buf, "}")
-  wln(buf, "")
-  wln(buf, "///|")
-  wln(
-    buf, "/// 匹配 method + path，并返回命中的 RouteId（若命中）。",
-  )
-  wln(buf, "///")
-  wln(buf, "/// 约定：")
-  wln(buf, "/// - `NotMatched`：path 不匹配任何 route")
-  wln(buf, "/// - `MethodNotAllowed`：path 匹配但 method 不支持")
-  wln(
-    buf, "/// - `Matched`：method+path 匹配（并包含必要的 path 参数）",
-  )
-  wln(
-    buf, "pub fn match_route(meth : @http.RequestMethod, full_path : String) -> MatchRouteResult {",
-  )
+  buf.write_char('\n')
   // 生成期构建 prefix string trie（radix trie），运行时使用 StringView 进行前缀匹配与 slice。
   let routes : Array[RouteSpec] = Array::new()
   for client in crate.clients {
@@ -617,18 +532,25 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
     let handler_var = pick_handler_var(used_handler_vars, base)
     used_handler_vars.push(handler_var)
     client_handler_vars.push(handler_var)
-    wln(buf, "  \{handler_var}~ : H\{i.to_string()},")
-    wln(buf, "  ")
+    buf.write_string(
+      (
+        $|  \{handler_var}~ : H\{i.to_string()},
+        $|
+      ),
+    )
   }
-  wln(buf, "  group~ : @async.TaskGroup[Unit],")
-  wln(buf, ") -> Router {")
-  wln(
-    buf, "  async fn(req : @http.Request, body_stream : &@io.Reader, conn : @http.ServerConnection) -> RouteMatch {",
+  buf.write_string(
+    (
+      #|  group~ : @async.TaskGroup[Unit],
+      #|) -> Router {
+      #|  async fn(req : @http.Request, body_stream : &@io.Reader, conn : @http.ServerConnection) -> RouteMatch {
+      #|    let full_path = req.path
+      #|    match match_route(req.meth, full_path) {
+      #|      MatchRouteResult::Matched(route_id) => {
+      #|        match route_id {
+      #|
+    ),
   )
-  wln(buf, "    let full_path = req.path")
-  wln(buf, "    match match_route(req.meth, full_path) {")
-  wln(buf, "      MatchRouteResult::Matched(route_id) => {")
-  wln(buf, "        match route_id {")
   let mut op_counter = 0
   for ci in 0..<crate.clients.length() {
     let client = crate.clients[ci]
@@ -666,8 +588,13 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
         false
       }
       if has_body {
-        wln(buf, "            let body_bytes = body_stream.read_all()")
-        wln(buf, "            let body_str = body_bytes.text()")
+        buf.write_string(
+          (
+            #|            let body_bytes = body_stream.read_all()
+            #|            let body_str = body_bytes.text()
+            #|
+          ),
+        )
       } else {
         wln(buf, "            ignore(body_stream)")
       }
@@ -702,20 +629,91 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
         }
       }
       if op.is_sse {
-        wln(
-          buf,
-          "            let sse = @runtime.EventStreamWriter::start(conn, \{op.status_code.to_string()}, \"\{status_reason_phrase(op.status_code)}\")",
-        )
-        call_arg_exprs.push("sse")
+        let result_enum = sse_result_name(client, op)
+        let sse_union = match op.sse_event_union {
+          Some(u) => u
+          None =>
+            fail("sse operation \{client.name}.\{op.name} missing events union")
+        }
         buf.write_string(
-          "            \{handler_var}.\{@case.snake_case(op.name)}(group~, ",
+          "            let sse_result = \{handler_var}.\{@case.snake_case(op.name)}(group~, ",
         )
         for arg in call_arg_exprs {
           buf.write_string("\{arg},")
         }
         wln(buf, ")")
-        wln(buf, "            RouteMatch::Handled")
-        wln(buf, "          }")
+        buf.write_string(
+          (
+            $|            match sse_result {
+            $|              \{result_enum}::Stream(stream) => {
+            $|                let sse = @runtime.EventStreamWriter::start(conn, \{op.status_code.to_string()}, "\{status_reason_phrase(op.status_code)}")
+            $|                for {
+            $|                  match stream.next() {
+            $|                    Some(event) => match event {
+            $|
+          ),
+        )
+        for v in sse_union.variants {
+          let ctor = @case.pascal_case(@codegen.sanitize_identifier(v.name))
+          let data_type = type_ref_to_string(v.type_)
+          let data_expr = if data_type == "String" {
+            "payload"
+          } else {
+            "payload.to_json().stringify()"
+          }
+          let event_name = StringBuilder::new()
+          write_escaped_string_literal(event_name, v.name)
+          wln(
+            buf,
+            "                      \{ctor}(payload) => sse.write_event(event?=Some(\"\{event_name.to_string()}\"), data=\{data_expr})",
+          )
+        }
+        buf.write_string(
+          (
+            #|                    }
+            #|                    None => break
+            #|                  }
+            #|                }
+            #|                sse.close()
+            #|              }
+            #|
+          ),
+        )
+        for err in op.sse_error_responses {
+          let ctor = status_variant_name(err.status_code)
+          match err.body {
+            Some(_) =>
+              buf.write_string(
+                (
+                  $|              \{result_enum}::\{ctor}(resp_body) => {
+                  $|                let headers : Map[String, String] = { "content-type": "application/json" }
+                  $|                conn.send_response(\{err.status_code.to_string()}, "\{status_reason_phrase(err.status_code)}", extra_headers=headers)
+                  $|                conn.write(resp_body.to_json().stringify())
+                  $|                conn.end_response()
+                  $|              }
+                  $|
+                ),
+              )
+            None =>
+              buf.write_string(
+                (
+                  $|              \{result_enum}::\{ctor} => {
+                  $|                conn.send_response(\{err.status_code.to_string()}, "\{status_reason_phrase(err.status_code)}")
+                  $|                conn.end_response()
+                  $|              }
+                  $|
+                ),
+              )
+          }
+        }
+        buf.write_string(
+          (
+            #|            }
+            #|            RouteMatch::Handled
+            #|          }
+            #|
+          ),
+        )
         continue
       }
       let has_response_body = op.response_body is Some(_)
@@ -726,18 +724,18 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
         for arg in call_arg_exprs {
           buf.write_string("\{arg},")
         }
-        wln(buf, ")")
-        wln(
-          buf, "            let headers : Map[String, String] = { \"content-type\": \"application/json\" }",
+        buf.write_string(
+          (
+            $|)
+            $|            let headers : Map[String, String] = { "content-type": "application/json" }
+            $|            conn.send_response(\{op.status_code.to_string()}, "\{status_reason_phrase(op.status_code)}", extra_headers=headers)
+            $|            conn.write(resp_body.to_json().stringify())
+            $|            conn.end_response()
+            $|            RouteMatch::Handled
+            $|          }
+            $|
+          ),
         )
-        wln(
-          buf,
-          "            conn.send_response(\{op.status_code.to_string()}, \"\{status_reason_phrase(op.status_code)}\", extra_headers=headers)",
-        )
-        wln(buf, "            conn.write(resp_body.to_json().stringify())")
-        wln(buf, "            conn.end_response()")
-        wln(buf, "            RouteMatch::Handled")
-        wln(buf, "          }")
       } else {
         buf.write_string(
           "            \{handler_var}.\{@case.snake_case(op.name)}(group~, ",
@@ -745,26 +743,31 @@ fn emit_server_router(crate : @codemodel.Crate) -> String raise {
         for arg in call_arg_exprs {
           buf.write_string("\{arg},")
         }
-        wln(buf, ")")
-        wln(
-          buf,
-          "            conn.send_response(\{op.status_code.to_string()}, \"\{status_reason_phrase(op.status_code)}\")",
+        buf.write_string(
+          (
+            $|)
+            $|            conn.send_response(\{op.status_code.to_string()}, "\{status_reason_phrase(op.status_code)}")
+            $|            conn.end_response()
+            $|            RouteMatch::Handled
+            $|          }
+            $|
+          ),
         )
-        wln(buf, "            conn.end_response()")
-        wln(buf, "            RouteMatch::Handled")
-        wln(buf, "          }")
       }
     }
   }
-  wln(buf, "        }")
-  wln(buf, "      }")
-  wln(
-    buf, "      MatchRouteResult::MethodNotAllowed => RouteMatch::MethodNotAllowed",
+  buf.write_string(
+    (
+      #|        }
+      #|      }
+      #|      MatchRouteResult::MethodNotAllowed => RouteMatch::MethodNotAllowed
+      #|      MatchRouteResult::NotMatched => RouteMatch::NotMatched
+      #|    }
+      #|  }
+      #|}
+      #|
+    ),
   )
-  wln(buf, "      MatchRouteResult::NotMatched => RouteMatch::NotMatched")
-  wln(buf, "    }")
-  wln(buf, "  }")
-  wln(buf, "}")
   wln(buf, "")
   buf.write_string(
     (

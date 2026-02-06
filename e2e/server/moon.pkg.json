@@ -43,6 +43,10 @@
       "alias": "parameters_spread"
     },
     {
+      "path": "kkkiio/typespec-moonbit-tests/server/generated/events/dotted-name",
+      "alias": "events_dotted_name"
+    },
+    {
       "path": "kkkiio/typespec-moonbit-tests/server/generated/type/array",
       "alias": "type_array"
     },

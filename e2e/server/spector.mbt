@@ -51,7 +51,7 @@ pub async fn run(
       args,
       stdout=@stdio.stdout,
       stderr=@stdio.stderr,
-      cwd?=options.cwd,
+      cwd?=options.cwd.map(_.view()),
     )
     if options.throw_on_non_zero_exit && exit_code != 0 {
       raise CommandFailedError(command~, args~, exit_code~)

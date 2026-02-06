@@ -109,6 +109,12 @@ pub async fn EventStreamWriter::write_event(
 }
 
 ///|
+/// 结束 SSE 响应。
+pub async fn EventStreamWriter::close(self : EventStreamWriter) -> Unit {
+  self.conn.end_response()
+}
+
+///|
 /// 表示一条 SSE 事件（便于业务类型转换）。
 pub struct SseEvent {
   event : String?

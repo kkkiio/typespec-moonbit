@@ -28,6 +28,8 @@ pub(all) struct Method {
   status_code : Int
   response_body : TypeRef?
   is_sse : Bool
+  sse_event_union : Union?
+  sse_error_responses : Array[SseErrorResponse]
   parameters : Array[Parameter]
 }
 
@@ -50,6 +52,11 @@ pub(all) struct Parameter {
   optional : Bool
   explode : Bool
   array_encoding : String?
+}
+
+pub(all) struct SseErrorResponse {
+  status_code : Int
+  body : TypeRef?
 }
 
 pub(all) enum TypeRef {
