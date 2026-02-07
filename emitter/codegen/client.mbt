@@ -89,6 +89,37 @@ fn emit_method(
   let path = op.path
   let template = parse_uri_template(path, op.name)
   let method_ctor = client_meth_ctor(op.http_method)
+  let success_responses = if op.success_responses.length() > 0 {
+    op.success_responses
+  } else {
+    [
+      {
+        status: @codemodel.StatusMatcher::Code(op.status_code),
+        body: op.response_body,
+      },
+    ]
+  }
+  let has_multi_success = success_responses.length() > 1
+  let result_type_name = make_operation_result_type_name(type_name, fn_name)
+  let return_type = if has_multi_success {
+    result_type_name
+  } else {
+    let first = success_responses[0]
+    match first.body {
+      Some(t) => type_ref_to_string(t)
+      None => "Unit"
+    }
+  }
+  let needs_response_body = {
+    let mut has_body = false
+    for r in success_responses {
+      match r.body {
+        Some(_) => has_body = true
+        None => ()
+      }
+    }
+    has_body
+  }
   fn find_param_by_name(
     params : Array[@codemodel.Parameter],
     name : String,
@@ -193,7 +224,7 @@ fn emit_method(
   buf.write_string(op.http_method)
   buf.write_string(" ")
   buf.write_string(path)
-  buf.write_string("。\n")
+  buf.write_string("（自动解析响应）。\n")
   buf.write_string("pub async fn ")
   buf.write_string(type_name)
   buf.write_string("::")
@@ -220,7 +251,9 @@ fn emit_method(
       buf.write_string("?")
     }
   }
-  buf.write_string(") -> @http.Response raise {\n")
+  buf.write_string(") -> ")
+  buf.write_string(return_type)
+  buf.write_string(" raise {\n")
   buf.write_string("  let client = @http.Client::new(self.base_url)\n")
   buf.write_string("  defer client.close()\n")
   buf.write_string("  let headers : Map[String, String] = {}\n")
@@ -432,7 +465,6 @@ fn emit_method(
       buf.write_string("  client.request(")
       buf.write_string(method_ctor)
       buf.write_string(", path, extra_headers=headers)\n")
-      buf.write_string("  client.end_request()\n")
     }
     Some(item) => {
       let p = item.0
@@ -446,12 +478,10 @@ fn emit_method(
         buf.write_string(method_ctor)
         buf.write_string(", path, extra_headers=headers)\n")
         buf.write_string("    client.write(body.to_json())\n")
-        buf.write_string("    client.end_request()\n")
         buf.write_string("  } else {\n")
         buf.write_string("    client.request(")
         buf.write_string(method_ctor)
         buf.write_string(", path, extra_headers=headers)\n")
-        buf.write_string("    client.end_request()\n")
         buf.write_string("  }\n")
       } else {
         buf.write_string(
@@ -461,11 +491,94 @@ fn emit_method(
         buf.write_string(method_ctor)
         buf.write_string(", path, extra_headers=headers)\n")
         buf.write_string("  client.write(\{var_name}.to_json())\n")
-        buf.write_string("  client.end_request()\n")
       }
     }
   }
-  buf.write_string("}\n")
+  buf.write_string("  let response = client.end_request()\n")
+  if needs_response_body {
+    buf.write_string("  let response_body = client.read_all().text()\n")
+  }
+  for r in success_responses {
+    let cond = status_matcher_condition(r.status)
+    buf.write_string("  if ")
+    buf.write_string(cond)
+    buf.write_string(" {\n")
+    match r.body {
+      Some(t) => {
+        let tstr = type_ref_to_string(t)
+        buf.write_string(
+          "    @client_runtime.expect_json_content_type(response)\n",
+        )
+        buf.write_string("    let parsed : ")
+        buf.write_string(tstr)
+        buf.write_string(" = @json.from_json(@json.parse(response_body))\n")
+        if has_multi_success {
+          buf.write_string("    ")
+          buf.write_string(return_type)
+          buf.write_string("::")
+          buf.write_string(status_matcher_variant_name(r.status))
+          buf.write_string("(parsed)\n")
+        } else {
+          buf.write_string("    parsed\n")
+        }
+      }
+      None =>
+        if has_multi_success {
+          buf.write_string("    ")
+          buf.write_string(return_type)
+          buf.write_string("::")
+          buf.write_string(status_matcher_variant_name(r.status))
+          buf.write_string("\n")
+        } else {
+          buf.write_string("    ()\n")
+        }
+    }
+    buf.write_string("  } else ")
+  }
+  buf.write_string("{\n")
+  buf.write_string(
+    "    fail(\"unexpected status code: \" + response.code.to_string())\n",
+  )
+  buf.write_string("  }\n")
+  buf.write_string("}\n\n")
+  if has_multi_success {
+    buf.write_string("///|\n")
+    buf.write_string("pub enum ")
+    buf.write_string(result_type_name)
+    buf.write_string(" {\n")
+    for r in success_responses {
+      let ctor = status_matcher_variant_name(r.status)
+      match r.body {
+        Some(t) =>
+          if type_ref_is_union(t) {
+            fail(
+              "unsupported response body union in client codegen: \{op.name}",
+            )
+          } else {
+            buf.write_string("  ")
+            buf.write_string(ctor)
+            buf.write_string("(")
+            buf.write_string(type_ref_to_string(t))
+            buf.write_string(")\n")
+          }
+        None => {
+          buf.write_string("  ")
+          buf.write_string(ctor)
+          buf.write_string("\n")
+        }
+      }
+    }
+    buf.write_string("} derive(Show)\n\n")
+  } else {
+    let first = success_responses[0]
+    match first.body {
+      Some(t) =>
+        if type_ref_is_union(t) {
+          fail("unsupported response body union in client codegen: \{op.name}")
+        }
+      None => ()
+    }
+  }
 }
 
 ///|
@@ -512,6 +625,42 @@ fn client_meth_ctor(http_method : String) -> String raise {
     "TRACE" => "@http.Trace"
     "CONNECT" => "@http.Connect"
     _ => fail("unsupported http method: \{http_method}")
+  }
+}
+
+///|
+fn make_operation_result_type_name(
+  type_name : String,
+  fn_name : String,
+) -> String {
+  @case.pascal_case(type_name + "_" + fn_name + "_result")
+}
+
+///|
+fn status_matcher_variant_name(status : @codemodel.StatusMatcher) -> String {
+  match status {
+    @codemodel.StatusMatcher::Code(code) => "Status\{code.to_string()}"
+    @codemodel.StatusMatcher::Range(start, end_) =>
+      "Status\{start.to_string()}To\{end_.to_string()}"
+  }
+}
+
+///|
+fn status_matcher_condition(status : @codemodel.StatusMatcher) -> String {
+  match status {
+    @codemodel.StatusMatcher::Code(code) =>
+      "response.code == \{code.to_string()}"
+    @codemodel.StatusMatcher::Range(start, end_) =>
+      "response.code >= \{start.to_string()} && response.code <= \{end_.to_string()}"
+  }
+}
+
+///|
+fn type_ref_is_union(type_ : @codemodel.TypeRef) -> Bool {
+  match type_ {
+    @codemodel.TypeRef::Union(_) => true
+    @codemodel.TypeRef::Nullable(inner) => type_ref_is_union(inner)
+    _ => false
   }
 }
 
@@ -573,10 +722,18 @@ fn write_model(sb : StringBuilder, m : @codemodel.Model) -> Unit raise {
   sb.write_string("} derive(Show, ")
   let has_renames = rename_entries.length() > 0
   if !has_renames {
-    sb.write_string("ToJson")
+    sb.write_string("ToJson, @json.FromJson")
   } else {
     sb.write_string("ToJson(fields(")
     let n = rename_entries.length()
+    for i in 0..<n {
+      let entry = rename_entries[i]
+      sb.write_string("\{entry.0}(rename=\"\{entry.1}\")")
+      if i != n - 1 {
+        sb.write_string(", ")
+      }
+    }
+    sb.write_string(")), @json.FromJson(fields(")
     for i in 0..<n {
       let entry = rename_entries[i]
       sb.write_string("\{entry.0}(rename=\"\{entry.1}\")")
@@ -624,9 +781,18 @@ fn collect_encode_types_from_crate(
       for p in op.parameters {
         collect(p.type_)
       }
-      match op.response_body {
-        None => ()
-        Some(t) => collect(t)
+      if op.success_responses.length() > 0 {
+        for r in op.success_responses {
+          match r.body {
+            None => ()
+            Some(t) => collect(t)
+          }
+        }
+      } else {
+        match op.response_body {
+          None => ()
+          Some(t) => collect(t)
+        }
       }
     }
   }

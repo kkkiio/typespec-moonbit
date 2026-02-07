@@ -27,6 +27,7 @@ pub(all) struct Method {
   http_method : String
   status_code : Int
   response_body : TypeRef?
+  success_responses : Array[SuccessResponse]
   is_sse : Bool
   sse_event_union : Union?
   sse_error_responses : Array[SseErrorResponse]
@@ -56,6 +57,16 @@ pub(all) struct Parameter {
 
 pub(all) struct SseErrorResponse {
   status_code : Int
+  body : TypeRef?
+}
+
+pub(all) enum StatusMatcher {
+  Code(Int)
+  Range(Int, Int)
+}
+
+pub(all) struct SuccessResponse {
+  status : StatusMatcher
   body : TypeRef?
 }
 

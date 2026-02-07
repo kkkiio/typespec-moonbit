@@ -3,7 +3,7 @@ package "kkkiio/typespec-moonbit-tests/client/generated/parameters/spread"
 
 import {
   "kkkiio/typespec-moonbit-server-runtime/runtime",
-  "moonbitlang/async/http",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -15,41 +15,46 @@ pub struct AliasClient {
   base_url : String
 }
 pub fn AliasClient::new(String) -> Self
-pub async fn AliasClient::post_parameters_spread_alias_inner_alias_parameter__id_(Self, String, String, Model4) -> @http.Response
-pub async fn AliasClient::post_parameters_spread_alias_inner_model_parameter__id_(Self, String, String, Model1) -> @http.Response
-pub async fn AliasClient::put_parameters_spread_alias_multiple_parameters__id_(Self, String, String, Model3) -> @http.Response
-pub async fn AliasClient::put_parameters_spread_alias_request_body(Self, Model0) -> @http.Response
-pub async fn AliasClient::put_parameters_spread_alias_request_parameter__id_(Self, String, String, Model2) -> @http.Response
+pub async fn AliasClient::post_parameters_spread_alias_inner_alias_parameter__id_(Self, String, String, Model4) -> Unit
+pub async fn AliasClient::post_parameters_spread_alias_inner_model_parameter__id_(Self, String, String, Model1) -> Unit
+pub async fn AliasClient::put_parameters_spread_alias_multiple_parameters__id_(Self, String, String, Model3) -> Unit
+pub async fn AliasClient::put_parameters_spread_alias_request_body(Self, Model0) -> Unit
+pub async fn AliasClient::put_parameters_spread_alias_request_parameter__id_(Self, String, String, Model2) -> Unit
 
 pub(all) struct BodyParameter {
   name : String
 }
 pub impl Show for BodyParameter
 pub impl ToJson for BodyParameter
+pub impl @json.FromJson for BodyParameter
 
 pub(all) struct BodyParameter5 {
   name : String
 }
 pub impl Show for BodyParameter5
 pub impl ToJson for BodyParameter5
+pub impl @json.FromJson for BodyParameter5
 
 pub(all) struct Model0 {
   name : String
 }
 pub impl Show for Model0
 pub impl ToJson for Model0
+pub impl @json.FromJson for Model0
 
 pub(all) struct Model1 {
   name : String
 }
 pub impl Show for Model1
 pub impl ToJson for Model1
+pub impl @json.FromJson for Model1
 
 pub(all) struct Model2 {
   name : String
 }
 pub impl Show for Model2
 pub impl ToJson for Model2
+pub impl @json.FromJson for Model2
 
 pub(all) struct Model3 {
   required_string : String
@@ -59,6 +64,7 @@ pub(all) struct Model3 {
 }
 pub impl Show for Model3
 pub impl ToJson for Model3
+pub impl @json.FromJson for Model3
 
 pub(all) struct Model4 {
   name : String
@@ -66,22 +72,24 @@ pub(all) struct Model4 {
 }
 pub impl Show for Model4
 pub impl ToJson for Model4
+pub impl @json.FromJson for Model4
 
 pub(all) struct Model6 {
   prop : String
 }
 pub impl Show for Model6
 pub impl ToJson for Model6
+pub impl @json.FromJson for Model6
 
 pub struct ModelClient {
   base_url : String
 }
 pub fn ModelClient::new(String) -> Self
-pub async fn ModelClient::put_parameters_spread_model_composite_request__name_(Self, String, String, BodyParameter) -> @http.Response
-pub async fn ModelClient::put_parameters_spread_model_composite_request_mix__name_(Self, String, String, Model6) -> @http.Response
-pub async fn ModelClient::put_parameters_spread_model_composite_request_only_with_body(Self, BodyParameter) -> @http.Response
-pub async fn ModelClient::put_parameters_spread_model_composite_request_without_body__name_(Self, String, String) -> @http.Response
-pub async fn ModelClient::put_parameters_spread_model_request_body(Self, BodyParameter5) -> @http.Response
+pub async fn ModelClient::put_parameters_spread_model_composite_request__name_(Self, String, String, BodyParameter) -> Unit
+pub async fn ModelClient::put_parameters_spread_model_composite_request_mix__name_(Self, String, String, Model6) -> Unit
+pub async fn ModelClient::put_parameters_spread_model_composite_request_only_with_body(Self, BodyParameter) -> Unit
+pub async fn ModelClient::put_parameters_spread_model_composite_request_without_body__name_(Self, String, String) -> Unit
+pub async fn ModelClient::put_parameters_spread_model_request_body(Self, BodyParameter5) -> Unit
 
 // Type aliases
 pub using @runtime {type Nullable}

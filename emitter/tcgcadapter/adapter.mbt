@@ -108,6 +108,9 @@ pub async fn Adapter::tcgc_to_crate(self : Adapter) -> @codemodel.Crate {
       http_method: "GET",
       status_code: 200,
       response_body: None,
+      success_responses: [
+        { status: @codemodel.StatusMatcher::Code(200), body: None },
+      ],
       is_sse: false,
       sse_event_union: None,
       sse_error_responses: [],
@@ -155,30 +158,21 @@ fn build_method(
   } else {
     op_name_val.cast()
   }
-  let status_code = try_get_default_status_code(op).unwrap_or(200)
+  let success_responses = collect_success_responses(op, processed_models)
+  let status_code = try_get_default_status_code(success_responses).unwrap_or(
+    200,
+  )
+  let response_body = try_get_default_response_body(success_responses)
   let mut is_sse = false
   let mut sse_event_union : @codemodel.Union? = None
   let mut sse_error_responses : Array[@codemodel.SseErrorResponse] = []
-  let body_payload = try_get_default_response_body_payload(op, status_code)
-  let response_body = match body_payload {
-    None => None
-    Some(body) => {
-      is_sse = body_payload_is_sse(body)
-      if is_sse {
-        sse_event_union = try_get_sse_event_union(op_ref, processed_models)
-        sse_error_responses = collect_sse_error_responses(
-          op, status_code, processed_models,
-        )
-        None
-      } else {
-        let t = @ffi.get_value(body, "type")
-        if @ffi.is_undefined(t) || t.is_null() {
-          None
-        } else {
-          Some(resolve_type_ref(t, processed_models))
-        }
-      }
-    }
+  let is_sse_operation = operation_has_sse_payload(op)
+  if is_sse_operation {
+    is_sse = true
+    sse_event_union = try_get_sse_event_union(op_ref, processed_models)
+    sse_error_responses = collect_sse_error_responses(
+      op, status_code, processed_models,
+    )
   }
   let params = extract_parameters(op, processed_models)
   {
@@ -186,7 +180,16 @@ fn build_method(
     path,
     http_method: verb,
     status_code,
-    response_body,
+    response_body: if is_sse {
+      None
+    } else {
+      response_body
+    },
+    success_responses: if is_sse {
+      []
+    } else {
+      success_responses
+    },
     is_sse,
     sse_event_union,
     sse_error_responses,
@@ -872,69 +875,26 @@ fn join_paths(a : String, b : String) -> String {
 }
 
 ///|
-/// 尝试从 @typespec/http 的 HttpOperation 里提取一个“默认状态码”。
-///
-/// 目前策略：
-/// - 遍历 `responses`，找到第一个 `statusCodes` 是 number 的响应并返回；
-/// - 其它情况（`*`、range/object 等）返回 `None`。
-fn try_get_default_status_code(op : @ffi.JsValue) -> Int? {
-  let responses_val = @ffi.get_value(op, "responses")
-  if @ffi.is_undefined(responses_val) {
-    return None
-  }
-  let responses : Array[@ffi.JsValue] = responses_val.cast()
+fn try_get_default_status_code(
+  responses : Array[@codemodel.SuccessResponse],
+) -> Int? {
   for r in responses {
-    let status_val = @ffi.get_value(r, "statusCodes")
-    if @ffi.is_undefined(status_val) {
-      continue
-    }
-    if @ffi.is_number(status_val) {
-      let code = @ffi.cast_int(status_val)
-      return Some(code)
-    }
-    if @ffi.is_array(status_val) {
-      let codes : Array[@ffi.JsValue] = status_val.cast()
-      for c in codes {
-        if @ffi.is_number(c) {
-          return Some(@ffi.cast_int(c))
-        }
-      }
+    match r.status {
+      @codemodel.StatusMatcher::Code(code) => return Some(code)
+      @codemodel.StatusMatcher::Range(start, _) => return Some(start)
     }
   }
   None
 }
 
 ///|
-/// 尝试从“默认响应”（`status_code` 匹配的那个 response）里提取响应体 payload（@typespec/http 的 HttpPayload）。
-fn try_get_default_response_body_payload(
-  op : @ffi.JsValue,
-  status_code : Int,
-) -> @ffi.JsValue? {
-  let responses_val = @ffi.get_value(op, "responses")
-  if @ffi.is_undefined(responses_val) {
-    return None
-  }
-  let responses : Array[@ffi.JsValue] = responses_val.cast()
+fn try_get_default_response_body(
+  responses : Array[@codemodel.SuccessResponse],
+) -> @codemodel.TypeRef? {
   for r in responses {
-    let status_val = @ffi.get_value(r, "statusCodes")
-    if @ffi.is_undefined(status_val) {
-      continue
+    if r.body is Some(body) {
+      return Some(body)
     }
-    let mut matched = false
-    if @ffi.is_number(status_val) {
-      matched = @ffi.cast_int(status_val) == status_code
-    } else if @ffi.is_array(status_val) {
-      let codes : Array[@ffi.JsValue] = status_val.cast()
-      for c in codes {
-        if @ffi.is_number(c) && @ffi.cast_int(c) == status_code {
-          matched = true
-        }
-      }
-    }
-    if !matched {
-      continue
-    }
-    return try_get_response_body_payload_from_response(r)
   }
   None
 }
@@ -1000,6 +960,137 @@ fn get_response_status_codes(response : @ffi.JsValue) -> Array[Int] {
     }
   }
   codes
+}
+
+///|
+fn operation_has_sse_payload(op : @ffi.JsValue) -> Bool {
+  let responses_val = @ffi.get_value(op, "responses")
+  if @ffi.is_undefined(responses_val) {
+    return false
+  }
+  let responses : Array[@ffi.JsValue] = responses_val.cast()
+  for r in responses {
+    let payload = try_get_response_body_payload_from_response(r)
+    if payload is Some(body) && body_payload_is_sse(body) {
+      return true
+    }
+  }
+  false
+}
+
+///|
+fn collect_success_responses(
+  op : @ffi.JsValue,
+  processed_models : Map[String, @codemodel.Model],
+) -> Array[@codemodel.SuccessResponse] {
+  let responses_val = @ffi.get_value(op, "responses")
+  if @ffi.is_undefined(responses_val) {
+    return []
+  }
+  let responses : Array[@ffi.JsValue] = responses_val.cast()
+  let out : Array[@codemodel.SuccessResponse] = []
+  let seen = Map::new()
+  for r in responses {
+    let payload = try_get_response_body_payload_from_response(r)
+    let body_type = match payload {
+      Some(body) =>
+        if body_payload_is_sse(body) {
+          None
+        } else {
+          let t = @ffi.get_value(body, "type")
+          if @ffi.is_undefined(t) || t.is_null() {
+            None
+          } else {
+            Some(resolve_type_ref(t, processed_models))
+          }
+        }
+      None => None
+    }
+    let status_matchers = get_response_status_matchers(r)
+    for status in status_matchers {
+      if !status_is_success(status) {
+        continue
+      }
+      let key = status_matcher_key(status)
+      if seen.contains(key) {
+        continue
+      }
+      seen.set(key, ())
+      out.push({ status, body: body_type })
+    }
+  }
+  out.sort_by_key(fn(r) { status_matcher_key(r.status) })
+  out
+}
+
+///|
+fn status_matcher_key(status : @codemodel.StatusMatcher) -> String {
+  match status {
+    @codemodel.StatusMatcher::Code(code) => "C:\{code.to_string()}"
+    @codemodel.StatusMatcher::Range(start, end_) =>
+      "R:\{start.to_string()}-\{end_.to_string()}"
+  }
+}
+
+///|
+fn status_is_success(status : @codemodel.StatusMatcher) -> Bool {
+  match status {
+    @codemodel.StatusMatcher::Code(code) => code >= 200 && code < 400
+    @codemodel.StatusMatcher::Range(start, _) => start >= 200 && start < 400
+  }
+}
+
+///|
+fn get_response_status_matchers(
+  response : @ffi.JsValue,
+) -> Array[@codemodel.StatusMatcher] {
+  let status_val = @ffi.get_value(response, "statusCodes")
+  if @ffi.is_undefined(status_val) {
+    return []
+  }
+  let result = Array::new()
+  fn push_status(v : @ffi.JsValue, result : Array[@codemodel.StatusMatcher]) {
+    if @ffi.is_number(v) {
+      result.push(@codemodel.StatusMatcher::Code(@ffi.cast_int(v)))
+      return
+    }
+    if @ffi.is_string(v) {
+      let s = @ffi.cast_string(v).to_upper()
+      if s.length() == 3 &&
+        s.code_unit_at(1) == 0x58 &&
+        s.code_unit_at(2) == 0x58 {
+        let first_code = s.code_unit_at(0)
+        if first_code >= 0x30 && first_code <= 0x39 {
+          let first = (first_code - 0x30).to_int()
+          let start = first * 100
+          result.push(@codemodel.StatusMatcher::Range(start, start + 99))
+        }
+      }
+      return
+    }
+    if !v.is_null() {
+      let start_val = @ffi.get_value(v, "start")
+      let end_val = @ffi.get_value(v, "end")
+      if @ffi.is_number(start_val) && @ffi.is_number(end_val) {
+        result.push(
+          @codemodel.StatusMatcher::Range(
+            @ffi.cast_int(start_val),
+            @ffi.cast_int(end_val),
+          ),
+        )
+      }
+    }
+  }
+
+  if @ffi.is_array(status_val) {
+    let arr : Array[@ffi.JsValue] = status_val.cast()
+    for v in arr {
+      push_status(v, result)
+    }
+  } else {
+    push_status(status_val, result)
+  }
+  result
 }
 
 ///|

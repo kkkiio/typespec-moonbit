@@ -2,21 +2,17 @@
 
 Typespec MoonBit Emitter. Writen in MoonBit.
 
-## 开发
-
-本仓库使用 `npm` 管理 Node.js 依赖。
-
-- 安装依赖：`npm install`
-- 构建 emitters：`npm run build:emitters`
-- 生成 server e2e 用例：`npm run gen:server-test`
-- 生成 client e2e 用例：`npm run gen:client-test`
-- 运行 server e2e：`npm run test:server:run`
-
 ## Features
 
-- [x] Json Models. 
-    - snake_case for MoonBit field names, keep JSON keys as original TypeSpec field names.
-- [x] http server
+### Http server emitter
+
+- [x] Json Models. snake_case for MoonBit field names, keep JSON keys as original TypeSpec field names.
+- [x] Router function. Match request method & path, dispatch to corresponding handler.
+- [x] SSE Handler. Stream response supported by `moonbitlang/async/aqueue`.
+
+### Http client emitter
+
+- [x] Json Models. snake_case for MoonBit field names, keep JSON keys as original TypeSpec field names.
 
 ## Architecture
 

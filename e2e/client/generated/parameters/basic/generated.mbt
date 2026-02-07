@@ -11,11 +11,11 @@ pub fn ExplicitBodyClient::new(base_url : String) -> ExplicitBodyClient {
 }
 
 ///|
-/// 调用 put /parameters/basic/explicit-body/simple。
+/// 调用 put /parameters/basic/explicit-body/simple（自动解析响应）。
 pub async fn ExplicitBodyClient::put_parameters_basic_explicit_body_simple(
   self : ExplicitBodyClient,
   body : User,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -28,7 +28,12 @@ pub async fn ExplicitBodyClient::put_parameters_basic_explicit_body_simple(
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
   client.write(body.to_json())
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
@@ -44,11 +49,11 @@ pub fn ImplicitBodyClient::new(base_url : String) -> ImplicitBodyClient {
 }
 
 ///|
-/// 调用 put /parameters/basic/implicit-body/simple。
+/// 调用 put /parameters/basic/implicit-body/simple（自动解析响应）。
 pub async fn ImplicitBodyClient::put_parameters_basic_implicit_body_simple(
   self : ImplicitBodyClient,
   body : Model0,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -61,5 +66,10 @@ pub async fn ImplicitBodyClient::put_parameters_basic_implicit_body_simple(
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
   client.write(body.to_json())
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }

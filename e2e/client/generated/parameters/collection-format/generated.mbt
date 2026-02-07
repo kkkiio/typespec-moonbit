@@ -11,11 +11,11 @@ pub fn QueryClient::new(base_url : String) -> QueryClient {
 }
 
 ///|
-/// 调用 get /parameters/collection-format/query/multi{?colors*}。
+/// 调用 get /parameters/collection-format/query/multi{?colors*}（自动解析响应）。
 pub async fn QueryClient::get_parameters_collection_format_query_multi__colors__(
   self : QueryClient,
   colors : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -28,15 +28,20 @@ pub async fn QueryClient::get_parameters_collection_format_query_multi__colors__
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /parameters/collection-format/query/ssv{?colors}。
+/// 调用 get /parameters/collection-format/query/ssv{?colors}（自动解析响应）。
 pub async fn QueryClient::get_parameters_collection_format_query_ssv__colors_(
   self : QueryClient,
   colors : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -59,15 +64,20 @@ pub async fn QueryClient::get_parameters_collection_format_query_ssv__colors_(
   )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /parameters/collection-format/query/pipes{?colors}。
+/// 调用 get /parameters/collection-format/query/pipes{?colors}（自动解析响应）。
 pub async fn QueryClient::get_parameters_collection_format_query_pipes__colors_(
   self : QueryClient,
   colors : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -90,15 +100,20 @@ pub async fn QueryClient::get_parameters_collection_format_query_pipes__colors_(
   )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /parameters/collection-format/query/csv{?colors}。
+/// 调用 get /parameters/collection-format/query/csv{?colors}（自动解析响应）。
 pub async fn QueryClient::get_parameters_collection_format_query_csv__colors_(
   self : QueryClient,
   colors : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -111,7 +126,12 @@ pub async fn QueryClient::get_parameters_collection_format_query_csv__colors_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
@@ -127,11 +147,11 @@ pub fn HeaderClient::new(base_url : String) -> HeaderClient {
 }
 
 ///|
-/// 调用 get /parameters/collection-format/header/csv。
+/// 调用 get /parameters/collection-format/header/csv（自动解析响应）。
 pub async fn HeaderClient::get_parameters_collection_format_header_csv(
   self : HeaderClient,
   colors : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -143,5 +163,10 @@ pub async fn HeaderClient::get_parameters_collection_format_header_csv(
   headers.set("colors", @client_runtime.join(colors, ","))
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }

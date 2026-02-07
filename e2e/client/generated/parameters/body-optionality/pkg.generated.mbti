@@ -3,7 +3,7 @@ package "kkkiio/typespec-moonbit-tests/client/generated/parameters/body-optional
 
 import {
   "kkkiio/typespec-moonbit-server-runtime/runtime",
-  "moonbitlang/async/http",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -16,26 +16,28 @@ pub(all) struct BodyModel {
 }
 pub impl Show for BodyModel
 pub impl ToJson for BodyModel
+pub impl @json.FromJson for BodyModel
 
 pub(all) struct BodyModel0 {
   name : String
 }
 pub impl Show for BodyModel0
 pub impl ToJson for BodyModel0
+pub impl @json.FromJson for BodyModel0
 
 pub struct BodyOptionalityClient {
   base_url : String
 }
 pub fn BodyOptionalityClient::new(String) -> Self
-pub async fn BodyOptionalityClient::post_parameters_body_optionality_required_explicit(Self, BodyModel) -> @http.Response
-pub async fn BodyOptionalityClient::post_parameters_body_optionality_required_implicit(Self, BodyModel0) -> @http.Response
+pub async fn BodyOptionalityClient::post_parameters_body_optionality_required_explicit(Self, BodyModel) -> Unit
+pub async fn BodyOptionalityClient::post_parameters_body_optionality_required_implicit(Self, BodyModel0) -> Unit
 
 pub struct OptionalExplicitClient {
   base_url : String
 }
 pub fn OptionalExplicitClient::new(String) -> Self
-pub async fn OptionalExplicitClient::post_parameters_body_optionality_optional_explicit_omit(Self, BodyModel?) -> @http.Response
-pub async fn OptionalExplicitClient::post_parameters_body_optionality_optional_explicit_set(Self, BodyModel?) -> @http.Response
+pub async fn OptionalExplicitClient::post_parameters_body_optionality_optional_explicit_omit(Self, BodyModel?) -> Unit
+pub async fn OptionalExplicitClient::post_parameters_body_optionality_optional_explicit_set(Self, BodyModel?) -> Unit
 
 // Type aliases
 pub using @runtime {type Nullable}

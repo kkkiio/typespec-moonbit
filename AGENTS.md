@@ -2,13 +2,17 @@
 
 本项目是一个 TypeSpec Emitter，核心逻辑完全由 MoonBit 编写并编译到 JS 后端。
 
-由于 TypeSpec 要求导出 `$onEmit`，而 MoonBit 函数名不能以 `$` 开头，因此采用最小 JS shim：MoonBit 导出 `on_emit`，`index.js` 只做 `$onEmit` 的导出别名。
-
 本仓库拆分为两个 MoonBit module（对齐 typespec-rust 的“生成+测试”分层），避免把测试依赖/目标污染 emitter 模块.
+
+In the module toplevel directory, this is a `moon.mod.json` file listing about the module and some meta information.
+
+本仓库使用 `npm` 管理 Node.js 依赖。
 
 ## emitter
 
 主模块（JS target），实现 TypeSpec emitter 核心逻辑与 JS FFI。
+
+由于 TypeSpec 要求导出 `$onEmit`，而 MoonBit 函数名不能以 `$` 开头，因此采用最小 JS shim：MoonBit 导出 `on_emit`，`index.js` 只做 `$onEmit` 的导出别名。
 
 - `emitter/emitter.mbt`：入口函数 `on_emit`（由 `index.js` 导出为 `$onEmit`）。
 - `emitter/config/`：Emitter 选项解析（`EmitterOptions`）与诊断上报封装（`program.reportDiagnostic`）。
@@ -19,11 +23,21 @@
 - `emitter/emitters/client/`：client emitter 入口（导出 `on_emit`）。
 - `emitter/emitters/server/`：server emitter 入口（导出 `on_emit`）。
 
-执行 `moon test` 运行单元测试, 执行 `moon test --update` 更新单元测试快照.
+Run `moon test` to check the test is passed.
+MoonBit supports snapshot testing, so when your changes indeed change the behavior of the code, you should run `moon test --update` to update the snapshot.
+
+When writing tests, you are encouraged to use `inspect` and run `moon test --update` to update the snapshots, only use assertions like `assert_eq` when you are in some loops where each snapshot may vary. 
+You can use `moon coverage analyze > uncovered.log` to see which parts of your code are not covered by tests.
+
+### Coding convention
+
+MoonBit code is organized in block style, each block is separated by `///|`, the order of each block is irrelevant. In some refactorings, you can process block by block independently.
 
 不要写非规范的 fallback 代码，所有不支持的场景都应该报错.
 
 生成的代码不使用 `catch` , 让使用者自行决定错误处理策略.
+
+使用多行字符串(前缀 `#|` 或 `$|`, 后者允许插值) 来简化代码生成.
 
 ## e2e
 
@@ -56,14 +70,6 @@ E2E 测试模块（native target），负责运行时验证与维护生成用例
   blackbox test files (common, ending in `_test.mbt`) and whitebox test files
   (ending in `_wbtest.mbt`).
 
-- In the toplevel directory, this is a `moon.mod.json` file listing about the
-  module and some meta information.
-
-## Coding convention
-
-- MoonBit code is organized in block style, each block is separated by `///|`,
-  the order of each block is irrelevant. In some refactorings, you can process
-  block by block independently.
 
 ## Tooling
 
@@ -79,14 +85,4 @@ E2E 测试模块（native target），负责运行时验证与维护生成用例
   format the code. Check the diffs of `.mbti` file to see if the changes are
   expected.
 
-- Run `moon test` to check the test is passed. MoonBit supports snapshot
-  testing, so when your changes indeed change the behavior of the code, you
-  should run `moon test --update` to update the snapshot.
-
 - You can run `moon check` to check the code is linted correctly.
-
-- When writing tests, you are encouraged to use `inspect` and run
-  `moon test --update` to update the snapshots, only use assertions like
-  `assert_eq` when you are in some loops where each snapshot may vary. You can
-  use `moon coverage analyze > uncovered.log` to see which parts of your code
-  are not covered by tests.

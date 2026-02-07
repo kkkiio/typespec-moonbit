@@ -13,6 +13,9 @@ test "emit_server_files include sse" {
             path: "/stream",
             status_code: 200,
             response_body: None,
+            success_responses: [
+              { status: @codemodel.StatusMatcher::Code(200), body: None },
+            ],
             is_sse: true,
             sse_event_union: Some(@codemodel.Union::{
               name: "TaskEvents",
@@ -55,6 +58,9 @@ test "emit_server_router snapshot" (t : @test.Test) {
             path: "/items/{itemId}",
             status_code: 200,
             response_body: None,
+            success_responses: [
+              { status: @codemodel.StatusMatcher::Code(200), body: None },
+            ],
             is_sse: false,
             sse_event_union: None,
             sse_error_responses: [],
@@ -75,6 +81,9 @@ test "emit_server_router snapshot" (t : @test.Test) {
             path: "/items",
             status_code: 200,
             response_body: None,
+            success_responses: [
+              { status: @codemodel.StatusMatcher::Code(200), body: None },
+            ],
             is_sse: false,
             sse_event_union: None,
             sse_error_responses: [],
@@ -122,6 +131,9 @@ test "server codegen has no mustache markers" {
             path: "/items/{itemId}",
             status_code: 200,
             response_body: None,
+            success_responses: [
+              { status: @codemodel.StatusMatcher::Code(200), body: None },
+            ],
             is_sse: false,
             sse_event_union: None,
             sse_error_responses: [],

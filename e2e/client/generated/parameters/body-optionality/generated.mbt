@@ -11,11 +11,11 @@ pub fn BodyOptionalityClient::new(base_url : String) -> BodyOptionalityClient {
 }
 
 ///|
-/// 调用 post /parameters/body-optionality/required-explicit。
+/// 调用 post /parameters/body-optionality/required-explicit（自动解析响应）。
 pub async fn BodyOptionalityClient::post_parameters_body_optionality_required_explicit(
   self : BodyOptionalityClient,
   body : BodyModel,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -28,15 +28,20 @@ pub async fn BodyOptionalityClient::post_parameters_body_optionality_required_ex
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
   client.write(body.to_json())
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 post /parameters/body-optionality/required-implicit。
+/// 调用 post /parameters/body-optionality/required-implicit（自动解析响应）。
 pub async fn BodyOptionalityClient::post_parameters_body_optionality_required_implicit(
   self : BodyOptionalityClient,
   body : BodyModel0,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -49,7 +54,12 @@ pub async fn BodyOptionalityClient::post_parameters_body_optionality_required_im
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
   client.write(body.to_json())
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
@@ -65,11 +75,11 @@ pub fn OptionalExplicitClient::new(base_url : String) -> OptionalExplicitClient 
 }
 
 ///|
-/// 调用 post /parameters/body-optionality/optional-explicit/set。
+/// 调用 post /parameters/body-optionality/optional-explicit/set（自动解析响应）。
 pub async fn OptionalExplicitClient::post_parameters_body_optionality_optional_explicit_set(
   self : OptionalExplicitClient,
   body : BodyModel?,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -83,19 +93,23 @@ pub async fn OptionalExplicitClient::post_parameters_body_optionality_optional_e
     headers.set("content-type", "application/json")
     client.request(@http.Post, path, extra_headers=headers)
     client.write(body.to_json())
-    client.end_request()
   } else {
     client.request(@http.Post, path, extra_headers=headers)
-    client.end_request()
+  }
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
   }
 }
 
 ///|
-/// 调用 post /parameters/body-optionality/optional-explicit/omit。
+/// 调用 post /parameters/body-optionality/optional-explicit/omit（自动解析响应）。
 pub async fn OptionalExplicitClient::post_parameters_body_optionality_optional_explicit_omit(
   self : OptionalExplicitClient,
   body : BodyModel?,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -109,9 +123,13 @@ pub async fn OptionalExplicitClient::post_parameters_body_optionality_optional_e
     headers.set("content-type", "application/json")
     client.request(@http.Post, path, extra_headers=headers)
     client.write(body.to_json())
-    client.end_request()
   } else {
     client.request(@http.Post, path, extra_headers=headers)
-    client.end_request()
+  }
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
   }
 }

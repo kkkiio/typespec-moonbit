@@ -11,11 +11,11 @@ pub fn AliasClient::new(base_url : String) -> AliasClient {
 }
 
 ///|
-/// 调用 put /parameters/spread/alias/request-body。
+/// 调用 put /parameters/spread/alias/request-body（自动解析响应）。
 pub async fn AliasClient::put_parameters_spread_alias_request_body(
   self : AliasClient,
   body : Model0,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -28,17 +28,22 @@ pub async fn AliasClient::put_parameters_spread_alias_request_body(
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
   client.write(body.to_json())
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 post /parameters/spread/alias/inner-model-parameter/{id}。
+/// 调用 post /parameters/spread/alias/inner-model-parameter/{id}（自动解析响应）。
 pub async fn AliasClient::post_parameters_spread_alias_inner_model_parameter__id_(
   self : AliasClient,
   id : String,
   x_ms_test_header : String,
   body : Model1,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -54,17 +59,22 @@ pub async fn AliasClient::post_parameters_spread_alias_inner_model_parameter__id
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
   client.write(body.to_json())
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 put /parameters/spread/alias/request-parameter/{id}。
+/// 调用 put /parameters/spread/alias/request-parameter/{id}（自动解析响应）。
 pub async fn AliasClient::put_parameters_spread_alias_request_parameter__id_(
   self : AliasClient,
   id : String,
   x_ms_test_header : String,
   body : Model2,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -80,17 +90,22 @@ pub async fn AliasClient::put_parameters_spread_alias_request_parameter__id_(
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
   client.write(body.to_json())
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 put /parameters/spread/alias/multiple-parameters/{id}。
+/// 调用 put /parameters/spread/alias/multiple-parameters/{id}（自动解析响应）。
 pub async fn AliasClient::put_parameters_spread_alias_multiple_parameters__id_(
   self : AliasClient,
   id : String,
   x_ms_test_header : String,
   body : Model3,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -106,17 +121,22 @@ pub async fn AliasClient::put_parameters_spread_alias_multiple_parameters__id_(
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
   client.write(body.to_json())
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 post /parameters/spread/alias/inner-alias-parameter/{id}。
+/// 调用 post /parameters/spread/alias/inner-alias-parameter/{id}（自动解析响应）。
 pub async fn AliasClient::post_parameters_spread_alias_inner_alias_parameter__id_(
   self : AliasClient,
   id : String,
   x_ms_test_header : String,
   body : Model4,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -132,7 +152,12 @@ pub async fn AliasClient::post_parameters_spread_alias_inner_alias_parameter__id
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
   client.write(body.to_json())
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
@@ -148,11 +173,11 @@ pub fn ModelClient::new(base_url : String) -> ModelClient {
 }
 
 ///|
-/// 调用 put /parameters/spread/model/request-body。
+/// 调用 put /parameters/spread/model/request-body（自动解析响应）。
 pub async fn ModelClient::put_parameters_spread_model_request_body(
   self : ModelClient,
   body : BodyParameter5,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -165,15 +190,20 @@ pub async fn ModelClient::put_parameters_spread_model_request_body(
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
   client.write(body.to_json())
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 put /parameters/spread/model/composite-request-only-with-body。
+/// 调用 put /parameters/spread/model/composite-request-only-with-body（自动解析响应）。
 pub async fn ModelClient::put_parameters_spread_model_composite_request_only_with_body(
   self : ModelClient,
   body : BodyParameter,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -186,16 +216,21 @@ pub async fn ModelClient::put_parameters_spread_model_composite_request_only_wit
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
   client.write(body.to_json())
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 put /parameters/spread/model/composite-request-without-body/{name}。
+/// 调用 put /parameters/spread/model/composite-request-without-body/{name}（自动解析响应）。
 pub async fn ModelClient::put_parameters_spread_model_composite_request_without_body__name_(
   self : ModelClient,
   name : String,
   test_header : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -209,17 +244,22 @@ pub async fn ModelClient::put_parameters_spread_model_composite_request_without_
   headers.set("test-header", test_header)
   let path = sb.to_string()
   client.request(@http.Put, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 put /parameters/spread/model/composite-request/{name}。
+/// 调用 put /parameters/spread/model/composite-request/{name}（自动解析响应）。
 pub async fn ModelClient::put_parameters_spread_model_composite_request__name_(
   self : ModelClient,
   name : String,
   test_header : String,
   body : BodyParameter,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -235,17 +275,22 @@ pub async fn ModelClient::put_parameters_spread_model_composite_request__name_(
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
   client.write(body.to_json())
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 put /parameters/spread/model/composite-request-mix/{name}。
+/// 调用 put /parameters/spread/model/composite-request-mix/{name}（自动解析响应）。
 pub async fn ModelClient::put_parameters_spread_model_composite_request_mix__name_(
   self : ModelClient,
   name : String,
   test_header : String,
   body : Model6,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -261,5 +306,10 @@ pub async fn ModelClient::put_parameters_spread_model_composite_request_mix__nam
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
   client.write(body.to_json())
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }

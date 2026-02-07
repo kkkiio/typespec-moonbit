@@ -22,6 +22,20 @@ pub(all) struct SseErrorResponse {
 }
 
 ///|
+/// HTTP 状态码匹配器。
+pub(all) enum StatusMatcher {
+  Code(Int)
+  Range(Int, Int)
+}
+
+///|
+/// 非 SSE 场景下的成功响应描述。
+pub(all) struct SuccessResponse {
+  status : StatusMatcher
+  body : TypeRef?
+}
+
+///|
 /// HTTP 操作描述。
 pub(all) struct Method {
   name : String
@@ -31,6 +45,12 @@ pub(all) struct Method {
   status_code : Int
   /// 默认响应体类型（如果存在）
   response_body : TypeRef?
+  /// 所有成功响应（V2 client API 使用）。
+  ///
+  /// 约定：
+  /// - 仅包含 success（status < 400）响应；
+  /// - SSE operation 不使用该字段（为空），维持现有 SSE 专用流程。
+  success_responses : Array[SuccessResponse]
   /// 是否为 Server-Sent Events (`text/event-stream`) 的流式响应。
   ///
   /// 当 `is_sse` 为 `true` 时，server 端代码生成会把连接交给实现方持续写入，

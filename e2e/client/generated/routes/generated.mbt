@@ -11,10 +11,8 @@ pub fn RoutesClient::new(base_url : String) -> RoutesClient {
 }
 
 ///|
-/// 调用 get /routes/fixed。
-pub async fn RoutesClient::get_routes_fixed(
-  self : RoutesClient,
-) -> @http.Response {
+/// 调用 get /routes/fixed（自动解析响应）。
+pub async fn RoutesClient::get_routes_fixed(self : RoutesClient) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -23,7 +21,12 @@ pub async fn RoutesClient::get_routes_fixed(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
@@ -39,11 +42,11 @@ pub fn ExplodeClient::new(base_url : String) -> ExplodeClient {
 }
 
 ///|
-/// 调用 get /routes/path/simple/explode/primitive{param*}。
+/// 调用 get /routes/path/simple/explode/primitive{param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_simple_explode_primitive_param__(
   self : ExplodeClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -56,15 +59,20 @@ pub async fn ExplodeClient::get_routes_path_simple_explode_primitive_param__(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/simple/explode/array{param*}。
+/// 调用 get /routes/path/simple/explode/array{param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_simple_explode_array_param__(
   self : ExplodeClient,
   param : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -77,15 +85,20 @@ pub async fn ExplodeClient::get_routes_path_simple_explode_array_param__(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/simple/explode/record{param*}。
+/// 调用 get /routes/path/simple/explode/record{param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_simple_explode_record_param__(
   self : ExplodeClient,
   param : Map[String, Int],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -98,15 +111,20 @@ pub async fn ExplodeClient::get_routes_path_simple_explode_record_param__(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/path/explode/primitive{/param*}。
+/// 调用 get /routes/path/path/explode/primitive{/param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_path_explode_primitive__param__(
   self : ExplodeClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -119,15 +137,20 @@ pub async fn ExplodeClient::get_routes_path_path_explode_primitive__param__(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/path/explode/array{/param*}。
+/// 调用 get /routes/path/path/explode/array{/param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_path_explode_array__param__(
   self : ExplodeClient,
   param : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -140,15 +163,20 @@ pub async fn ExplodeClient::get_routes_path_path_explode_array__param__(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/path/explode/record{/param*}。
+/// 调用 get /routes/path/path/explode/record{/param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_path_explode_record__param__(
   self : ExplodeClient,
   param : Map[String, Int],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -161,15 +189,20 @@ pub async fn ExplodeClient::get_routes_path_path_explode_record__param__(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/label/explode/primitive{.param*}。
+/// 调用 get /routes/path/label/explode/primitive{.param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_label_explode_primitive__param__(
   self : ExplodeClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -182,15 +215,20 @@ pub async fn ExplodeClient::get_routes_path_label_explode_primitive__param__(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/label/explode/array{.param*}。
+/// 调用 get /routes/path/label/explode/array{.param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_label_explode_array__param__(
   self : ExplodeClient,
   param : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -203,15 +241,20 @@ pub async fn ExplodeClient::get_routes_path_label_explode_array__param__(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/label/explode/record{.param*}。
+/// 调用 get /routes/path/label/explode/record{.param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_label_explode_record__param__(
   self : ExplodeClient,
   param : Map[String, Int],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -224,15 +267,20 @@ pub async fn ExplodeClient::get_routes_path_label_explode_record__param__(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/matrix/explode/primitive{;param*}。
+/// 调用 get /routes/path/matrix/explode/primitive{;param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_matrix_explode_primitive__param__(
   self : ExplodeClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -245,15 +293,20 @@ pub async fn ExplodeClient::get_routes_path_matrix_explode_primitive__param__(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/matrix/explode/array{;param*}。
+/// 调用 get /routes/path/matrix/explode/array{;param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_matrix_explode_array__param__(
   self : ExplodeClient,
   param : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -266,15 +319,20 @@ pub async fn ExplodeClient::get_routes_path_matrix_explode_array__param__(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/matrix/explode/record{;param*}。
+/// 调用 get /routes/path/matrix/explode/record{;param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_matrix_explode_record__param__(
   self : ExplodeClient,
   param : Map[String, Int],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -287,15 +345,20 @@ pub async fn ExplodeClient::get_routes_path_matrix_explode_record__param__(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/query/query-expansion/explode/primitive{?param*}。
+/// 调用 get /routes/query/query-expansion/explode/primitive{?param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_query_query_expansion_explode_primitive__param__(
   self : ExplodeClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -308,15 +371,20 @@ pub async fn ExplodeClient::get_routes_query_query_expansion_explode_primitive__
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/query/query-expansion/explode/array{?param*}。
+/// 调用 get /routes/query/query-expansion/explode/array{?param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_query_query_expansion_explode_array__param__(
   self : ExplodeClient,
   param : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -329,15 +397,20 @@ pub async fn ExplodeClient::get_routes_query_query_expansion_explode_array__para
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/query/query-expansion/explode/record{?param*}。
+/// 调用 get /routes/query/query-expansion/explode/record{?param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_query_query_expansion_explode_record__param__(
   self : ExplodeClient,
   param : Map[String, Int],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -350,15 +423,20 @@ pub async fn ExplodeClient::get_routes_query_query_expansion_explode_record__par
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/query/query-continuation/explode/primitive?fixed=true{&param*}。
+/// 调用 get /routes/query/query-continuation/explode/primitive?fixed=true{&param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_query_query_continuation_explode_primitive_fixed_true__param__(
   self : ExplodeClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -373,15 +451,20 @@ pub async fn ExplodeClient::get_routes_query_query_continuation_explode_primitiv
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/query/query-continuation/explode/array?fixed=true{&param*}。
+/// 调用 get /routes/query/query-continuation/explode/array?fixed=true{&param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_query_query_continuation_explode_array_fixed_true__param__(
   self : ExplodeClient,
   param : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -394,15 +477,20 @@ pub async fn ExplodeClient::get_routes_query_query_continuation_explode_array_fi
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/query/query-continuation/explode/record?fixed=true{&param*}。
+/// 调用 get /routes/query/query-continuation/explode/record?fixed=true{&param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_query_query_continuation_explode_record_fixed_true__param__(
   self : ExplodeClient,
   param : Map[String, Int],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -415,7 +503,12 @@ pub async fn ExplodeClient::get_routes_query_query_continuation_explode_record_f
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
@@ -431,11 +524,11 @@ pub fn StandardClient::new(base_url : String) -> StandardClient {
 }
 
 ///|
-/// 调用 get /routes/path/simple/standard/primitive{param}。
+/// 调用 get /routes/path/simple/standard/primitive{param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_simple_standard_primitive_param_(
   self : StandardClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -448,15 +541,20 @@ pub async fn StandardClient::get_routes_path_simple_standard_primitive_param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/simple/standard/array{param}。
+/// 调用 get /routes/path/simple/standard/array{param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_simple_standard_array_param_(
   self : StandardClient,
   param : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -469,15 +567,20 @@ pub async fn StandardClient::get_routes_path_simple_standard_array_param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/simple/standard/record{param}。
+/// 调用 get /routes/path/simple/standard/record{param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_simple_standard_record_param_(
   self : StandardClient,
   param : Map[String, Int],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -490,15 +593,20 @@ pub async fn StandardClient::get_routes_path_simple_standard_record_param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/path/standard/primitive{/param}。
+/// 调用 get /routes/path/path/standard/primitive{/param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_path_standard_primitive__param_(
   self : StandardClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -511,15 +619,20 @@ pub async fn StandardClient::get_routes_path_path_standard_primitive__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/path/standard/array{/param}。
+/// 调用 get /routes/path/path/standard/array{/param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_path_standard_array__param_(
   self : StandardClient,
   param : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -532,15 +645,20 @@ pub async fn StandardClient::get_routes_path_path_standard_array__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/path/standard/record{/param}。
+/// 调用 get /routes/path/path/standard/record{/param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_path_standard_record__param_(
   self : StandardClient,
   param : Map[String, Int],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -553,15 +671,20 @@ pub async fn StandardClient::get_routes_path_path_standard_record__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/label/standard/primitive{.param}。
+/// 调用 get /routes/path/label/standard/primitive{.param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_label_standard_primitive__param_(
   self : StandardClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -574,15 +697,20 @@ pub async fn StandardClient::get_routes_path_label_standard_primitive__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/label/standard/array{.param}。
+/// 调用 get /routes/path/label/standard/array{.param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_label_standard_array__param_(
   self : StandardClient,
   param : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -595,15 +723,20 @@ pub async fn StandardClient::get_routes_path_label_standard_array__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/label/standard/record{.param}。
+/// 调用 get /routes/path/label/standard/record{.param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_label_standard_record__param_(
   self : StandardClient,
   param : Map[String, Int],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -616,15 +749,20 @@ pub async fn StandardClient::get_routes_path_label_standard_record__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/matrix/standard/primitive{;param}。
+/// 调用 get /routes/path/matrix/standard/primitive{;param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_matrix_standard_primitive__param_(
   self : StandardClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -637,15 +775,20 @@ pub async fn StandardClient::get_routes_path_matrix_standard_primitive__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/matrix/standard/array{;param}。
+/// 调用 get /routes/path/matrix/standard/array{;param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_matrix_standard_array__param_(
   self : StandardClient,
   param : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -658,15 +801,20 @@ pub async fn StandardClient::get_routes_path_matrix_standard_array__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/matrix/standard/record{;param}。
+/// 调用 get /routes/path/matrix/standard/record{;param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_matrix_standard_record__param_(
   self : StandardClient,
   param : Map[String, Int],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -679,15 +827,20 @@ pub async fn StandardClient::get_routes_path_matrix_standard_record__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/query/query-expansion/standard/primitive{?param}。
+/// 调用 get /routes/query/query-expansion/standard/primitive{?param}（自动解析响应）。
 pub async fn StandardClient::get_routes_query_query_expansion_standard_primitive__param_(
   self : StandardClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -700,15 +853,20 @@ pub async fn StandardClient::get_routes_query_query_expansion_standard_primitive
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/query/query-expansion/standard/array{?param}。
+/// 调用 get /routes/query/query-expansion/standard/array{?param}（自动解析响应）。
 pub async fn StandardClient::get_routes_query_query_expansion_standard_array__param_(
   self : StandardClient,
   param : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -721,15 +879,20 @@ pub async fn StandardClient::get_routes_query_query_expansion_standard_array__pa
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/query/query-expansion/standard/record{?param}。
+/// 调用 get /routes/query/query-expansion/standard/record{?param}（自动解析响应）。
 pub async fn StandardClient::get_routes_query_query_expansion_standard_record__param_(
   self : StandardClient,
   param : Map[String, Int],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -742,15 +905,20 @@ pub async fn StandardClient::get_routes_query_query_expansion_standard_record__p
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/query/query-continuation/standard/primitive?fixed=true{&param}。
+/// 调用 get /routes/query/query-continuation/standard/primitive?fixed=true{&param}（自动解析响应）。
 pub async fn StandardClient::get_routes_query_query_continuation_standard_primitive_fixed_true__param_(
   self : StandardClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -765,15 +933,20 @@ pub async fn StandardClient::get_routes_query_query_continuation_standard_primit
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/query/query-continuation/standard/array?fixed=true{&param}。
+/// 调用 get /routes/query/query-continuation/standard/array?fixed=true{&param}（自动解析响应）。
 pub async fn StandardClient::get_routes_query_query_continuation_standard_array_fixed_true__param_(
   self : StandardClient,
   param : Array[String],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -786,15 +959,20 @@ pub async fn StandardClient::get_routes_query_query_continuation_standard_array_
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/query/query-continuation/standard/record?fixed=true{&param}。
+/// 调用 get /routes/query/query-continuation/standard/record?fixed=true{&param}（自动解析响应）。
 pub async fn StandardClient::get_routes_query_query_continuation_standard_record_fixed_true__param_(
   self : StandardClient,
   param : Map[String, Int],
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -809,7 +987,12 @@ pub async fn StandardClient::get_routes_query_query_continuation_standard_record
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
@@ -825,10 +1008,10 @@ pub fn InInterfaceClient::new(base_url : String) -> InInterfaceClient {
 }
 
 ///|
-/// 调用 get /routes/in-interface/fixed。
+/// 调用 get /routes/in-interface/fixed（自动解析响应）。
 pub async fn InInterfaceClient::get_routes_in_interface_fixed(
   self : InInterfaceClient,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -839,7 +1022,12 @@ pub async fn InInterfaceClient::get_routes_in_interface_fixed(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
@@ -855,11 +1043,11 @@ pub fn PathParametersClient::new(base_url : String) -> PathParametersClient {
 }
 
 ///|
-/// 调用 get /routes/path/template-only/{param}。
+/// 调用 get /routes/path/template-only/{param}（自动解析响应）。
 pub async fn PathParametersClient::get_routes_path_template_only__param_(
   self : PathParametersClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -872,15 +1060,20 @@ pub async fn PathParametersClient::get_routes_path_template_only__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/explicit/{param}。
+/// 调用 get /routes/path/explicit/{param}（自动解析响应）。
 pub async fn PathParametersClient::get_routes_path_explicit__param_(
   self : PathParametersClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -893,15 +1086,20 @@ pub async fn PathParametersClient::get_routes_path_explicit__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/annotation-only/{param}。
+/// 调用 get /routes/path/annotation-only/{param}（自动解析响应）。
 pub async fn PathParametersClient::get_routes_path_annotation_only__param_(
   self : PathParametersClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -914,7 +1112,12 @@ pub async fn PathParametersClient::get_routes_path_annotation_only__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
@@ -930,11 +1133,11 @@ pub fn QueryParametersClient::new(base_url : String) -> QueryParametersClient {
 }
 
 ///|
-/// 调用 get /routes/query/template-only{?param}。
+/// 调用 get /routes/query/template-only{?param}（自动解析响应）。
 pub async fn QueryParametersClient::get_routes_query_template_only__param_(
   self : QueryParametersClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -947,15 +1150,20 @@ pub async fn QueryParametersClient::get_routes_query_template_only__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/query/explicit{?param}。
+/// 调用 get /routes/query/explicit{?param}（自动解析响应）。
 pub async fn QueryParametersClient::get_routes_query_explicit__param_(
   self : QueryParametersClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -968,15 +1176,20 @@ pub async fn QueryParametersClient::get_routes_query_explicit__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/query/annotation-only{?param}。
+/// 调用 get /routes/query/annotation-only{?param}（自动解析响应）。
 pub async fn QueryParametersClient::get_routes_query_annotation_only__param_(
   self : QueryParametersClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -989,7 +1202,12 @@ pub async fn QueryParametersClient::get_routes_query_annotation_only__param_(
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
@@ -1007,11 +1225,11 @@ pub fn ReservedExpansionClient::new(
 }
 
 ///|
-/// 调用 get /routes/path/reserved-expansion/template/{+param}。
+/// 调用 get /routes/path/reserved-expansion/template/{+param}（自动解析响应）。
 pub async fn ReservedExpansionClient::get_routes_path_reserved_expansion_template___param_(
   self : ReservedExpansionClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -1024,15 +1242,20 @@ pub async fn ReservedExpansionClient::get_routes_path_reserved_expansion_templat
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }
 
 ///|
-/// 调用 get /routes/path/reserved-expansion/annotation/{+param}。
+/// 调用 get /routes/path/reserved-expansion/annotation/{+param}（自动解析响应）。
 pub async fn ReservedExpansionClient::get_routes_path_reserved_expansion_annotation___param_(
   self : ReservedExpansionClient,
   param : String,
-) -> @http.Response {
+) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -1045,5 +1268,10 @@ pub async fn ReservedExpansionClient::get_routes_path_reserved_expansion_annotat
   sb.write_string(base_path)
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
-  client.end_request()
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
 }

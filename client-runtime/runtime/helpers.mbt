@@ -359,3 +359,53 @@ fn should_encode_query_byte(b : Byte) -> Bool {
     true
   }
 }
+
+///|
+pub fn expect_status_code(
+  response : @http.Response,
+  expected : Int,
+) -> Unit raise {
+  if response.code != expected {
+    fail(
+      "unexpected status code: expected \{expected.to_string()}, got \{response.code.to_string()}",
+    )
+  }
+}
+
+///|
+pub fn expect_status_range(
+  response : @http.Response,
+  start : Int,
+  end_ : Int,
+) -> Unit raise {
+  if response.code < start || response.code > end_ {
+    fail(
+      "unexpected status code: expected \{start.to_string()}..\{end_.to_string()}, got \{response.code.to_string()}",
+    )
+  }
+}
+
+///|
+pub fn has_json_content_type(response : @http.Response) -> Bool {
+  let target = "content-type"
+  let mut content_type : String? = None
+  for k, v in response.headers {
+    if k.to_lower() == target {
+      content_type = Some(v)
+      break
+    }
+  }
+  match content_type {
+    Some(v) => v.to_lower().contains("application/json")
+    None => false
+  }
+}
+
+///|
+pub fn expect_json_content_type(response : @http.Response) -> Unit raise {
+  if !has_json_content_type(response) {
+    fail(
+      "unexpected content-type: expected application/json, got \{response.headers.to_json().stringify()}",
+    )
+  }
+}
