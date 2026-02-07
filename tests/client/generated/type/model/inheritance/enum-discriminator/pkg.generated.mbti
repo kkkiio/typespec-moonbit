@@ -1,0 +1,47 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/model/inheritance/enum-discriminator"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct Dog {
+  kind : String
+  weight : Int
+}
+pub impl Show for Dog
+pub impl ToJson for Dog
+pub impl @json.FromJson for Dog
+
+pub(all) struct EnumDiscriminatorClient {
+  base_url : String
+}
+pub async fn EnumDiscriminatorClient::get_type_model_inheritance_enum_discriminator_extensible_enum(Self) -> Dog
+pub async fn EnumDiscriminatorClient::get_type_model_inheritance_enum_discriminator_extensible_enum_missingdiscriminator(Self) -> Dog
+pub async fn EnumDiscriminatorClient::get_type_model_inheritance_enum_discriminator_extensible_enum_wrongdiscriminator(Self) -> Dog
+pub async fn EnumDiscriminatorClient::get_type_model_inheritance_enum_discriminator_fixed_enum(Self) -> Snake
+pub async fn EnumDiscriminatorClient::get_type_model_inheritance_enum_discriminator_fixed_enum_missingdiscriminator(Self) -> Snake
+pub async fn EnumDiscriminatorClient::get_type_model_inheritance_enum_discriminator_fixed_enum_wrongdiscriminator(Self) -> Snake
+pub fn EnumDiscriminatorClient::new(String) -> Self
+pub async fn EnumDiscriminatorClient::put_type_model_inheritance_enum_discriminator_extensible_enum(Self, Dog) -> Unit
+pub async fn EnumDiscriminatorClient::put_type_model_inheritance_enum_discriminator_fixed_enum(Self, Snake) -> Unit
+
+pub(all) struct Snake {
+  kind : Json
+  length : Int
+}
+pub impl Show for Snake
+pub impl ToJson for Snake
+pub impl @json.FromJson for Snake
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

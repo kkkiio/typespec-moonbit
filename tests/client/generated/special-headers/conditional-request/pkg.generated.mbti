@@ -1,0 +1,26 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/special-headers/conditional-request"
+
+import {
+  "kkkiio/typespec-client-runtime",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct ConditionalRequestClient {
+  base_url : String
+}
+pub async fn ConditionalRequestClient::head_special_headers_conditional_request_if_modified_since(Self, String?) -> Unit
+pub fn ConditionalRequestClient::new(String) -> Self
+pub async fn ConditionalRequestClient::post_special_headers_conditional_request_if_match(Self, String?) -> Unit
+pub async fn ConditionalRequestClient::post_special_headers_conditional_request_if_none_match(Self, String?) -> Unit
+pub async fn ConditionalRequestClient::post_special_headers_conditional_request_if_unmodified_since(Self, String?) -> Unit
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

@@ -1,0 +1,144 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/property/nullable"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct BytesClient {
+  base_url : String
+}
+pub async fn BytesClient::get_type_property_nullable_bytes_non_null(Self) -> BytesProperty
+pub async fn BytesClient::get_type_property_nullable_bytes_null(Self) -> BytesProperty
+pub fn BytesClient::new(String) -> Self
+pub async fn BytesClient::patch_type_property_nullable_bytes_non_null(Self, String, BytesProperty) -> Unit
+pub async fn BytesClient::patch_type_property_nullable_bytes_null(Self, String, BytesProperty) -> Unit
+
+pub(all) struct BytesProperty {
+  required_property : String
+  nullable_property : @typespec-client-runtime.Nullable[String]
+}
+pub impl Show for BytesProperty
+pub impl ToJson for BytesProperty
+pub impl @json.FromJson for BytesProperty
+
+pub(all) struct CollectionsByteClient {
+  base_url : String
+}
+pub async fn CollectionsByteClient::get_type_property_nullable_collections_bytes_non_null(Self) -> CollectionsByteProperty
+pub async fn CollectionsByteClient::get_type_property_nullable_collections_bytes_null(Self) -> CollectionsByteProperty
+pub fn CollectionsByteClient::new(String) -> Self
+pub async fn CollectionsByteClient::patch_type_property_nullable_collections_bytes_non_null(Self, String, CollectionsByteProperty) -> Unit
+pub async fn CollectionsByteClient::patch_type_property_nullable_collections_bytes_null(Self, String, CollectionsByteProperty) -> Unit
+
+pub(all) struct CollectionsByteProperty {
+  required_property : String
+  nullable_property : @typespec-client-runtime.Nullable[Array[String]]
+}
+pub impl Show for CollectionsByteProperty
+pub impl ToJson for CollectionsByteProperty
+pub impl @json.FromJson for CollectionsByteProperty
+
+pub(all) struct CollectionsModelClient {
+  base_url : String
+}
+pub async fn CollectionsModelClient::get_type_property_nullable_collections_model_non_null(Self) -> CollectionsModelProperty
+pub async fn CollectionsModelClient::get_type_property_nullable_collections_model_null(Self) -> CollectionsModelProperty
+pub fn CollectionsModelClient::new(String) -> Self
+pub async fn CollectionsModelClient::patch_type_property_nullable_collections_model_non_null(Self, String, CollectionsModelProperty) -> Unit
+pub async fn CollectionsModelClient::patch_type_property_nullable_collections_model_null(Self, String, CollectionsModelProperty) -> Unit
+
+pub(all) struct CollectionsModelProperty {
+  required_property : String
+  nullable_property : @typespec-client-runtime.Nullable[Array[InnerModel]]
+}
+pub impl Show for CollectionsModelProperty
+pub impl ToJson for CollectionsModelProperty
+pub impl @json.FromJson for CollectionsModelProperty
+
+pub(all) struct CollectionsStringClient {
+  base_url : String
+}
+pub async fn CollectionsStringClient::get_type_property_nullable_collections_string_non_null(Self) -> CollectionsStringProperty
+pub async fn CollectionsStringClient::get_type_property_nullable_collections_string_null(Self) -> CollectionsStringProperty
+pub fn CollectionsStringClient::new(String) -> Self
+pub async fn CollectionsStringClient::patch_type_property_nullable_collections_string_non_null(Self, String, CollectionsStringProperty) -> Unit
+pub async fn CollectionsStringClient::patch_type_property_nullable_collections_string_null(Self, String, CollectionsStringProperty) -> Unit
+
+pub(all) struct CollectionsStringProperty {
+  required_property : String
+  nullable_property : @typespec-client-runtime.Nullable[Array[String]]
+}
+pub impl Show for CollectionsStringProperty
+pub impl ToJson for CollectionsStringProperty
+pub impl @json.FromJson for CollectionsStringProperty
+
+pub(all) struct DatetimeClient {
+  base_url : String
+}
+pub async fn DatetimeClient::get_type_property_nullable_datetime_non_null(Self) -> DatetimeProperty
+pub async fn DatetimeClient::get_type_property_nullable_datetime_null(Self) -> DatetimeProperty
+pub fn DatetimeClient::new(String) -> Self
+pub async fn DatetimeClient::patch_type_property_nullable_datetime_non_null(Self, String, DatetimeProperty) -> Unit
+pub async fn DatetimeClient::patch_type_property_nullable_datetime_null(Self, String, DatetimeProperty) -> Unit
+
+pub(all) struct DatetimeProperty {
+  required_property : String
+  nullable_property : @typespec-client-runtime.Nullable[String]
+}
+pub impl Show for DatetimeProperty
+pub impl ToJson for DatetimeProperty
+pub impl @json.FromJson for DatetimeProperty
+
+pub(all) struct DurationClient {
+  base_url : String
+}
+pub async fn DurationClient::get_type_property_nullable_duration_non_null(Self) -> DurationProperty
+pub async fn DurationClient::get_type_property_nullable_duration_null(Self) -> DurationProperty
+pub fn DurationClient::new(String) -> Self
+pub async fn DurationClient::patch_type_property_nullable_duration_non_null(Self, String, DurationProperty) -> Unit
+pub async fn DurationClient::patch_type_property_nullable_duration_null(Self, String, DurationProperty) -> Unit
+
+pub(all) struct DurationProperty {
+  required_property : String
+  nullable_property : @typespec-client-runtime.Nullable[String]
+}
+pub impl Show for DurationProperty
+pub impl ToJson for DurationProperty
+pub impl @json.FromJson for DurationProperty
+
+pub(all) struct InnerModel {
+  property : String
+}
+pub impl Show for InnerModel
+pub impl ToJson for InnerModel
+pub impl @json.FromJson for InnerModel
+
+pub(all) struct StringClient {
+  base_url : String
+}
+pub async fn StringClient::get_type_property_nullable_string_non_null(Self) -> StringProperty
+pub async fn StringClient::get_type_property_nullable_string_null(Self) -> StringProperty
+pub fn StringClient::new(String) -> Self
+pub async fn StringClient::patch_type_property_nullable_string_non_null(Self, String, StringProperty) -> Unit
+pub async fn StringClient::patch_type_property_nullable_string_null(Self, String, StringProperty) -> Unit
+
+pub(all) struct StringProperty {
+  required_property : String
+  nullable_property : @typespec-client-runtime.Nullable[String]
+}
+pub impl Show for StringProperty
+pub impl ToJson for StringProperty
+pub impl @json.FromJson for StringProperty
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

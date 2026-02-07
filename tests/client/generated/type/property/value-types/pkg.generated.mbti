@@ -1,0 +1,431 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/property/value-types"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct BooleanClient {
+  base_url : String
+}
+pub async fn BooleanClient::get_type_property_value_types_boolean(Self) -> BooleanProperty
+pub fn BooleanClient::new(String) -> Self
+pub async fn BooleanClient::put_type_property_value_types_boolean(Self, BooleanProperty) -> Unit
+
+pub(all) struct BooleanLiteralClient {
+  base_url : String
+}
+pub async fn BooleanLiteralClient::get_type_property_value_types_boolean_literal(Self) -> BooleanLiteralProperty
+pub fn BooleanLiteralClient::new(String) -> Self
+pub async fn BooleanLiteralClient::put_type_property_value_types_boolean_literal(Self, BooleanLiteralProperty) -> Unit
+
+pub(all) struct BooleanLiteralProperty {
+  property : Bool
+}
+pub impl Show for BooleanLiteralProperty
+pub impl ToJson for BooleanLiteralProperty
+pub impl @json.FromJson for BooleanLiteralProperty
+
+pub(all) struct BooleanProperty {
+  property : Bool
+}
+pub impl Show for BooleanProperty
+pub impl ToJson for BooleanProperty
+pub impl @json.FromJson for BooleanProperty
+
+pub(all) struct BytesClient {
+  base_url : String
+}
+pub async fn BytesClient::get_type_property_value_types_bytes(Self) -> BytesProperty
+pub fn BytesClient::new(String) -> Self
+pub async fn BytesClient::put_type_property_value_types_bytes(Self, BytesProperty) -> Unit
+
+pub(all) struct BytesProperty {
+  property : Bytes
+}
+pub impl Show for BytesProperty
+pub impl ToJson for BytesProperty
+pub impl @json.FromJson for BytesProperty
+
+pub(all) struct CollectionsIntClient {
+  base_url : String
+}
+pub async fn CollectionsIntClient::get_type_property_value_types_collections_int(Self) -> CollectionsIntProperty
+pub fn CollectionsIntClient::new(String) -> Self
+pub async fn CollectionsIntClient::put_type_property_value_types_collections_int(Self, CollectionsIntProperty) -> Unit
+
+pub(all) struct CollectionsIntProperty {
+  property : Array[Int]
+}
+pub impl Show for CollectionsIntProperty
+pub impl ToJson for CollectionsIntProperty
+pub impl @json.FromJson for CollectionsIntProperty
+
+pub(all) struct CollectionsModelClient {
+  base_url : String
+}
+pub async fn CollectionsModelClient::get_type_property_value_types_collections_model(Self) -> CollectionsModelProperty
+pub fn CollectionsModelClient::new(String) -> Self
+pub async fn CollectionsModelClient::put_type_property_value_types_collections_model(Self, CollectionsModelProperty) -> Unit
+
+pub(all) struct CollectionsModelProperty {
+  property : Array[InnerModel]
+}
+pub impl Show for CollectionsModelProperty
+pub impl ToJson for CollectionsModelProperty
+pub impl @json.FromJson for CollectionsModelProperty
+
+pub(all) struct CollectionsStringClient {
+  base_url : String
+}
+pub async fn CollectionsStringClient::get_type_property_value_types_collections_string(Self) -> CollectionsStringProperty
+pub fn CollectionsStringClient::new(String) -> Self
+pub async fn CollectionsStringClient::put_type_property_value_types_collections_string(Self, CollectionsStringProperty) -> Unit
+
+pub(all) struct CollectionsStringProperty {
+  property : Array[String]
+}
+pub impl Show for CollectionsStringProperty
+pub impl ToJson for CollectionsStringProperty
+pub impl @json.FromJson for CollectionsStringProperty
+
+pub(all) struct DatetimeClient {
+  base_url : String
+}
+pub async fn DatetimeClient::get_type_property_value_types_datetime(Self) -> DatetimeProperty
+pub fn DatetimeClient::new(String) -> Self
+pub async fn DatetimeClient::put_type_property_value_types_datetime(Self, DatetimeProperty) -> Unit
+
+pub(all) struct DatetimeProperty {
+  property : String
+}
+pub impl Show for DatetimeProperty
+pub impl ToJson for DatetimeProperty
+pub impl @json.FromJson for DatetimeProperty
+
+pub(all) struct Decimal128Client {
+  base_url : String
+}
+pub async fn Decimal128Client::get_type_property_value_types_decimal128(Self) -> Decimal128Property
+pub fn Decimal128Client::new(String) -> Self
+pub async fn Decimal128Client::put_type_property_value_types_decimal128(Self, Decimal128Property) -> Unit
+
+pub(all) struct Decimal128Property {
+  property : Double
+}
+pub impl Show for Decimal128Property
+pub impl ToJson for Decimal128Property
+pub impl @json.FromJson for Decimal128Property
+
+pub(all) struct DecimalClient {
+  base_url : String
+}
+pub async fn DecimalClient::get_type_property_value_types_decimal(Self) -> DecimalProperty
+pub fn DecimalClient::new(String) -> Self
+pub async fn DecimalClient::put_type_property_value_types_decimal(Self, DecimalProperty) -> Unit
+
+pub(all) struct DecimalProperty {
+  property : Double
+}
+pub impl Show for DecimalProperty
+pub impl ToJson for DecimalProperty
+pub impl @json.FromJson for DecimalProperty
+
+pub(all) struct DictionaryStringClient {
+  base_url : String
+}
+pub async fn DictionaryStringClient::get_type_property_value_types_dictionary_string(Self) -> DictionaryStringProperty
+pub fn DictionaryStringClient::new(String) -> Self
+pub async fn DictionaryStringClient::put_type_property_value_types_dictionary_string(Self, DictionaryStringProperty) -> Unit
+
+pub(all) struct DictionaryStringProperty {
+  property : Map[String, String]
+}
+pub impl Show for DictionaryStringProperty
+pub impl ToJson for DictionaryStringProperty
+pub impl @json.FromJson for DictionaryStringProperty
+
+pub(all) struct DurationClient {
+  base_url : String
+}
+pub async fn DurationClient::get_type_property_value_types_duration(Self) -> DurationProperty
+pub fn DurationClient::new(String) -> Self
+pub async fn DurationClient::put_type_property_value_types_duration(Self, DurationProperty) -> Unit
+
+pub(all) struct DurationProperty {
+  property : String
+}
+pub impl Show for DurationProperty
+pub impl ToJson for DurationProperty
+pub impl @json.FromJson for DurationProperty
+
+pub(all) struct EnumClient {
+  base_url : String
+}
+pub async fn EnumClient::get_type_property_value_types_enum(Self) -> EnumProperty
+pub fn EnumClient::new(String) -> Self
+pub async fn EnumClient::put_type_property_value_types_enum(Self, EnumProperty) -> Unit
+
+pub(all) struct EnumProperty {
+  property : Json
+}
+pub impl Show for EnumProperty
+pub impl ToJson for EnumProperty
+pub impl @json.FromJson for EnumProperty
+
+pub(all) struct ExtensibleEnumClient {
+  base_url : String
+}
+pub async fn ExtensibleEnumClient::get_type_property_value_types_extensible_enum(Self) -> ExtensibleEnumProperty
+pub fn ExtensibleEnumClient::new(String) -> Self
+pub async fn ExtensibleEnumClient::put_type_property_value_types_extensible_enum(Self, ExtensibleEnumProperty) -> Unit
+
+pub(all) struct ExtensibleEnumProperty {
+  property : String
+}
+pub impl Show for ExtensibleEnumProperty
+pub impl ToJson for ExtensibleEnumProperty
+pub impl @json.FromJson for ExtensibleEnumProperty
+
+pub(all) struct FloatClient {
+  base_url : String
+}
+pub async fn FloatClient::get_type_property_value_types_float(Self) -> FloatProperty
+pub fn FloatClient::new(String) -> Self
+pub async fn FloatClient::put_type_property_value_types_float(Self, FloatProperty) -> Unit
+
+pub(all) struct FloatLiteralClient {
+  base_url : String
+}
+pub async fn FloatLiteralClient::get_type_property_value_types_float_literal(Self) -> FloatLiteralProperty
+pub fn FloatLiteralClient::new(String) -> Self
+pub async fn FloatLiteralClient::put_type_property_value_types_float_literal(Self, FloatLiteralProperty) -> Unit
+
+pub(all) struct FloatLiteralProperty {
+  property : Double
+}
+pub impl Show for FloatLiteralProperty
+pub impl ToJson for FloatLiteralProperty
+pub impl @json.FromJson for FloatLiteralProperty
+
+pub(all) struct FloatProperty {
+  property : Double
+}
+pub impl Show for FloatProperty
+pub impl ToJson for FloatProperty
+pub impl @json.FromJson for FloatProperty
+
+pub(all) struct InnerModel {
+  property : String
+}
+pub impl Show for InnerModel
+pub impl ToJson for InnerModel
+pub impl @json.FromJson for InnerModel
+
+pub(all) struct IntClient {
+  base_url : String
+}
+pub async fn IntClient::get_type_property_value_types_int(Self) -> IntProperty
+pub fn IntClient::new(String) -> Self
+pub async fn IntClient::put_type_property_value_types_int(Self, IntProperty) -> Unit
+
+pub(all) struct IntLiteralClient {
+  base_url : String
+}
+pub async fn IntLiteralClient::get_type_property_value_types_int_literal(Self) -> IntLiteralProperty
+pub fn IntLiteralClient::new(String) -> Self
+pub async fn IntLiteralClient::put_type_property_value_types_int_literal(Self, IntLiteralProperty) -> Unit
+
+pub(all) struct IntLiteralProperty {
+  property : Double
+}
+pub impl Show for IntLiteralProperty
+pub impl ToJson for IntLiteralProperty
+pub impl @json.FromJson for IntLiteralProperty
+
+pub(all) struct IntProperty {
+  property : Int
+}
+pub impl Show for IntProperty
+pub impl ToJson for IntProperty
+pub impl @json.FromJson for IntProperty
+
+pub(all) struct ModelClient {
+  base_url : String
+}
+pub async fn ModelClient::get_type_property_value_types_model(Self) -> ModelProperty
+pub fn ModelClient::new(String) -> Self
+pub async fn ModelClient::put_type_property_value_types_model(Self, ModelProperty) -> Unit
+
+pub(all) struct ModelProperty {
+  property : InnerModel
+}
+pub impl Show for ModelProperty
+pub impl ToJson for ModelProperty
+pub impl @json.FromJson for ModelProperty
+
+pub(all) struct NeverClient {
+  base_url : String
+}
+pub async fn NeverClient::get_type_property_value_types_never(Self) -> NeverProperty
+pub fn NeverClient::new(String) -> Self
+pub async fn NeverClient::put_type_property_value_types_never(Self, NeverProperty) -> Unit
+
+pub(all) struct NeverProperty {
+  property : Json
+}
+pub impl Show for NeverProperty
+pub impl ToJson for NeverProperty
+pub impl @json.FromJson for NeverProperty
+
+pub(all) struct StringClient {
+  base_url : String
+}
+pub async fn StringClient::get_type_property_value_types_string(Self) -> StringProperty
+pub fn StringClient::new(String) -> Self
+pub async fn StringClient::put_type_property_value_types_string(Self, StringProperty) -> Unit
+
+pub(all) struct StringLiteralClient {
+  base_url : String
+}
+pub async fn StringLiteralClient::get_type_property_value_types_string_literal(Self) -> StringLiteralProperty
+pub fn StringLiteralClient::new(String) -> Self
+pub async fn StringLiteralClient::put_type_property_value_types_string_literal(Self, StringLiteralProperty) -> Unit
+
+pub(all) struct StringLiteralProperty {
+  property : String
+}
+pub impl Show for StringLiteralProperty
+pub impl ToJson for StringLiteralProperty
+pub impl @json.FromJson for StringLiteralProperty
+
+pub(all) struct StringProperty {
+  property : String
+}
+pub impl Show for StringProperty
+pub impl ToJson for StringProperty
+pub impl @json.FromJson for StringProperty
+
+pub(all) struct UnionEnumValueClient {
+  base_url : String
+}
+pub async fn UnionEnumValueClient::get_type_property_value_types_union_enum_value(Self) -> UnionEnumValueProperty
+pub fn UnionEnumValueClient::new(String) -> Self
+pub async fn UnionEnumValueClient::put_type_property_value_types_union_enum_value(Self, UnionEnumValueProperty) -> Unit
+
+pub(all) struct UnionEnumValueProperty {
+  property : String
+}
+pub impl Show for UnionEnumValueProperty
+pub impl ToJson for UnionEnumValueProperty
+pub impl @json.FromJson for UnionEnumValueProperty
+
+pub(all) struct UnionFloatLiteralClient {
+  base_url : String
+}
+pub async fn UnionFloatLiteralClient::get_type_property_value_types_union_float_literal(Self) -> UnionFloatLiteralProperty
+pub fn UnionFloatLiteralClient::new(String) -> Self
+pub async fn UnionFloatLiteralClient::put_type_property_value_types_union_float_literal(Self, UnionFloatLiteralProperty) -> Unit
+
+pub(all) struct UnionFloatLiteralProperty {
+  property : Double
+}
+pub impl Show for UnionFloatLiteralProperty
+pub impl ToJson for UnionFloatLiteralProperty
+pub impl @json.FromJson for UnionFloatLiteralProperty
+
+pub(all) struct UnionIntLiteralClient {
+  base_url : String
+}
+pub async fn UnionIntLiteralClient::get_type_property_value_types_union_int_literal(Self) -> UnionIntLiteralProperty
+pub fn UnionIntLiteralClient::new(String) -> Self
+pub async fn UnionIntLiteralClient::put_type_property_value_types_union_int_literal(Self, UnionIntLiteralProperty) -> Unit
+
+pub(all) struct UnionIntLiteralProperty {
+  property : Double
+}
+pub impl Show for UnionIntLiteralProperty
+pub impl ToJson for UnionIntLiteralProperty
+pub impl @json.FromJson for UnionIntLiteralProperty
+
+pub(all) struct UnionStringLiteralClient {
+  base_url : String
+}
+pub async fn UnionStringLiteralClient::get_type_property_value_types_union_string_literal(Self) -> UnionStringLiteralProperty
+pub fn UnionStringLiteralClient::new(String) -> Self
+pub async fn UnionStringLiteralClient::put_type_property_value_types_union_string_literal(Self, UnionStringLiteralProperty) -> Unit
+
+pub(all) struct UnionStringLiteralProperty {
+  property : String
+}
+pub impl Show for UnionStringLiteralProperty
+pub impl ToJson for UnionStringLiteralProperty
+pub impl @json.FromJson for UnionStringLiteralProperty
+
+pub(all) struct UnknownArrayClient {
+  base_url : String
+}
+pub async fn UnknownArrayClient::get_type_property_value_types_unknown_array(Self) -> UnknownArrayProperty
+pub fn UnknownArrayClient::new(String) -> Self
+pub async fn UnknownArrayClient::put_type_property_value_types_unknown_array(Self, UnknownArrayProperty) -> Unit
+
+pub(all) struct UnknownArrayProperty {
+  property : Json
+}
+pub impl Show for UnknownArrayProperty
+pub impl ToJson for UnknownArrayProperty
+pub impl @json.FromJson for UnknownArrayProperty
+
+pub(all) struct UnknownDictClient {
+  base_url : String
+}
+pub async fn UnknownDictClient::get_type_property_value_types_unknown_dict(Self) -> UnknownDictProperty
+pub fn UnknownDictClient::new(String) -> Self
+pub async fn UnknownDictClient::put_type_property_value_types_unknown_dict(Self, UnknownDictProperty) -> Unit
+
+pub(all) struct UnknownDictProperty {
+  property : Json
+}
+pub impl Show for UnknownDictProperty
+pub impl ToJson for UnknownDictProperty
+pub impl @json.FromJson for UnknownDictProperty
+
+pub(all) struct UnknownIntClient {
+  base_url : String
+}
+pub async fn UnknownIntClient::get_type_property_value_types_unknown_int(Self) -> UnknownIntProperty
+pub fn UnknownIntClient::new(String) -> Self
+pub async fn UnknownIntClient::put_type_property_value_types_unknown_int(Self, UnknownIntProperty) -> Unit
+
+pub(all) struct UnknownIntProperty {
+  property : Json
+}
+pub impl Show for UnknownIntProperty
+pub impl ToJson for UnknownIntProperty
+pub impl @json.FromJson for UnknownIntProperty
+
+pub(all) struct UnknownStringClient {
+  base_url : String
+}
+pub async fn UnknownStringClient::get_type_property_value_types_unknown_string(Self) -> UnknownStringProperty
+pub fn UnknownStringClient::new(String) -> Self
+pub async fn UnknownStringClient::put_type_property_value_types_unknown_string(Self, UnknownStringProperty) -> Unit
+
+pub(all) struct UnknownStringProperty {
+  property : Json
+}
+pub impl Show for UnknownStringProperty
+pub impl ToJson for UnknownStringProperty
+pub impl @json.FromJson for UnknownStringProperty
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

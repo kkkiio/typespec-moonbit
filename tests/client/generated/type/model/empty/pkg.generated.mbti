@@ -1,0 +1,44 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/model/empty"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct EmptyClient {
+  base_url : String
+}
+pub async fn EmptyClient::get_type_model_empty_alone(Self) -> EmptyOutput
+pub fn EmptyClient::new(String) -> Self
+pub async fn EmptyClient::post_type_model_empty_round_trip(Self, EmptyInputOutput) -> EmptyInputOutput
+pub async fn EmptyClient::put_type_model_empty_alone(Self, EmptyInput) -> Unit
+
+pub(all) struct EmptyInput {
+}
+pub impl Show for EmptyInput
+pub impl ToJson for EmptyInput
+pub impl @json.FromJson for EmptyInput
+
+pub(all) struct EmptyInputOutput {
+}
+pub impl Show for EmptyInputOutput
+pub impl ToJson for EmptyInputOutput
+pub impl @json.FromJson for EmptyInputOutput
+
+pub(all) struct EmptyOutput {
+}
+pub impl Show for EmptyOutput
+pub impl ToJson for EmptyOutput
+pub impl @json.FromJson for EmptyOutput
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

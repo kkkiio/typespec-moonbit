@@ -1,0 +1,32 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/serialization/encoded-name/json-model"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct JsonEncodedNameModel {
+  default_name : Bool
+}
+pub impl Show for JsonEncodedNameModel
+pub impl ToJson for JsonEncodedNameModel
+pub impl @json.FromJson for JsonEncodedNameModel
+
+pub(all) struct PropertyClient {
+  base_url : String
+}
+pub async fn PropertyClient::get_serialization_encoded_name_json_property(Self) -> JsonEncodedNameModel
+pub fn PropertyClient::new(String) -> Self
+pub async fn PropertyClient::post_serialization_encoded_name_json_property(Self, JsonEncodedNameModel) -> Unit
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

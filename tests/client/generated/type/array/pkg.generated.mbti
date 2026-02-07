@@ -1,0 +1,124 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/array"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct BooleanValueClient {
+  base_url : String
+}
+pub async fn BooleanValueClient::get_type_array_boolean(Self) -> Array[Bool]
+pub fn BooleanValueClient::new(String) -> Self
+pub async fn BooleanValueClient::put_type_array_boolean(Self, Array[Bool]) -> Unit
+
+pub(all) struct DatetimeValueClient {
+  base_url : String
+}
+pub async fn DatetimeValueClient::get_type_array_datetime(Self) -> Array[String]
+pub fn DatetimeValueClient::new(String) -> Self
+pub async fn DatetimeValueClient::put_type_array_datetime(Self, Array[String]) -> Unit
+
+pub(all) struct DurationValueClient {
+  base_url : String
+}
+pub async fn DurationValueClient::get_type_array_duration(Self) -> Array[String]
+pub fn DurationValueClient::new(String) -> Self
+pub async fn DurationValueClient::put_type_array_duration(Self, Array[String]) -> Unit
+
+pub(all) struct Float32ValueClient {
+  base_url : String
+}
+pub async fn Float32ValueClient::get_type_array_float32(Self) -> Array[Double]
+pub fn Float32ValueClient::new(String) -> Self
+pub async fn Float32ValueClient::put_type_array_float32(Self, Array[Double]) -> Unit
+
+pub(all) struct InnerModel {
+  property : String
+  children : Array[InnerModel]?
+}
+pub impl Show for InnerModel
+pub impl ToJson for InnerModel
+pub impl @json.FromJson for InnerModel
+
+pub(all) struct Int32ValueClient {
+  base_url : String
+}
+pub async fn Int32ValueClient::get_type_array_int32(Self) -> Array[Int]
+pub fn Int32ValueClient::new(String) -> Self
+pub async fn Int32ValueClient::put_type_array_int32(Self, Array[Int]) -> Unit
+
+pub(all) struct Int64ValueClient {
+  base_url : String
+}
+pub async fn Int64ValueClient::get_type_array_int64(Self) -> Array[Int64]
+pub fn Int64ValueClient::new(String) -> Self
+pub async fn Int64ValueClient::put_type_array_int64(Self, Array[Int64]) -> Unit
+
+pub(all) struct ModelValueClient {
+  base_url : String
+}
+pub async fn ModelValueClient::get_type_array_model(Self) -> Array[InnerModel]
+pub fn ModelValueClient::new(String) -> Self
+pub async fn ModelValueClient::put_type_array_model(Self, Array[InnerModel]) -> Unit
+
+pub(all) struct NullableBooleanValueClient {
+  base_url : String
+}
+pub async fn NullableBooleanValueClient::get_type_array_nullable_boolean(Self) -> Array[@typespec-client-runtime.Nullable[Bool]]
+pub fn NullableBooleanValueClient::new(String) -> Self
+pub async fn NullableBooleanValueClient::put_type_array_nullable_boolean(Self, Array[@typespec-client-runtime.Nullable[Bool]]) -> Unit
+
+pub(all) struct NullableFloatValueClient {
+  base_url : String
+}
+pub async fn NullableFloatValueClient::get_type_array_nullable_float(Self) -> Array[@typespec-client-runtime.Nullable[Double]]
+pub fn NullableFloatValueClient::new(String) -> Self
+pub async fn NullableFloatValueClient::put_type_array_nullable_float(Self, Array[@typespec-client-runtime.Nullable[Double]]) -> Unit
+
+pub(all) struct NullableInt32ValueClient {
+  base_url : String
+}
+pub async fn NullableInt32ValueClient::get_type_array_nullable_int32(Self) -> Array[@typespec-client-runtime.Nullable[Int]]
+pub fn NullableInt32ValueClient::new(String) -> Self
+pub async fn NullableInt32ValueClient::put_type_array_nullable_int32(Self, Array[@typespec-client-runtime.Nullable[Int]]) -> Unit
+
+pub(all) struct NullableModelValueClient {
+  base_url : String
+}
+pub async fn NullableModelValueClient::get_type_array_nullable_model(Self) -> Array[@typespec-client-runtime.Nullable[InnerModel]]
+pub fn NullableModelValueClient::new(String) -> Self
+pub async fn NullableModelValueClient::put_type_array_nullable_model(Self, Array[@typespec-client-runtime.Nullable[InnerModel]]) -> Unit
+
+pub(all) struct NullableStringValueClient {
+  base_url : String
+}
+pub async fn NullableStringValueClient::get_type_array_nullable_string(Self) -> Array[@typespec-client-runtime.Nullable[String]]
+pub fn NullableStringValueClient::new(String) -> Self
+pub async fn NullableStringValueClient::put_type_array_nullable_string(Self, Array[@typespec-client-runtime.Nullable[String]]) -> Unit
+
+pub(all) struct StringValueClient {
+  base_url : String
+}
+pub async fn StringValueClient::get_type_array_string(Self) -> Array[String]
+pub fn StringValueClient::new(String) -> Self
+pub async fn StringValueClient::put_type_array_string(Self, Array[String]) -> Unit
+
+pub(all) struct UnknownValueClient {
+  base_url : String
+}
+pub async fn UnknownValueClient::get_type_array_unknown(Self) -> Array[Json]
+pub fn UnknownValueClient::new(String) -> Self
+pub async fn UnknownValueClient::put_type_array_unknown(Self, Array[Json]) -> Unit
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

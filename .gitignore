@@ -12,3 +12,5 @@ spec-coverage.json
 emitter/_build/
 emitter/target
 packages/*/dist/
+
+.codex/skills/

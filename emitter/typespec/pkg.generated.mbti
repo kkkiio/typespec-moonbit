@@ -1,0 +1,171 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-moonbit/typespec"
+
+import {
+  "moonbit-community/js-ffi/js",
+}
+
+// Values
+pub fn cast_bool(@js.Value) -> Bool
+
+pub fn cast_float(@js.Value) -> Double
+
+pub fn cast_int(@js.Value) -> Int
+
+pub fn cast_string(@js.Value) -> String
+
+pub fn create_context(@js.Value) -> Context
+
+pub fn extract_path_from_server_url(String) -> String
+
+pub fn get(@js.Value, String) -> @js.Value
+
+pub fn get_all_http_services(@js.Value) -> Array[HttpService]
+
+pub async fn get_all_http_services_async(@js.Value) -> Array[HttpService]
+
+pub fn get_index(@js.Value, Int) -> @js.Value
+
+pub async fn import_module(String) -> @js.Value
+
+pub fn is_array(@js.Value) -> Bool
+
+pub fn is_bool(@js.Value) -> Bool
+
+pub fn is_null(@js.Value) -> Bool
+
+pub fn is_number(@js.Value) -> Bool
+
+pub fn is_sse_payload(@js.Value) -> Bool
+
+pub fn is_string(@js.Value) -> Bool
+
+pub fn is_undefined(@js.Value) -> Bool
+
+pub fn require_module(String) -> @js.Value
+
+pub fn resolve_request_body(@js.Value) -> TypeSpecType?
+
+pub fn resolve_type(@js.Value) -> TypeSpecType
+
+pub fn set(@js.Value, String, @js.Value) -> Unit
+
+pub fn try_get_array_encoding(@js.Value) -> String?
+
+pub fn try_get_bytes_encoding(@js.Value) -> String?
+
+// Errors
+
+// Types and methods
+pub struct Context {
+  emit_context : @js.Value
+}
+pub fn Context::emitter_options(Self) -> @js.Value
+pub fn Context::program(Self) -> @js.Value
+
+pub struct HttpOperation {
+  raw : @js.Value
+  base_path_ : String
+}
+pub fn HttpOperation::container_name(Self) -> String
+pub fn HttpOperation::name(Self) -> String
+pub fn HttpOperation::parameters(Self) -> Iter[HttpParam]
+pub fn HttpOperation::path(Self) -> String
+pub fn HttpOperation::responses(Self) -> Iter[HttpResponse]
+pub fn HttpOperation::sse_event_union(Self) -> Union?
+pub fn HttpOperation::verb(Self) -> String
+
+pub struct HttpParam {
+  raw : @js.Value
+  name_hint : String
+  kind_ : HttpParamKind
+  explode_ : Bool
+  array_encoding_ : String?
+  bytes_encoding_ : String?
+}
+pub fn HttpParam::array_encoding(Self) -> String?
+pub fn HttpParam::bytes_encoding(Self) -> String?
+pub fn HttpParam::explode(Self) -> Bool
+pub fn HttpParam::is_optional(Self) -> Bool
+pub fn HttpParam::kind(Self) -> HttpParamKind
+pub fn HttpParam::name(Self) -> String
+pub fn HttpParam::type_(Self) -> TypeSpecType
+
+pub enum HttpParamKind {
+  Query
+  Header
+  Path
+  Body
+  Unknown(String)
+}
+
+pub struct HttpResponse {
+  raw : @js.Value
+}
+pub fn HttpResponse::body_type(Self) -> TypeSpecType?
+pub fn HttpResponse::bytes_encoding(Self) -> String?
+pub fn HttpResponse::has_json_content_type(Self) -> Bool
+pub fn HttpResponse::is_sse(Self) -> Bool
+pub fn HttpResponse::status_codes(Self) -> Array[Int]
+
+pub struct HttpService {
+  raw : @js.Value
+  base_path_ : String
+}
+pub fn HttpService::base_path(Self) -> String
+pub fn HttpService::namespace_(Self) -> String
+pub fn HttpService::operations(Self) -> Iter[HttpOperation]
+
+pub struct Model {
+  raw : @js.Value
+}
+pub fn Model::anon_name_prefix(Self) -> String?
+pub fn Model::doc(Self) -> String
+pub fn Model::identity(Self) -> String
+pub fn Model::is_record(Self) -> Bool
+pub fn Model::name(Self) -> String
+pub fn Model::properties(Self) -> Iter[Property]
+
+pub struct Property {
+  raw : @js.Value
+  name_hint : String
+}
+pub fn Property::bytes_encoding(Self) -> String?
+pub fn Property::is_optional(Self) -> Bool
+pub fn Property::name(Self) -> String
+pub fn Property::type_(Self) -> TypeSpecType
+
+pub enum TypeSpecType {
+  Model(Model)
+  Union(Union)
+  String
+  Bytes
+  Int
+  Int64
+  Bool
+  Float
+  Json
+  Array(TypeSpecType)
+  Record(TypeSpecType)
+  Nullable(TypeSpecType)
+  Unknown
+}
+
+pub struct Union {
+  raw : @js.Value
+}
+pub fn Union::identity(Self) -> String
+pub fn Union::name(Self) -> String
+pub fn Union::variants(Self) -> Iter[UnionVariant]
+
+pub struct UnionVariant {
+  raw : @js.Value
+}
+pub fn UnionVariant::name(Self) -> String
+pub fn UnionVariant::type_(Self) -> TypeSpecType
+
+// Type aliases
+pub using @js {type Value as JsValue}
+
+// Traits
+

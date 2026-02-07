@@ -1,0 +1,8 @@
+import "test" {
+  "moonbitlang/async",
+  "moonbitlang/core/json",
+  "kkkiio/typespec-tests/client/generated/parameters/basic" as @parameters_basic,
+  "kkkiio/typespec-tests/client/generated/parameters/body-optionality" as @parameters_body_optionality,
+  "kkkiio/typespec-tests/client/generated/parameters/collection-format" as @parameters_collection_format,
+  "kkkiio/typespec-tests/client/generated/parameters/spread" as @parameters_spread,
+}

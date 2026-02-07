@@ -1,0 +1,8 @@
+import "test" {
+  "moonbitlang/async",
+  "moonbitlang/async/io",
+  "moonbitlang/core/encoding/utf8",
+  "kkkiio/typespec-tests/client/generated/type/scalar" as @type_scalar,
+  "kkkiio/typespec-tests/client/generated/type/enum/extensible" as @type_enum_extensible,
+  "kkkiio/typespec-tests/client/generated/type/enum/fixed" as @type_enum_fixed,
+}

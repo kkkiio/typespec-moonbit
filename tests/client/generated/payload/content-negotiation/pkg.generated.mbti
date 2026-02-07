@@ -1,0 +1,39 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/payload/content-negotiation"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct DifferentBodyClient {
+  base_url : String
+}
+pub async fn DifferentBodyClient::get_content_negotiation_different_body(Self, String) -> Bytes
+pub async fn DifferentBodyClient::get_content_negotiation_different_body_2(Self, String) -> PngImageAsJson0
+pub fn DifferentBodyClient::new(String) -> Self
+
+pub(all) struct PngImageAsJson0 {
+  content : Bytes
+}
+pub impl Show for PngImageAsJson0
+pub impl ToJson for PngImageAsJson0
+pub impl @json.FromJson for PngImageAsJson0
+
+pub(all) struct SameBodyClient {
+  base_url : String
+}
+pub async fn SameBodyClient::get_content_negotiation_same_body(Self, String) -> Bytes
+pub async fn SameBodyClient::get_content_negotiation_same_body_2(Self, String) -> Bytes
+pub fn SameBodyClient::new(String) -> Self
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

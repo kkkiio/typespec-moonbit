@@ -1,0 +1,312 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/payload/multipart"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct BinaryArrayPartsRequest {
+  id : HttpPart12
+  pictures : Array[HttpPart13]
+}
+pub impl Show for BinaryArrayPartsRequest
+pub impl ToJson for BinaryArrayPartsRequest
+pub impl @json.FromJson for BinaryArrayPartsRequest
+
+pub(all) struct ComplexHttpPartsModelRequest {
+  id : HttpPart18
+  address : HttpPart19
+  profile_image : HttpPart20
+  previous_addresses : HttpPart21
+  pictures : Array[HttpPart22]
+}
+pub impl Show for ComplexHttpPartsModelRequest
+pub impl ToJson for ComplexHttpPartsModelRequest
+pub impl @json.FromJson for ComplexHttpPartsModelRequest
+
+pub(all) struct ComplexPartsRequest {
+  id : HttpPart8
+  address : HttpPart9
+  profile_image : HttpPart10
+  pictures : Array[HttpPart11]
+}
+pub impl Show for ComplexPartsRequest
+pub impl ToJson for ComplexPartsRequest
+pub impl @json.FromJson for ComplexPartsRequest
+
+pub(all) struct ContentTypeClient {
+  base_url : String
+}
+pub fn ContentTypeClient::new(String) -> Self
+pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_required_content_type_with_httppart(Self, String, FileWithHttpPartRequiredContentTypeRequest) -> Unit
+pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_specific_content_type_with_httppart(Self, String, FileWithHttpPartSpecificContentTypeRequest) -> Unit
+pub async fn ContentTypeClient::post_multipart_form_data_file_with_http_part_optional_content_type(Self, String, FileWithHttpPartOptionalContentTypeRequest) -> Unit
+
+pub(all) struct FileWithHttpPartOptionalContentTypeRequest {
+  profile_image : HttpPart23
+}
+pub impl Show for FileWithHttpPartOptionalContentTypeRequest
+pub impl ToJson for FileWithHttpPartOptionalContentTypeRequest
+pub impl @json.FromJson for FileWithHttpPartOptionalContentTypeRequest
+
+pub(all) struct FileWithHttpPartRequiredContentTypeRequest {
+  profile_image : HttpPart24
+}
+pub impl Show for FileWithHttpPartRequiredContentTypeRequest
+pub impl ToJson for FileWithHttpPartRequiredContentTypeRequest
+pub impl @json.FromJson for FileWithHttpPartRequiredContentTypeRequest
+
+pub(all) struct FileWithHttpPartSpecificContentTypeRequest {
+  profile_image : HttpPart25
+}
+pub impl Show for FileWithHttpPartSpecificContentTypeRequest
+pub impl ToJson for FileWithHttpPartSpecificContentTypeRequest
+pub impl @json.FromJson for FileWithHttpPartSpecificContentTypeRequest
+
+pub(all) struct FormDataClient {
+  base_url : String
+}
+pub fn FormDataClient::new(String) -> Self
+pub async fn FormDataClient::post_multipart_form_data_anonymous_model(Self, String, Model1) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_binary_array_parts(Self, String, BinaryArrayPartsRequest) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_check_filename_and_content_type(Self, String, MultiPartRequest) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_complex_parts(Self, String, ComplexPartsRequest) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_json_part(Self, String, JsonPartRequest) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_mixed_parts(Self, String, MultiPartRequest) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_mixed_parts_with_wire_name(Self, String, MultiPartRequestWithWireName) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_multi_binary_parts(Self, String, MultiBinaryPartsRequest) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_optional_parts(Self, String, MultiPartOptionalRequest) -> Unit
+
+pub(all) struct HttpPart {
+}
+pub impl Show for HttpPart
+pub impl ToJson for HttpPart
+pub impl @json.FromJson for HttpPart
+
+pub(all) struct HttpPart1 {
+}
+pub impl Show for HttpPart1
+pub impl ToJson for HttpPart1
+pub impl @json.FromJson for HttpPart1
+
+pub(all) struct HttpPart10 {
+}
+pub impl Show for HttpPart10
+pub impl ToJson for HttpPart10
+pub impl @json.FromJson for HttpPart10
+
+pub(all) struct HttpPart11 {
+}
+pub impl Show for HttpPart11
+pub impl ToJson for HttpPart11
+pub impl @json.FromJson for HttpPart11
+
+pub(all) struct HttpPart12 {
+}
+pub impl Show for HttpPart12
+pub impl ToJson for HttpPart12
+pub impl @json.FromJson for HttpPart12
+
+pub(all) struct HttpPart13 {
+}
+pub impl Show for HttpPart13
+pub impl ToJson for HttpPart13
+pub impl @json.FromJson for HttpPart13
+
+pub(all) struct HttpPart14 {
+}
+pub impl Show for HttpPart14
+pub impl ToJson for HttpPart14
+pub impl @json.FromJson for HttpPart14
+
+pub(all) struct HttpPart15 {
+}
+pub impl Show for HttpPart15
+pub impl ToJson for HttpPart15
+pub impl @json.FromJson for HttpPart15
+
+pub(all) struct HttpPart16 {
+}
+pub impl Show for HttpPart16
+pub impl ToJson for HttpPart16
+pub impl @json.FromJson for HttpPart16
+
+pub(all) struct HttpPart17 {
+}
+pub impl Show for HttpPart17
+pub impl ToJson for HttpPart17
+pub impl @json.FromJson for HttpPart17
+
+pub(all) struct HttpPart18 {
+}
+pub impl Show for HttpPart18
+pub impl ToJson for HttpPart18
+pub impl @json.FromJson for HttpPart18
+
+pub(all) struct HttpPart19 {
+}
+pub impl Show for HttpPart19
+pub impl ToJson for HttpPart19
+pub impl @json.FromJson for HttpPart19
+
+pub(all) struct HttpPart2 {
+}
+pub impl Show for HttpPart2
+pub impl ToJson for HttpPart2
+pub impl @json.FromJson for HttpPart2
+
+pub(all) struct HttpPart20 {
+}
+pub impl Show for HttpPart20
+pub impl ToJson for HttpPart20
+pub impl @json.FromJson for HttpPart20
+
+pub(all) struct HttpPart21 {
+}
+pub impl Show for HttpPart21
+pub impl ToJson for HttpPart21
+pub impl @json.FromJson for HttpPart21
+
+pub(all) struct HttpPart22 {
+}
+pub impl Show for HttpPart22
+pub impl ToJson for HttpPart22
+pub impl @json.FromJson for HttpPart22
+
+pub(all) struct HttpPart23 {
+}
+pub impl Show for HttpPart23
+pub impl ToJson for HttpPart23
+pub impl @json.FromJson for HttpPart23
+
+pub(all) struct HttpPart24 {
+}
+pub impl Show for HttpPart24
+pub impl ToJson for HttpPart24
+pub impl @json.FromJson for HttpPart24
+
+pub(all) struct HttpPart25 {
+}
+pub impl Show for HttpPart25
+pub impl ToJson for HttpPart25
+pub impl @json.FromJson for HttpPart25
+
+pub(all) struct HttpPart3 {
+}
+pub impl Show for HttpPart3
+pub impl ToJson for HttpPart3
+pub impl @json.FromJson for HttpPart3
+
+pub(all) struct HttpPart4 {
+}
+pub impl Show for HttpPart4
+pub impl ToJson for HttpPart4
+pub impl @json.FromJson for HttpPart4
+
+pub(all) struct HttpPart5 {
+}
+pub impl Show for HttpPart5
+pub impl ToJson for HttpPart5
+pub impl @json.FromJson for HttpPart5
+
+pub(all) struct HttpPart6 {
+}
+pub impl Show for HttpPart6
+pub impl ToJson for HttpPart6
+pub impl @json.FromJson for HttpPart6
+
+pub(all) struct HttpPart7 {
+}
+pub impl Show for HttpPart7
+pub impl ToJson for HttpPart7
+pub impl @json.FromJson for HttpPart7
+
+pub(all) struct HttpPart8 {
+}
+pub impl Show for HttpPart8
+pub impl ToJson for HttpPart8
+pub impl @json.FromJson for HttpPart8
+
+pub(all) struct HttpPart9 {
+}
+pub impl Show for HttpPart9
+pub impl ToJson for HttpPart9
+pub impl @json.FromJson for HttpPart9
+
+pub(all) struct HttpPartsClient {
+  base_url : String
+}
+pub fn HttpPartsClient::new(String) -> Self
+pub async fn HttpPartsClient::post_multipart_form_data_complex_parts_with_httppart(Self, String, ComplexHttpPartsModelRequest) -> Unit
+
+pub(all) struct JsonPartRequest {
+  address : HttpPart2
+  profile_image : HttpPart3
+}
+pub impl Show for JsonPartRequest
+pub impl ToJson for JsonPartRequest
+pub impl @json.FromJson for JsonPartRequest
+
+pub(all) struct Model0 {
+  temperature : HttpPart4
+}
+pub impl Show for Model0
+pub impl ToJson for Model0
+pub impl @json.FromJson for Model0
+
+pub(all) struct Model1 {
+  profile_image : HttpPart7
+}
+pub impl Show for Model1
+pub impl ToJson for Model1
+pub impl @json.FromJson for Model1
+
+pub(all) struct MultiBinaryPartsRequest {
+  profile_image : HttpPart14
+  picture : HttpPart15?
+}
+pub impl Show for MultiBinaryPartsRequest
+pub impl ToJson for MultiBinaryPartsRequest
+pub impl @json.FromJson for MultiBinaryPartsRequest
+
+pub(all) struct MultiPartOptionalRequest {
+  id : HttpPart5?
+  profile_image : HttpPart6?
+}
+pub impl Show for MultiPartOptionalRequest
+pub impl ToJson for MultiPartOptionalRequest
+pub impl @json.FromJson for MultiPartOptionalRequest
+
+pub(all) struct MultiPartRequest {
+  id : HttpPart
+  profile_image : HttpPart1
+}
+pub impl Show for MultiPartRequest
+pub impl ToJson for MultiPartRequest
+pub impl @json.FromJson for MultiPartRequest
+
+pub(all) struct MultiPartRequestWithWireName {
+  identifier : HttpPart16
+  image : HttpPart17
+}
+pub impl Show for MultiPartRequestWithWireName
+pub impl ToJson for MultiPartRequestWithWireName
+pub impl @json.FromJson for MultiPartRequestWithWireName
+
+pub(all) struct NonStringClient {
+  base_url : String
+}
+pub fn NonStringClient::new(String) -> Self
+pub async fn NonStringClient::post_multipart_form_data_non_string_float(Self, String, Model0) -> Unit
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

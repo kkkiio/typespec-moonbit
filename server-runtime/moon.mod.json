@@ -1,5 +1,5 @@
 {
-  "name": "kkkiio/typespec-moonbit-server-runtime",
+  "name": "kkkiio/typespec-server-runtime",
   "version": "0.1.0",
   "deps": {
     "moonbitlang/async": "0.16.1"

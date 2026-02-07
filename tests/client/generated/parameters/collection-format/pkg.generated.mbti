@@ -1,0 +1,32 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/parameters/collection-format"
+
+import {
+  "kkkiio/typespec-client-runtime",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct HeaderClient {
+  base_url : String
+}
+pub async fn HeaderClient::get_parameters_collection_format_header_csv(Self, Array[String]) -> Unit
+pub fn HeaderClient::new(String) -> Self
+
+pub(all) struct QueryClient {
+  base_url : String
+}
+pub async fn QueryClient::get_parameters_collection_format_query_csv__colors_(Self, Array[String]) -> Unit
+pub async fn QueryClient::get_parameters_collection_format_query_multi__colors__(Self, Array[String]) -> Unit
+pub async fn QueryClient::get_parameters_collection_format_query_pipes__colors_(Self, Array[String]) -> Unit
+pub async fn QueryClient::get_parameters_collection_format_query_ssv__colors_(Self, Array[String]) -> Unit
+pub fn QueryClient::new(String) -> Self
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

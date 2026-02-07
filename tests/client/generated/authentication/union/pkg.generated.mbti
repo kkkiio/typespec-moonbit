@@ -1,0 +1,24 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/authentication/union"
+
+import {
+  "kkkiio/typespec-client-runtime",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct UnionClient {
+  base_url : String
+}
+pub async fn UnionClient::get_authentication_union_validkey(Self) -> Unit
+pub async fn UnionClient::get_authentication_union_validtoken(Self) -> Unit
+pub fn UnionClient::new(String) -> Self
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

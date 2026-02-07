@@ -1,0 +1,68 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/scalar"
+
+import {
+  "kkkiio/typespec-client-runtime",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct BooleanClient {
+  base_url : String
+}
+pub async fn BooleanClient::get_type_scalar_boolean(Self) -> Bool
+pub fn BooleanClient::new(String) -> Self
+pub async fn BooleanClient::put_type_scalar_boolean(Self, String, Bool) -> Unit
+
+pub(all) struct Decimal128TypeClient {
+  base_url : String
+}
+pub async fn Decimal128TypeClient::get_type_scalar_decimal128_request_parameter__value_(Self, Double) -> Unit
+pub async fn Decimal128TypeClient::get_type_scalar_decimal128_response_body(Self) -> Double
+pub fn Decimal128TypeClient::new(String) -> Self
+pub async fn Decimal128TypeClient::put_type_scalar_decimal128_resquest_body(Self, String, Double) -> Unit
+
+pub(all) struct Decimal128VerifyClient {
+  base_url : String
+}
+pub async fn Decimal128VerifyClient::get_type_scalar_decimal128_prepare_verify(Self) -> Array[Double]
+pub fn Decimal128VerifyClient::new(String) -> Self
+pub async fn Decimal128VerifyClient::post_type_scalar_decimal128_verify(Self, String, Double) -> Unit
+
+pub(all) struct DecimalTypeClient {
+  base_url : String
+}
+pub async fn DecimalTypeClient::get_type_scalar_decimal_request_parameter__value_(Self, Double) -> Unit
+pub async fn DecimalTypeClient::get_type_scalar_decimal_response_body(Self) -> Double
+pub fn DecimalTypeClient::new(String) -> Self
+pub async fn DecimalTypeClient::put_type_scalar_decimal_resquest_body(Self, String, Double) -> Unit
+
+pub(all) struct DecimalVerifyClient {
+  base_url : String
+}
+pub async fn DecimalVerifyClient::get_type_scalar_decimal_prepare_verify(Self) -> Array[Double]
+pub fn DecimalVerifyClient::new(String) -> Self
+pub async fn DecimalVerifyClient::post_type_scalar_decimal_verify(Self, String, Double) -> Unit
+
+pub(all) struct StringClient {
+  base_url : String
+}
+pub async fn StringClient::get_type_scalar_string(Self) -> String
+pub fn StringClient::new(String) -> Self
+pub async fn StringClient::put_type_scalar_string(Self, String, String) -> Unit
+
+pub(all) struct UnknownClient {
+  base_url : String
+}
+pub async fn UnknownClient::get_type_scalar_unknown(Self) -> Json
+pub fn UnknownClient::new(String) -> Self
+pub async fn UnknownClient::put_type_scalar_unknown(Self, String, Json) -> Unit
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

@@ -1,0 +1,54 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/server/generated/type/model/inheritance/recursive"
+
+import {
+  "moonbitlang/async",
+  "moonbitlang/async/http",
+  "moonbitlang/async/io",
+  "moonbitlang/core/json",
+}
+
+// Values
+pub fn create_dispatch(async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+
+pub fn[H0 : RecursiveHandler] create_router(recursive_handler~ : H0, group~ : @async.TaskGroup[Unit]) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
+
+pub fn match_route(@http.RequestMethod, String) -> MatchRouteResult
+
+// Errors
+
+// Types and methods
+pub(all) struct Extension {
+  extension : Array[Extension]?
+  level : Int
+}
+pub impl Show for Extension
+pub impl ToJson for Extension
+pub impl @json.FromJson for Extension
+
+pub(all) enum MatchRouteResult {
+  NotMatched
+  MethodNotAllowed
+  Matched(RouteId)
+}
+
+pub(all) enum RouteId {
+  RecursiveGet
+  RecursivePut
+}
+
+pub(all) enum RouteMatch {
+  Handled
+  NotMatched
+  MethodNotAllowed
+}
+
+// Type aliases
+pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
+
+// Traits
+pub(open) trait RecursiveHandler {
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Extension
+  async put(Self, group~ : @async.TaskGroup[Unit], Extension) -> Unit
+}
+

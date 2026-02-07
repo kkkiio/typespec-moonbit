@@ -1,0 +1,400 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/property/additional-properties"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct DifferentSpreadFloatDerived {
+  name : String
+  derived_prop : Double
+}
+pub impl Show for DifferentSpreadFloatDerived
+pub impl ToJson for DifferentSpreadFloatDerived
+pub impl @json.FromJson for DifferentSpreadFloatDerived
+
+pub(all) struct DifferentSpreadModelArrayDerived {
+  known_prop : String
+  derived_prop : Array[ModelForRecord]
+}
+pub impl Show for DifferentSpreadModelArrayDerived
+pub impl ToJson for DifferentSpreadModelArrayDerived
+pub impl @json.FromJson for DifferentSpreadModelArrayDerived
+
+pub(all) struct DifferentSpreadModelDerived {
+  known_prop : String
+  derived_prop : ModelForRecord
+}
+pub impl Show for DifferentSpreadModelDerived
+pub impl ToJson for DifferentSpreadModelDerived
+pub impl @json.FromJson for DifferentSpreadModelDerived
+
+pub(all) struct DifferentSpreadStringDerived {
+  id : Double
+  derived_prop : String
+}
+pub impl Show for DifferentSpreadStringDerived
+pub impl ToJson for DifferentSpreadStringDerived
+pub impl @json.FromJson for DifferentSpreadStringDerived
+
+pub(all) struct ExtendsDifferentSpreadFloatClient {
+  base_url : String
+}
+pub async fn ExtendsDifferentSpreadFloatClient::get_type_property_additionalproperties_extendsdifferentspreadfloat(Self) -> DifferentSpreadFloatDerived
+pub fn ExtendsDifferentSpreadFloatClient::new(String) -> Self
+pub async fn ExtendsDifferentSpreadFloatClient::put_type_property_additionalproperties_extendsdifferentspreadfloat(Self, DifferentSpreadFloatDerived) -> Unit
+
+pub(all) struct ExtendsDifferentSpreadModelArrayClient {
+  base_url : String
+}
+pub async fn ExtendsDifferentSpreadModelArrayClient::get_type_property_additionalproperties_extendsdifferentspreadmodelarray(Self) -> DifferentSpreadModelArrayDerived
+pub fn ExtendsDifferentSpreadModelArrayClient::new(String) -> Self
+pub async fn ExtendsDifferentSpreadModelArrayClient::put_type_property_additionalproperties_extendsdifferentspreadmodelarray(Self, DifferentSpreadModelArrayDerived) -> Unit
+
+pub(all) struct ExtendsDifferentSpreadModelClient {
+  base_url : String
+}
+pub async fn ExtendsDifferentSpreadModelClient::get_type_property_additionalproperties_extendsdifferentspreadmodel(Self) -> DifferentSpreadModelDerived
+pub fn ExtendsDifferentSpreadModelClient::new(String) -> Self
+pub async fn ExtendsDifferentSpreadModelClient::put_type_property_additionalproperties_extendsdifferentspreadmodel(Self, DifferentSpreadModelDerived) -> Unit
+
+pub(all) struct ExtendsDifferentSpreadStringClient {
+  base_url : String
+}
+pub async fn ExtendsDifferentSpreadStringClient::get_type_property_additionalproperties_extendsdifferentspreadstring(Self) -> DifferentSpreadStringDerived
+pub fn ExtendsDifferentSpreadStringClient::new(String) -> Self
+pub async fn ExtendsDifferentSpreadStringClient::put_type_property_additionalproperties_extendsdifferentspreadstring(Self, DifferentSpreadStringDerived) -> Unit
+
+pub(all) struct ExtendsFloatAdditionalProperties {
+  id : Double
+}
+pub impl Show for ExtendsFloatAdditionalProperties
+pub impl ToJson for ExtendsFloatAdditionalProperties
+pub impl @json.FromJson for ExtendsFloatAdditionalProperties
+
+pub(all) struct ExtendsFloatClient {
+  base_url : String
+}
+pub async fn ExtendsFloatClient::get_type_property_additionalproperties_extendsrecordfloat(Self) -> ExtendsFloatAdditionalProperties
+pub fn ExtendsFloatClient::new(String) -> Self
+pub async fn ExtendsFloatClient::put_type_property_additionalproperties_extendsrecordfloat(Self, ExtendsFloatAdditionalProperties) -> Unit
+
+pub(all) struct ExtendsModelAdditionalProperties {
+  known_prop : ModelForRecord
+}
+pub impl Show for ExtendsModelAdditionalProperties
+pub impl ToJson for ExtendsModelAdditionalProperties
+pub impl @json.FromJson for ExtendsModelAdditionalProperties
+
+pub(all) struct ExtendsModelArrayAdditionalProperties {
+  known_prop : Array[ModelForRecord]
+}
+pub impl Show for ExtendsModelArrayAdditionalProperties
+pub impl ToJson for ExtendsModelArrayAdditionalProperties
+pub impl @json.FromJson for ExtendsModelArrayAdditionalProperties
+
+pub(all) struct ExtendsModelArrayClient {
+  base_url : String
+}
+pub async fn ExtendsModelArrayClient::get_type_property_additionalproperties_extendsrecordmodelarray(Self) -> ExtendsModelArrayAdditionalProperties
+pub fn ExtendsModelArrayClient::new(String) -> Self
+pub async fn ExtendsModelArrayClient::put_type_property_additionalproperties_extendsrecordmodelarray(Self, ExtendsModelArrayAdditionalProperties) -> Unit
+
+pub(all) struct ExtendsModelClient {
+  base_url : String
+}
+pub async fn ExtendsModelClient::get_type_property_additionalproperties_extendsrecordmodel(Self) -> ExtendsModelAdditionalProperties
+pub fn ExtendsModelClient::new(String) -> Self
+pub async fn ExtendsModelClient::put_type_property_additionalproperties_extendsrecordmodel(Self, ExtendsModelAdditionalProperties) -> Unit
+
+pub(all) struct ExtendsStringAdditionalProperties {
+  name : String
+}
+pub impl Show for ExtendsStringAdditionalProperties
+pub impl ToJson for ExtendsStringAdditionalProperties
+pub impl @json.FromJson for ExtendsStringAdditionalProperties
+
+pub(all) struct ExtendsStringClient {
+  base_url : String
+}
+pub async fn ExtendsStringClient::get_type_property_additionalproperties_extendsrecordstring(Self) -> ExtendsStringAdditionalProperties
+pub fn ExtendsStringClient::new(String) -> Self
+pub async fn ExtendsStringClient::put_type_property_additionalproperties_extendsrecordstring(Self, ExtendsStringAdditionalProperties) -> Unit
+
+pub(all) struct ExtendsUnknownAdditionalProperties {
+  name : String
+}
+pub impl Show for ExtendsUnknownAdditionalProperties
+pub impl ToJson for ExtendsUnknownAdditionalProperties
+pub impl @json.FromJson for ExtendsUnknownAdditionalProperties
+
+pub(all) struct ExtendsUnknownAdditionalPropertiesDerived {
+  name : String
+  index : Int
+  age : Double?
+}
+pub impl Show for ExtendsUnknownAdditionalPropertiesDerived
+pub impl ToJson for ExtendsUnknownAdditionalPropertiesDerived
+pub impl @json.FromJson for ExtendsUnknownAdditionalPropertiesDerived
+
+pub(all) struct ExtendsUnknownAdditionalPropertiesDiscriminated {
+  name : String
+  kind : String
+}
+pub impl Show for ExtendsUnknownAdditionalPropertiesDiscriminated
+pub impl ToJson for ExtendsUnknownAdditionalPropertiesDiscriminated
+pub impl @json.FromJson for ExtendsUnknownAdditionalPropertiesDiscriminated
+
+pub(all) struct ExtendsUnknownClient {
+  base_url : String
+}
+pub async fn ExtendsUnknownClient::get_type_property_additionalproperties_extendsrecordunknown(Self) -> ExtendsUnknownAdditionalProperties
+pub fn ExtendsUnknownClient::new(String) -> Self
+pub async fn ExtendsUnknownClient::put_type_property_additionalproperties_extendsrecordunknown(Self, ExtendsUnknownAdditionalProperties) -> Unit
+
+pub(all) struct ExtendsUnknownDerivedClient {
+  base_url : String
+}
+pub async fn ExtendsUnknownDerivedClient::get_type_property_additionalproperties_extendsrecordunknownderived(Self) -> ExtendsUnknownAdditionalPropertiesDerived
+pub fn ExtendsUnknownDerivedClient::new(String) -> Self
+pub async fn ExtendsUnknownDerivedClient::put_type_property_additionalproperties_extendsrecordunknownderived(Self, ExtendsUnknownAdditionalPropertiesDerived) -> Unit
+
+pub(all) struct ExtendsUnknownDiscriminatedClient {
+  base_url : String
+}
+pub async fn ExtendsUnknownDiscriminatedClient::get_type_property_additionalproperties_extendsunknowndiscriminated(Self) -> ExtendsUnknownAdditionalPropertiesDiscriminated
+pub fn ExtendsUnknownDiscriminatedClient::new(String) -> Self
+pub async fn ExtendsUnknownDiscriminatedClient::put_type_property_additionalproperties_extendsunknowndiscriminated(Self, ExtendsUnknownAdditionalPropertiesDiscriminated) -> Unit
+
+pub(all) struct IsFloatClient {
+  base_url : String
+}
+pub async fn IsFloatClient::get_type_property_additionalproperties_isrecordfloat(Self) -> Map[String, Double]
+pub fn IsFloatClient::new(String) -> Self
+pub async fn IsFloatClient::put_type_property_additionalproperties_isrecordfloat(Self, Map[String, Double]) -> Unit
+
+pub(all) struct IsModelArrayClient {
+  base_url : String
+}
+pub async fn IsModelArrayClient::get_type_property_additionalproperties_isrecordmodelarray(Self) -> Map[String, Array[ModelForRecord]]
+pub fn IsModelArrayClient::new(String) -> Self
+pub async fn IsModelArrayClient::put_type_property_additionalproperties_isrecordmodelarray(Self, Map[String, Array[ModelForRecord]]) -> Unit
+
+pub(all) struct IsModelClient {
+  base_url : String
+}
+pub async fn IsModelClient::get_type_property_additionalproperties_isrecordmodel(Self) -> Map[String, ModelForRecord]
+pub fn IsModelClient::new(String) -> Self
+pub async fn IsModelClient::put_type_property_additionalproperties_isrecordmodel(Self, Map[String, ModelForRecord]) -> Unit
+
+pub(all) struct IsStringClient {
+  base_url : String
+}
+pub async fn IsStringClient::get_type_property_additionalproperties_isrecordstring(Self) -> Map[String, String]
+pub fn IsStringClient::new(String) -> Self
+pub async fn IsStringClient::put_type_property_additionalproperties_isrecordstring(Self, Map[String, String]) -> Unit
+
+pub(all) struct IsUnknownAdditionalPropertiesDerived {
+  name : String
+  index : Int
+  age : Double?
+}
+pub impl Show for IsUnknownAdditionalPropertiesDerived
+pub impl ToJson for IsUnknownAdditionalPropertiesDerived
+pub impl @json.FromJson for IsUnknownAdditionalPropertiesDerived
+
+pub(all) struct IsUnknownClient {
+  base_url : String
+}
+pub async fn IsUnknownClient::get_type_property_additionalproperties_isrecordunknown(Self) -> Map[String, Json]
+pub fn IsUnknownClient::new(String) -> Self
+pub async fn IsUnknownClient::put_type_property_additionalproperties_isrecordunknown(Self, Map[String, Json]) -> Unit
+
+pub(all) struct IsUnknownDerivedClient {
+  base_url : String
+}
+pub async fn IsUnknownDerivedClient::get_type_property_additionalproperties_isrecordunknownderived(Self) -> IsUnknownAdditionalPropertiesDerived
+pub fn IsUnknownDerivedClient::new(String) -> Self
+pub async fn IsUnknownDerivedClient::put_type_property_additionalproperties_isrecordunknownderived(Self, IsUnknownAdditionalPropertiesDerived) -> Unit
+
+pub(all) struct IsUnknownDiscriminatedClient {
+  base_url : String
+}
+pub async fn IsUnknownDiscriminatedClient::get_type_property_additionalproperties_isunknowndiscriminated(Self) -> Map[String, Json]
+pub fn IsUnknownDiscriminatedClient::new(String) -> Self
+pub async fn IsUnknownDiscriminatedClient::put_type_property_additionalproperties_isunknowndiscriminated(Self, Map[String, Json]) -> Unit
+
+pub(all) struct ModelForRecord {
+  state : String
+}
+pub impl Show for ModelForRecord
+pub impl ToJson for ModelForRecord
+pub impl @json.FromJson for ModelForRecord
+
+pub(all) struct MultipleSpreadClient {
+  base_url : String
+}
+pub async fn MultipleSpreadClient::get_type_property_additionalproperties_multiplespreadrecord(Self) -> Map[String, Union1]
+pub fn MultipleSpreadClient::new(String) -> Self
+pub async fn MultipleSpreadClient::put_type_property_additionalproperties_multiplespreadrecord(Self, Map[String, Union1]) -> Unit
+
+pub(all) struct SpreadDifferentFloatClient {
+  base_url : String
+}
+pub async fn SpreadDifferentFloatClient::get_type_property_additionalproperties_spreaddifferentrecordfloat(Self) -> Map[String, Double]
+pub fn SpreadDifferentFloatClient::new(String) -> Self
+pub async fn SpreadDifferentFloatClient::put_type_property_additionalproperties_spreaddifferentrecordfloat(Self, Map[String, Double]) -> Unit
+
+pub(all) struct SpreadDifferentModelArrayClient {
+  base_url : String
+}
+pub async fn SpreadDifferentModelArrayClient::get_type_property_additionalproperties_spreaddifferentrecordmodelarray(Self) -> Map[String, Array[ModelForRecord]]
+pub fn SpreadDifferentModelArrayClient::new(String) -> Self
+pub async fn SpreadDifferentModelArrayClient::put_type_property_additionalproperties_spreaddifferentrecordmodelarray(Self, Map[String, Array[ModelForRecord]]) -> Unit
+
+pub(all) struct SpreadDifferentModelClient {
+  base_url : String
+}
+pub async fn SpreadDifferentModelClient::get_type_property_additionalproperties_spreaddifferentrecordmodel(Self) -> Map[String, ModelForRecord]
+pub fn SpreadDifferentModelClient::new(String) -> Self
+pub async fn SpreadDifferentModelClient::put_type_property_additionalproperties_spreaddifferentrecordmodel(Self, Map[String, ModelForRecord]) -> Unit
+
+pub(all) struct SpreadDifferentStringClient {
+  base_url : String
+}
+pub async fn SpreadDifferentStringClient::get_type_property_additionalproperties_spreaddifferentrecordstring(Self) -> Map[String, String]
+pub fn SpreadDifferentStringClient::new(String) -> Self
+pub async fn SpreadDifferentStringClient::put_type_property_additionalproperties_spreaddifferentrecordstring(Self, Map[String, String]) -> Unit
+
+pub(all) struct SpreadFloatClient {
+  base_url : String
+}
+pub async fn SpreadFloatClient::get_type_property_additionalproperties_spreadrecordfloat(Self) -> Map[String, Double]
+pub fn SpreadFloatClient::new(String) -> Self
+pub async fn SpreadFloatClient::put_type_property_additionalproperties_spreadrecordfloat(Self, Map[String, Double]) -> Unit
+
+pub(all) struct SpreadModelArrayClient {
+  base_url : String
+}
+pub async fn SpreadModelArrayClient::get_type_property_additionalproperties_spreadrecordmodelarray(Self) -> Map[String, Array[ModelForRecord]]
+pub fn SpreadModelArrayClient::new(String) -> Self
+pub async fn SpreadModelArrayClient::put_type_property_additionalproperties_spreadrecordmodelarray(Self, Map[String, Array[ModelForRecord]]) -> Unit
+
+pub(all) struct SpreadModelClient {
+  base_url : String
+}
+pub async fn SpreadModelClient::get_type_property_additionalproperties_spreadrecordmodel(Self) -> Map[String, ModelForRecord]
+pub fn SpreadModelClient::new(String) -> Self
+pub async fn SpreadModelClient::put_type_property_additionalproperties_spreadrecordmodel(Self, Map[String, ModelForRecord]) -> Unit
+
+pub(all) struct SpreadRecordNonDiscriminatedUnion2Client {
+  base_url : String
+}
+pub async fn SpreadRecordNonDiscriminatedUnion2Client::get_type_property_additionalproperties_spreadrecordnondiscriminatedunion2(Self) -> Map[String, Union3]
+pub fn SpreadRecordNonDiscriminatedUnion2Client::new(String) -> Self
+pub async fn SpreadRecordNonDiscriminatedUnion2Client::put_type_property_additionalproperties_spreadrecordnondiscriminatedunion2(Self, Map[String, Union3]) -> Unit
+
+pub(all) struct SpreadRecordNonDiscriminatedUnion3Client {
+  base_url : String
+}
+pub async fn SpreadRecordNonDiscriminatedUnion3Client::get_type_property_additionalproperties_spreadrecordnondiscriminatedunion3(Self) -> Map[String, Union4]
+pub fn SpreadRecordNonDiscriminatedUnion3Client::new(String) -> Self
+pub async fn SpreadRecordNonDiscriminatedUnion3Client::put_type_property_additionalproperties_spreadrecordnondiscriminatedunion3(Self, Map[String, Union4]) -> Unit
+
+pub(all) struct SpreadRecordNonDiscriminatedUnionClient {
+  base_url : String
+}
+pub async fn SpreadRecordNonDiscriminatedUnionClient::get_type_property_additionalproperties_spreadrecordnondiscriminatedunion(Self) -> Map[String, Union2]
+pub fn SpreadRecordNonDiscriminatedUnionClient::new(String) -> Self
+pub async fn SpreadRecordNonDiscriminatedUnionClient::put_type_property_additionalproperties_spreadrecordnondiscriminatedunion(Self, Map[String, Union2]) -> Unit
+
+pub(all) struct SpreadRecordUnionClient {
+  base_url : String
+}
+pub async fn SpreadRecordUnionClient::get_type_property_additionalproperties_spreadrecordunion(Self) -> Map[String, Union0]
+pub fn SpreadRecordUnionClient::new(String) -> Self
+pub async fn SpreadRecordUnionClient::put_type_property_additionalproperties_spreadrecordunion(Self, Map[String, Union0]) -> Unit
+
+pub(all) struct SpreadStringClient {
+  base_url : String
+}
+pub async fn SpreadStringClient::get_type_property_additionalproperties_spreadrecordstring(Self) -> Map[String, String]
+pub fn SpreadStringClient::new(String) -> Self
+pub async fn SpreadStringClient::put_type_property_additionalproperties_spreadrecordstring(Self, Map[String, String]) -> Unit
+
+pub(all) enum Union0 {
+  String(String)
+  Float32(Double)
+}
+pub impl Show for Union0
+pub impl ToJson for Union0
+pub impl @json.FromJson for Union0
+
+pub(all) enum Union1 {
+  String(String)
+  Float32(Double)
+}
+pub impl Show for Union1
+pub impl ToJson for Union1
+pub impl @json.FromJson for Union1
+
+pub(all) enum Union2 {
+  WidgetData0(WidgetData0)
+  WidgetData1(WidgetData1)
+}
+pub impl Show for Union2
+pub impl ToJson for Union2
+pub impl @json.FromJson for Union2
+
+pub(all) enum Union3 {
+  WidgetData2(WidgetData2)
+  WidgetData1(WidgetData1)
+}
+pub impl Show for Union3
+pub impl ToJson for Union3
+pub impl @json.FromJson for Union3
+
+pub(all) enum Union4 {
+  Array(Array[WidgetData2])
+  WidgetData1(WidgetData1)
+}
+pub impl Show for Union4
+pub impl ToJson for Union4
+pub impl @json.FromJson for Union4
+
+pub(all) struct WidgetData0 {
+  kind : String
+  foo_prop : String
+}
+pub impl Show for WidgetData0
+pub impl ToJson for WidgetData0
+pub impl @json.FromJson for WidgetData0
+
+pub(all) struct WidgetData1 {
+  kind : String
+  start : String
+  end : String?
+}
+pub impl Show for WidgetData1
+pub impl ToJson for WidgetData1
+pub impl @json.FromJson for WidgetData1
+
+pub(all) struct WidgetData2 {
+  kind : String
+  start : String
+}
+pub impl Show for WidgetData2
+pub impl ToJson for WidgetData2
+pub impl @json.FromJson for WidgetData2
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

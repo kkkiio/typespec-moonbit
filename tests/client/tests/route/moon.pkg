@@ -1,0 +1,4 @@
+import "test" {
+  "moonbitlang/async",
+  "kkkiio/typespec-tests/client/generated/routes",
+}

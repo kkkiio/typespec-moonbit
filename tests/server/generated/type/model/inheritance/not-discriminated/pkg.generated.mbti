@@ -1,0 +1,57 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/server/generated/type/model/inheritance/not-discriminated"
+
+import {
+  "moonbitlang/async",
+  "moonbitlang/async/http",
+  "moonbitlang/async/io",
+  "moonbitlang/core/json",
+}
+
+// Values
+pub fn create_dispatch(async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+
+pub fn[H0 : NotDiscriminatedHandler] create_router(not_discriminated_handler~ : H0, group~ : @async.TaskGroup[Unit]) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
+
+pub fn match_route(@http.RequestMethod, String) -> MatchRouteResult
+
+// Errors
+
+// Types and methods
+pub(all) enum MatchRouteResult {
+  NotMatched
+  MethodNotAllowed
+  Matched(RouteId)
+}
+
+pub(all) enum RouteId {
+  NotDiscriminatedGetValid
+  NotDiscriminatedPutValid
+  NotDiscriminatedPostValid
+}
+
+pub(all) enum RouteMatch {
+  Handled
+  NotMatched
+  MethodNotAllowed
+}
+
+pub(all) struct Siamese {
+  name : String
+  age : Int
+  smart : Bool
+}
+pub impl Show for Siamese
+pub impl ToJson for Siamese
+pub impl @json.FromJson for Siamese
+
+// Type aliases
+pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
+
+// Traits
+pub(open) trait NotDiscriminatedHandler {
+  async get_valid(Self, group~ : @async.TaskGroup[Unit]) -> Siamese
+  async put_valid(Self, group~ : @async.TaskGroup[Unit], Siamese) -> Siamese
+  async post_valid(Self, group~ : @async.TaskGroup[Unit], Siamese) -> Unit
+}
+

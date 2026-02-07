@@ -1,0 +1,50 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/model/visibility"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct ReadOnlyModel {
+  optional_nullable_int_list : @typespec-client-runtime.Nullable[Array[Int]]?
+  optional_string_record : Map[String, String]?
+}
+pub impl Show for ReadOnlyModel
+pub impl ToJson for ReadOnlyModel
+pub impl @json.FromJson for ReadOnlyModel
+
+pub(all) struct VisibilityClient {
+  base_url : String
+}
+pub async fn VisibilityClient::delete_type_model_visibility(Self, VisibilityModel) -> Unit
+pub async fn VisibilityClient::get_type_model_visibility__queryprop_(Self, Int, VisibilityModel) -> VisibilityModel
+pub async fn VisibilityClient::head_type_model_visibility__queryprop_(Self, Int, VisibilityModel) -> Unit
+pub fn VisibilityClient::new(String) -> Self
+pub async fn VisibilityClient::patch_type_model_visibility(Self, VisibilityModel) -> Unit
+pub async fn VisibilityClient::post_type_model_visibility(Self, VisibilityModel) -> Unit
+pub async fn VisibilityClient::put_type_model_visibility(Self, VisibilityModel) -> Unit
+pub async fn VisibilityClient::put_type_model_visibility_readonlyroundtrip(Self, ReadOnlyModel) -> ReadOnlyModel
+
+pub(all) struct VisibilityModel {
+  read_prop : String
+  query_prop : Int
+  create_prop : Array[String]
+  update_prop : Array[Int]
+  delete_prop : Bool
+  none_prop : String
+}
+pub impl Show for VisibilityModel
+pub impl ToJson for VisibilityModel
+pub impl @json.FromJson for VisibilityModel
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

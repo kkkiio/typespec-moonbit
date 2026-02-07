@@ -1,0 +1,36 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/model/inheritance/nested-discriminator"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct Fish {
+  age : Int
+}
+pub impl Show for Fish
+pub impl ToJson for Fish
+pub impl @json.FromJson for Fish
+
+pub(all) struct NestedDiscriminatorClient {
+  base_url : String
+}
+pub async fn NestedDiscriminatorClient::get_type_model_inheritance_nested_discriminator_missingdiscriminator(Self) -> Fish
+pub async fn NestedDiscriminatorClient::get_type_model_inheritance_nested_discriminator_model(Self) -> Fish
+pub async fn NestedDiscriminatorClient::get_type_model_inheritance_nested_discriminator_recursivemodel(Self) -> Fish
+pub async fn NestedDiscriminatorClient::get_type_model_inheritance_nested_discriminator_wrongdiscriminator(Self) -> Fish
+pub fn NestedDiscriminatorClient::new(String) -> Self
+pub async fn NestedDiscriminatorClient::put_type_model_inheritance_nested_discriminator_model(Self, Fish) -> Unit
+pub async fn NestedDiscriminatorClient::put_type_model_inheritance_nested_discriminator_recursivemodel(Self, Fish) -> Unit
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

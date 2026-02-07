@@ -1,0 +1,25 @@
+import {
+  "moonbitlang/async" as @async,
+  "moonbitlang/async/http" as @http,
+  "moonbitlang/async/io" as @io,
+  "moonbitlang/async/process" as @process,
+  "moonbitlang/async/socket" as @socket,
+  "moonbitlang/async/os_error",
+  "moonbitlang/async/stdio",
+}
+
+import "test" {
+  "moonbitlang/core/bench",
+  "moonbitlang/core/json",
+  "kkkiio/typespec-server-runtime" as @runtime,
+  "kkkiio/typespec-tests/server/generated/parameters/basic" as @parameters_basic,
+  "kkkiio/typespec-tests/server/generated/parameters/body-optionality" as @parameters_body_optionality,
+  "kkkiio/typespec-tests/server/generated/parameters/spread" as @parameters_spread,
+  "kkkiio/typespec-tests/server/generated/events/dotted-name" as @events_dotted_name,
+  "kkkiio/typespec-tests/server/generated/type/array" as @type_array,
+  "kkkiio/typespec-tests/server/generated/type/dictionary" as @type_dictionary,
+  "kkkiio/typespec-tests/server/generated/type/enum/extensible" as @type_enum_extensible,
+  "kkkiio/typespec-tests/server/generated/type/model/empty" as @type_model_empty,
+  "kkkiio/typespec-tests/server/generated/type/model/inheritance/not-discriminated" as @type_model_inheritance_not_discriminated,
+  "kkkiio/typespec-tests/server/generated/type/model/inheritance/recursive" as @type_model_inheritance_recursive,
+}

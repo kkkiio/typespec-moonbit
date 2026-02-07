@@ -82,7 +82,7 @@ pub fn EmitterOptions::module_name(self : EmitterOptions) -> String {
 }
 
 ///|
-/// 是否允许覆盖 moon.pkg.json。
+/// 是否允许覆盖 moon.pkg。
 pub fn EmitterOptions::overwrite_moon_pkg(self : EmitterOptions) -> Bool {
   self.overwrite_moon_pkg
 }
