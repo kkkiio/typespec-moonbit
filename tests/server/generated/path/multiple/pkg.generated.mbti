@@ -1,0 +1,45 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/server/generated/path/multiple"
+
+import {
+  "moonbitlang/async",
+  "moonbitlang/async/http",
+  "moonbitlang/async/io",
+}
+
+// Values
+pub fn create_dispatch(async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit
+
+pub fn[H0 : MultipleHandler] create_router(multiple_handler~ : H0, group~ : @async.TaskGroup[Unit]) -> async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
+
+pub fn match_route(@http.RequestMethod, String) -> MatchRouteResult
+
+// Errors
+
+// Types and methods
+pub(all) enum MatchRouteResult {
+  NotMatched
+  MethodNotAllowed
+  Matched(RouteId)
+}
+
+pub(all) enum RouteId {
+  MultipleNoOperationParams
+  MultipleWithOperationPathParam(Array[String])
+}
+
+pub(all) enum RouteMatch {
+  Handled
+  NotMatched
+  MethodNotAllowed
+}
+
+// Type aliases
+pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
+
+// Traits
+pub(open) trait MultipleHandler {
+  async no_operation_params(Self, group~ : @async.TaskGroup[Unit]) -> Unit
+  async with_operation_path_param(Self, group~ : @async.TaskGroup[Unit], String) -> Unit
+}
+

@@ -1,0 +1,76 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/versioning/removed"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct InterfaceV1Client {
+  base_url : String
+}
+pub fn InterfaceV1Client::new(String) -> Self
+pub async fn InterfaceV1Client::post_versioning_removed_api_version__version__interface_v1_v1(Self, String, ModelV1) -> ModelV1
+
+pub(all) struct ModelV1 {
+  prop : String
+  enum_prop : Json
+  union_prop : UnionV1
+}
+pub impl Show for ModelV1
+pub impl ToJson for ModelV1
+pub impl @json.FromJson for ModelV1
+
+pub(all) struct ModelV2 {
+  prop : String
+  removed_prop : String
+  enum_prop : Json
+  union_prop : UnionV2
+}
+pub impl Show for ModelV2
+pub impl ToJson for ModelV2
+pub impl @json.FromJson for ModelV2
+
+pub(all) struct ModelV3 {
+  id : String
+  enum_prop : Json
+}
+pub impl Show for ModelV3
+pub impl ToJson for ModelV3
+pub impl @json.FromJson for ModelV3
+
+pub(all) struct RemovedClient {
+  base_url : String
+}
+pub fn RemovedClient::new(String) -> Self
+pub async fn RemovedClient::post_versioning_removed_api_version__version__v1(Self, String, ModelV1) -> ModelV1
+pub async fn RemovedClient::post_versioning_removed_api_version__version__v2__param_(Self, String, String, ModelV2) -> ModelV2
+pub async fn RemovedClient::post_versioning_removed_api_version__version__v3(Self, String, ModelV3) -> ModelV3
+
+pub(all) enum UnionV1 {
+  String(String)
+  Int32(Int)
+}
+pub impl Show for UnionV1
+pub impl ToJson for UnionV1
+pub impl @json.FromJson for UnionV1
+
+pub(all) enum UnionV2 {
+  String(String)
+  Float32(Double)
+  V1Scalar(Json)
+}
+pub impl Show for UnionV2
+pub impl ToJson for UnionV2
+pub impl @json.FromJson for UnionV2
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

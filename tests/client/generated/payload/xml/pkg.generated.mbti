@@ -1,0 +1,196 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/payload/xml"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct ModelWithArrayOfModel {
+  items : Array[SimpleModel]
+}
+pub impl Show for ModelWithArrayOfModel
+pub impl ToJson for ModelWithArrayOfModel
+pub impl @json.FromJson for ModelWithArrayOfModel
+
+pub(all) struct ModelWithArrayOfModelValueClient {
+  base_url : String
+}
+pub async fn ModelWithArrayOfModelValueClient::get_payload_xml_modelwitharrayofmodel(Self) -> ModelWithArrayOfModel
+pub fn ModelWithArrayOfModelValueClient::new(String) -> Self
+pub async fn ModelWithArrayOfModelValueClient::put_payload_xml_modelwitharrayofmodel(Self, ModelWithArrayOfModel) -> Unit
+
+pub(all) struct ModelWithAttributes {
+  id_1 : Int
+  id_2 : String
+  enabled : Bool
+}
+pub impl Show for ModelWithAttributes
+pub impl ToJson for ModelWithAttributes
+pub impl @json.FromJson for ModelWithAttributes
+
+pub(all) struct ModelWithAttributesValueClient {
+  base_url : String
+}
+pub async fn ModelWithAttributesValueClient::get_payload_xml_modelwithattributes(Self) -> ModelWithAttributes
+pub fn ModelWithAttributesValueClient::new(String) -> Self
+pub async fn ModelWithAttributesValueClient::put_payload_xml_modelwithattributes(Self, ModelWithAttributes) -> Unit
+
+pub(all) struct ModelWithDictionary {
+  metadata : Map[String, String]
+}
+pub impl Show for ModelWithDictionary
+pub impl ToJson for ModelWithDictionary
+pub impl @json.FromJson for ModelWithDictionary
+
+pub(all) struct ModelWithDictionaryValueClient {
+  base_url : String
+}
+pub async fn ModelWithDictionaryValueClient::get_payload_xml_modelwithdictionary(Self) -> ModelWithDictionary
+pub fn ModelWithDictionaryValueClient::new(String) -> Self
+pub async fn ModelWithDictionaryValueClient::put_payload_xml_modelwithdictionary(Self, ModelWithDictionary) -> Unit
+
+pub(all) struct ModelWithEmptyArray {
+  items : Array[SimpleModel]
+}
+pub impl Show for ModelWithEmptyArray
+pub impl ToJson for ModelWithEmptyArray
+pub impl @json.FromJson for ModelWithEmptyArray
+
+pub(all) struct ModelWithEmptyArrayValueClient {
+  base_url : String
+}
+pub async fn ModelWithEmptyArrayValueClient::get_payload_xml_modelwithemptyarray(Self) -> ModelWithEmptyArray
+pub fn ModelWithEmptyArrayValueClient::new(String) -> Self
+pub async fn ModelWithEmptyArrayValueClient::put_payload_xml_modelwithemptyarray(Self, ModelWithEmptyArray) -> Unit
+
+pub(all) struct ModelWithEncodedNames {
+  model_data : SimpleModel
+  colors : Array[String]
+}
+pub impl Show for ModelWithEncodedNames
+pub impl ToJson for ModelWithEncodedNames
+pub impl @json.FromJson for ModelWithEncodedNames
+
+pub(all) struct ModelWithEncodedNamesValueClient {
+  base_url : String
+}
+pub async fn ModelWithEncodedNamesValueClient::get_payload_xml_modelwithencodednames(Self) -> ModelWithEncodedNames
+pub fn ModelWithEncodedNamesValueClient::new(String) -> Self
+pub async fn ModelWithEncodedNamesValueClient::put_payload_xml_modelwithencodednames(Self, ModelWithEncodedNames) -> Unit
+
+pub(all) struct ModelWithOptionalField {
+  item : String
+  value : Int?
+}
+pub impl Show for ModelWithOptionalField
+pub impl ToJson for ModelWithOptionalField
+pub impl @json.FromJson for ModelWithOptionalField
+
+pub(all) struct ModelWithOptionalFieldValueClient {
+  base_url : String
+}
+pub async fn ModelWithOptionalFieldValueClient::get_payload_xml_modelwithoptionalfield(Self) -> ModelWithOptionalField
+pub fn ModelWithOptionalFieldValueClient::new(String) -> Self
+pub async fn ModelWithOptionalFieldValueClient::put_payload_xml_modelwithoptionalfield(Self, ModelWithOptionalField) -> Unit
+
+pub(all) struct ModelWithRenamedArrays {
+  colors : Array[String]
+  counts : Array[Int]
+}
+pub impl Show for ModelWithRenamedArrays
+pub impl ToJson for ModelWithRenamedArrays
+pub impl @json.FromJson for ModelWithRenamedArrays
+
+pub(all) struct ModelWithRenamedArraysValueClient {
+  base_url : String
+}
+pub async fn ModelWithRenamedArraysValueClient::get_payload_xml_modelwithrenamedarrays(Self) -> ModelWithRenamedArrays
+pub fn ModelWithRenamedArraysValueClient::new(String) -> Self
+pub async fn ModelWithRenamedArraysValueClient::put_payload_xml_modelwithrenamedarrays(Self, ModelWithRenamedArrays) -> Unit
+
+pub(all) struct ModelWithRenamedFields {
+  input_data : SimpleModel
+  output_data : SimpleModel
+}
+pub impl Show for ModelWithRenamedFields
+pub impl ToJson for ModelWithRenamedFields
+pub impl @json.FromJson for ModelWithRenamedFields
+
+pub(all) struct ModelWithRenamedFieldsValueClient {
+  base_url : String
+}
+pub async fn ModelWithRenamedFieldsValueClient::get_payload_xml_modelwithrenamedfields(Self) -> ModelWithRenamedFields
+pub fn ModelWithRenamedFieldsValueClient::new(String) -> Self
+pub async fn ModelWithRenamedFieldsValueClient::put_payload_xml_modelwithrenamedfields(Self, ModelWithRenamedFields) -> Unit
+
+pub(all) struct ModelWithSimpleArrays {
+  colors : Array[String]
+  counts : Array[Int]
+}
+pub impl Show for ModelWithSimpleArrays
+pub impl ToJson for ModelWithSimpleArrays
+pub impl @json.FromJson for ModelWithSimpleArrays
+
+pub(all) struct ModelWithSimpleArraysValueClient {
+  base_url : String
+}
+pub async fn ModelWithSimpleArraysValueClient::get_payload_xml_modelwithsimplearrays(Self) -> ModelWithSimpleArrays
+pub fn ModelWithSimpleArraysValueClient::new(String) -> Self
+pub async fn ModelWithSimpleArraysValueClient::put_payload_xml_modelwithsimplearrays(Self, ModelWithSimpleArrays) -> Unit
+
+pub(all) struct ModelWithText {
+  language : String
+  content : String
+}
+pub impl Show for ModelWithText
+pub impl ToJson for ModelWithText
+pub impl @json.FromJson for ModelWithText
+
+pub(all) struct ModelWithTextValueClient {
+  base_url : String
+}
+pub async fn ModelWithTextValueClient::get_payload_xml_modelwithtext(Self) -> ModelWithText
+pub fn ModelWithTextValueClient::new(String) -> Self
+pub async fn ModelWithTextValueClient::put_payload_xml_modelwithtext(Self, ModelWithText) -> Unit
+
+pub(all) struct ModelWithUnwrappedArray {
+  colors : Array[String]
+  counts : Array[Int]
+}
+pub impl Show for ModelWithUnwrappedArray
+pub impl ToJson for ModelWithUnwrappedArray
+pub impl @json.FromJson for ModelWithUnwrappedArray
+
+pub(all) struct ModelWithUnwrappedArrayValueClient {
+  base_url : String
+}
+pub async fn ModelWithUnwrappedArrayValueClient::get_payload_xml_modelwithunwrappedarray(Self) -> ModelWithUnwrappedArray
+pub fn ModelWithUnwrappedArrayValueClient::new(String) -> Self
+pub async fn ModelWithUnwrappedArrayValueClient::put_payload_xml_modelwithunwrappedarray(Self, ModelWithUnwrappedArray) -> Unit
+
+pub(all) struct SimpleModel {
+  name : String
+  age : Int
+}
+pub impl Show for SimpleModel
+pub impl ToJson for SimpleModel
+pub impl @json.FromJson for SimpleModel
+
+pub(all) struct SimpleModelValueClient {
+  base_url : String
+}
+pub async fn SimpleModelValueClient::get_payload_xml_simplemodel(Self) -> SimpleModel
+pub fn SimpleModelValueClient::new(String) -> Self
+pub async fn SimpleModelValueClient::put_payload_xml_simplemodel(Self, SimpleModel) -> Unit
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

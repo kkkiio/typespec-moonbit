@@ -1,0 +1,275 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/property/optionality"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct BooleanLiteralClient {
+  base_url : String
+}
+pub async fn BooleanLiteralClient::get_type_property_optional_boolean_literal_all(Self) -> BooleanLiteralProperty
+pub async fn BooleanLiteralClient::get_type_property_optional_boolean_literal_default(Self) -> BooleanLiteralProperty
+pub fn BooleanLiteralClient::new(String) -> Self
+pub async fn BooleanLiteralClient::put_type_property_optional_boolean_literal_all(Self, BooleanLiteralProperty) -> Unit
+pub async fn BooleanLiteralClient::put_type_property_optional_boolean_literal_default(Self, BooleanLiteralProperty) -> Unit
+
+pub(all) struct BooleanLiteralProperty {
+  property : Bool?
+}
+pub impl Show for BooleanLiteralProperty
+pub impl ToJson for BooleanLiteralProperty
+pub impl @json.FromJson for BooleanLiteralProperty
+
+pub(all) struct BytesClient {
+  base_url : String
+}
+pub async fn BytesClient::get_type_property_optional_bytes_all(Self) -> BytesProperty
+pub async fn BytesClient::get_type_property_optional_bytes_default(Self) -> BytesProperty
+pub fn BytesClient::new(String) -> Self
+pub async fn BytesClient::put_type_property_optional_bytes_all(Self, BytesProperty) -> Unit
+pub async fn BytesClient::put_type_property_optional_bytes_default(Self, BytesProperty) -> Unit
+
+pub(all) struct BytesProperty {
+  property : Bytes?
+}
+pub impl Show for BytesProperty
+pub impl ToJson for BytesProperty
+pub impl @json.FromJson for BytesProperty
+
+pub(all) struct CollectionsByteClient {
+  base_url : String
+}
+pub async fn CollectionsByteClient::get_type_property_optional_collections_bytes_all(Self) -> CollectionsByteProperty
+pub async fn CollectionsByteClient::get_type_property_optional_collections_bytes_default(Self) -> CollectionsByteProperty
+pub fn CollectionsByteClient::new(String) -> Self
+pub async fn CollectionsByteClient::put_type_property_optional_collections_bytes_all(Self, CollectionsByteProperty) -> Unit
+pub async fn CollectionsByteClient::put_type_property_optional_collections_bytes_default(Self, CollectionsByteProperty) -> Unit
+
+pub(all) struct CollectionsByteProperty {
+  property : Array[Bytes]?
+}
+pub impl Show for CollectionsByteProperty
+pub impl ToJson for CollectionsByteProperty
+pub impl @json.FromJson for CollectionsByteProperty
+
+pub(all) struct CollectionsModelClient {
+  base_url : String
+}
+pub async fn CollectionsModelClient::get_type_property_optional_collections_model_all(Self) -> CollectionsModelProperty
+pub async fn CollectionsModelClient::get_type_property_optional_collections_model_default(Self) -> CollectionsModelProperty
+pub fn CollectionsModelClient::new(String) -> Self
+pub async fn CollectionsModelClient::put_type_property_optional_collections_model_all(Self, CollectionsModelProperty) -> Unit
+pub async fn CollectionsModelClient::put_type_property_optional_collections_model_default(Self, CollectionsModelProperty) -> Unit
+
+pub(all) struct CollectionsModelProperty {
+  property : Array[StringProperty]?
+}
+pub impl Show for CollectionsModelProperty
+pub impl ToJson for CollectionsModelProperty
+pub impl @json.FromJson for CollectionsModelProperty
+
+pub(all) struct DatetimeClient {
+  base_url : String
+}
+pub async fn DatetimeClient::get_type_property_optional_datetime_all(Self) -> DatetimeProperty
+pub async fn DatetimeClient::get_type_property_optional_datetime_default(Self) -> DatetimeProperty
+pub fn DatetimeClient::new(String) -> Self
+pub async fn DatetimeClient::put_type_property_optional_datetime_all(Self, DatetimeProperty) -> Unit
+pub async fn DatetimeClient::put_type_property_optional_datetime_default(Self, DatetimeProperty) -> Unit
+
+pub(all) struct DatetimeProperty {
+  property : String?
+}
+pub impl Show for DatetimeProperty
+pub impl ToJson for DatetimeProperty
+pub impl @json.FromJson for DatetimeProperty
+
+pub(all) struct DurationClient {
+  base_url : String
+}
+pub async fn DurationClient::get_type_property_optional_duration_all(Self) -> DurationProperty
+pub async fn DurationClient::get_type_property_optional_duration_default(Self) -> DurationProperty
+pub fn DurationClient::new(String) -> Self
+pub async fn DurationClient::put_type_property_optional_duration_all(Self, DurationProperty) -> Unit
+pub async fn DurationClient::put_type_property_optional_duration_default(Self, DurationProperty) -> Unit
+
+pub(all) struct DurationProperty {
+  property : String?
+}
+pub impl Show for DurationProperty
+pub impl ToJson for DurationProperty
+pub impl @json.FromJson for DurationProperty
+
+pub(all) struct FloatLiteralClient {
+  base_url : String
+}
+pub async fn FloatLiteralClient::get_type_property_optional_float_literal_all(Self) -> FloatLiteralProperty
+pub async fn FloatLiteralClient::get_type_property_optional_float_literal_default(Self) -> FloatLiteralProperty
+pub fn FloatLiteralClient::new(String) -> Self
+pub async fn FloatLiteralClient::put_type_property_optional_float_literal_all(Self, FloatLiteralProperty) -> Unit
+pub async fn FloatLiteralClient::put_type_property_optional_float_literal_default(Self, FloatLiteralProperty) -> Unit
+
+pub(all) struct FloatLiteralProperty {
+  property : Double?
+}
+pub impl Show for FloatLiteralProperty
+pub impl ToJson for FloatLiteralProperty
+pub impl @json.FromJson for FloatLiteralProperty
+
+pub(all) struct IntLiteralClient {
+  base_url : String
+}
+pub async fn IntLiteralClient::get_type_property_optional_int_literal_all(Self) -> IntLiteralProperty
+pub async fn IntLiteralClient::get_type_property_optional_int_literal_default(Self) -> IntLiteralProperty
+pub fn IntLiteralClient::new(String) -> Self
+pub async fn IntLiteralClient::put_type_property_optional_int_literal_all(Self, IntLiteralProperty) -> Unit
+pub async fn IntLiteralClient::put_type_property_optional_int_literal_default(Self, IntLiteralProperty) -> Unit
+
+pub(all) struct IntLiteralProperty {
+  property : Double?
+}
+pub impl Show for IntLiteralProperty
+pub impl ToJson for IntLiteralProperty
+pub impl @json.FromJson for IntLiteralProperty
+
+pub(all) struct PlainDateClient {
+  base_url : String
+}
+pub async fn PlainDateClient::get_type_property_optional_plaindate_all(Self) -> PlainDateProperty
+pub async fn PlainDateClient::get_type_property_optional_plaindate_default(Self) -> PlainDateProperty
+pub fn PlainDateClient::new(String) -> Self
+pub async fn PlainDateClient::put_type_property_optional_plaindate_all(Self, PlainDateProperty) -> Unit
+pub async fn PlainDateClient::put_type_property_optional_plaindate_default(Self, PlainDateProperty) -> Unit
+
+pub(all) struct PlainDateProperty {
+  property : String?
+}
+pub impl Show for PlainDateProperty
+pub impl ToJson for PlainDateProperty
+pub impl @json.FromJson for PlainDateProperty
+
+pub(all) struct PlainTimeClient {
+  base_url : String
+}
+pub async fn PlainTimeClient::get_type_property_optional_plaintime_all(Self) -> PlainTimeProperty
+pub async fn PlainTimeClient::get_type_property_optional_plaintime_default(Self) -> PlainTimeProperty
+pub fn PlainTimeClient::new(String) -> Self
+pub async fn PlainTimeClient::put_type_property_optional_plaintime_all(Self, PlainTimeProperty) -> Unit
+pub async fn PlainTimeClient::put_type_property_optional_plaintime_default(Self, PlainTimeProperty) -> Unit
+
+pub(all) struct PlainTimeProperty {
+  property : String?
+}
+pub impl Show for PlainTimeProperty
+pub impl ToJson for PlainTimeProperty
+pub impl @json.FromJson for PlainTimeProperty
+
+pub(all) struct RequiredAndOptionalClient {
+  base_url : String
+}
+pub async fn RequiredAndOptionalClient::get_type_property_optional_requiredandoptional_all(Self) -> RequiredAndOptionalProperty
+pub async fn RequiredAndOptionalClient::get_type_property_optional_requiredandoptional_requiredonly(Self) -> RequiredAndOptionalProperty
+pub fn RequiredAndOptionalClient::new(String) -> Self
+pub async fn RequiredAndOptionalClient::put_type_property_optional_requiredandoptional_all(Self, RequiredAndOptionalProperty) -> Unit
+pub async fn RequiredAndOptionalClient::put_type_property_optional_requiredandoptional_requiredonly(Self, RequiredAndOptionalProperty) -> Unit
+
+pub(all) struct RequiredAndOptionalProperty {
+  optional_property : String?
+  required_property : Int
+}
+pub impl Show for RequiredAndOptionalProperty
+pub impl ToJson for RequiredAndOptionalProperty
+pub impl @json.FromJson for RequiredAndOptionalProperty
+
+pub(all) struct StringClient {
+  base_url : String
+}
+pub async fn StringClient::get_type_property_optional_string_all(Self) -> StringProperty
+pub async fn StringClient::get_type_property_optional_string_default(Self) -> StringProperty
+pub fn StringClient::new(String) -> Self
+pub async fn StringClient::put_type_property_optional_string_all(Self, StringProperty) -> Unit
+pub async fn StringClient::put_type_property_optional_string_default(Self, StringProperty) -> Unit
+
+pub(all) struct StringLiteralClient {
+  base_url : String
+}
+pub async fn StringLiteralClient::get_type_property_optional_string_literal_all(Self) -> StringLiteralProperty
+pub async fn StringLiteralClient::get_type_property_optional_string_literal_default(Self) -> StringLiteralProperty
+pub fn StringLiteralClient::new(String) -> Self
+pub async fn StringLiteralClient::put_type_property_optional_string_literal_all(Self, StringLiteralProperty) -> Unit
+pub async fn StringLiteralClient::put_type_property_optional_string_literal_default(Self, StringLiteralProperty) -> Unit
+
+pub(all) struct StringLiteralProperty {
+  property : String?
+}
+pub impl Show for StringLiteralProperty
+pub impl ToJson for StringLiteralProperty
+pub impl @json.FromJson for StringLiteralProperty
+
+pub(all) struct StringProperty {
+  property : String?
+}
+pub impl Show for StringProperty
+pub impl ToJson for StringProperty
+pub impl @json.FromJson for StringProperty
+
+pub(all) struct UnionFloatLiteralClient {
+  base_url : String
+}
+pub async fn UnionFloatLiteralClient::get_type_property_optional_union_float_literal_all(Self) -> UnionFloatLiteralProperty
+pub async fn UnionFloatLiteralClient::get_type_property_optional_union_float_literal_default(Self) -> UnionFloatLiteralProperty
+pub fn UnionFloatLiteralClient::new(String) -> Self
+pub async fn UnionFloatLiteralClient::put_type_property_optional_union_float_literal_all(Self, UnionFloatLiteralProperty) -> Unit
+pub async fn UnionFloatLiteralClient::put_type_property_optional_union_float_literal_default(Self, UnionFloatLiteralProperty) -> Unit
+
+pub(all) struct UnionFloatLiteralProperty {
+  property : Double?
+}
+pub impl Show for UnionFloatLiteralProperty
+pub impl ToJson for UnionFloatLiteralProperty
+pub impl @json.FromJson for UnionFloatLiteralProperty
+
+pub(all) struct UnionIntLiteralClient {
+  base_url : String
+}
+pub async fn UnionIntLiteralClient::get_type_property_optional_union_int_literal_all(Self) -> UnionIntLiteralProperty
+pub async fn UnionIntLiteralClient::get_type_property_optional_union_int_literal_default(Self) -> UnionIntLiteralProperty
+pub fn UnionIntLiteralClient::new(String) -> Self
+pub async fn UnionIntLiteralClient::put_type_property_optional_union_int_literal_all(Self, UnionIntLiteralProperty) -> Unit
+pub async fn UnionIntLiteralClient::put_type_property_optional_union_int_literal_default(Self, UnionIntLiteralProperty) -> Unit
+
+pub(all) struct UnionIntLiteralProperty {
+  property : Double?
+}
+pub impl Show for UnionIntLiteralProperty
+pub impl ToJson for UnionIntLiteralProperty
+pub impl @json.FromJson for UnionIntLiteralProperty
+
+pub(all) struct UnionStringLiteralClient {
+  base_url : String
+}
+pub async fn UnionStringLiteralClient::get_type_property_optional_union_string_literal_all(Self) -> UnionStringLiteralProperty
+pub async fn UnionStringLiteralClient::get_type_property_optional_union_string_literal_default(Self) -> UnionStringLiteralProperty
+pub fn UnionStringLiteralClient::new(String) -> Self
+pub async fn UnionStringLiteralClient::put_type_property_optional_union_string_literal_all(Self, UnionStringLiteralProperty) -> Unit
+pub async fn UnionStringLiteralClient::put_type_property_optional_union_string_literal_default(Self, UnionStringLiteralProperty) -> Unit
+
+pub(all) struct UnionStringLiteralProperty {
+  property : String?
+}
+pub impl Show for UnionStringLiteralProperty
+pub impl ToJson for UnionStringLiteralProperty
+pub impl @json.FromJson for UnionStringLiteralProperty
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

@@ -1,0 +1,25 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/enum/fixed"
+
+import {
+  "kkkiio/typespec-client-runtime",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct StringClient {
+  base_url : String
+}
+pub async fn StringClient::get_type_enum_fixed_string_known_value(Self) -> Json
+pub fn StringClient::new(String) -> Self
+pub async fn StringClient::put_type_enum_fixed_string_known_value(Self, Json) -> Unit
+pub async fn StringClient::put_type_enum_fixed_string_unknown_value(Self, Json) -> Unit
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

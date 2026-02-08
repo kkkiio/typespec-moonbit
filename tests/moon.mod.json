@@ -1,0 +1,15 @@
+{
+  "name": "kkkiio/typespec-tests",
+  "version": "0.1.0",
+  "deps": {
+    "moonbitlang/async": "0.16.5",
+    "moonbitlang/x": "0.4.38",
+    "kkkiio/typespec-client-runtime": {
+      "path": "../client-runtime"
+    },
+    "kkkiio/typespec-server-runtime": {
+      "path": "../server-runtime"
+    }
+  },
+  "preferred-target": "native"
+}

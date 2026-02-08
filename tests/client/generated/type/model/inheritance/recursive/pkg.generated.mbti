@@ -1,0 +1,33 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/model/inheritance/recursive"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct Extension {
+  extension : Array[Extension]?
+  level : Int
+}
+pub impl Show for Extension
+pub impl ToJson for Extension
+pub impl @json.FromJson for Extension
+
+pub(all) struct RecursiveClient {
+  base_url : String
+}
+pub async fn RecursiveClient::get_type_model_inheritance_recursive(Self) -> Extension
+pub fn RecursiveClient::new(String) -> Self
+pub async fn RecursiveClient::put_type_model_inheritance_recursive(Self, Extension) -> Unit
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

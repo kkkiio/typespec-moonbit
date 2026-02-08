@@ -5,4 +5,3 @@ globalThis.require = createRequire(import.meta.url);
 
 const mod = await import("./dist/emitter.js");
 export const $onEmit = mod.on_emit;
-

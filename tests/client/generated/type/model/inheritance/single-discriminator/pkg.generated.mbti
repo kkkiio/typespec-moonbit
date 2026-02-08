@@ -1,0 +1,45 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/model/inheritance/single-discriminator"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct Bird {
+  kind : String
+  wingspan : Int
+}
+pub impl Show for Bird
+pub impl ToJson for Bird
+pub impl @json.FromJson for Bird
+
+pub(all) struct Dinosaur {
+  size : Int
+}
+pub impl Show for Dinosaur
+pub impl ToJson for Dinosaur
+pub impl @json.FromJson for Dinosaur
+
+pub(all) struct SingleDiscriminatorClient {
+  base_url : String
+}
+pub async fn SingleDiscriminatorClient::get_type_model_inheritance_single_discriminator_legacy_model(Self) -> Dinosaur
+pub async fn SingleDiscriminatorClient::get_type_model_inheritance_single_discriminator_missingdiscriminator(Self) -> Bird
+pub async fn SingleDiscriminatorClient::get_type_model_inheritance_single_discriminator_model(Self) -> Bird
+pub async fn SingleDiscriminatorClient::get_type_model_inheritance_single_discriminator_recursivemodel(Self) -> Bird
+pub async fn SingleDiscriminatorClient::get_type_model_inheritance_single_discriminator_wrongdiscriminator(Self) -> Bird
+pub fn SingleDiscriminatorClient::new(String) -> Self
+pub async fn SingleDiscriminatorClient::put_type_model_inheritance_single_discriminator_model(Self, Bird) -> Unit
+pub async fn SingleDiscriminatorClient::put_type_model_inheritance_single_discriminator_recursivemodel(Self, Bird) -> Unit
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

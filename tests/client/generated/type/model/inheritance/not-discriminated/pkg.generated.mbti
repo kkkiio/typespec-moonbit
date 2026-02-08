@@ -1,0 +1,35 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/model/inheritance/not-discriminated"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct NotDiscriminatedClient {
+  base_url : String
+}
+pub async fn NotDiscriminatedClient::get_type_model_inheritance_not_discriminated_valid(Self) -> Siamese
+pub fn NotDiscriminatedClient::new(String) -> Self
+pub async fn NotDiscriminatedClient::post_type_model_inheritance_not_discriminated_valid(Self, Siamese) -> Unit
+pub async fn NotDiscriminatedClient::put_type_model_inheritance_not_discriminated_valid(Self, Siamese) -> Siamese
+
+pub(all) struct Siamese {
+  name : String
+  age : Int
+  smart : Bool
+}
+pub impl Show for Siamese
+pub impl ToJson for Siamese
+pub impl @json.FromJson for Siamese
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

@@ -1,0 +1,24 @@
+{
+  "import": [
+    "kkkiio/typespec-moonbit/typespec",
+    "kkkiio/typespec-moonbit/mbtgen",
+    "kkkiio/typespec-moonbit/config",
+    "kkkiio/typespec-moonbit/ffi",
+    "justjavac/case",
+    "moonbit-community/js-ffi/js",
+    "moonbitlang/x/fs"
+  ],
+  "link": {
+    "js": {
+      "exports": [
+        "on_emit"
+      ],
+      "format": "esm"
+    }
+  },
+  "targets": {
+    "*": [
+      "js"
+    ]
+  }
+}

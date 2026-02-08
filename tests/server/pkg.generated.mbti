@@ -1,0 +1,45 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/server"
+
+import {
+  "moonbitlang/async",
+  "moonbitlang/async/http",
+  "moonbitlang/async/io",
+}
+
+// Values
+pub async fn run(String, Array[String], options? : RunOptions) -> ExecResult
+
+pub async fn run_scenario(String, String) -> Status noraise
+
+pub fn[X] start_server(@async.TaskGroup[X], async (@http.Request, &@io.Reader, @http.ServerConnection) -> Unit) -> String raise
+
+// Errors
+pub suberror CommandFailedError {
+  CommandFailedError(command~ : String, args~ : Array[String], exit_code~ : Int)
+}
+pub impl Show for CommandFailedError
+
+// Types and methods
+pub struct ExecResult {
+  exit_code : Int
+}
+
+pub struct RunOptions {
+  cwd : String?
+  silent : Bool
+  encoding : String?
+  ignore_command_not_found : Bool
+  throw_on_non_zero_exit : Bool
+}
+pub fn RunOptions::new(cwd? : String, silent? : Bool, encoding? : String, ignore_command_not_found? : Bool, throw_on_non_zero_exit? : Bool) -> Self
+
+pub enum Status {
+  Pass
+  Fail
+}
+
+// Type aliases
+
+// Traits
+

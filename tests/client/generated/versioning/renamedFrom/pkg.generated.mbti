@@ -1,0 +1,47 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/versioning/renamedFrom"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct NewInterfaceClient {
+  base_url : String
+}
+pub fn NewInterfaceClient::new(String) -> Self
+pub async fn NewInterfaceClient::post_versioning_renamed_from_api_version__version__interface_test(Self, String, NewModel) -> NewModel
+
+pub(all) struct NewModel {
+  new_prop : String
+  enum_prop : Json
+  union_prop : NewUnion
+}
+pub impl Show for NewModel
+pub impl ToJson for NewModel
+pub impl @json.FromJson for NewModel
+
+pub(all) enum NewUnion {
+  String(String)
+  NewUnionVariant(Json)
+}
+pub impl Show for NewUnion
+pub impl ToJson for NewUnion
+pub impl @json.FromJson for NewUnion
+
+pub(all) struct RenamedFromClient {
+  base_url : String
+}
+pub fn RenamedFromClient::new(String) -> Self
+pub async fn RenamedFromClient::post_versioning_renamed_from_api_version__version__test__newquery_(Self, String, String, NewModel) -> NewModel
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

@@ -1,8 +1,0 @@
-{
-  "import": [
-    { "path": "moonbitlang/async/http", "alias": "http" },
-    "moonbitlang/core/json",
-    { "path": "kkkiio/typespec-moonbit-client-runtime/runtime", "alias": "client_runtime" },
-    "kkkiio/typespec-moonbit-server-runtime/runtime"
-  ]
-}

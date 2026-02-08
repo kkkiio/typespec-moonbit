@@ -1,0 +1,61 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/payload/json-merge-patch"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct InnerModel {
+  name : String?
+  description : String?
+}
+pub impl Show for InnerModel
+pub impl ToJson for InnerModel
+pub impl @json.FromJson for InnerModel
+
+pub(all) struct JsonMergePatchClient {
+  base_url : String
+}
+pub fn JsonMergePatchClient::new(String) -> Self
+pub async fn JsonMergePatchClient::patch_json_merge_patch_update_resource(Self, ResourcePatch) -> Resource
+pub async fn JsonMergePatchClient::patch_json_merge_patch_update_resource_optional(Self, ResourcePatch?) -> Resource
+pub async fn JsonMergePatchClient::put_json_merge_patch_create_resource(Self, Resource) -> Resource
+
+pub(all) struct Resource {
+  name : String
+  description : String?
+  map : Map[String, InnerModel]?
+  array : Array[InnerModel]?
+  int_value : Int?
+  float_value : Double?
+  inner_model : InnerModel?
+  int_array : Array[Int]?
+}
+pub impl Show for Resource
+pub impl ToJson for Resource
+pub impl @json.FromJson for Resource
+
+pub(all) struct ResourcePatch {
+  description : String?
+  map : Map[String, InnerModel]?
+  array : Array[InnerModel]?
+  int_value : Int?
+  float_value : Double?
+  inner_model : InnerModel?
+  int_array : Array[Int]?
+}
+pub impl Show for ResourcePatch
+pub impl ToJson for ResourcePatch
+pub impl @json.FromJson for ResourcePatch
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

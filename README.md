@@ -2,60 +2,22 @@
 
 Typespec MoonBit Emitter. Writen in MoonBit.
 
-## 开发
-
-本仓库使用 `npm` 管理 Node.js 依赖。
-
-- 安装依赖：`npm install`
-- 构建 emitters：`npm run build:emitters`
-- 生成 server e2e 用例：`npm run gen:server-test`
-- 生成 client e2e 用例：`npm run gen:client-test`
-- 运行 server e2e：`npm run test:server:run`
-
 ## Features
 
-- [x] Json Models. 
-    - snake_case for MoonBit field names, keep JSON keys as original TypeSpec field names.
-- [x] http server
+### Http server emitter
+
+- [x] Json Models. snake_case for MoonBit field names, keep JSON keys as original TypeSpec field names.
+- [x] Router function. Match request method & path, dispatch to corresponding handler.
+- [x] SSE Handler. Stream response supported by `moonbitlang/async/aqueue`.
+
+### Http client emitter
+
+- [x] Json Models. snake_case for MoonBit field names, keep JSON keys as original TypeSpec field names.
 
 ## Architecture
 
-#### Adapter 流程图 (`tcgcadapter`)
-
-展示如何将 TypeSpec 编译器对象转换为 `CodeModel`。
-
-```mermaid
-flowchart TD
-    Start([Start: Adapter::tcgc_to_crate]) --> CallJS[Call TypeSpec HTTP API]
-    CallJS --> GroupOps[Group Ops by Client]
-    
-    subgraph Client_Process [Client & Method Building]
-        GroupOps --> OpLoop{Iterate Ops}
-        OpLoop --> BuildMethod[Build Method Metadata]
-        BuildMethod --> ResolveType{"Resolve Type\n(Recursive)"}
-        ResolveType --> AddMethod[Add to Client]
-        AddMethod --> OpLoop
-    end
-    
-    OpLoop -- Done --> BuildCrate[Assemble codemodel.Crate]
-    BuildCrate --> Return([Return Crate])
-```
-
-#### Server Codegen 流程图 (`server.mbt`)
-
-展示如何根据 `CodeModel` 生成服务端的 MoonBit 源代码。
-
-```mermaid
-flowchart TD
-    Start([Start: emit_server_files]) --> Step1[1. Collect Unique Models]
-    
-    subgraph Content_Gen [router.mbt Generation]
-        Step1 --> Step2[2. Generate Model Structs]
-        Step2 --> Step3[3. Generate Handler Traits]
-        Step3 --> Step4[4. Generate Router Function\nMatching & Dispatch]
-        Step4 --> Step5[5. Append Utils\nPath/Query/Header helpers]
-    end
-    
-    Content_Gen --> BuildFiles[Assemble Output Files\npkg.json, README, router.mbt]
-    BuildFiles --> Return([Return Output Files])
-```
+There are four main packages:
+- `emitter/mbtgen`: Code generator for MoonBit.
+- `emitter/typespec`: TypeSpec reader.
+- `emitter/http_client`: Http client emitter.
+- `emitter/http_server`: Http server emitter.

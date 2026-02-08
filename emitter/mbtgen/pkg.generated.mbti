@@ -1,0 +1,105 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-moonbit/mbtgen"
+
+// Values
+pub fn render(File) -> String
+
+pub fn sanitize_identifier(String) -> String
+
+// Errors
+
+// Types and methods
+pub(all) struct EnumVariant {
+  name : String
+  payload : Type?
+  doc : String?
+  json_name : String?
+}
+
+pub(all) enum Expr {
+  LitString(String)
+  LitInt(Int)
+  LitBool(Bool)
+  Ident(String)
+  Call(Expr, Array[Expr])
+  MethodCall(Expr, String, Array[Expr])
+  Raw(String)
+}
+
+pub(all) struct Field {
+  name : String
+  type_ : Type
+  is_optional : Bool
+  doc : String?
+  json_name : String?
+}
+
+pub(all) struct File {
+  package_name : String?
+  imports : Array[String]
+  top_levels : Array[TopLevel]
+}
+
+pub(all) struct Function {
+  name : String
+  params : Array[Param]
+  return_type : Type
+  body : Array[Stmt]
+  is_async : Bool
+  is_pub : Bool
+  can_raise : Bool
+  doc : String?
+}
+
+pub(all) struct FunctionSignature {
+  name : String
+  params : Array[Param]
+  return_type : Type
+  is_async : Bool
+  can_raise : Bool
+  doc : String?
+}
+
+pub(all) struct Param {
+  name : String
+  type_ : Type
+  is_optional : Bool?
+}
+
+pub(all) enum Stmt {
+  Let(String, Type?, Expr)
+  Return(Expr?)
+  Expr(Expr)
+  Assign(Expr, Expr)
+  Raw(String)
+}
+
+pub(all) enum TopLevel {
+  Struct(String, Array[Field], Array[String], String?)
+  Enum(String, Array[EnumVariant], Array[String], String?)
+  Function(Function)
+  Trait(String, Array[FunctionSignature], String?)
+  Impl(String, Type, Array[Function])
+  TypeAlias(String, Type, String?)
+}
+
+pub(all) enum Type {
+  Unit
+  Bool
+  Int
+  Int64
+  Double
+  String
+  Json
+  Array(Type)
+  Map(Type, Type)
+  Option(Type)
+  Result(Type, Type)
+  Named(String)
+}
+pub fn Type::to_string(Self) -> String
+
+// Type aliases
+
+// Traits
+

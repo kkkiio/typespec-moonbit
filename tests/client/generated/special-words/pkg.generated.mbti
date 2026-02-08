@@ -1,0 +1,394 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/special-words"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct And {
+  name : String
+}
+pub impl Show for And
+pub impl ToJson for And
+pub impl @json.FromJson for And
+
+pub(all) struct As {
+  name : String
+}
+pub impl Show for As
+pub impl ToJson for As
+pub impl @json.FromJson for As
+
+pub(all) struct Assert {
+  name : String
+}
+pub impl Show for Assert
+pub impl ToJson for Assert
+pub impl @json.FromJson for Assert
+
+pub(all) struct Async {
+  name : String
+}
+pub impl Show for Async
+pub impl ToJson for Async
+pub impl @json.FromJson for Async
+
+pub(all) struct Await {
+  name : String
+}
+pub impl Show for Await
+pub impl ToJson for Await
+pub impl @json.FromJson for Await
+
+pub(all) struct Break {
+  name : String
+}
+pub impl Show for Break
+pub impl ToJson for Break
+pub impl @json.FromJson for Break
+
+pub(all) struct Class {
+  name : String
+}
+pub impl Show for Class
+pub impl ToJson for Class
+pub impl @json.FromJson for Class
+
+pub(all) struct Constructor {
+  name : String
+}
+pub impl Show for Constructor
+pub impl ToJson for Constructor
+pub impl @json.FromJson for Constructor
+
+pub(all) struct Continue {
+  name : String
+}
+pub impl Show for Continue
+pub impl ToJson for Continue
+pub impl @json.FromJson for Continue
+
+pub(all) struct Def {
+  name : String
+}
+pub impl Show for Def
+pub impl ToJson for Def
+pub impl @json.FromJson for Def
+
+pub(all) struct Del {
+  name : String
+}
+pub impl Show for Del
+pub impl ToJson for Del
+pub impl @json.FromJson for Del
+
+pub(all) struct DictMethods {
+  keys : String
+  items : String
+  values : String
+  popitem : String
+  clear : String
+  update : String
+  setdefault : String
+  pop : String
+  get : String
+  copy : String
+}
+pub impl Show for DictMethods
+pub impl ToJson for DictMethods
+pub impl @json.FromJson for DictMethods
+
+pub(all) struct Elif {
+  name : String
+}
+pub impl Show for Elif
+pub impl ToJson for Elif
+pub impl @json.FromJson for Elif
+
+pub(all) struct Else {
+  name : String
+}
+pub impl Show for Else
+pub impl ToJson for Else
+pub impl @json.FromJson for Else
+
+pub(all) struct Except {
+  name : String
+}
+pub impl Show for Except
+pub impl ToJson for Except
+pub impl @json.FromJson for Except
+
+pub(all) struct Exec {
+  name : String
+}
+pub impl Show for Exec
+pub impl ToJson for Exec
+pub impl @json.FromJson for Exec
+
+pub(all) struct Finally {
+  name : String
+}
+pub impl Show for Finally
+pub impl ToJson for Finally
+pub impl @json.FromJson for Finally
+
+pub(all) struct For {
+  name : String
+}
+pub impl Show for For
+pub impl ToJson for For
+pub impl @json.FromJson for For
+
+pub(all) struct From {
+  name : String
+}
+pub impl Show for From
+pub impl ToJson for From
+pub impl @json.FromJson for From
+
+pub(all) struct Global {
+  name : String
+}
+pub impl Show for Global
+pub impl ToJson for Global
+pub impl @json.FromJson for Global
+
+pub(all) struct If {
+  name : String
+}
+pub impl Show for If
+pub impl ToJson for If
+pub impl @json.FromJson for If
+
+pub(all) struct Import {
+  name : String
+}
+pub impl Show for Import
+pub impl ToJson for Import
+pub impl @json.FromJson for Import
+
+pub(all) struct In {
+  name : String
+}
+pub impl Show for In
+pub impl ToJson for In
+pub impl @json.FromJson for In
+
+pub(all) struct Is {
+  name : String
+}
+pub impl Show for Is
+pub impl ToJson for Is
+pub impl @json.FromJson for Is
+
+pub(all) struct Lambda {
+  name : String
+}
+pub impl Show for Lambda
+pub impl ToJson for Lambda
+pub impl @json.FromJson for Lambda
+
+pub(all) struct ModelPropertiesClient {
+  base_url : String
+}
+pub fn ModelPropertiesClient::new(String) -> Self
+pub async fn ModelPropertiesClient::post_special_words_model_properties_dict_methods(Self, DictMethods) -> Unit
+pub async fn ModelPropertiesClient::post_special_words_model_properties_same_as_model(Self, SameAsModel) -> Unit
+
+pub(all) struct ModelsClient {
+  base_url : String
+}
+pub fn ModelsClient::new(String) -> Self
+pub async fn ModelsClient::post_special_words_models_and(Self, And) -> Unit
+pub async fn ModelsClient::post_special_words_models_as(Self, As) -> Unit
+pub async fn ModelsClient::post_special_words_models_assert(Self, Assert) -> Unit
+pub async fn ModelsClient::post_special_words_models_async(Self, Async) -> Unit
+pub async fn ModelsClient::post_special_words_models_await(Self, Await) -> Unit
+pub async fn ModelsClient::post_special_words_models_break(Self, Break) -> Unit
+pub async fn ModelsClient::post_special_words_models_class(Self, Class) -> Unit
+pub async fn ModelsClient::post_special_words_models_constructor(Self, Constructor) -> Unit
+pub async fn ModelsClient::post_special_words_models_continue(Self, Continue) -> Unit
+pub async fn ModelsClient::post_special_words_models_def(Self, Def) -> Unit
+pub async fn ModelsClient::post_special_words_models_del(Self, Del) -> Unit
+pub async fn ModelsClient::post_special_words_models_elif(Self, Elif) -> Unit
+pub async fn ModelsClient::post_special_words_models_else(Self, Else) -> Unit
+pub async fn ModelsClient::post_special_words_models_except(Self, Except) -> Unit
+pub async fn ModelsClient::post_special_words_models_exec(Self, Exec) -> Unit
+pub async fn ModelsClient::post_special_words_models_finally(Self, Finally) -> Unit
+pub async fn ModelsClient::post_special_words_models_for(Self, For) -> Unit
+pub async fn ModelsClient::post_special_words_models_from(Self, From) -> Unit
+pub async fn ModelsClient::post_special_words_models_global(Self, Global) -> Unit
+pub async fn ModelsClient::post_special_words_models_if(Self, If) -> Unit
+pub async fn ModelsClient::post_special_words_models_import(Self, Import) -> Unit
+pub async fn ModelsClient::post_special_words_models_in(Self, In) -> Unit
+pub async fn ModelsClient::post_special_words_models_is(Self, Is) -> Unit
+pub async fn ModelsClient::post_special_words_models_lambda(Self, Lambda) -> Unit
+pub async fn ModelsClient::post_special_words_models_not(Self, Not) -> Unit
+pub async fn ModelsClient::post_special_words_models_or(Self, Or) -> Unit
+pub async fn ModelsClient::post_special_words_models_pass(Self, Pass) -> Unit
+pub async fn ModelsClient::post_special_words_models_raise(Self, Raise) -> Unit
+pub async fn ModelsClient::post_special_words_models_return(Self, Return) -> Unit
+pub async fn ModelsClient::post_special_words_models_try(Self, Try) -> Unit
+pub async fn ModelsClient::post_special_words_models_while(Self, While) -> Unit
+pub async fn ModelsClient::post_special_words_models_with(Self, With) -> Unit
+pub async fn ModelsClient::post_special_words_models_yield(Self, Yield) -> Unit
+
+pub(all) struct Not {
+  name : String
+}
+pub impl Show for Not
+pub impl ToJson for Not
+pub impl @json.FromJson for Not
+
+pub(all) struct OperationsClient {
+  base_url : String
+}
+pub async fn OperationsClient::get_special_words_operations_and(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_as(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_assert(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_async(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_await(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_break(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_class(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_constructor(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_continue(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_def(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_del(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_elif(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_else(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_except(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_exec(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_finally(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_for(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_from(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_global(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_if(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_import(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_in(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_is(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_lambda(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_not(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_or(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_pass(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_raise(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_return(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_try(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_while(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_with(Self) -> Unit
+pub async fn OperationsClient::get_special_words_operations_yield(Self) -> Unit
+pub fn OperationsClient::new(String) -> Self
+
+pub(all) struct Or {
+  name : String
+}
+pub impl Show for Or
+pub impl ToJson for Or
+pub impl @json.FromJson for Or
+
+pub(all) struct ParametersClient {
+  base_url : String
+}
+pub async fn ParametersClient::get_special_words_parameters_and__and_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_as__as_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_assert__assert_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_async__async_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_await__await_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_break__break_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_cancellationtoken__cancellationtoken_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_class__class_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_constructor__constructor_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_continue__continue_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_def__def_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_del__del_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_elif__elif_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_else__else_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_except__except_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_exec__exec_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_finally__finally_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_for__for_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_from__from_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_global__global_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_if__if_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_import__import_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_in__in_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_is__is_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_lambda__lambda_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_not__not_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_or__or_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_pass__pass_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_raise__raise_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_return__return_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_try__try_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_while__while_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_with__with_(Self, String) -> Unit
+pub async fn ParametersClient::get_special_words_parameters_yield__yield_(Self, String) -> Unit
+pub fn ParametersClient::new(String) -> Self
+
+pub(all) struct Pass {
+  name : String
+}
+pub impl Show for Pass
+pub impl ToJson for Pass
+pub impl @json.FromJson for Pass
+
+pub(all) struct Raise {
+  name : String
+}
+pub impl Show for Raise
+pub impl ToJson for Raise
+pub impl @json.FromJson for Raise
+
+pub(all) struct Return {
+  name : String
+}
+pub impl Show for Return
+pub impl ToJson for Return
+pub impl @json.FromJson for Return
+
+pub(all) struct SameAsModel {
+  same_as_model : String
+}
+pub impl Show for SameAsModel
+pub impl ToJson for SameAsModel
+pub impl @json.FromJson for SameAsModel
+
+pub(all) struct Try {
+  name : String
+}
+pub impl Show for Try
+pub impl ToJson for Try
+pub impl @json.FromJson for Try
+
+pub(all) struct While {
+  name : String
+}
+pub impl Show for While
+pub impl ToJson for While
+pub impl @json.FromJson for While
+
+pub(all) struct With {
+  name : String
+}
+pub impl Show for With
+pub impl ToJson for With
+pub impl @json.FromJson for With
+
+pub(all) struct Yield {
+  name : String
+}
+pub impl Show for Yield
+pub impl ToJson for Yield
+pub impl @json.FromJson for Yield
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

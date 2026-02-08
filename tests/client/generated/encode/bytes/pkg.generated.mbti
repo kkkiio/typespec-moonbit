@@ -1,0 +1,93 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/encode/bytes"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct Base64BytesProperty {
+  value : Bytes
+}
+pub impl Show for Base64BytesProperty
+pub impl ToJson for Base64BytesProperty
+pub impl @json.FromJson for Base64BytesProperty
+
+pub(all) struct Base64UrlArrayBytesProperty {
+  value : Array[Bytes]
+}
+pub impl Show for Base64UrlArrayBytesProperty
+pub impl ToJson for Base64UrlArrayBytesProperty
+pub impl @json.FromJson for Base64UrlArrayBytesProperty
+
+pub(all) struct Base64UrlBytesProperty {
+  value : Bytes
+}
+pub impl Show for Base64UrlBytesProperty
+pub impl ToJson for Base64UrlBytesProperty
+pub impl @json.FromJson for Base64UrlBytesProperty
+
+pub(all) struct DefaultBytesProperty {
+  value : Bytes
+}
+pub impl Show for DefaultBytesProperty
+pub impl ToJson for DefaultBytesProperty
+pub impl @json.FromJson for DefaultBytesProperty
+
+pub(all) struct HeaderClient {
+  base_url : String
+}
+pub async fn HeaderClient::get_encode_bytes_header_base64(Self, Bytes) -> Unit
+pub async fn HeaderClient::get_encode_bytes_header_base64url(Self, Bytes) -> Unit
+pub async fn HeaderClient::get_encode_bytes_header_base64url_array(Self, Array[Bytes]) -> Unit
+pub async fn HeaderClient::get_encode_bytes_header_default(Self, Bytes) -> Unit
+pub fn HeaderClient::new(String) -> Self
+
+pub(all) struct PropertyClient {
+  base_url : String
+}
+pub fn PropertyClient::new(String) -> Self
+pub async fn PropertyClient::post_encode_bytes_property_base64(Self, Base64BytesProperty) -> Base64BytesProperty
+pub async fn PropertyClient::post_encode_bytes_property_base64url(Self, Base64UrlBytesProperty) -> Base64UrlBytesProperty
+pub async fn PropertyClient::post_encode_bytes_property_base64url_array(Self, Base64UrlArrayBytesProperty) -> Base64UrlArrayBytesProperty
+pub async fn PropertyClient::post_encode_bytes_property_default(Self, DefaultBytesProperty) -> DefaultBytesProperty
+
+pub(all) struct QueryClient {
+  base_url : String
+}
+pub async fn QueryClient::get_encode_bytes_query_base64__value_(Self, Bytes) -> Unit
+pub async fn QueryClient::get_encode_bytes_query_base64url__value_(Self, Bytes) -> Unit
+pub async fn QueryClient::get_encode_bytes_query_base64url_array__value_(Self, Array[Bytes]) -> Unit
+pub async fn QueryClient::get_encode_bytes_query_default__value_(Self, Bytes) -> Unit
+pub fn QueryClient::new(String) -> Self
+
+pub(all) struct RequestBodyClient {
+  base_url : String
+}
+pub fn RequestBodyClient::new(String) -> Self
+pub async fn RequestBodyClient::post_encode_bytes_body_request_base64(Self, Bytes) -> Unit
+pub async fn RequestBodyClient::post_encode_bytes_body_request_base64url(Self, Bytes) -> Unit
+pub async fn RequestBodyClient::post_encode_bytes_body_request_custom_content_type(Self, Bytes) -> Unit
+pub async fn RequestBodyClient::post_encode_bytes_body_request_default(Self, Bytes) -> Unit
+pub async fn RequestBodyClient::post_encode_bytes_body_request_octet_stream(Self, Bytes) -> Unit
+
+pub(all) struct ResponseBodyClient {
+  base_url : String
+}
+pub async fn ResponseBodyClient::get_encode_bytes_body_response_base64(Self) -> Bytes
+pub async fn ResponseBodyClient::get_encode_bytes_body_response_base64url(Self) -> Bytes
+pub async fn ResponseBodyClient::get_encode_bytes_body_response_custom_content_type(Self) -> Bytes
+pub async fn ResponseBodyClient::get_encode_bytes_body_response_default(Self) -> Bytes
+pub async fn ResponseBodyClient::get_encode_bytes_body_response_octet_stream(Self) -> Bytes
+pub fn ResponseBodyClient::new(String) -> Self
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

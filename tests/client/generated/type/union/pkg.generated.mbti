@@ -1,0 +1,339 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/union"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct Cat {
+  name : String
+}
+pub impl Show for Cat
+pub impl ToJson for Cat
+pub impl @json.FromJson for Cat
+
+pub(all) struct Dog {
+  bark : String
+}
+pub impl Show for Dog
+pub impl ToJson for Dog
+pub impl @json.FromJson for Dog
+
+pub(all) struct EnumsOnlyCases {
+  lr : Union0
+  ud : Union1
+}
+pub impl Show for EnumsOnlyCases
+pub impl ToJson for EnumsOnlyCases
+pub impl @json.FromJson for EnumsOnlyCases
+
+pub(all) struct EnumsOnlyClient {
+  base_url : String
+}
+pub async fn EnumsOnlyClient::get_type_union_enums_only(Self) -> Model1
+pub fn EnumsOnlyClient::new(String) -> Self
+pub async fn EnumsOnlyClient::post_type_union_enums_only(Self, Model3) -> Unit
+
+pub(all) struct FloatsOnlyClient {
+  base_url : String
+}
+pub async fn FloatsOnlyClient::get_type_union_floats_only(Self) -> Model5
+pub fn FloatsOnlyClient::new(String) -> Self
+pub async fn FloatsOnlyClient::post_type_union_floats_only(Self, Model7) -> Unit
+
+pub(all) struct IntsOnlyClient {
+  base_url : String
+}
+pub async fn IntsOnlyClient::get_type_union_ints_only(Self) -> Model0
+pub fn IntsOnlyClient::new(String) -> Self
+pub async fn IntsOnlyClient::post_type_union_ints_only(Self, Model2) -> Unit
+
+pub(all) struct MixedLiteralsCases {
+  string_literal : Union4
+  int_literal : Union4
+  float_literal : Union4
+  boolean_literal : Union4
+}
+pub impl Show for MixedLiteralsCases
+pub impl ToJson for MixedLiteralsCases
+pub impl @json.FromJson for MixedLiteralsCases
+
+pub(all) struct MixedLiteralsClient {
+  base_url : String
+}
+pub async fn MixedLiteralsClient::get_type_union_mixed_literals(Self) -> Model12
+pub fn MixedLiteralsClient::new(String) -> Self
+pub async fn MixedLiteralsClient::post_type_union_mixed_literals(Self, Model13) -> Unit
+
+pub(all) struct MixedTypesCases {
+  model : Union2
+  literal : Union2
+  int : Union2
+  boolean : Union2
+  array : Array[Union2]
+}
+pub impl Show for MixedTypesCases
+pub impl ToJson for MixedTypesCases
+pub impl @json.FromJson for MixedTypesCases
+
+pub(all) struct MixedTypesClient {
+  base_url : String
+}
+pub async fn MixedTypesClient::get_type_union_mixed_types(Self) -> Model4
+pub fn MixedTypesClient::new(String) -> Self
+pub async fn MixedTypesClient::post_type_union_mixed_types(Self, Model8) -> Unit
+
+pub(all) struct Model0 {
+  prop : Double
+}
+pub impl Show for Model0
+pub impl ToJson for Model0
+pub impl @json.FromJson for Model0
+
+pub(all) struct Model1 {
+  prop : EnumsOnlyCases
+}
+pub impl Show for Model1
+pub impl ToJson for Model1
+pub impl @json.FromJson for Model1
+
+pub(all) struct Model10 {
+  prop : String
+}
+pub impl Show for Model10
+pub impl ToJson for Model10
+pub impl @json.FromJson for Model10
+
+pub(all) struct Model11 {
+  prop : String
+}
+pub impl Show for Model11
+pub impl ToJson for Model11
+pub impl @json.FromJson for Model11
+
+pub(all) struct Model12 {
+  prop : MixedLiteralsCases
+}
+pub impl Show for Model12
+pub impl ToJson for Model12
+pub impl @json.FromJson for Model12
+
+pub(all) struct Model13 {
+  prop : MixedLiteralsCases
+}
+pub impl Show for Model13
+pub impl ToJson for Model13
+pub impl @json.FromJson for Model13
+
+pub(all) struct Model14 {
+  prop : StringAndArrayCases
+}
+pub impl Show for Model14
+pub impl ToJson for Model14
+pub impl @json.FromJson for Model14
+
+pub(all) struct Model15 {
+  prop : StringAndArrayCases
+}
+pub impl Show for Model15
+pub impl ToJson for Model15
+pub impl @json.FromJson for Model15
+
+pub(all) struct Model16 {
+  prop : String
+}
+pub impl Show for Model16
+pub impl ToJson for Model16
+pub impl @json.FromJson for Model16
+
+pub(all) struct Model17 {
+  prop : String
+}
+pub impl Show for Model17
+pub impl ToJson for Model17
+pub impl @json.FromJson for Model17
+
+pub(all) struct Model18 {
+  prop : String
+}
+pub impl Show for Model18
+pub impl ToJson for Model18
+pub impl @json.FromJson for Model18
+
+pub(all) struct Model19 {
+  prop : String
+}
+pub impl Show for Model19
+pub impl ToJson for Model19
+pub impl @json.FromJson for Model19
+
+pub(all) struct Model2 {
+  prop : Double
+}
+pub impl Show for Model2
+pub impl ToJson for Model2
+pub impl @json.FromJson for Model2
+
+pub(all) struct Model3 {
+  prop : EnumsOnlyCases
+}
+pub impl Show for Model3
+pub impl ToJson for Model3
+pub impl @json.FromJson for Model3
+
+pub(all) struct Model4 {
+  prop : MixedTypesCases
+}
+pub impl Show for Model4
+pub impl ToJson for Model4
+pub impl @json.FromJson for Model4
+
+pub(all) struct Model5 {
+  prop : Double
+}
+pub impl Show for Model5
+pub impl ToJson for Model5
+pub impl @json.FromJson for Model5
+
+pub(all) struct Model6 {
+  prop : Union3
+}
+pub impl Show for Model6
+pub impl ToJson for Model6
+pub impl @json.FromJson for Model6
+
+pub(all) struct Model7 {
+  prop : Double
+}
+pub impl Show for Model7
+pub impl ToJson for Model7
+pub impl @json.FromJson for Model7
+
+pub(all) struct Model8 {
+  prop : MixedTypesCases
+}
+pub impl Show for Model8
+pub impl ToJson for Model8
+pub impl @json.FromJson for Model8
+
+pub(all) struct Model9 {
+  prop : Union3
+}
+pub impl Show for Model9
+pub impl ToJson for Model9
+pub impl @json.FromJson for Model9
+
+pub(all) struct ModelsOnlyClient {
+  base_url : String
+}
+pub async fn ModelsOnlyClient::get_type_union_models_only(Self) -> Model6
+pub fn ModelsOnlyClient::new(String) -> Self
+pub async fn ModelsOnlyClient::post_type_union_models_only(Self, Model9) -> Unit
+
+pub(all) struct StringAndArrayCases {
+  string : Union5
+  array : Union6
+}
+pub impl Show for StringAndArrayCases
+pub impl ToJson for StringAndArrayCases
+pub impl @json.FromJson for StringAndArrayCases
+
+pub(all) struct StringAndArrayClient {
+  base_url : String
+}
+pub async fn StringAndArrayClient::get_type_union_string_and_array(Self) -> Model14
+pub fn StringAndArrayClient::new(String) -> Self
+pub async fn StringAndArrayClient::post_type_union_string_and_array(Self, Model15) -> Unit
+
+pub(all) struct StringExtensibleClient {
+  base_url : String
+}
+pub async fn StringExtensibleClient::get_type_union_string_extensible(Self) -> Model16
+pub fn StringExtensibleClient::new(String) -> Self
+pub async fn StringExtensibleClient::post_type_union_string_extensible(Self, Model17) -> Unit
+
+pub(all) struct StringExtensibleNamedClient {
+  base_url : String
+}
+pub async fn StringExtensibleNamedClient::get_type_union_string_extensible_named(Self) -> Model18
+pub fn StringExtensibleNamedClient::new(String) -> Self
+pub async fn StringExtensibleNamedClient::post_type_union_string_extensible_named(Self, Model19) -> Unit
+
+pub(all) struct StringsOnlyClient {
+  base_url : String
+}
+pub async fn StringsOnlyClient::get_type_union_strings_only(Self) -> Model10
+pub fn StringsOnlyClient::new(String) -> Self
+pub async fn StringsOnlyClient::post_type_union_strings_only(Self, Model11) -> Unit
+
+pub(all) enum Union0 {
+  Lr(Json)
+  Ud(Json)
+}
+pub impl Show for Union0
+pub impl ToJson for Union0
+pub impl @json.FromJson for Union0
+
+pub(all) enum Union1 {
+  Ud(Json)
+  Ud2(Json)
+}
+pub impl Show for Union1
+pub impl ToJson for Union1
+pub impl @json.FromJson for Union1
+
+pub(all) enum Union2 {
+  Cat(Cat)
+  Variant(String)
+  Int32(Int)
+  Boolean(Bool)
+}
+pub impl Show for Union2
+pub impl ToJson for Union2
+pub impl @json.FromJson for Union2
+
+pub(all) enum Union3 {
+  Cat(Cat)
+  Dog(Dog)
+}
+pub impl Show for Union3
+pub impl ToJson for Union3
+pub impl @json.FromJson for Union3
+
+pub(all) enum Union4 {
+  Variant(String)
+  Variant2(Double)
+  Variant3(Double)
+  Variant4(Bool)
+}
+pub impl Show for Union4
+pub impl ToJson for Union4
+pub impl @json.FromJson for Union4
+
+pub(all) enum Union5 {
+  String(String)
+  Array(Array[String])
+}
+pub impl Show for Union5
+pub impl ToJson for Union5
+pub impl @json.FromJson for Union5
+
+pub(all) enum Union6 {
+  String(String)
+  Array(Array[String])
+}
+pub impl Show for Union6
+pub impl ToJson for Union6
+pub impl @json.FromJson for Union6
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+

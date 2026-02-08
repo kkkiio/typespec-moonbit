@@ -1,0 +1,16 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/config"
+
+// Values
+pub const TYPESPEC_HTTP_SPECS_ASSETS_DIR : String = "../node_modules/@typespec/http-specs/assets"
+
+pub const TYPESPEC_HTTP_SPECS_DIR : String = "../node_modules/@typespec/http-specs/specs"
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

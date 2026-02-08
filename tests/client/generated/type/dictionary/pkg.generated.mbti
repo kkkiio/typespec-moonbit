@@ -1,0 +1,103 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kkkiio/typespec-tests/client/generated/type/dictionary"
+
+import {
+  "kkkiio/typespec-client-runtime",
+  "moonbitlang/core/json",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct BooleanValueClient {
+  base_url : String
+}
+pub async fn BooleanValueClient::get_type_dictionary_boolean(Self) -> Map[String, Bool]
+pub fn BooleanValueClient::new(String) -> Self
+pub async fn BooleanValueClient::put_type_dictionary_boolean(Self, Map[String, Bool]) -> Unit
+
+pub(all) struct DatetimeValueClient {
+  base_url : String
+}
+pub async fn DatetimeValueClient::get_type_dictionary_datetime(Self) -> Map[String, String]
+pub fn DatetimeValueClient::new(String) -> Self
+pub async fn DatetimeValueClient::put_type_dictionary_datetime(Self, Map[String, String]) -> Unit
+
+pub(all) struct DurationValueClient {
+  base_url : String
+}
+pub async fn DurationValueClient::get_type_dictionary_duration(Self) -> Map[String, String]
+pub fn DurationValueClient::new(String) -> Self
+pub async fn DurationValueClient::put_type_dictionary_duration(Self, Map[String, String]) -> Unit
+
+pub(all) struct Float32ValueClient {
+  base_url : String
+}
+pub async fn Float32ValueClient::get_type_dictionary_float32(Self) -> Map[String, Double]
+pub fn Float32ValueClient::new(String) -> Self
+pub async fn Float32ValueClient::put_type_dictionary_float32(Self, Map[String, Double]) -> Unit
+
+pub(all) struct InnerModel {
+  property : String
+  children : Map[String, InnerModel]?
+}
+pub impl Show for InnerModel
+pub impl ToJson for InnerModel
+pub impl @json.FromJson for InnerModel
+
+pub(all) struct Int32ValueClient {
+  base_url : String
+}
+pub async fn Int32ValueClient::get_type_dictionary_int32(Self) -> Map[String, Int]
+pub fn Int32ValueClient::new(String) -> Self
+pub async fn Int32ValueClient::put_type_dictionary_int32(Self, Map[String, Int]) -> Unit
+
+pub(all) struct Int64ValueClient {
+  base_url : String
+}
+pub async fn Int64ValueClient::get_type_dictionary_int64(Self) -> Map[String, Int64]
+pub fn Int64ValueClient::new(String) -> Self
+pub async fn Int64ValueClient::put_type_dictionary_int64(Self, Map[String, Int64]) -> Unit
+
+pub(all) struct ModelValueClient {
+  base_url : String
+}
+pub async fn ModelValueClient::get_type_dictionary_model(Self) -> Map[String, InnerModel]
+pub fn ModelValueClient::new(String) -> Self
+pub async fn ModelValueClient::put_type_dictionary_model(Self, Map[String, InnerModel]) -> Unit
+
+pub(all) struct NullableFloatValueClient {
+  base_url : String
+}
+pub async fn NullableFloatValueClient::get_type_dictionary_nullable_float(Self) -> Map[String, @typespec-client-runtime.Nullable[Double]]
+pub fn NullableFloatValueClient::new(String) -> Self
+pub async fn NullableFloatValueClient::put_type_dictionary_nullable_float(Self, Map[String, @typespec-client-runtime.Nullable[Double]]) -> Unit
+
+pub(all) struct RecursiveModelValueClient {
+  base_url : String
+}
+pub async fn RecursiveModelValueClient::get_type_dictionary_model_recursive(Self) -> Map[String, InnerModel]
+pub fn RecursiveModelValueClient::new(String) -> Self
+pub async fn RecursiveModelValueClient::put_type_dictionary_model_recursive(Self, Map[String, InnerModel]) -> Unit
+
+pub(all) struct StringValueClient {
+  base_url : String
+}
+pub async fn StringValueClient::get_type_dictionary_string(Self) -> Map[String, String]
+pub fn StringValueClient::new(String) -> Self
+pub async fn StringValueClient::put_type_dictionary_string(Self, Map[String, String]) -> Unit
+
+pub(all) struct UnknownValueClient {
+  base_url : String
+}
+pub async fn UnknownValueClient::get_type_dictionary_unknown(Self) -> Map[String, Json]
+pub fn UnknownValueClient::new(String) -> Self
+pub async fn UnknownValueClient::put_type_dictionary_unknown(Self, Map[String, Json]) -> Unit
+
+// Type aliases
+pub using @typespec-client-runtime {type Nullable}
+
+// Traits
+
