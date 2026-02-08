@@ -21,6 +21,7 @@ impl @type_model_empty.EmptyHandler for EmptyHandlerImpl with put_empty(
   group~,
   _body,
 ) {
+  ignore(group)
   // In TypeScript: deepStrictEqual(input, {})
   // EmptyInput is an empty struct, so nothing to verify
 }
@@ -31,6 +32,7 @@ impl @type_model_empty.EmptyHandler for EmptyHandlerImpl with get_empty(
   group~,
 ) {
   ignore(group)
+  ignore(group)
   @type_model_empty.EmptyOutput::{  }
 }
 
@@ -40,6 +42,7 @@ impl @type_model_empty.EmptyHandler for EmptyHandlerImpl with post_round_trip_em
   group~,
   body,
 ) {
+  ignore(group)
   ignore(group)
   // Should return: { body }
   // EmptyInputOutput is an empty struct, round-trip the same empty object

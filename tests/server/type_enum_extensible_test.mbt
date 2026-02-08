@@ -20,6 +20,7 @@ impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with ge
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return:
   // {
   //   contentType: "application/json",
@@ -33,6 +34,7 @@ impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with ge
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return:
   // {
   //   contentType: "application/json",
@@ -50,6 +52,7 @@ impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with pu
   body,
 ) {
   ignore(group)
+  ignore(group)
   // In TypeScript: assert.equal(body, "Monday")
   assert_eq(body, "Monday")
 }
@@ -61,6 +64,7 @@ impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with pu
   _content_type,
   body,
 ) {
+  ignore(group)
   ignore(group)
   // In TypeScript: assert.equal(body, "Weekend")
   assert_eq(body, "Weekend")

@@ -25,6 +25,7 @@ impl @type_model_inheritance_recursive.RecursiveHandler for RecursiveHandlerImpl
   _self,
   group~,
 ) {
+  ignore(group)
   let leaf : @type_model_inheritance_recursive.Extension = {
     level: 2,
     extension: None,
@@ -51,6 +52,7 @@ impl @type_model_inheritance_recursive.RecursiveHandler for RecursiveHandlerImpl
   group~,
   body,
 ) {
+  ignore(group)
   // In TypeScript:
   // assert.deepStrictEqual(input, {
   //   level: 0,

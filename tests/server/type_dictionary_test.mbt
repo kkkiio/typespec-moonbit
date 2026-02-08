@@ -46,6 +46,7 @@ impl @type_dictionary.Int32ValueHandler for DictInt32ValueHandlerImpl with get(
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return { k1: 1, k2: 2 }
   { "k1": 1, "k2": 2 }
 }
@@ -56,6 +57,7 @@ impl @type_dictionary.Int32ValueHandler for DictInt32ValueHandlerImpl with put(
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 2)
   assert_eq(body.get("k1"), Some(1))
   assert_eq(body.get("k2"), Some(2))
@@ -69,6 +71,7 @@ impl @type_dictionary.Int64ValueHandler for DictInt64ValueHandlerImpl with get(
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return { k1: 0x7fffffffffffffff, k2: -0x7fffffffffffffff }
   { "k1": 0x7fffffffffffffffL, "k2": -0x7fffffffffffffffL }
 }
@@ -79,6 +82,7 @@ impl @type_dictionary.Int64ValueHandler for DictInt64ValueHandlerImpl with put(
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 2)
   assert_eq(body.get("k1"), Some(0x7fffffffffffffffL))
   assert_eq(body.get("k2"), Some(-0x7fffffffffffffffL))
@@ -92,6 +96,7 @@ impl @type_dictionary.ModelValueHandler for DictModelValueHandlerImpl with get(
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return { k1: { property: "hello" }, k2: { property: "world" } }
   {
     "k1": { property: "hello", children: None },
@@ -105,6 +110,7 @@ impl @type_dictionary.ModelValueHandler for DictModelValueHandlerImpl with put(
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 2)
   match body.get("k1") {
     Some(v) => assert_eq(v.property, "hello")
@@ -124,6 +130,7 @@ impl @type_dictionary.StringValueHandler for DictStringValueHandlerImpl with get
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return { k1: "hello", k2: "" }
   { "k1": "hello", "k2": "" }
 }
@@ -134,6 +141,7 @@ impl @type_dictionary.StringValueHandler for DictStringValueHandlerImpl with put
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 2)
   assert_eq(body.get("k1"), Some("hello"))
   assert_eq(body.get("k2"), Some(""))
@@ -147,6 +155,7 @@ impl @type_dictionary.BooleanValueHandler for DictBooleanValueHandlerImpl with g
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return { k1: true, k2: false }
   { "k1": true, "k2": false }
 }
@@ -157,6 +166,7 @@ impl @type_dictionary.BooleanValueHandler for DictBooleanValueHandlerImpl with p
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 2)
   assert_eq(body.get("k1"), Some(true))
   assert_eq(body.get("k2"), Some(false))
@@ -170,6 +180,7 @@ impl @type_dictionary.Float32ValueHandler for DictFloat32ValueHandlerImpl with g
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return { k1: 43.125 }
   { "k1": 43.125 }
 }
@@ -180,6 +191,7 @@ impl @type_dictionary.Float32ValueHandler for DictFloat32ValueHandlerImpl with p
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 1)
   assert_eq(body.get("k1"), Some(43.125))
 }
@@ -192,6 +204,7 @@ impl @type_dictionary.UnknownValueHandler for DictUnknownValueHandlerImpl with g
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return { k1: 1, k2: "hello", k3: null }
   {
     "k1": Json::number(1.0, repr="1"),
@@ -206,6 +219,7 @@ impl @type_dictionary.UnknownValueHandler for DictUnknownValueHandlerImpl with p
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 3)
   match body.get("k1") {
     Some(v) => assert_eq(v.stringify(), "1")
@@ -229,6 +243,7 @@ impl @type_dictionary.DatetimeValueHandler for DictDatetimeValueHandlerImpl with
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return { k1: Temporal.Instant.from("2022-08-26T18:38:00Z") }
   { "k1": "2022-08-26T18:38:00Z" }
 }
@@ -239,6 +254,7 @@ impl @type_dictionary.DatetimeValueHandler for DictDatetimeValueHandlerImpl with
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 1)
   assert_eq(body.get("k1"), Some("2022-08-26T18:38:00Z"))
 }
@@ -251,6 +267,7 @@ impl @type_dictionary.DurationValueHandler for DictDurationValueHandlerImpl with
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return { k1: Temporal.Duration.from("P123DT22H14M12.011S") }
   { "k1": "P123DT22H14M12.011S" }
 }
@@ -261,6 +278,7 @@ impl @type_dictionary.DurationValueHandler for DictDurationValueHandlerImpl with
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 1)
   assert_eq(body.get("k1"), Some("P123DT22H14M12.011S"))
 }
@@ -273,6 +291,7 @@ impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandle
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return { k1: 1.25, k2: 0.5, k3: null }
   {
     "k1": @runtime.Nullable(Some(1.25)),
@@ -287,6 +306,7 @@ impl @type_dictionary.NullableFloatValueHandler for DictNullableFloatValueHandle
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 3)
   match body.get("k1") {
     Some(v) => assert_eq(v, @runtime.Nullable(Some(1.25)))
@@ -310,6 +330,7 @@ impl @type_dictionary.RecursiveModelValueHandler for DictRecursiveModelValueHand
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return:
   // {
   //   k1: { property: "hello", children: {} },
@@ -338,6 +359,7 @@ impl @type_dictionary.RecursiveModelValueHandler for DictRecursiveModelValueHand
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 2)
   match body.get("k1") {
     Some(v) => {

@@ -50,6 +50,7 @@ impl @type_array.Int32ValueHandler for Int32ValueHandlerImpl with get(
   _self,
   group~,
 ) {
+  ignore(group)
   [
     // Should return [1, 2]
     1, 2,
@@ -62,6 +63,7 @@ impl @type_array.Int32ValueHandler for Int32ValueHandlerImpl with put(
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 2)
   assert_eq(body[0], 1)
   assert_eq(body[1], 2)
@@ -75,6 +77,7 @@ impl @type_array.Int64ValueHandler for Int64ValueHandlerImpl with get(
   _self,
   group~,
 ) {
+  ignore(group)
   [
     // Should return [0x7fffffffffffffff, -0x7fffffffffffffff]
     0x7fffffffffffffffL, -0x7fffffffffffffffL,
@@ -87,6 +90,7 @@ impl @type_array.Int64ValueHandler for Int64ValueHandlerImpl with put(
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 2)
   assert_eq(body[0], 0x7fffffffffffffffL)
   assert_eq(body[1], -0x7fffffffffffffffL)
@@ -100,6 +104,7 @@ impl @type_array.ModelValueHandler for ModelValueHandlerImpl with get(
   _self,
   group~,
 ) {
+  ignore(group)
   [
     // Should return [{ property: "hello" }, { property: "world" }]
     { property: "hello", children: None },
@@ -113,6 +118,7 @@ impl @type_array.ModelValueHandler for ModelValueHandlerImpl with put(
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 2)
   assert_eq(body[0].property, "hello")
   assert_eq(body[1].property, "world")
@@ -126,6 +132,7 @@ impl @type_array.StringValueHandler for StringValueHandlerImpl with get(
   _self,
   group~,
 ) {
+  ignore(group)
   [
     // Should return ["hello", ""]
     "hello", "",
@@ -138,6 +145,7 @@ impl @type_array.StringValueHandler for StringValueHandlerImpl with put(
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 2)
   assert_eq(body[0], "hello")
   assert_eq(body[1], "")
@@ -151,6 +159,7 @@ impl @type_array.BooleanValueHandler for BooleanValueHandlerImpl with get(
   _self,
   group~,
 ) {
+  ignore(group)
   [
     // Should return [true, false]
     true, false,
@@ -163,6 +172,7 @@ impl @type_array.BooleanValueHandler for BooleanValueHandlerImpl with put(
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 2)
   assert_eq(body[0], true)
   assert_eq(body[1], false)
@@ -176,6 +186,7 @@ impl @type_array.Float32ValueHandler for Float32ValueHandlerImpl with get(
   _self,
   group~,
 ) {
+  ignore(group)
   [
     // Should return [43.125]
     43.125,
@@ -188,6 +199,7 @@ impl @type_array.Float32ValueHandler for Float32ValueHandlerImpl with put(
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 1)
   assert_eq(body[0], 43.125)
 }
@@ -200,6 +212,7 @@ impl @type_array.UnknownValueHandler for UnknownValueHandlerImpl with get(
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return [1, "hello", null]
   let j = @json.parse("[1, \"hello\", null]")
   @json.from_json(j)
@@ -211,6 +224,7 @@ impl @type_array.UnknownValueHandler for UnknownValueHandlerImpl with put(
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 3)
   assert_eq(body[0].stringify(), "1")
   assert_eq(body[1].stringify(), "\"hello\"")
@@ -225,6 +239,7 @@ impl @type_array.DatetimeValueHandler for DatetimeValueHandlerImpl with get(
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return [Temporal.Instant.from("2022-08-26T18:38:00Z")]
   ["2022-08-26T18:38:00Z"]
 }
@@ -235,6 +250,7 @@ impl @type_array.DatetimeValueHandler for DatetimeValueHandlerImpl with put(
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 1)
   assert_eq(body[0], "2022-08-26T18:38:00Z")
 }
@@ -247,6 +263,7 @@ impl @type_array.DurationValueHandler for DurationValueHandlerImpl with get(
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return [Temporal.Duration.from("P123DT22H14M12.011S")]
   ["P123DT22H14M12.011S"]
 }
@@ -257,6 +274,7 @@ impl @type_array.DurationValueHandler for DurationValueHandlerImpl with put(
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 1)
   assert_eq(body[0], "P123DT22H14M12.011S")
 }
@@ -269,6 +287,7 @@ impl @type_array.NullableFloatValueHandler for NullableFloatValueHandlerImpl wit
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return [1.25, null, 3.0]
   [
     @runtime.Nullable(Some(1.25)),
@@ -283,6 +302,7 @@ impl @type_array.NullableFloatValueHandler for NullableFloatValueHandlerImpl wit
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 3)
   assert_eq(body[0], @runtime.Nullable(Some(1.25)))
   assert_eq(body[1], @runtime.Nullable(None))
@@ -297,6 +317,7 @@ impl @type_array.NullableInt32ValueHandler for NullableInt32ValueHandlerImpl wit
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return [1, null, 3]
   [
     @runtime.Nullable(Some(1)),
@@ -311,6 +332,7 @@ impl @type_array.NullableInt32ValueHandler for NullableInt32ValueHandlerImpl wit
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 3)
   assert_eq(body[0], @runtime.Nullable(Some(1)))
   assert_eq(body[1], @runtime.Nullable(None))
@@ -325,6 +347,7 @@ impl @type_array.NullableModelValueHandler for NullableModelValueHandlerImpl wit
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return [{ property: "hello" }, null, { property: "world" }]
   [
     @runtime.Nullable(Some({ property: "hello", children: None })),
@@ -339,6 +362,7 @@ impl @type_array.NullableModelValueHandler for NullableModelValueHandlerImpl wit
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 3)
   match body[0].0 {
     Some(v) => assert_eq(v.property, "hello")
@@ -361,6 +385,7 @@ impl @type_array.NullableStringValueHandler for NullableStringValueHandlerImpl w
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return ["hello", null, "world"]
   [
     @runtime.Nullable(Some("hello")),
@@ -375,6 +400,7 @@ impl @type_array.NullableStringValueHandler for NullableStringValueHandlerImpl w
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 3)
   assert_eq(body[0], @runtime.Nullable(Some("hello")))
   assert_eq(body[1], @runtime.Nullable(None))
@@ -389,6 +415,7 @@ impl @type_array.NullableBooleanValueHandler for NullableBooleanValueHandlerImpl
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return [true, null, false]
   [
     @runtime.Nullable(Some(true)),
@@ -403,6 +430,7 @@ impl @type_array.NullableBooleanValueHandler for NullableBooleanValueHandlerImpl
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.length(), 3)
   assert_eq(body[0], @runtime.Nullable(Some(true)))
   assert_eq(body[1], @runtime.Nullable(None))

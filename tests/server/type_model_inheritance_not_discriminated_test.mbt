@@ -27,6 +27,7 @@ impl @type_model_inheritance_not_discriminated.NotDiscriminatedHandler for NotDi
   _self,
   group~,
 ) {
+  ignore(group)
   // Should return: { name: "abc", age: 32, smart: true }
   { name: "abc", age: 32, smart: true }
 }
@@ -37,6 +38,7 @@ impl @type_model_inheritance_not_discriminated.NotDiscriminatedHandler for NotDi
   group~,
   body,
 ) {
+  ignore(group)
   // In TypeScript: assert.deepStrictEqual(input, { name: "abc", age: 32, smart: true })
   assert_eq(body.name, "abc")
   assert_eq(body.age, 32)
@@ -49,6 +51,7 @@ impl @type_model_inheritance_not_discriminated.NotDiscriminatedHandler for NotDi
   group~,
   body,
 ) {
+  ignore(group)
   // In TypeScript: assert.deepStrictEqual(input, { name: "abc", age: 32, smart: true })
   // Should return: { name: "abc", age: 32, smart: true }
   assert_eq(body.name, "abc")

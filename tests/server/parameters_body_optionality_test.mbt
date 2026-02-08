@@ -29,6 +29,7 @@ impl @parameters_body_optionality.BodyOptionalityHandler for BodyOptionalityHand
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.name, "foo", msg="required_explicit: body name mismatch")
 }
 
@@ -38,6 +39,7 @@ impl @parameters_body_optionality.BodyOptionalityHandler for BodyOptionalityHand
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.name, "foo", msg="required_implicit: body name mismatch")
 }
 
@@ -50,6 +52,7 @@ impl @parameters_body_optionality.OptionalExplicitHandler for OptionalExplicitHa
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.name, "foo", msg="optional_explicit.set: body name mismatch")
 }
 
@@ -59,6 +62,7 @@ impl @parameters_body_optionality.OptionalExplicitHandler for OptionalExplicitHa
   group~,
   _body,
 ) {
+  ignore(group)
   // omit should receive undefined/empty body
   // In TypeScript: assert.isUndefined(options?.body)
   // The body may be empty or have default values in MoonBit

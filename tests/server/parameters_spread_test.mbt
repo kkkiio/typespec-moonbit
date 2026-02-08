@@ -26,6 +26,7 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_as_r
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.name, "foo", msg="alias.spread_as_request_body: name mismatch")
 }
 
@@ -37,6 +38,7 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_para
   x_ms_test_header,
   body,
 ) {
+  ignore(group)
   assert_eq(id, "1", msg="spread_parameter_with_inner_model: id mismatch")
   assert_eq(
     x_ms_test_header,
@@ -58,6 +60,7 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_as_r
   x_ms_test_header,
   body,
 ) {
+  ignore(group)
   assert_eq(id, "1", msg="spread_as_request_parameter: id mismatch")
   assert_eq(
     x_ms_test_header,
@@ -79,6 +82,7 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_with
   x_ms_test_header,
   body,
 ) {
+  ignore(group)
   assert_eq(id, "1", msg="spread_with_multiple_parameters: id mismatch")
   assert_eq(
     x_ms_test_header,
@@ -103,6 +107,7 @@ impl @parameters_spread.AliasHandler for SpreadAliasHandlerImpl with spread_para
   x_ms_test_header,
   body,
 ) {
+  ignore(group)
   assert_eq(id, "1", msg="spread_parameter_with_inner_alias: id mismatch")
   assert_eq(
     x_ms_test_header,
@@ -126,6 +131,7 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_as_r
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.name, "foo", msg="model.spread_as_request_body: name mismatch")
 }
 
@@ -135,6 +141,7 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_comp
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(
     body.name,
     "foo",
@@ -149,6 +156,7 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_comp
   name,
   test_header,
 ) {
+  ignore(group)
   assert_eq(
     name,
     "foo",
@@ -169,6 +177,7 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_comp
   test_header,
   body,
 ) {
+  ignore(group)
   assert_eq(name, "foo", msg="spread_composite_request: name mismatch")
   assert_eq(
     test_header,
@@ -190,6 +199,7 @@ impl @parameters_spread.ModelHandler for SpreadModelHandlerImpl with spread_comp
   test_header,
   body,
 ) {
+  ignore(group)
   assert_eq(name, "foo", msg="spread_composite_request_mix: name mismatch")
   assert_eq(
     test_header,

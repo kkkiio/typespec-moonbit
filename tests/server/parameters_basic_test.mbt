@@ -24,6 +24,7 @@ impl @parameters_basic.ImplicitBodyHandler for ParamBasicImplicit with simple(
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.name, "foo")
 }
 
@@ -37,5 +38,6 @@ impl @parameters_basic.ExplicitBodyHandler for ParamBasicExplicit with simple(
   group~,
   body,
 ) {
+  ignore(group)
   assert_eq(body.name, "foo")
 }
