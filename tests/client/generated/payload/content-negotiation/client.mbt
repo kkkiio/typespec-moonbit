@@ -35,8 +35,7 @@ pub async fn SameBodyClient::get_content_negotiation_same_body(
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
   if response.code == 200 {
-    let response_body = client.read_all().text()
-    let parsed = @encoding/utf8.encode(response_body)
+    let parsed = client.read_all().binary()
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())
@@ -64,8 +63,7 @@ pub async fn SameBodyClient::get_content_negotiation_same_body_2(
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
   if response.code == 200 {
-    let response_body = client.read_all().text()
-    let parsed = @encoding/utf8.encode(response_body)
+    let parsed = client.read_all().binary()
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())
@@ -109,8 +107,7 @@ pub async fn DifferentBodyClient::get_content_negotiation_different_body(
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
   if response.code == 200 {
-    let response_body = client.read_all().text()
-    let parsed = @encoding/utf8.encode(response_body)
+    let parsed = client.read_all().binary()
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())

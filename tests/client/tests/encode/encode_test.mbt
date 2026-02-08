@@ -46,24 +46,29 @@ async test "runtime encode/bytes" {
 }
 
 ///|
-/// 对齐上游 skip：
-/// test/e2e/http/encode/bytes/main.test.ts
-/// - it.skip("should test base64 encode for bytes body")
-/// - it.skip("should test base64url encode for bytes body")
-/// 说明：上游将该场景标记为 skip，当前仓库保持一致。
 #cfg(target="native")
-#skip("对齐 http-client-js：bytes body 的 base64/base64url 用例在上游为 skip")
-async test "runtime encode/bytes: skipped body base64 variants" {
+async test "runtime encode/bytes: full body and response coverage" {
   let test_bytes = @encoding/utf8.encode("test")
+  let png_bytes = load_png_bytes()
   let request_body = @encode_bytes.RequestBodyClient::new(
     "http://localhost:3000",
   )
+  request_body.post_encode_bytes_body_request_default(png_bytes)
   request_body.post_encode_bytes_body_request_base64(
     "application/json", test_bytes,
   )
   request_body.post_encode_bytes_body_request_base64url(
     "application/json", test_bytes,
   )
+  let response_body = @encode_bytes.ResponseBodyClient::new(
+    "http://localhost:3000",
+  )
+  let response_default = response_body.get_encode_bytes_body_response_default()
+  assert_eq(response_default, png_bytes)
+  let response_octet = response_body.get_encode_bytes_body_response_octet_stream()
+  assert_eq(response_octet, png_bytes)
+  let response_custom = response_body.get_encode_bytes_body_response_custom_content_type()
+  assert_eq(response_custom, png_bytes)
 }
 
 ///|

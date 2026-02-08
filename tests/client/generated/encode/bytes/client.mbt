@@ -467,6 +467,7 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_default(
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
   let path = sb.to_string()
+  headers.set("Content-Type", "application/octet-stream")
   client.request(@http.Post, path, extra_headers=headers)
   client.write(body)
   let response = client.end_request()
@@ -555,7 +556,8 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_base64(
   headers.set("Content-Type", content_type)
   let path = sb.to_string()
   client.request(@http.Post, path, extra_headers=headers)
-  client.write(body)
+  let encoded = try! @runtime.encode_bytes(body, @runtime.BytesEncoding::Base64)
+  client.write(encoded.to_json())
   let response = client.end_request()
   if response.code == 204 {
     ()
@@ -584,7 +586,11 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_base64url(
   headers.set("Content-Type", content_type)
   let path = sb.to_string()
   client.request(@http.Post, path, extra_headers=headers)
-  client.write(body)
+  let encoded = try! @runtime.encode_bytes(
+    body,
+    @runtime.BytesEncoding::Base64Url,
+  )
+  client.write(encoded.to_json())
   let response = client.end_request()
   if response.code == 204 {
     ()
@@ -628,8 +634,7 @@ pub async fn ResponseBodyClient::get_encode_bytes_body_response_default(
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
   if response.code == 200 {
-    let response_body = client.read_all().text()
-    let parsed = @encoding/utf8.encode(response_body)
+    let parsed = client.read_all().binary()
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())
@@ -655,8 +660,7 @@ pub async fn ResponseBodyClient::get_encode_bytes_body_response_octet_stream(
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
   if response.code == 200 {
-    let response_body = client.read_all().text()
-    let parsed = @encoding/utf8.encode(response_body)
+    let parsed = client.read_all().binary()
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())
@@ -682,8 +686,7 @@ pub async fn ResponseBodyClient::get_encode_bytes_body_response_custom_content_t
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
   if response.code == 200 {
-    let response_body = client.read_all().text()
-    let parsed = @encoding/utf8.encode(response_body)
+    let parsed = client.read_all().binary()
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())

@@ -1372,8 +1372,7 @@ fn build_method_body(
                 "  let parsed = @runtime.decode_bytes(encoded, \{encoding_expr})",
               )
             } else {
-              wln(buf, "  let response_body = client.read_all().text()")
-              wln(buf, "  let parsed = @encoding/utf8.encode(response_body)")
+              wln(buf, "  let parsed = client.read_all().binary()")
             }
             if has_multi_success {
               wln(
@@ -1665,16 +1664,37 @@ fn resolve_response_bytes_encoding(r : SuccessResponse) -> String raise {
 }
 
 ///|
+fn resolve_body_bytes_encoding(p : OpParam) -> String? raise {
+  match p.bytes_encoding {
+    None => None
+    Some(v) => {
+      let raw = v.to_lower()
+      match raw {
+        "base64" => Some("base64")
+        "base64url" => Some("base64url")
+        "none" => None
+        _ =>
+          fail(
+            "unsupported bytes encoding for body parameter \{p.name}: \{raw}",
+          )
+      }
+    }
+  }
+}
+
+///|
 fn write_request_send(
   buf : StringBuilder,
   method_ctor : String,
   extra_params : Array[OpParam],
-) -> Unit {
+) -> Unit raise {
   let mut body_param : OpParam? = None
+  let mut has_content_type_header_param = false
   for p in extra_params {
     if p.location == "body" {
       body_param = Some(p)
-      break
+    } else if p.location == "header" && p.name.to_lower() == "content-type" {
+      has_content_type_header_param = true
     }
   }
   match body_param {
@@ -1685,11 +1705,33 @@ fn write_request_send(
         wln(buf, "if \{p.var_name} is Some(body) {")
         match p.type_ {
           @typespec.TypeSpecType::Bytes => {
-            wln(
-              buf,
-              "  client.request(\{method_ctor}, path, extra_headers=headers)",
-            )
-            wln(buf, "  client.write(body)")
+            let bytes_encoding = resolve_body_bytes_encoding(p)
+            match bytes_encoding {
+              Some(encoding) => {
+                let encoding_expr = bytes_encoding_runtime_expr(encoding)
+                wln(
+                  buf,
+                  "  client.request(\{method_ctor}, path, extra_headers=headers)",
+                )
+                wln(
+                  buf,
+                  "  let encoded = try! @runtime.encode_bytes(body, \{encoding_expr})",
+                )
+                wln(buf, "  client.write(encoded.to_json())")
+              }
+              None => {
+                if !has_content_type_header_param {
+                  wln(
+                    buf, "  headers.set(\"Content-Type\", \"application/octet-stream\")",
+                  )
+                }
+                wln(
+                  buf,
+                  "  client.request(\{method_ctor}, path, extra_headers=headers)",
+                )
+                wln(buf, "  client.write(body)")
+              }
+            }
           }
           _ => {
             wln(buf, "  headers.set(\"content-type\", \"application/json\")")
@@ -1709,11 +1751,33 @@ fn write_request_send(
       } else {
         match p.type_ {
           @typespec.TypeSpecType::Bytes => {
-            wln(
-              buf,
-              "client.request(\{method_ctor}, path, extra_headers=headers)",
-            )
-            wln(buf, "client.write(\{p.var_name})")
+            let bytes_encoding = resolve_body_bytes_encoding(p)
+            match bytes_encoding {
+              Some(encoding) => {
+                let encoding_expr = bytes_encoding_runtime_expr(encoding)
+                wln(
+                  buf,
+                  "client.request(\{method_ctor}, path, extra_headers=headers)",
+                )
+                wln(
+                  buf,
+                  "let encoded = try! @runtime.encode_bytes(\{p.var_name}, \{encoding_expr})",
+                )
+                wln(buf, "client.write(encoded.to_json())")
+              }
+              None => {
+                if !has_content_type_header_param {
+                  wln(
+                    buf, "headers.set(\"Content-Type\", \"application/octet-stream\")",
+                  )
+                }
+                wln(
+                  buf,
+                  "client.request(\{method_ctor}, path, extra_headers=headers)",
+                )
+                wln(buf, "client.write(\{p.var_name})")
+              }
+            }
           }
           _ => {
             wln(buf, "headers.set(\"content-type\", \"application/json\")")
