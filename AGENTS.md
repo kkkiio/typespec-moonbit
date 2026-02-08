@@ -21,8 +21,8 @@ npm run test:server
 
 由于 TypeSpec 要求导出 `$onEmit`，而 MoonBit 函数名不能以 `$` 开头，因此采用最小 JS shim：MoonBit 导出 `on_emit`，`index.js` 只做 `$onEmit` 的导出别名。
 
-- `emitter/config/`：Emitter 选项解析（`EmitterOptions`）与诊断上报封装（`program.reportDiagnostic`）。
-- `emitter/ffi/`：Node.js 与 TypeSpec 编译器 API 的 JS FFI 包装（EmitContext 辅助）。
+- `emitter/diagnostics/`：诊断上报封装（`program.reportDiagnostic`）与 Node.js/TypeSpec 所需 JS FFI 包装（含 EmitContext 辅助）。
+- `emitter/http_client/` 与 `emitter/http_server/`：各自维护本 package 的 `EmitterOptions` 解析逻辑。
 - `emitter/typespec/`：TypeSpec Program/TCGC 的读取与类型解析适配层。
 - `emitter/mbtgen/`：MoonBit 源码渲染辅助（函数、结构、语句拼装）。
 - `emitter/http_client/`：client emitter 入口（导出 `on_emit`）。

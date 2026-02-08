@@ -47,29 +47,6 @@ test "render_file" {
       }),
     ],
   }
-  let expected =
-    #|// package: sample/client
-    #|
-    #|import "a/pkg"
-    #|import "z/pkg"
-    #|
-    #|///|
-    #|///|
-    #|/// 用户模型
-    #|pub struct User derive(Show) {
-    #|  ///|
-    #|  /// 用户名
-    #|  name : String // rename="user_name"
-    #|  age : Int?
-    #|}
-    #|
-    #|///|
-    #|///|
-    #|/// 返回问候
-    #|pub fn greet(user : User) -> String
-    #|{
-    #|  return "ok"
-    #|}
   inspect(
     render(file),
     content=(
