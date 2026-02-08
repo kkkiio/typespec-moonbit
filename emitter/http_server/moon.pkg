@@ -1,8 +1,7 @@
 import {
   "kkkiio/typespec-moonbit/typespec",
   "kkkiio/typespec-moonbit/mbtgen",
-  "kkkiio/typespec-moonbit/config",
-  "kkkiio/typespec-moonbit/ffi",
+  "kkkiio/typespec-moonbit/diagnostics",
   "justjavac/case",
   "moonbit-community/js-ffi/js",
   "moonbitlang/x/fs",

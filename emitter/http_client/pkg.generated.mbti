@@ -15,6 +15,22 @@ pub fn sanitize_identifier(String) -> String
 // Errors
 
 // Types and methods
+pub struct EmitterOptions {
+  package_name : String
+  package_version : String
+  module_name : String
+  overwrite_moon_pkg : Bool
+  overwrite_readme : Bool
+  omit_doc_links : Bool
+}
+pub fn EmitterOptions::defaults() -> Self
+pub fn EmitterOptions::from_context(@js.Value) -> Self
+pub fn EmitterOptions::module_name(Self) -> String
+pub fn EmitterOptions::omit_doc_links(Self) -> Bool
+pub fn EmitterOptions::overwrite_moon_pkg(Self) -> Bool
+pub fn EmitterOptions::overwrite_readme(Self) -> Bool
+pub fn EmitterOptions::package_name(Self) -> String
+pub fn EmitterOptions::package_version(Self) -> String
 
 // Type aliases
 

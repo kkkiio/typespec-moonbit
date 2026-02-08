@@ -1,0 +1,15 @@
+import {
+  "moonbit-community/js-ffi/js" as @js,
+}
+
+options(
+  targets: {
+    "ast.mbt": [ "js", "wasm-gc", "native" ],
+    "identifier.mbt": [ "js", "wasm-gc", "native" ],
+    "process.mbt": [ "js" ],
+    "renderer.mbt": [ "js", "wasm-gc", "native" ],
+    "renderer_test.mbt": [ "js", "wasm-gc", "native" ],
+    "stmt.mbt": [ "js", "wasm-gc", "native" ],
+    "types.mbt": [ "js", "wasm-gc", "native" ],
+  },
+)

@@ -25,37 +25,39 @@ pub fn EmitterOptions::defaults() -> EmitterOptions {
 ///|
 /// 从 EmitContext 读取 `options` 并构建 EmitterOptions。
 pub fn EmitterOptions::from_context(
-  context : @ffi.EmitContext,
+  context : @diagnostics.EmitContext,
 ) -> EmitterOptions {
   let defaults = EmitterOptions::defaults()
-  let options : @ffi.JsValue = @ffi.get_value(context, "options")
+  let options : @diagnostics.JsValue = @diagnostics.get_value(
+    context, "options",
+  )
   {
-    package_name: @ffi.get_optional_string(
+    package_name: @diagnostics.get_optional_string(
       options,
       "package-name",
       defaults.package_name,
     ),
-    package_version: @ffi.get_optional_string(
+    package_version: @diagnostics.get_optional_string(
       options,
       "package-version",
       defaults.package_version,
     ),
-    module_name: @ffi.get_optional_string(
+    module_name: @diagnostics.get_optional_string(
       options,
       "module-name",
       defaults.module_name,
     ),
-    overwrite_moon_pkg: @ffi.get_optional_bool(
+    overwrite_moon_pkg: @diagnostics.get_optional_bool(
       options,
       "overwrite-moon-pkg",
       defaults.overwrite_moon_pkg,
     ),
-    overwrite_readme: @ffi.get_optional_bool(
+    overwrite_readme: @diagnostics.get_optional_bool(
       options,
       "overwrite-readme",
       defaults.overwrite_readme,
     ),
-    omit_doc_links: @ffi.get_optional_bool(
+    omit_doc_links: @diagnostics.get_optional_bool(
       options,
       "omit-doc-links",
       defaults.omit_doc_links,

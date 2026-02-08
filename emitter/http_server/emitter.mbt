@@ -1,27 +1,27 @@
 ///|
-pub fn on_emit(context : @ffi.EmitContext) -> @js.Promise {
+pub fn on_emit(context : @diagnostics.EmitContext) -> @js.Promise {
   @js.Promise::unsafe_new(async fn() { on_emit_async(context) })
 }
 
 ///|
-pub async fn on_emit_async(context : @ffi.EmitContext) -> Unit {
-  let options = @config.EmitterOptions::from_context(context)
-  let program = @ffi.program(context)
+pub async fn on_emit_async(context : @diagnostics.EmitContext) -> Unit {
+  let options = EmitterOptions::from_context(context)
+  let program = @diagnostics.program(context)
   let http_services = @typespec.get_all_http_services_async(program)
   let services = collect_server_services(http_services)
   let files = emit_http_server_files(services, options)
-  let out_dir = @ffi.emitter_output_dir(context)
+  let out_dir = @diagnostics.emitter_output_dir(context)
   @fs.create_dir(out_dir)
   for file in files {
     let rel_path = file.path()
     let full_path = join_path(out_dir, rel_path)
     if @fs.path_exists(full_path) && !should_overwrite(rel_path, options) {
-      @config.report_file_already_exists(context, full_path)
+      @diagnostics.report_file_already_exists(context, full_path)
     } else {
       @fs.write_string_to_file(full_path, file.content())
     }
   }
-  @ffi.exec_moon_fmt(out_dir)
+  @mbtgen.exec_moon_fmt(out_dir)
 }
 
 ///|
@@ -46,7 +46,7 @@ fn GeneratedFile::content(self : GeneratedFile) -> String {
 }
 
 ///|
-fn should_overwrite(path : String, options : @config.EmitterOptions) -> Bool {
+fn should_overwrite(path : String, options : EmitterOptions) -> Bool {
   if path == "moon.pkg" {
     options.overwrite_moon_pkg()
   } else {
@@ -57,7 +57,7 @@ fn should_overwrite(path : String, options : @config.EmitterOptions) -> Bool {
 ///|
 fn emit_http_server_files(
   services : Array[ServerService],
-  options : @config.EmitterOptions,
+  options : EmitterOptions,
 ) -> Array[GeneratedFile] raise {
   let pkg_name = options.package_name()
   guard pkg_name.length() > 0 else { fail("package-name cannot be empty") }

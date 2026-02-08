@@ -8,5 +8,5 @@ extern "js" fn safe_exec_sync(
 
 ///|
 pub fn exec_moon_fmt(path : String) -> Unit {
-  safe_exec_sync(require_module("child_process"), "moon fmt", path)
+  safe_exec_sync(@js.require("child_process"), "moon fmt", path)
 }

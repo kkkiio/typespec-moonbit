@@ -1,8 +1,6 @@
 ///|
 /// 诊断严重级别。
-#warnings("-unused_constructor")
 pub enum DiagnosticSeverity {
-  Error
   Warning
 }
 
@@ -10,35 +8,21 @@ pub enum DiagnosticSeverity {
 /// 将诊断严重级别转换为 TypeSpec 所需字符串。
 pub fn DiagnosticSeverity::to_string(self : DiagnosticSeverity) -> String {
   match self {
-    Error => "error"
     Warning => "warning"
   }
 }
 
 ///|
 /// 诊断码枚举（与 typespec-rust 对齐）。
-#warnings("-unused_constructor")
 pub enum DiagnosticCode {
-  InternalError
-  InvalidArgument
-  NameCollision
-  UnsupportedTsp
   FileAlreadyExists
-  EmitFailed
-  FormatSkipped
 }
 
 ///|
 /// 将诊断码转换为字符串。
 pub fn DiagnosticCode::to_string(self : DiagnosticCode) -> String {
   match self {
-    InternalError => "InternalError"
-    InvalidArgument => "InvalidArgument"
-    NameCollision => "NameCollision"
-    UnsupportedTsp => "UnsupportedTsp"
     FileAlreadyExists => "FileAlreadyExists"
-    EmitFailed => "EmitFailed"
-    FormatSkipped => "FormatSkipped"
   }
 }
 
@@ -48,7 +32,7 @@ pub struct Diagnostic {
   code : DiagnosticCode
   severity : DiagnosticSeverity
   message : String
-  target : @ffi.JsValue?
+  target : JsValue?
 }
 
 ///|
@@ -67,7 +51,7 @@ pub fn Diagnostic::with_target(
   code : DiagnosticCode,
   severity : DiagnosticSeverity,
   message : String,
-  target : @ffi.JsValue,
+  target : JsValue,
 ) -> Diagnostic {
   { code, severity, message, target: Some(target) }
 }
@@ -92,14 +76,14 @@ pub fn Diagnostic::message(self : Diagnostic) -> String {
 
 ///|
 /// 获取诊断 target。
-pub fn Diagnostic::target(self : Diagnostic) -> @ffi.JsValue? {
+pub fn Diagnostic::target(self : Diagnostic) -> JsValue? {
   self.target
 }
 
 ///|
 /// 通过 TypeSpec Program 上报诊断。
-pub fn report(context : @ffi.EmitContext, diagnostic : Diagnostic) -> Unit {
-  let program : @ffi.JsValue = @ffi.get_value(context, "program")
+pub fn report(context : EmitContext, diagnostic : Diagnostic) -> Unit {
+  let program : JsValue = get_value(context, "program")
   let payload = @js.Object::new()
   payload["code"] = diagnostic.code().to_string()
   payload["severity"] = diagnostic.severity().to_string()
@@ -114,7 +98,7 @@ pub fn report(context : @ffi.EmitContext, diagnostic : Diagnostic) -> Unit {
 ///|
 /// 直接上报诊断消息。
 pub fn report_message(
-  context : @ffi.EmitContext,
+  context : EmitContext,
   code : DiagnosticCode,
   severity : DiagnosticSeverity,
   message : String,
@@ -125,10 +109,7 @@ pub fn report_message(
 
 ///|
 /// 上报文件已存在的警告（不覆盖）。
-pub fn report_file_already_exists(
-  context : @ffi.EmitContext,
-  path : String,
-) -> Unit {
+pub fn report_file_already_exists(context : EmitContext, path : String) -> Unit {
   report_message(
     context,
     DiagnosticCode::FileAlreadyExists,
