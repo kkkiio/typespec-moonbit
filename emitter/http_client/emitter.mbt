@@ -475,12 +475,32 @@ fn emit_model_from_json_impl(
         let encoding_expr = bytes_encoding_runtime_expr(encoding)
         if info.optional {
           sb.write_string(
-            "let \{var_name} : Bytes? = if Json::equal(\{raw_name}, Json::null()) { None } else { Some(try! @runtime.decode_bytes(@json.from_json(\{raw_name}, path=path), \{encoding_expr})) }\n",
+            "let \{var_name} : Bytes? = if Json::equal(\{raw_name}, Json::null()) {\n",
           )
+          sb.write_string("  None\n")
+          sb.write_string("} else {\n")
+          sb.write_string(
+            "  let decoded_result : Result[Bytes, Error] = try? @runtime.decode_bytes(@json.from_json(\{raw_name}, path=path), \{encoding_expr})\n",
+          )
+          sb.write_string("  match decoded_result {\n")
+          sb.write_string("    Ok(decoded) => Some(decoded)\n")
+          sb.write_string(
+            "    Err(_) => raise @json.JsonDecodeError((path, \"invalid bytes value for field \{info.wire_name}\"))\n",
+          )
+          sb.write_string("  }\n")
+          sb.write_string("}\n")
         } else {
           sb.write_string(
-            "let \{var_name} : Bytes = try! @runtime.decode_bytes(@json.from_json(\{raw_name}, path=path), \{encoding_expr})\n",
+            "let \{var_name}_decoded_result : Result[Bytes, Error] = try? @runtime.decode_bytes(@json.from_json(\{raw_name}, path=path), \{encoding_expr})\n",
           )
+          sb.write_string(
+            "let \{var_name} : Bytes = match \{var_name}_decoded_result {\n",
+          )
+          sb.write_string("  Ok(decoded) => decoded\n")
+          sb.write_string(
+            "  Err(_) => raise @json.JsonDecodeError((path, \"invalid bytes value for field \{info.wire_name}\"))\n",
+          )
+          sb.write_string("}\n")
         }
       }
       @typespec.TypeSpecType::Array(@typespec.TypeSpecType::Bytes) => {
@@ -495,17 +515,40 @@ fn emit_model_from_json_impl(
           sb.write_string(
             "  let encoded : Array[String] = @json.from_json(\{raw_name}, path=path)\n",
           )
+          sb.write_string("  let decoded : Array[Bytes] = []\n")
+          sb.write_string("  for s in encoded {\n")
           sb.write_string(
-            "  Some(encoded.map(fn(s) { try! @runtime.decode_bytes(s, \{encoding_expr}) }))\n",
+            "    let decoded_result : Result[Bytes, Error] = try? @runtime.decode_bytes(s, \{encoding_expr})\n",
           )
+          sb.write_string("    match decoded_result {\n")
+          sb.write_string(
+            "      Ok(decoded_item) => decoded.push(decoded_item)\n",
+          )
+          sb.write_string(
+            "      Err(_) => raise @json.JsonDecodeError((path, \"invalid bytes array item for field \{info.wire_name}\"))\n",
+          )
+          sb.write_string("    }\n")
+          sb.write_string("  }\n")
+          sb.write_string("  Some(decoded)\n")
           sb.write_string("}\n")
         } else {
           sb.write_string(
             "let \{var_name}_encoded : Array[String] = @json.from_json(\{raw_name}, path=path)\n",
           )
+          sb.write_string("let \{var_name} : Array[Bytes] = []\n")
+          sb.write_string("for s in \{var_name}_encoded {\n")
           sb.write_string(
-            "let \{var_name} : Array[Bytes] = \{var_name}_encoded.map(fn(s) { try! @runtime.decode_bytes(s, \{encoding_expr}) })\n",
+            "  let decoded_result : Result[Bytes, Error] = try? @runtime.decode_bytes(s, \{encoding_expr})\n",
           )
+          sb.write_string("  match decoded_result {\n")
+          sb.write_string(
+            "    Ok(decoded_item) => \{var_name}.push(decoded_item)\n",
+          )
+          sb.write_string(
+            "    Err(_) => raise @json.JsonDecodeError((path, \"invalid bytes array item for field \{info.wire_name}\"))\n",
+          )
+          sb.write_string("  }\n")
+          sb.write_string("}\n")
         }
       }
       _ => {
@@ -563,18 +606,18 @@ fn emit_model_to_json_impl(
         let encoding = resolve_model_field_bytes_encoding(info.bytes_encoding)
         let encoding_expr = bytes_encoding_runtime_expr(encoding)
         if info.optional {
-          "match \{field_ref} { Some(v) => Json::string(try! @runtime.encode_bytes(v, \{encoding_expr})), None => Json::null() }"
+          "match \{field_ref} { Some(v) => Json::string(@runtime.encode_bytes(v, \{encoding_expr})), None => Json::null() }"
         } else {
-          "Json::string(try! @runtime.encode_bytes(\{field_ref}, \{encoding_expr}))"
+          "Json::string(@runtime.encode_bytes(\{field_ref}, \{encoding_expr}))"
         }
       }
       @typespec.TypeSpecType::Array(@typespec.TypeSpecType::Bytes) => {
         let encoding = resolve_model_field_bytes_encoding(info.bytes_encoding)
         let encoding_expr = bytes_encoding_runtime_expr(encoding)
         if info.optional {
-          "match \{field_ref} { Some(v) => (try! @runtime.encode_bytes_list(v, \{encoding_expr})).to_json(), None => Json::null() }"
+          "match \{field_ref} { Some(v) => @runtime.encode_bytes_list(v, \{encoding_expr}).to_json(), None => Json::null() }"
         } else {
-          "(try! @runtime.encode_bytes_list(\{field_ref}, \{encoding_expr})).to_json()"
+          "@runtime.encode_bytes_list(\{field_ref}, \{encoding_expr}).to_json()"
         }
       }
       _ => "\{field_ref}.to_json()"
@@ -1768,7 +1811,7 @@ fn write_request_send(
                 )
                 wln(
                   buf,
-                  "  let encoded = try! @runtime.encode_bytes(body, \{encoding_expr})",
+                  "  let encoded = @runtime.encode_bytes(body, \{encoding_expr})",
                 )
                 wln(buf, "  client.write(encoded.to_json())")
               }
@@ -1814,7 +1857,7 @@ fn write_request_send(
                 )
                 wln(
                   buf,
-                  "let encoded = try! @runtime.encode_bytes(\{p.var_name}, \{encoding_expr})",
+                  "let encoded = @runtime.encode_bytes(\{p.var_name}, \{encoding_expr})",
                 )
                 wln(buf, "client.write(encoded.to_json())")
               }

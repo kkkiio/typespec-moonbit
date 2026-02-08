@@ -17,9 +17,7 @@ pub impl ToJson for BytesProperty with to_json(self : BytesProperty) -> Json {
     "property",
     match self.property {
       Some(v) =>
-        Json::string(
-          try! @runtime.encode_bytes(v, @runtime.BytesEncoding::Base64),
-        )
+        Json::string(@runtime.encode_bytes(v, @runtime.BytesEncoding::Base64))
       None => Json::null()
     },
   )
@@ -36,12 +34,17 @@ pub impl @json.FromJson for BytesProperty with from_json(
   let __property : Bytes? = if Json::equal(__raw_property, Json::null()) {
     None
   } else {
-    Some(
-      try! @runtime.decode_bytes(
-        @json.from_json(__raw_property, path~),
-        @runtime.BytesEncoding::Base64,
-      ),
+    let decoded_result : Result[Bytes, Error] = try? @runtime.decode_bytes(
+      @json.from_json(__raw_property, path~),
+      @runtime.BytesEncoding::Base64,
     )
+    match decoded_result {
+      Ok(decoded) => Some(decoded)
+      Err(_) =>
+        raise @json.JsonDecodeError(
+          (path, "invalid bytes value for field property"),
+        )
+    }
   }
   { property: __property }
 }
@@ -135,7 +138,7 @@ pub impl ToJson for CollectionsByteProperty with to_json(
     "property",
     match self.property {
       Some(v) =>
-        (try! @runtime.encode_bytes_list(v, @runtime.BytesEncoding::Base64)).to_json()
+        @runtime.encode_bytes_list(v, @runtime.BytesEncoding::Base64).to_json()
       None => Json::null()
     },
   )
@@ -153,11 +156,21 @@ pub impl @json.FromJson for CollectionsByteProperty with from_json(
     None
   } else {
     let encoded : Array[String] = @json.from_json(__raw_property, path~)
-    Some(
-      encoded.map(fn(s) {
-        try! @runtime.decode_bytes(s, @runtime.BytesEncoding::Base64)
-      }),
-    )
+    let decoded : Array[Bytes] = []
+    for s in encoded {
+      let decoded_result : Result[Bytes, Error] = try? @runtime.decode_bytes(
+        s,
+        @runtime.BytesEncoding::Base64,
+      )
+      match decoded_result {
+        Ok(decoded_item) => decoded.push(decoded_item)
+        Err(_) =>
+          raise @json.JsonDecodeError(
+            (path, "invalid bytes array item for field property"),
+          )
+      }
+    }
+    Some(decoded)
   }
   { property: __property }
 }

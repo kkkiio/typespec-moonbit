@@ -40,7 +40,7 @@ pub impl ToJson for BytesProperty with to_json(self : BytesProperty) -> Json {
   obj.set(
     "property",
     Json::string(
-      try! @runtime.encode_bytes(self.property, @runtime.BytesEncoding::Base64),
+      @runtime.encode_bytes(self.property, @runtime.BytesEncoding::Base64),
     ),
   )
   Json::object(obj)
@@ -53,10 +53,17 @@ pub impl @json.FromJson for BytesProperty with from_json(
 ) -> BytesProperty raise {
   let obj : Map[String, Json] = @json.from_json(json, path~)
   let __raw_property = obj.get("property").unwrap_or(Json::null())
-  let __property : Bytes = try! @runtime.decode_bytes(
+  let __property_decoded_result : Result[Bytes, Error] = try? @runtime.decode_bytes(
     @json.from_json(__raw_property, path~),
     @runtime.BytesEncoding::Base64,
   )
+  let __property : Bytes = match __property_decoded_result {
+    Ok(decoded) => decoded
+    Err(_) =>
+      raise @json.JsonDecodeError(
+        (path, "invalid bytes value for field property"),
+      )
+  }
   { property: __property }
 }
 
