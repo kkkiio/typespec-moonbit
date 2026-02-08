@@ -1,10 +1,10 @@
 import {
   "kkkiio/typespec-moonbit/typespec",
   "kkkiio/typespec-moonbit/mbtgen",
+  "kkkiio/typespec-moonbit/node_fs",
   "kkkiio/typespec-moonbit/diagnostics",
   "justjavac/case",
   "moonbit-community/js-ffi/js",
-  "moonbitlang/x/fs",
 }
 
 options(

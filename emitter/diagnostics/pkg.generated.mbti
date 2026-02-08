@@ -22,8 +22,6 @@ pub fn get_optional_value(@js.Value, String) -> @js.Value?
 
 pub fn get_value(@js.Value, String) -> @js.Value
 
-pub async fn import_module(String) -> @js.Value
-
 pub fn is_array(@js.Value) -> Bool
 
 pub fn is_bool(@js.Value) -> Bool
@@ -43,8 +41,6 @@ pub fn report(@js.Value, Diagnostic) -> Unit
 pub fn report_file_already_exists(@js.Value, String) -> Unit
 
 pub fn report_message(@js.Value, DiagnosticCode, DiagnosticSeverity, String) -> Unit
-
-pub fn require_module(String) -> @js.Value
 
 // Errors
 
