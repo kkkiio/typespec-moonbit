@@ -1,0 +1,11 @@
+import {
+  "moonbit-community/js-ffi/js" as @js,
+}
+
+options(
+  targets: {
+    "context.mbt": [ "js" ],
+    "options.mbt": [ "js" ],
+    "value.mbt": [ "js" ],
+  },
+)
