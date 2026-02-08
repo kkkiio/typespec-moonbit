@@ -16,7 +16,7 @@ pub impl ToJson for Base64BytesProperty with to_json(self : Base64BytesProperty)
   obj.set(
     "value",
     Json::string(
-      try! @runtime.encode_bytes(self.value, @runtime.BytesEncoding::Base64),
+      @runtime.encode_bytes(self.value, @runtime.BytesEncoding::Base64),
     ),
   )
   Json::object(obj)
@@ -29,10 +29,15 @@ pub impl @json.FromJson for Base64BytesProperty with from_json(
 ) -> Base64BytesProperty raise {
   let obj : Map[String, Json] = @json.from_json(json, path~)
   let __raw_value = obj.get("value").unwrap_or(Json::null())
-  let __value : Bytes = try! @runtime.decode_bytes(
+  let __value_decoded_result : Result[Bytes, Error] = try? @runtime.decode_bytes(
     @json.from_json(__raw_value, path~),
     @runtime.BytesEncoding::Base64,
   )
+  let __value : Bytes = match __value_decoded_result {
+    Ok(decoded) => decoded
+    Err(_) =>
+      raise @json.JsonDecodeError((path, "invalid bytes value for field value"))
+  }
   { value: __value }
 }
 
@@ -52,7 +57,7 @@ pub impl ToJson for DefaultBytesProperty with to_json(
   obj.set(
     "value",
     Json::string(
-      try! @runtime.encode_bytes(self.value, @runtime.BytesEncoding::Base64),
+      @runtime.encode_bytes(self.value, @runtime.BytesEncoding::Base64),
     ),
   )
   Json::object(obj)
@@ -65,10 +70,15 @@ pub impl @json.FromJson for DefaultBytesProperty with from_json(
 ) -> DefaultBytesProperty raise {
   let obj : Map[String, Json] = @json.from_json(json, path~)
   let __raw_value = obj.get("value").unwrap_or(Json::null())
-  let __value : Bytes = try! @runtime.decode_bytes(
+  let __value_decoded_result : Result[Bytes, Error] = try? @runtime.decode_bytes(
     @json.from_json(__raw_value, path~),
     @runtime.BytesEncoding::Base64,
   )
+  let __value : Bytes = match __value_decoded_result {
+    Ok(decoded) => decoded
+    Err(_) =>
+      raise @json.JsonDecodeError((path, "invalid bytes value for field value"))
+  }
   { value: __value }
 }
 
@@ -88,7 +98,7 @@ pub impl ToJson for Base64UrlBytesProperty with to_json(
   obj.set(
     "value",
     Json::string(
-      try! @runtime.encode_bytes(self.value, @runtime.BytesEncoding::Base64Url),
+      @runtime.encode_bytes(self.value, @runtime.BytesEncoding::Base64Url),
     ),
   )
   Json::object(obj)
@@ -101,10 +111,15 @@ pub impl @json.FromJson for Base64UrlBytesProperty with from_json(
 ) -> Base64UrlBytesProperty raise {
   let obj : Map[String, Json] = @json.from_json(json, path~)
   let __raw_value = obj.get("value").unwrap_or(Json::null())
-  let __value : Bytes = try! @runtime.decode_bytes(
+  let __value_decoded_result : Result[Bytes, Error] = try? @runtime.decode_bytes(
     @json.from_json(__raw_value, path~),
     @runtime.BytesEncoding::Base64Url,
   )
+  let __value : Bytes = match __value_decoded_result {
+    Ok(decoded) => decoded
+    Err(_) =>
+      raise @json.JsonDecodeError((path, "invalid bytes value for field value"))
+  }
   { value: __value }
 }
 
@@ -123,7 +138,7 @@ pub impl ToJson for Base64UrlArrayBytesProperty with to_json(
   let obj : Map[String, Json] = {}
   obj.set(
     "value",
-    (try! @runtime.encode_bytes_list(self.value, @runtime.BytesEncoding::Base64)).to_json(),
+    @runtime.encode_bytes_list(self.value, @runtime.BytesEncoding::Base64).to_json(),
   )
   Json::object(obj)
 }
@@ -136,8 +151,19 @@ pub impl @json.FromJson for Base64UrlArrayBytesProperty with from_json(
   let obj : Map[String, Json] = @json.from_json(json, path~)
   let __raw_value = obj.get("value").unwrap_or(Json::null())
   let __value_encoded : Array[String] = @json.from_json(__raw_value, path~)
-  let __value : Array[Bytes] = __value_encoded.map(fn(s) {
-    try! @runtime.decode_bytes(s, @runtime.BytesEncoding::Base64)
-  })
+  let __value : Array[Bytes] = []
+  for s in __value_encoded {
+    let decoded_result : Result[Bytes, Error] = try? @runtime.decode_bytes(
+      s,
+      @runtime.BytesEncoding::Base64,
+    )
+    match decoded_result {
+      Ok(decoded_item) => __value.push(decoded_item)
+      Err(_) =>
+        raise @json.JsonDecodeError(
+          (path, "invalid bytes array item for field value"),
+        )
+    }
+  }
   { value: __value }
 }

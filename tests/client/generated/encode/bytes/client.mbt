@@ -553,7 +553,7 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_base64(
   headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   client.request(@http.Post, path, extra_headers=headers)
-  let encoded = try! @runtime.encode_bytes(body, @runtime.BytesEncoding::Base64)
+  let encoded = @runtime.encode_bytes(body, @runtime.BytesEncoding::Base64)
   client.write(encoded.to_json())
   let response = client.end_request()
   if response.code == 204 {
@@ -582,10 +582,7 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_base64url(
   headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   client.request(@http.Post, path, extra_headers=headers)
-  let encoded = try! @runtime.encode_bytes(
-    body,
-    @runtime.BytesEncoding::Base64Url,
-  )
+  let encoded = @runtime.encode_bytes(body, @runtime.BytesEncoding::Base64Url)
   client.write(encoded.to_json())
   let response = client.end_request()
   if response.code == 204 {

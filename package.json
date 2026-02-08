@@ -25,8 +25,8 @@
     "spector": "node .scripts/spector.js",
     "gen:client-test": "node .scripts/gen_client_test.js",
     "gen:server-test": "node .scripts/gen_server_test.js",
-    "test:server:run": "moon test -C tests -p kkkiio/typespec-tests/server",
+    "test:server:run": "cd tests && moon test -p kkkiio/typespec-tests/server",
     "test:server": "npm run gen:server-test && npm run test:server:run",
-    "test:client": "npm run gen:client-test && moon test -C tests --target native -p kkkiio/typespec-tests/client/tests"
+    "test:client": "npm run gen:client-test && cd tests && moon test --target native -p kkkiio/typespec-tests/client/tests"
   }
 }

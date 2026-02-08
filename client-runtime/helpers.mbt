@@ -417,7 +417,7 @@ pub(all) enum BytesEncoding {
 }
 
 ///|
-pub fn encode_bytes(bytes : Bytes, encoding : BytesEncoding) -> String raise {
+pub fn encode_bytes(bytes : Bytes, encoding : BytesEncoding) -> String {
   match encoding {
     Base64 => @codec/base64.encode(bytes, url_safe=false)
     Base64Url =>
@@ -430,7 +430,7 @@ pub fn encode_bytes_array(
   values : Array[Bytes],
   encoding : BytesEncoding,
   delimiter : String,
-) -> String raise {
+) -> String {
   let encoded = encode_bytes_list(values, encoding)
   join(encoded, delimiter)
 }
@@ -439,7 +439,7 @@ pub fn encode_bytes_array(
 pub fn encode_bytes_list(
   values : Array[Bytes],
   encoding : BytesEncoding,
-) -> Array[String] raise {
+) -> Array[String] {
   let encoded = Array::new(capacity=values.length())
   for value in values {
     encoded.push(encode_bytes(value, encoding))
