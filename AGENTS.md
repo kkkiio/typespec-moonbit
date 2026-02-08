@@ -6,7 +6,14 @@
 
 In the module toplevel directory, this is a `moon.mod.json` file listing about the module and some meta information.
 
-本仓库使用 `npm` 管理 Node.js 依赖。
+修改代码后必须执行 e2e 测试:
+
+```bash
+npm run spector -- --start
+npm run test:client
+npm run spector -- --stop
+npm run test:server
+```
 
 ## emitter
 
@@ -91,8 +98,8 @@ E2E 测试模块（native target），负责运行时验证与维护生成用例
   typically a safe refactoring.
 
 - In the last step, run:
-  - `moon info -C emitter --target js && moon fmt -C emitter`
-  - `cd tests && moon info --target native && moon fmt`
+  - `cd emitter && moon info && moon fmt`
+  - `cd tests && moon info && moon fmt`
   Check the diffs of `.mbti` file to see if the changes are expected.
 
 - You can run `moon check` to check the code is linted correctly.

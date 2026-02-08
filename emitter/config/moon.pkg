@@ -1,0 +1,12 @@
+import {
+  "kkkiio/typespec-moonbit/ffi" as @ffi,
+  "moonbit-community/js-ffi/js" as @js,
+}
+
+options(
+  targets: {
+    "diagnostics.mbt": [ "js" ],
+    "library.mbt": [ "js" ],
+    "options.mbt": [ "js" ],
+  },
+)
