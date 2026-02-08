@@ -10,6 +10,6 @@ pub(all) struct JsonEncodedNameModel {
   default_name : Bool
 } derive (
   Show,
-  ToJson(fields(default_name(rename="defaultName"))),
-  @json.FromJson(fields(default_name(rename="defaultName"))),
+  ToJson(fields(default_name(rename="wireName"))),
+  @json.FromJson(fields(default_name(rename="wireName"))),
 )
