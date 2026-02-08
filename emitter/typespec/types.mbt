@@ -24,6 +24,7 @@ pub struct Model {
 pub struct Property {
   raw : JsValue
   name_hint : String
+  json_name_hint : String
 }
 
 ///|
@@ -62,9 +63,15 @@ pub fn Model::properties(self : Model) -> Iter[Property] {
   let out = Array::new(capacity=entries.length())
   for entry in entries {
     let name_val = get(entry, "name")
+    let json_name_val = get(entry, "json_name")
     let prop_val = get(entry, "prop")
     let name_hint = if is_string(name_val) { cast_string(name_val) } else { "" }
-    out.push({ raw: prop_val, name_hint })
+    let json_name_hint = if is_string(json_name_val) {
+      cast_string(json_name_val)
+    } else {
+      ""
+    }
+    out.push({ raw: prop_val, name_hint, json_name_hint })
   }
   out.iter()
 }
@@ -103,6 +110,15 @@ pub fn Property::name(self : Property) -> String {
     return self.name_hint
   }
   read_name(self.raw)
+}
+
+///|
+pub fn Property::json_name(self : Property) -> String? {
+  if self.json_name_hint != "" {
+    Some(self.json_name_hint)
+  } else {
+    None
+  }
 }
 
 ///|
@@ -422,6 +438,27 @@ extern "js" fn get_model_properties_with_base_as_array(
   model : JsValue,
 ) -> Array[JsValue] =
   #| (model) => {
+  #|   function getJsonEncodedName(prop) {
+  #|     const decs = prop?.decorators;
+  #|     if (!Array.isArray(decs)) return undefined;
+  #|     for (const d of decs) {
+  #|       if (d?.decorator?.name !== "$encodedName") continue;
+  #|       const mimeArg = d?.args?.[0]?.value;
+  #|       const nameArg = d?.args?.[1]?.value;
+  #|       const mime = typeof mimeArg?.value === "string" ? mimeArg.value : mimeArg;
+  #|       const encoded = typeof nameArg?.value === "string" ? nameArg.value : nameArg;
+  #|       if (
+  #|         typeof mime === "string" &&
+  #|         mime.toLowerCase() === "application/json" &&
+  #|         typeof encoded === "string" &&
+  #|         encoded.length > 0
+  #|       ) {
+  #|         return encoded;
+  #|       }
+  #|     }
+  #|     return undefined;
+  #|   }
+  #|
   #|   const order = [];
   #|   const index = new Map();
   #|   function visit(m) {
@@ -433,12 +470,13 @@ extern "js" fn get_model_properties_with_base_as_array(
   #|       ? props.entries()
   #|       : Object.entries(props);
   #|     for (const [name, prop] of entries) {
+  #|       const json_name = getJsonEncodedName(prop);
   #|       if (!index.has(name)) {
   #|         index.set(name, order.length);
-  #|         order.push({ name, prop });
+  #|         order.push({ name, prop, json_name });
   #|       } else {
   #|         const i = index.get(name);
-  #|         order[i] = { name, prop };
+  #|         order[i] = { name, prop, json_name };
   #|       }
   #|     }
   #|   }

@@ -343,17 +343,18 @@ fn emit_model_struct(
   let seen_field_names : Map[String, String] = Map::new()
   let rename_entries : Array[(String, String)] = Array::new()
   for prop in model.properties() {
-    let wire_name = prop.name()
-    let field_name = sanitize_identifier(@case.snake_case(wire_name))
+    let source_name = prop.name()
+    let wire_name = prop.json_name().unwrap_or(source_name)
+    let field_name = sanitize_identifier(@case.snake_case(source_name))
     if seen_field_names.contains(field_name) {
       let prev = seen_field_names.get(field_name).unwrap()
-      if prev != wire_name {
+      if prev != source_name {
         fail(
-          "model field name collision after snake_case: \{model_name}.\{prev} and \{model_name}.\{wire_name} both map to \{field_name}",
+          "model field name collision after snake_case: \{model_name}.\{prev} and \{model_name}.\{source_name} both map to \{field_name}",
         )
       }
     } else {
-      seen_field_names.set(field_name, wire_name)
+      seen_field_names.set(field_name, source_name)
     }
     let field : @mbtgen.Field = {
       name: field_name,

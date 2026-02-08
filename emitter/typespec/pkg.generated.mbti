@@ -127,9 +127,11 @@ pub fn Model::properties(Self) -> Iter[Property]
 pub struct Property {
   raw : @js.Value
   name_hint : String
+  json_name_hint : String
 }
 pub fn Property::bytes_encoding(Self) -> String?
 pub fn Property::is_optional(Self) -> Bool
+pub fn Property::json_name(Self) -> String?
 pub fn Property::name(Self) -> String
 pub fn Property::type_(Self) -> TypeSpecType
 
