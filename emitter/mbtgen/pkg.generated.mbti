@@ -4,6 +4,8 @@ package "kkkiio/typespec-moonbit/mbtgen"
 // Values
 pub fn render(File) -> String
 
+pub fn sanitize_identifier(String) -> String
+
 // Errors
 
 // Types and methods

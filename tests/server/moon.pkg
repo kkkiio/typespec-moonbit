@@ -1,4 +1,5 @@
 import {
+  "kkkiio/typespec-tests/config" as @test_config,
   "moonbitlang/async" as @async,
   "moonbitlang/async/http" as @http,
   "moonbitlang/async/io" as @io,

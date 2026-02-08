@@ -70,5 +70,30 @@ test "render_file" {
     #|{
     #|  return "ok"
     #|}
-  inspect(render(file), content=expected)
+  inspect(
+    render(file),
+    content=(
+      #|// package: sample/client
+      #|
+      #|import "a/pkg"
+      #|import "z/pkg"
+      #|
+      #|///|
+      #|///|
+      #|/// 用户模型
+      #|pub(all) struct User {
+      #|  ///|
+      #|  /// 用户名
+      #|  name : String // rename="user_name"
+      #|  age : Int?
+      #|} derive(Show)
+      #|
+      #|///|
+      #|///|
+      #|/// 返回问候
+      #|pub fn greet(user : User) -> String {
+      #|  return "ok"
+      #|}
+    ),
+  )
 }

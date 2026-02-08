@@ -9,8 +9,7 @@ async test "events/dotted-name/sse" {
     )
     let dispatch = @events_dotted_name.create_dispatch(router)
     let base_url = @server.start_server(group, dispatch)
-    @server.run("node", ["tests/server/scripts/assert_sse.js", base_url])
-    |> ignore
+    @server.run("node", ["server/scripts/assert_sse.js", base_url]) |> ignore
   })
 }
 

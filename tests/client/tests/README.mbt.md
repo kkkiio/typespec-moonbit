@@ -8,9 +8,8 @@
 ## 运行
 
 ```bash
-npm run spector -- --start
-npm run test:client
-npm run spector -- --stop
+# 在 tests 目录执行
+moon test --target native -p kkkiio/typespec-tests/client/tests
 ```
 
-运行流程会先执行 `tsp compile`，把生成物写入并提交到 `tests/client/generated/*`（对齐 typespec-rust 的测试策略）。
+运行流程会先执行 `tsp compile`，把生成物写入并提交到 `client/generated/*`（对齐 typespec-rust 的测试策略）。

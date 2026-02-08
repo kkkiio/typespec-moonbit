@@ -1,22 +1,18 @@
 ///|
-const CWD = ".."
-
-///|
 pub async fn run_scenario(
   scenario : String,
   base_url : String,
 ) -> Status noraise {
   try {
-    run(
-      "npx",
-      [
-        "tsp-spector", "knock",
-        // "\{CWD}/node_modules/@typespec/http-specs/specs",
-         "./node_modules/@typespec/http-specs/specs", "--filter", scenario, "--baseUrl",
-        base_url,
-      ],
-      options=RunOptions::new(cwd=CWD),
-    )
+    run("npx", [
+      "tsp-spector",
+      "knock",
+      @test_config.TYPESPEC_HTTP_SPECS_DIR,
+      "--filter",
+      scenario,
+      "--baseUrl",
+      base_url,
+    ])
     |> ignore
     Status::Pass
   } catch {

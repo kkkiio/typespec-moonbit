@@ -2,12 +2,16 @@
 
 ///|
 fn load_png_bytes() -> Bytes raise {
-  @fs.read_file_to_bytes("node_modules/@typespec/http-specs/assets/image.png")
+  @fs.read_file_to_bytes(
+    "\{@test_config.TYPESPEC_HTTP_SPECS_ASSETS_DIR}/image.png",
+  )
 }
 
 ///|
 fn load_jpg_bytes() -> Bytes raise {
-  @fs.read_file_to_bytes("node_modules/@typespec/http-specs/assets/image.jpg")
+  @fs.read_file_to_bytes(
+    "\{@test_config.TYPESPEC_HTTP_SPECS_ASSETS_DIR}/image.jpg",
+  )
 }
 
 ///|

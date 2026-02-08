@@ -10,10 +10,19 @@
 ## 运行
 
 ```bash
-# Server E2E 测试
-npm run test:server
+# 在 tests 目录直接运行全部测试
+moon test
 
-# Client Runtime 测试
+# 仅运行 Server E2E 测试
+moon test -p kkkiio/typespec-tests/server
+
+# 仅运行 Client Runtime 测试
+moon test --target native -p kkkiio/typespec-tests/client/tests
+```
+
+如果你希望通过仓库根目录脚本串联生成流程（以下命令在仓库根目录执行），可以使用：
+
+```bash
 npm run spector -- --start
 npm run test:client
 npm run spector -- --stop
