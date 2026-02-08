@@ -1,12 +1,11 @@
 ///|
-extern "js" fn safe_exec_sync(
-  cp : @js.Value,
-  cmd : String,
-  cwd : String,
-) -> Unit =
-  #| (cp, cmd, cwd) => { try { cp.execSync(cmd, { cwd: cwd }); } catch (e) { } }
+/// `node:child_process` 静态模块绑定。
+#module("node:child_process")
+extern "js" fn exec_sync_ffi(cmd : String, options : @js.Value) -> Unit = "execSync"
 
 ///|
 pub fn exec_moon_fmt(path : String) -> Unit {
-  safe_exec_sync(@js.require("child_process"), "moon fmt", path)
+  let options = @js.Object::new()
+  options["cwd"] = path
+  exec_sync_ffi("moon fmt", options.to_value())
 }

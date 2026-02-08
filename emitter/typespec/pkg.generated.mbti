@@ -22,11 +22,9 @@ pub fn get(@js.Value, String) -> @js.Value
 
 pub fn get_all_http_services(@js.Value) -> Array[HttpService]
 
-pub async fn get_all_http_services_async(@js.Value) -> Array[HttpService]
+pub fn get_all_http_services_async(@js.Value) -> Array[HttpService]
 
 pub fn get_index(@js.Value, Int) -> @js.Value
-
-pub async fn import_module(String) -> @js.Value
 
 pub fn is_array(@js.Value) -> Bool
 
@@ -41,8 +39,6 @@ pub fn is_sse_payload(@js.Value) -> Bool
 pub fn is_string(@js.Value) -> Bool
 
 pub fn is_undefined(@js.Value) -> Bool
-
-pub fn require_module(String) -> @js.Value
 
 pub fn resolve_request_body(@js.Value) -> TypeSpecType?
 

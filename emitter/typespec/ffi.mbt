@@ -70,17 +70,3 @@ pub fn set(obj : JsValue, key : String, value : JsValue) -> Unit {
 pub fn get_index(obj : JsValue, index : Int) -> JsValue {
   obj.get_with_index(index)
 }
-
-///|
-pub fn require_module(path : String) -> JsValue {
-  @js.require(path)
-}
-
-///|
-pub async fn import_module(path : String) -> JsValue {
-  @js.Promise::wait(import_module_ffi(path)).cast()
-}
-
-///|
-extern "js" fn import_module_ffi(path : String) -> @js.Promise =
-  #| (path) => import(path)

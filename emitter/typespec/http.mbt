@@ -36,22 +36,31 @@ pub struct HttpResponse {
 }
 
 ///|
-pub fn get_all_http_services(program : JsValue) -> Array[HttpService] {
-  let http = require_module("@typespec/http")
-  build_http_services(http, program)
-}
+/// `@typespec/http` 静态模块绑定。
+#module("@typespec/http")
+extern "js" fn get_all_http_services_ffi(program : JsValue) -> JsValue = "getAllHttpServices"
 
 ///|
-pub async fn get_all_http_services_async(
+/// `@typespec/http` 静态模块绑定。
+#module("@typespec/http")
+extern "js" fn get_servers_ffi(
   program : JsValue,
-) -> Array[HttpService] {
-  let http = import_module("@typespec/http")
-  build_http_services(http, program)
+  service_namespace : JsValue,
+) -> JsValue = "getServers"
+
+///|
+pub fn get_all_http_services(program : JsValue) -> Array[HttpService] {
+  build_http_services(program)
 }
 
 ///|
-fn build_http_services(http : JsValue, program : JsValue) -> Array[HttpService] {
-  let pair = http.apply_with_string("getAllHttpServices", [program])
+pub fn get_all_http_services_async(program : JsValue) -> Array[HttpService] {
+  build_http_services(program)
+}
+
+///|
+fn build_http_services(program : JsValue) -> Array[HttpService] {
+  let pair = get_all_http_services_ffi(program)
   let services_val = get_index(pair, 0)
   if is_undefined(services_val) || is_null(services_val) {
     return []
@@ -62,7 +71,7 @@ fn build_http_services(http : JsValue, program : JsValue) -> Array[HttpService] 
     let ns = get(service, "namespace")
     out.push(HttpService::{
       raw: service,
-      base_path_: get_server_base_path(http, program, ns),
+      base_path_: get_server_base_path(program, ns),
     })
   }
   out
@@ -602,13 +611,10 @@ fn parse_param_kind(kind : String) -> HttpParamKind {
 
 ///|
 fn get_server_base_path(
-  http_module : JsValue,
   program : JsValue,
   service_namespace : JsValue,
 ) -> String {
-  let servers_val = http_module.apply_with_string("getServers", [
-    program, service_namespace,
-  ])
+  let servers_val = get_servers_ffi(program, service_namespace)
   if is_undefined(servers_val) || is_null(servers_val) {
     return ""
   }

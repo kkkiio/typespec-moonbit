@@ -17,22 +17,6 @@ pub fn cast_string(value : JsValue) -> String {
 }
 
 ///|
-/// 通过 Node.js `require` 加载 JS 模块。
-pub fn require_module(path : String) -> JsValue {
-  @js.require(path)
-}
-
-///|
-/// 通过动态 `import()` 加载 JS 模块（适用于 ESM）。
-pub async fn import_module(path : String) -> JsValue {
-  @js.Promise::wait(import_module_ffi(path)).cast()
-}
-
-///|
-extern "js" fn import_module_ffi(path : String) -> @js.Promise =
-  #| (path) => import(path)
-
-///|
 pub fn is_string(value : JsValue) -> Bool {
   value.is_string()
 }

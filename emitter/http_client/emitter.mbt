@@ -12,14 +12,14 @@ pub async fn on_emit_async(context : @diagnostics.EmitContext) -> Unit {
   let services = @typespec.get_all_http_services_async(program)
   let files = emit_http_client_files(services, options)
   let out_dir = @diagnostics.emitter_output_dir(context)
-  @fs.create_dir(out_dir)
+  @node_fs.create_dir(out_dir)
   for file in files {
     let rel_path = file.path()
     let full_path = join_path(out_dir, rel_path)
-    if @fs.path_exists(full_path) && !should_overwrite(rel_path, options) {
+    if @node_fs.path_exists(full_path) && !should_overwrite(rel_path, options) {
       @diagnostics.report_file_already_exists(context, full_path)
     } else {
-      @fs.write_string_to_file(full_path, file.content())
+      @node_fs.write_string_to_file(full_path, file.content())
     }
   }
   @mbtgen.exec_moon_fmt(out_dir)
