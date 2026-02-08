@@ -1,20 +1,35 @@
 ///|
 
 ///|
+fn load_png_bytes() -> Bytes raise {
+  @fs.read_file_to_bytes("node_modules/@typespec/http-specs/assets/image.png")
+}
+
+///|
+fn load_jpg_bytes() -> Bytes raise {
+  @fs.read_file_to_bytes("node_modules/@typespec/http-specs/assets/image.jpg")
+}
+
+///|
 /// 对齐上游：test/e2e/http/payload/content-negotiation/main.test.ts
 #cfg(target="native")
-#skip("对齐 http-client-js：content-negotiation 场景在上游全部为 skip（二进制返回断言）")
 async test "runtime payload/content-negotiation" {
+  let png_bytes = load_png_bytes()
+  let jpg_bytes = load_jpg_bytes()
   let same = @payload_content_negotiation.SameBodyClient::new(
     "http://localhost:3000",
   )
-  ignore(same.get_content_negotiation_same_body("image/png"))
-  ignore(same.get_content_negotiation_same_body_2("image/jpeg"))
+  let same_png = same.get_avatar_as_png()
+  let same_jpeg = same.get_avatar_as_jpeg()
+  assert_eq(same_png, png_bytes)
+  assert_eq(same_jpeg, jpg_bytes)
   let different = @payload_content_negotiation.DifferentBodyClient::new(
     "http://localhost:3000",
   )
-  ignore(different.get_content_negotiation_different_body("image/png"))
-  ignore(different.get_content_negotiation_different_body_2("application/json"))
+  let diff_png = different.get_avatar_as_png()
+  assert_eq(diff_png, png_bytes)
+  let diff_json = different.get_avatar_as_json()
+  assert_eq(diff_json.content, png_bytes)
 }
 
 ///|
@@ -47,9 +62,7 @@ async test "runtime payload/json-merge-patch" {
         fail("expected 400 error, got: " + err.to_string())
       }
   }
-  let patch_result : Result[@payload_json_merge_patch.Resource, Error] = try? client.patch_json_merge_patch_update_resource(
-    "application/merge-patch+json",
-    {
+  let patch_result : Result[@payload_json_merge_patch.Resource, Error] = try? client.patch_json_merge_patch_update_resource({
       description: None,
       map: None,
       array: None,
@@ -75,9 +88,7 @@ async test "runtime payload/media-type" {
   let client = @payload_media_type.StringBodyClient::new(
     "http://localhost:3000",
   )
-  client.post_payload_media_type_string_body_sendasjson(
-    "application/json", "foo",
-  )
+  client.post_payload_media_type_string_body_sendasjson("foo")
   let as_json : Result[String, Error] = try? client.get_payload_media_type_string_body_getasjson()
   match as_json {
     Ok(_) => fail("expected getAsJson currently fails with 400")

@@ -27,6 +27,7 @@ pub struct HttpParam {
   explode_ : Bool
   array_encoding_ : String?
   bytes_encoding_ : String?
+  string_literal_ : String?
 }
 
 ///|
@@ -216,6 +217,7 @@ pub fn HttpOperation::parameters(self : HttpOperation) -> Iter[HttpParam] {
         explode_,
         array_encoding_: try_get_array_encoding(source),
         bytes_encoding_: try_get_bytes_encoding(source),
+        string_literal_: try_get_string_literal(source),
       })
     }
   }
@@ -234,6 +236,7 @@ pub fn HttpOperation::parameters(self : HttpOperation) -> Iter[HttpParam] {
       explode_: false,
       array_encoding_: None,
       bytes_encoding_: try_get_bytes_encoding(source),
+      string_literal_: None,
     })
   }
   out.iter()
@@ -385,6 +388,11 @@ pub fn HttpParam::bytes_encoding(self : HttpParam) -> String? {
 }
 
 ///|
+pub fn HttpParam::string_literal(self : HttpParam) -> String? {
+  self.string_literal_
+}
+
+///|
 pub fn HttpResponse::status_codes(self : HttpResponse) -> Array[Int] {
   let status_val = get(self.raw, "statusCodes")
   if is_undefined(status_val) || is_null(status_val) {
@@ -460,6 +468,11 @@ pub fn try_get_bytes_encoding(p : JsValue) -> String? {
 }
 
 ///|
+fn try_get_string_literal(p : JsValue) -> String? {
+  try_get_string_literal_ffi(p)
+}
+
+///|
 extern "js" fn try_get_array_encoding_ffi(p : JsValue) -> String? =
   #| (p) => {
   #|   const decs = p?.decorators;
@@ -481,6 +494,37 @@ extern "js" fn try_get_bytes_encoding_ffi(p : JsValue) -> String? =
   #|   const v = enc?.args?.[0]?.value;
   #|   const member = v?.value?.symbol?.name ?? v?.value?.name ?? v?.value?.enumMember?.name;
   #|   return typeof member === "string" ? member : undefined;
+  #| }
+
+///|
+extern "js" fn try_get_string_literal_ffi(p : JsValue) -> String? =
+  #| (p) => {
+  #|   const readStringLiteral = (node) => {
+  #|     if (!node || typeof node !== "object") return undefined;
+  #|     if (typeof node.value === "string") return node.value;
+  #|     if (typeof node.literal === "string") return node.literal;
+  #|     return undefined;
+  #|   };
+  #|   const readFromUnion = (node) => {
+  #|     const variants = node?.variants;
+  #|     if (!variants) return undefined;
+  #|     const arr = Array.isArray(variants)
+  #|       ? variants
+  #|       : variants instanceof Map
+  #|         ? Array.from(variants.values())
+  #|         : Object.values(variants);
+  #|     if (arr.length !== 1) return undefined;
+  #|     const variantType = arr[0]?.type ?? arr[0];
+  #|     return readStringLiteral(variantType);
+  #|   };
+  #|   const type = p?.type;
+  #|   const direct = readStringLiteral(type);
+  #|   if (typeof direct === "string") return direct;
+  #|   if (type?.kind === "Union") {
+  #|     const fromUnion = readFromUnion(type);
+  #|     if (typeof fromUnion === "string") return fromUnion;
+  #|   }
+  #|   return undefined;
   #| }
 
 ///|

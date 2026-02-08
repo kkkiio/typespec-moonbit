@@ -484,7 +484,6 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_default(
 /// 调用 post /encode/bytes/body/request/octet-stream（自动解析响应）。
 pub async fn RequestBodyClient::post_encode_bytes_body_request_octet_stream(
   self : RequestBodyClient,
-  content_type : String,
   body : Bytes,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -495,7 +494,7 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_octet_stream(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/octet-stream")
   let path = sb.to_string()
   client.request(@http.Post, path, extra_headers=headers)
   client.write(body)
@@ -513,7 +512,6 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_octet_stream(
 /// 调用 post /encode/bytes/body/request/custom-content-type（自动解析响应）。
 pub async fn RequestBodyClient::post_encode_bytes_body_request_custom_content_type(
   self : RequestBodyClient,
-  content_type : String,
   body : Bytes,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -524,7 +522,7 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_custom_content_ty
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "image/png")
   let path = sb.to_string()
   client.request(@http.Post, path, extra_headers=headers)
   client.write(body)
@@ -542,7 +540,6 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_custom_content_ty
 /// 调用 post /encode/bytes/body/request/base64（自动解析响应）。
 pub async fn RequestBodyClient::post_encode_bytes_body_request_base64(
   self : RequestBodyClient,
-  content_type : String,
   body : Bytes,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -553,7 +550,7 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_base64(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   client.request(@http.Post, path, extra_headers=headers)
   let encoded = try! @runtime.encode_bytes(body, @runtime.BytesEncoding::Base64)
@@ -572,7 +569,6 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_base64(
 /// 调用 post /encode/bytes/body/request/base64url（自动解析响应）。
 pub async fn RequestBodyClient::post_encode_bytes_body_request_base64url(
   self : RequestBodyClient,
-  content_type : String,
   body : Bytes,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -583,7 +579,7 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_base64url(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   client.request(@http.Post, path, extra_headers=headers)
   let encoded = try! @runtime.encode_bytes(

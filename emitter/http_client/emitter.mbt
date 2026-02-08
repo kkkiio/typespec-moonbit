@@ -772,7 +772,11 @@ fn emit_client_file(
       top_levels.push(emit_client_new(client_name))
       let used_method_names : Map[String, Int] = Map::new()
       for op in ops {
-        let base_name = make_method_name(op.verb(), op.path(), op.name())
+        let base_name = if should_use_operation_name_for_method(ops, op) {
+          make_method_name_from_operation_name(op.name())
+        } else {
+          make_method_name(op.verb(), op.path(), op.name())
+        }
         let next_idx = used_method_names.get(base_name).unwrap_or(0) + 1
         used_method_names.set(base_name, next_idx)
         let fn_name = if next_idx == 1 {
@@ -806,6 +810,42 @@ fn resolve_client_name_for_operation(
   } else {
     make_client_type_name(container_name)
   }
+}
+
+///|
+fn operation_has_literal_header(op : @typespec.HttpOperation) -> Bool {
+  for p in op.parameters() {
+    match p.kind() {
+      @typespec.HttpParamKind::Header =>
+        if p.string_literal() is Some(_) {
+          return true
+        }
+      _ => ()
+    }
+  }
+  false
+}
+
+///|
+fn should_use_operation_name_for_method(
+  ops : Array[@typespec.HttpOperation],
+  op : @typespec.HttpOperation,
+) -> Bool {
+  if !operation_has_literal_header(op) {
+    return false
+  }
+  let verb = op.verb()
+  let path = op.path()
+  let mut same_route_count = 0
+  for other in ops {
+    if other.verb() == verb && other.path() == path {
+      same_route_count += 1
+      if same_route_count > 1 {
+        return true
+      }
+    }
+  }
+  false
 }
 
 ///|
@@ -870,6 +910,7 @@ priv struct OpParam {
   explode : Bool
   array_encoding : String?
   bytes_encoding : String?
+  string_literal : String?
 }
 
 ///|
@@ -1040,6 +1081,7 @@ fn emit_client_method(
       explode: p.explode,
       array_encoding: p.array_encoding,
       bytes_encoding: p.bytes_encoding,
+      string_literal: p.string_literal,
     })
   }
   let fn_params = Array::new()
@@ -1059,6 +1101,9 @@ fn emit_client_method(
     fn_params.push(param)
   }
   for p in extra_params {
+    if p.location == "header" && p.string_literal is Some(_) {
+      continue
+    }
     let mut type_text = op_param_type_string(type_ctx, p)
     if p.optional {
       type_text = "\{type_text}?"
@@ -1208,6 +1253,7 @@ fn collect_op_params(op : @typespec.HttpOperation) -> Array[OpParam] {
       explode: p.explode(),
       array_encoding: p.array_encoding(),
       bytes_encoding: p.bytes_encoding(),
+      string_literal: p.string_literal(),
     })
   }
   out
@@ -1419,6 +1465,13 @@ fn build_method_body(
 ///|
 fn write_header_param(buf : StringBuilder, p : OpParam) -> Unit raise {
   let header_key = escape_string(p.name)
+  match p.string_literal {
+    Some(value) => {
+      wln(buf, "headers.set(\"\{header_key}\", \"\{escape_string(value)}\")")
+      return
+    }
+    None => ()
+  }
   if p.optional {
     wln(buf, "if \{p.var_name} is Some(v) {")
     match p.type_ {
@@ -1902,6 +1955,18 @@ fn make_method_name(
     "call"
   }
   prefix + "_" + base
+}
+
+///|
+fn make_method_name_from_operation_name(raw_name : String) -> String {
+  let name_part = trim_leading_underscores(
+    sanitize_identifier(@case.snake_case(raw_name)),
+  )
+  if name_part.length() > 0 {
+    name_part
+  } else {
+    "call"
+  }
 }
 
 ///|

@@ -51,7 +51,6 @@ pub async fn JsonMergePatchClient::put_json_merge_patch_create_resource(
 /// 调用 patch /json-merge-patch/update/resource（自动解析响应）。
 pub async fn JsonMergePatchClient::patch_json_merge_patch_update_resource(
   self : JsonMergePatchClient,
-  content_type : String,
   body : ResourcePatch,
 ) -> Resource {
   let client = @http.Client::new(self.base_url)
@@ -62,7 +61,7 @@ pub async fn JsonMergePatchClient::patch_json_merge_patch_update_resource(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)
@@ -84,7 +83,6 @@ pub async fn JsonMergePatchClient::patch_json_merge_patch_update_resource(
 /// 调用 patch /json-merge-patch/update/resource/optional（自动解析响应）。
 pub async fn JsonMergePatchClient::patch_json_merge_patch_update_resource_optional(
   self : JsonMergePatchClient,
-  content_type : String,
   body : ResourcePatch?,
 ) -> Resource {
   let client = @http.Client::new(self.base_url)
@@ -95,7 +93,7 @@ pub async fn JsonMergePatchClient::patch_json_merge_patch_update_resource_option
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   if body is Some(body) {
     headers.set("content-type", "application/json")

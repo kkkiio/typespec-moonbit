@@ -23,7 +23,6 @@ pub fn ReturnTypeChangedFromClient::new(
 pub async fn ReturnTypeChangedFromClient::post_versioning_return_type_changed_from_api_version__version__test(
   self : ReturnTypeChangedFromClient,
   version : String,
-  content_type : String,
   body : String,
 ) -> String {
   let client = @http.Client::new(self.base_url)
@@ -37,7 +36,7 @@ pub async fn ReturnTypeChangedFromClient::post_versioning_return_type_changed_fr
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)

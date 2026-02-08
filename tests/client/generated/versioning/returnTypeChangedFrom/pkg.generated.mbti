@@ -14,7 +14,7 @@ pub(all) struct ReturnTypeChangedFromClient {
   base_url : String
 }
 pub fn ReturnTypeChangedFromClient::new(String) -> Self
-pub async fn ReturnTypeChangedFromClient::post_versioning_return_type_changed_from_api_version__version__test(Self, String, String, String) -> String
+pub async fn ReturnTypeChangedFromClient::post_versioning_return_type_changed_from_api_version__version__test(Self, String, String) -> String
 
 // Type aliases
 pub using @typespec-client-runtime {type Nullable}

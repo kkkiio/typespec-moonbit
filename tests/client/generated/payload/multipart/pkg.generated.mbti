@@ -44,9 +44,9 @@ pub(all) struct ContentTypeClient {
   base_url : String
 }
 pub fn ContentTypeClient::new(String) -> Self
-pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_required_content_type_with_httppart(Self, String, FileWithHttpPartRequiredContentTypeRequest) -> Unit
-pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_specific_content_type_with_httppart(Self, String, FileWithHttpPartSpecificContentTypeRequest) -> Unit
-pub async fn ContentTypeClient::post_multipart_form_data_file_with_http_part_optional_content_type(Self, String, FileWithHttpPartOptionalContentTypeRequest) -> Unit
+pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_required_content_type_with_httppart(Self, FileWithHttpPartRequiredContentTypeRequest) -> Unit
+pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_specific_content_type_with_httppart(Self, FileWithHttpPartSpecificContentTypeRequest) -> Unit
+pub async fn ContentTypeClient::post_multipart_form_data_file_with_http_part_optional_content_type(Self, FileWithHttpPartOptionalContentTypeRequest) -> Unit
 
 pub(all) struct FileWithHttpPartOptionalContentTypeRequest {
   profile_image : HttpPart23
@@ -73,15 +73,15 @@ pub(all) struct FormDataClient {
   base_url : String
 }
 pub fn FormDataClient::new(String) -> Self
-pub async fn FormDataClient::post_multipart_form_data_anonymous_model(Self, String, Model1) -> Unit
-pub async fn FormDataClient::post_multipart_form_data_binary_array_parts(Self, String, BinaryArrayPartsRequest) -> Unit
-pub async fn FormDataClient::post_multipart_form_data_check_filename_and_content_type(Self, String, MultiPartRequest) -> Unit
-pub async fn FormDataClient::post_multipart_form_data_complex_parts(Self, String, ComplexPartsRequest) -> Unit
-pub async fn FormDataClient::post_multipart_form_data_json_part(Self, String, JsonPartRequest) -> Unit
-pub async fn FormDataClient::post_multipart_form_data_mixed_parts(Self, String, MultiPartRequest) -> Unit
-pub async fn FormDataClient::post_multipart_form_data_mixed_parts_with_wire_name(Self, String, MultiPartRequestWithWireName) -> Unit
-pub async fn FormDataClient::post_multipart_form_data_multi_binary_parts(Self, String, MultiBinaryPartsRequest) -> Unit
-pub async fn FormDataClient::post_multipart_form_data_optional_parts(Self, String, MultiPartOptionalRequest) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_anonymous_model(Self, Model1) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_binary_array_parts(Self, BinaryArrayPartsRequest) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_check_filename_and_content_type(Self, MultiPartRequest) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_complex_parts(Self, ComplexPartsRequest) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_json_part(Self, JsonPartRequest) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_mixed_parts(Self, MultiPartRequest) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_mixed_parts_with_wire_name(Self, MultiPartRequestWithWireName) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_multi_binary_parts(Self, MultiBinaryPartsRequest) -> Unit
+pub async fn FormDataClient::post_multipart_form_data_optional_parts(Self, MultiPartOptionalRequest) -> Unit
 
 pub(all) struct HttpPart {
 }
@@ -243,7 +243,7 @@ pub(all) struct HttpPartsClient {
   base_url : String
 }
 pub fn HttpPartsClient::new(String) -> Self
-pub async fn HttpPartsClient::post_multipart_form_data_complex_parts_with_httppart(Self, String, ComplexHttpPartsModelRequest) -> Unit
+pub async fn HttpPartsClient::post_multipart_form_data_complex_parts_with_httppart(Self, ComplexHttpPartsModelRequest) -> Unit
 
 pub(all) struct JsonPartRequest {
   address : HttpPart2
@@ -303,7 +303,7 @@ pub(all) struct NonStringClient {
   base_url : String
 }
 pub fn NonStringClient::new(String) -> Self
-pub async fn NonStringClient::post_multipart_form_data_non_string_float(Self, String, Model0) -> Unit
+pub async fn NonStringClient::post_multipart_form_data_non_string_float(Self, Model0) -> Unit
 
 // Type aliases
 pub using @typespec-client-runtime {type Nullable}

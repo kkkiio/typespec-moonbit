@@ -70,11 +70,11 @@ pub(all) struct RequestBodyClient {
   base_url : String
 }
 pub fn RequestBodyClient::new(String) -> Self
-pub async fn RequestBodyClient::post_encode_bytes_body_request_base64(Self, String, Bytes) -> Unit
-pub async fn RequestBodyClient::post_encode_bytes_body_request_base64url(Self, String, Bytes) -> Unit
-pub async fn RequestBodyClient::post_encode_bytes_body_request_custom_content_type(Self, String, Bytes) -> Unit
+pub async fn RequestBodyClient::post_encode_bytes_body_request_base64(Self, Bytes) -> Unit
+pub async fn RequestBodyClient::post_encode_bytes_body_request_base64url(Self, Bytes) -> Unit
+pub async fn RequestBodyClient::post_encode_bytes_body_request_custom_content_type(Self, Bytes) -> Unit
 pub async fn RequestBodyClient::post_encode_bytes_body_request_default(Self, Bytes) -> Unit
-pub async fn RequestBodyClient::post_encode_bytes_body_request_octet_stream(Self, String, Bytes) -> Unit
+pub async fn RequestBodyClient::post_encode_bytes_body_request_octet_stream(Self, Bytes) -> Unit
 
 pub(all) struct ResponseBodyClient {
   base_url : String

@@ -30,12 +30,8 @@ async test "runtime encode/bytes" {
   let request_body = @encode_bytes.RequestBodyClient::new(
     "http://localhost:3000",
   )
-  request_body.post_encode_bytes_body_request_octet_stream(
-    "application/octet-stream", png_bytes,
-  )
-  request_body.post_encode_bytes_body_request_custom_content_type(
-    "image/png", png_bytes,
-  )
+  request_body.post_encode_bytes_body_request_octet_stream(png_bytes)
+  request_body.post_encode_bytes_body_request_custom_content_type(png_bytes)
   let response_body = @encode_bytes.ResponseBodyClient::new(
     "http://localhost:3000",
   )
@@ -54,12 +50,8 @@ async test "runtime encode/bytes: full body and response coverage" {
     "http://localhost:3000",
   )
   request_body.post_encode_bytes_body_request_default(png_bytes)
-  request_body.post_encode_bytes_body_request_base64(
-    "application/json", test_bytes,
-  )
-  request_body.post_encode_bytes_body_request_base64url(
-    "application/json", test_bytes,
-  )
+  request_body.post_encode_bytes_body_request_base64(test_bytes)
+  request_body.post_encode_bytes_body_request_base64url(test_bytes)
   let response_body = @encode_bytes.ResponseBodyClient::new(
     "http://localhost:3000",
   )

@@ -1,5 +1,6 @@
 import "test" {
   "moonbitlang/async",
+  "moonbitlang/x/fs" as @fs,
   "kkkiio/typespec-tests/client/generated/payload/content-negotiation" as @payload_content_negotiation,
   "kkkiio/typespec-tests/client/generated/payload/json-merge-patch" as @payload_json_merge_patch,
   "kkkiio/typespec-tests/client/generated/payload/media-type" as @payload_media_type,

@@ -20,7 +20,6 @@ pub fn FormDataClient::new(base_url : String) -> FormDataClient {
 /// 调用 post /multipart/form-data/mixed-parts（自动解析响应）。
 pub async fn FormDataClient::post_multipart_form_data_mixed_parts(
   self : FormDataClient,
-  content_type : String,
   body : MultiPartRequest,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -31,7 +30,7 @@ pub async fn FormDataClient::post_multipart_form_data_mixed_parts(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "multipart/form-data")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -50,7 +49,6 @@ pub async fn FormDataClient::post_multipart_form_data_mixed_parts(
 /// 调用 post /multipart/form-data/mixed-parts-with-wire-name（自动解析响应）。
 pub async fn FormDataClient::post_multipart_form_data_mixed_parts_with_wire_name(
   self : FormDataClient,
-  content_type : String,
   body : MultiPartRequestWithWireName,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -61,7 +59,7 @@ pub async fn FormDataClient::post_multipart_form_data_mixed_parts_with_wire_name
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "multipart/form-data")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -80,7 +78,6 @@ pub async fn FormDataClient::post_multipart_form_data_mixed_parts_with_wire_name
 /// 调用 post /multipart/form-data/optional-parts（自动解析响应）。
 pub async fn FormDataClient::post_multipart_form_data_optional_parts(
   self : FormDataClient,
-  content_type : String,
   body : MultiPartOptionalRequest,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -91,7 +88,7 @@ pub async fn FormDataClient::post_multipart_form_data_optional_parts(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "multipart/form-data")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -110,7 +107,6 @@ pub async fn FormDataClient::post_multipart_form_data_optional_parts(
 /// 调用 post /multipart/form-data/complex-parts（自动解析响应）。
 pub async fn FormDataClient::post_multipart_form_data_complex_parts(
   self : FormDataClient,
-  content_type : String,
   body : ComplexPartsRequest,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -121,7 +117,7 @@ pub async fn FormDataClient::post_multipart_form_data_complex_parts(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "multipart/form-data")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -140,7 +136,6 @@ pub async fn FormDataClient::post_multipart_form_data_complex_parts(
 /// 调用 post /multipart/form-data/json-part（自动解析响应）。
 pub async fn FormDataClient::post_multipart_form_data_json_part(
   self : FormDataClient,
-  content_type : String,
   body : JsonPartRequest,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -151,7 +146,7 @@ pub async fn FormDataClient::post_multipart_form_data_json_part(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "multipart/form-data")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -170,7 +165,6 @@ pub async fn FormDataClient::post_multipart_form_data_json_part(
 /// 调用 post /multipart/form-data/binary-array-parts（自动解析响应）。
 pub async fn FormDataClient::post_multipart_form_data_binary_array_parts(
   self : FormDataClient,
-  content_type : String,
   body : BinaryArrayPartsRequest,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -181,7 +175,7 @@ pub async fn FormDataClient::post_multipart_form_data_binary_array_parts(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "multipart/form-data")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -200,7 +194,6 @@ pub async fn FormDataClient::post_multipart_form_data_binary_array_parts(
 /// 调用 post /multipart/form-data/multi-binary-parts（自动解析响应）。
 pub async fn FormDataClient::post_multipart_form_data_multi_binary_parts(
   self : FormDataClient,
-  content_type : String,
   body : MultiBinaryPartsRequest,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -211,7 +204,7 @@ pub async fn FormDataClient::post_multipart_form_data_multi_binary_parts(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "multipart/form-data")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -230,7 +223,6 @@ pub async fn FormDataClient::post_multipart_form_data_multi_binary_parts(
 /// 调用 post /multipart/form-data/check-filename-and-content-type（自动解析响应）。
 pub async fn FormDataClient::post_multipart_form_data_check_filename_and_content_type(
   self : FormDataClient,
-  content_type : String,
   body : MultiPartRequest,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -241,7 +233,7 @@ pub async fn FormDataClient::post_multipart_form_data_check_filename_and_content
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "multipart/form-data")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -260,7 +252,6 @@ pub async fn FormDataClient::post_multipart_form_data_check_filename_and_content
 /// 调用 post /multipart/form-data/anonymous-model（自动解析响应）。
 pub async fn FormDataClient::post_multipart_form_data_anonymous_model(
   self : FormDataClient,
-  content_type : String,
   body : Model1,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -271,7 +262,7 @@ pub async fn FormDataClient::post_multipart_form_data_anonymous_model(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "multipart/form-data")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -306,7 +297,6 @@ pub fn HttpPartsClient::new(base_url : String) -> HttpPartsClient {
 /// 调用 post /multipart/form-data/complex-parts-with-httppart（自动解析响应）。
 pub async fn HttpPartsClient::post_multipart_form_data_complex_parts_with_httppart(
   self : HttpPartsClient,
-  content_type : String,
   body : ComplexHttpPartsModelRequest,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -317,7 +307,7 @@ pub async fn HttpPartsClient::post_multipart_form_data_complex_parts_with_httppa
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "multipart/form-data")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -352,7 +342,6 @@ pub fn ContentTypeClient::new(base_url : String) -> ContentTypeClient {
 /// 调用 post /multipart/form-data/check-filename-and-specific-content-type-with-httppart（自动解析响应）。
 pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_specific_content_type_with_httppart(
   self : ContentTypeClient,
-  content_type : String,
   body : FileWithHttpPartSpecificContentTypeRequest,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -363,7 +352,7 @@ pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_spec
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "multipart/form-data")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -382,7 +371,6 @@ pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_spec
 /// 调用 post /multipart/form-data/check-filename-and-required-content-type-with-httppart（自动解析响应）。
 pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_required_content_type_with_httppart(
   self : ContentTypeClient,
-  content_type : String,
   body : FileWithHttpPartRequiredContentTypeRequest,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -393,7 +381,7 @@ pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_requ
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "multipart/form-data")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -412,7 +400,6 @@ pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_requ
 /// 调用 post /multipart/form-data/file-with-http-part-optional-content-type（自动解析响应）。
 pub async fn ContentTypeClient::post_multipart_form_data_file_with_http_part_optional_content_type(
   self : ContentTypeClient,
-  content_type : String,
   body : FileWithHttpPartOptionalContentTypeRequest,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -423,7 +410,7 @@ pub async fn ContentTypeClient::post_multipart_form_data_file_with_http_part_opt
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "multipart/form-data")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -458,7 +445,6 @@ pub fn NonStringClient::new(base_url : String) -> NonStringClient {
 /// 调用 post /multipart/form-data/non-string-float（自动解析响应）。
 pub async fn NonStringClient::post_multipart_form_data_non_string_float(
   self : NonStringClient,
-  content_type : String,
   body : Model0,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -469,7 +455,7 @@ pub async fn NonStringClient::post_multipart_form_data_non_string_float(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "multipart/form-data")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)

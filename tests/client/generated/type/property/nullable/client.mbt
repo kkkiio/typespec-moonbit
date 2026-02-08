@@ -76,7 +76,6 @@ pub async fn StringClient::get_type_property_nullable_string_null(
 /// 调用 patch /type/property/nullable/string/non-null（自动解析响应）。
 pub async fn StringClient::patch_type_property_nullable_string_non_null(
   self : StringClient,
-  content_type : String,
   body : StringProperty,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -87,7 +86,7 @@ pub async fn StringClient::patch_type_property_nullable_string_non_null(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)
@@ -106,7 +105,6 @@ pub async fn StringClient::patch_type_property_nullable_string_non_null(
 /// 调用 patch /type/property/nullable/string/null（自动解析响应）。
 pub async fn StringClient::patch_type_property_nullable_string_null(
   self : StringClient,
-  content_type : String,
   body : StringProperty,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -117,7 +115,7 @@ pub async fn StringClient::patch_type_property_nullable_string_null(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)
@@ -208,7 +206,6 @@ pub async fn BytesClient::get_type_property_nullable_bytes_null(
 /// 调用 patch /type/property/nullable/bytes/non-null（自动解析响应）。
 pub async fn BytesClient::patch_type_property_nullable_bytes_non_null(
   self : BytesClient,
-  content_type : String,
   body : BytesProperty,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -219,7 +216,7 @@ pub async fn BytesClient::patch_type_property_nullable_bytes_non_null(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)
@@ -238,7 +235,6 @@ pub async fn BytesClient::patch_type_property_nullable_bytes_non_null(
 /// 调用 patch /type/property/nullable/bytes/null（自动解析响应）。
 pub async fn BytesClient::patch_type_property_nullable_bytes_null(
   self : BytesClient,
-  content_type : String,
   body : BytesProperty,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -249,7 +245,7 @@ pub async fn BytesClient::patch_type_property_nullable_bytes_null(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)
@@ -340,7 +336,6 @@ pub async fn DatetimeClient::get_type_property_nullable_datetime_null(
 /// 调用 patch /type/property/nullable/datetime/non-null（自动解析响应）。
 pub async fn DatetimeClient::patch_type_property_nullable_datetime_non_null(
   self : DatetimeClient,
-  content_type : String,
   body : DatetimeProperty,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -351,7 +346,7 @@ pub async fn DatetimeClient::patch_type_property_nullable_datetime_non_null(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)
@@ -370,7 +365,6 @@ pub async fn DatetimeClient::patch_type_property_nullable_datetime_non_null(
 /// 调用 patch /type/property/nullable/datetime/null（自动解析响应）。
 pub async fn DatetimeClient::patch_type_property_nullable_datetime_null(
   self : DatetimeClient,
-  content_type : String,
   body : DatetimeProperty,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -381,7 +375,7 @@ pub async fn DatetimeClient::patch_type_property_nullable_datetime_null(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)
@@ -472,7 +466,6 @@ pub async fn DurationClient::get_type_property_nullable_duration_null(
 /// 调用 patch /type/property/nullable/duration/non-null（自动解析响应）。
 pub async fn DurationClient::patch_type_property_nullable_duration_non_null(
   self : DurationClient,
-  content_type : String,
   body : DurationProperty,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -483,7 +476,7 @@ pub async fn DurationClient::patch_type_property_nullable_duration_non_null(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)
@@ -502,7 +495,6 @@ pub async fn DurationClient::patch_type_property_nullable_duration_non_null(
 /// 调用 patch /type/property/nullable/duration/null（自动解析响应）。
 pub async fn DurationClient::patch_type_property_nullable_duration_null(
   self : DurationClient,
-  content_type : String,
   body : DurationProperty,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -513,7 +505,7 @@ pub async fn DurationClient::patch_type_property_nullable_duration_null(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)
@@ -608,7 +600,6 @@ pub async fn CollectionsByteClient::get_type_property_nullable_collections_bytes
 /// 调用 patch /type/property/nullable/collections/bytes/non-null（自动解析响应）。
 pub async fn CollectionsByteClient::patch_type_property_nullable_collections_bytes_non_null(
   self : CollectionsByteClient,
-  content_type : String,
   body : CollectionsByteProperty,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -619,7 +610,7 @@ pub async fn CollectionsByteClient::patch_type_property_nullable_collections_byt
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)
@@ -638,7 +629,6 @@ pub async fn CollectionsByteClient::patch_type_property_nullable_collections_byt
 /// 调用 patch /type/property/nullable/collections/bytes/null（自动解析响应）。
 pub async fn CollectionsByteClient::patch_type_property_nullable_collections_bytes_null(
   self : CollectionsByteClient,
-  content_type : String,
   body : CollectionsByteProperty,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -649,7 +639,7 @@ pub async fn CollectionsByteClient::patch_type_property_nullable_collections_byt
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)
@@ -744,7 +734,6 @@ pub async fn CollectionsModelClient::get_type_property_nullable_collections_mode
 /// 调用 patch /type/property/nullable/collections/model/non-null（自动解析响应）。
 pub async fn CollectionsModelClient::patch_type_property_nullable_collections_model_non_null(
   self : CollectionsModelClient,
-  content_type : String,
   body : CollectionsModelProperty,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -755,7 +744,7 @@ pub async fn CollectionsModelClient::patch_type_property_nullable_collections_mo
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)
@@ -774,7 +763,6 @@ pub async fn CollectionsModelClient::patch_type_property_nullable_collections_mo
 /// 调用 patch /type/property/nullable/collections/model/null（自动解析响应）。
 pub async fn CollectionsModelClient::patch_type_property_nullable_collections_model_null(
   self : CollectionsModelClient,
-  content_type : String,
   body : CollectionsModelProperty,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -785,7 +773,7 @@ pub async fn CollectionsModelClient::patch_type_property_nullable_collections_mo
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)
@@ -882,7 +870,6 @@ pub async fn CollectionsStringClient::get_type_property_nullable_collections_str
 /// 调用 patch /type/property/nullable/collections/string/non-null（自动解析响应）。
 pub async fn CollectionsStringClient::patch_type_property_nullable_collections_string_non_null(
   self : CollectionsStringClient,
-  content_type : String,
   body : CollectionsStringProperty,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -893,7 +880,7 @@ pub async fn CollectionsStringClient::patch_type_property_nullable_collections_s
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)
@@ -912,7 +899,6 @@ pub async fn CollectionsStringClient::patch_type_property_nullable_collections_s
 /// 调用 patch /type/property/nullable/collections/string/null（自动解析响应）。
 pub async fn CollectionsStringClient::patch_type_property_nullable_collections_string_null(
   self : CollectionsStringClient,
-  content_type : String,
   body : CollectionsStringProperty,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -923,7 +909,7 @@ pub async fn CollectionsStringClient::patch_type_property_nullable_collections_s
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/merge-patch+json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Patch, path, extra_headers=headers)

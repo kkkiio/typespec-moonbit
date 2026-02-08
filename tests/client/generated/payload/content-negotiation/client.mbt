@@ -18,10 +18,7 @@ pub fn SameBodyClient::new(base_url : String) -> SameBodyClient {
 
 ///|
 /// 调用 get /content-negotiation/same-body（自动解析响应）。
-pub async fn SameBodyClient::get_content_negotiation_same_body(
-  self : SameBodyClient,
-  accept : String,
-) -> Bytes {
+pub async fn SameBodyClient::get_avatar_as_png(self : SameBodyClient) -> Bytes {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -30,7 +27,7 @@ pub async fn SameBodyClient::get_content_negotiation_same_body(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("accept", accept)
+  headers.set("accept", "image/png")
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -46,10 +43,7 @@ pub async fn SameBodyClient::get_content_negotiation_same_body(
 
 ///|
 /// 调用 get /content-negotiation/same-body（自动解析响应）。
-pub async fn SameBodyClient::get_content_negotiation_same_body_2(
-  self : SameBodyClient,
-  accept : String,
-) -> Bytes {
+pub async fn SameBodyClient::get_avatar_as_jpeg(self : SameBodyClient) -> Bytes {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -58,7 +52,7 @@ pub async fn SameBodyClient::get_content_negotiation_same_body_2(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("accept", accept)
+  headers.set("accept", "image/jpeg")
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -90,9 +84,8 @@ pub fn DifferentBodyClient::new(base_url : String) -> DifferentBodyClient {
 
 ///|
 /// 调用 get /content-negotiation/different-body（自动解析响应）。
-pub async fn DifferentBodyClient::get_content_negotiation_different_body(
+pub async fn DifferentBodyClient::get_avatar_as_png(
   self : DifferentBodyClient,
-  accept : String,
 ) -> Bytes {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -102,7 +95,7 @@ pub async fn DifferentBodyClient::get_content_negotiation_different_body(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("accept", accept)
+  headers.set("accept", "image/png")
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -118,9 +111,8 @@ pub async fn DifferentBodyClient::get_content_negotiation_different_body(
 
 ///|
 /// 调用 get /content-negotiation/different-body（自动解析响应）。
-pub async fn DifferentBodyClient::get_content_negotiation_different_body_2(
+pub async fn DifferentBodyClient::get_avatar_as_json(
   self : DifferentBodyClient,
-  accept : String,
 ) -> PngImageAsJson0 {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -130,7 +122,7 @@ pub async fn DifferentBodyClient::get_content_negotiation_different_body_2(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("accept", accept)
+  headers.set("accept", "application/json")
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()

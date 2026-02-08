@@ -15,8 +15,8 @@ pub(all) struct StringClient {
 }
 pub async fn StringClient::get_type_enum_fixed_string_known_value(Self) -> Json
 pub fn StringClient::new(String) -> Self
-pub async fn StringClient::put_type_enum_fixed_string_known_value(Self, String, Json) -> Unit
-pub async fn StringClient::put_type_enum_fixed_string_unknown_value(Self, String, Json) -> Unit
+pub async fn StringClient::put_type_enum_fixed_string_known_value(Self, Json) -> Unit
+pub async fn StringClient::put_type_enum_fixed_string_unknown_value(Self, Json) -> Unit
 
 // Type aliases
 pub using @typespec-client-runtime {type Nullable}

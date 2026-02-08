@@ -46,7 +46,6 @@ pub async fn StringClient::get_type_scalar_string(
 /// 调用 put /type/scalar/string（自动解析响应）。
 pub async fn StringClient::put_type_scalar_string(
   self : StringClient,
-  content_type : String,
   body : String,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -55,7 +54,7 @@ pub async fn StringClient::put_type_scalar_string(
   let base_path = @runtime.encode_request_target("/type/scalar/string")
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -116,7 +115,6 @@ pub async fn BooleanClient::get_type_scalar_boolean(
 /// 调用 put /type/scalar/boolean（自动解析响应）。
 pub async fn BooleanClient::put_type_scalar_boolean(
   self : BooleanClient,
-  content_type : String,
   body : Bool,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -125,7 +123,7 @@ pub async fn BooleanClient::put_type_scalar_boolean(
   let base_path = @runtime.encode_request_target("/type/scalar/boolean")
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -186,7 +184,6 @@ pub async fn UnknownClient::get_type_scalar_unknown(
 /// 调用 put /type/scalar/unknown（自动解析响应）。
 pub async fn UnknownClient::put_type_scalar_unknown(
   self : UnknownClient,
-  content_type : String,
   body : Json,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -195,7 +192,7 @@ pub async fn UnknownClient::put_type_scalar_unknown(
   let base_path = @runtime.encode_request_target("/type/scalar/unknown")
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -258,7 +255,6 @@ pub async fn DecimalTypeClient::get_type_scalar_decimal_response_body(
 /// 调用 put /type/scalar/decimal/resquest_body（自动解析响应）。
 pub async fn DecimalTypeClient::put_type_scalar_decimal_resquest_body(
   self : DecimalTypeClient,
-  content_type : String,
   body : Double,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -269,7 +265,7 @@ pub async fn DecimalTypeClient::put_type_scalar_decimal_resquest_body(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -362,7 +358,6 @@ pub async fn Decimal128TypeClient::get_type_scalar_decimal128_response_body(
 /// 调用 put /type/scalar/decimal128/resquest_body（自动解析响应）。
 pub async fn Decimal128TypeClient::put_type_scalar_decimal128_resquest_body(
   self : Decimal128TypeClient,
-  content_type : String,
   body : Double,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -373,7 +368,7 @@ pub async fn Decimal128TypeClient::put_type_scalar_decimal128_resquest_body(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -466,7 +461,6 @@ pub async fn DecimalVerifyClient::get_type_scalar_decimal_prepare_verify(
 /// 调用 post /type/scalar/decimal/verify（自动解析响应）。
 pub async fn DecimalVerifyClient::post_type_scalar_decimal_verify(
   self : DecimalVerifyClient,
-  content_type : String,
   body : Double,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -475,7 +469,7 @@ pub async fn DecimalVerifyClient::post_type_scalar_decimal_verify(
   let base_path = @runtime.encode_request_target("/type/scalar/decimal/verify")
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -538,7 +532,6 @@ pub async fn Decimal128VerifyClient::get_type_scalar_decimal128_prepare_verify(
 /// 调用 post /type/scalar/decimal128/verify（自动解析响应）。
 pub async fn Decimal128VerifyClient::post_type_scalar_decimal128_verify(
   self : Decimal128VerifyClient,
-  content_type : String,
   body : Double,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -549,7 +542,7 @@ pub async fn Decimal128VerifyClient::post_type_scalar_decimal128_verify(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)

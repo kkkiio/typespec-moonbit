@@ -20,7 +20,6 @@ pub fn StringBodyClient::new(base_url : String) -> StringBodyClient {
 /// 调用 post /payload/media-type/string-body/sendAsText（自动解析响应）。
 pub async fn StringBodyClient::post_payload_media_type_string_body_sendastext(
   self : StringBodyClient,
-  content_type : String,
   body : String,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -31,7 +30,7 @@ pub async fn StringBodyClient::post_payload_media_type_string_body_sendastext(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "text/plain")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)
@@ -78,7 +77,6 @@ pub async fn StringBodyClient::get_payload_media_type_string_body_getastext(
 /// 调用 post /payload/media-type/string-body/sendAsJson（自动解析响应）。
 pub async fn StringBodyClient::post_payload_media_type_string_body_sendasjson(
   self : StringBodyClient,
-  content_type : String,
   body : String,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -89,7 +87,7 @@ pub async fn StringBodyClient::post_payload_media_type_string_body_sendasjson(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Post, path, extra_headers=headers)

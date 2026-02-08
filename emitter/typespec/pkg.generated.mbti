@@ -82,6 +82,7 @@ pub struct HttpParam {
   explode_ : Bool
   array_encoding_ : String?
   bytes_encoding_ : String?
+  string_literal_ : String?
 }
 pub fn HttpParam::array_encoding(Self) -> String?
 pub fn HttpParam::bytes_encoding(Self) -> String?
@@ -89,6 +90,7 @@ pub fn HttpParam::explode(Self) -> Bool
 pub fn HttpParam::is_optional(Self) -> Bool
 pub fn HttpParam::kind(Self) -> HttpParamKind
 pub fn HttpParam::name(Self) -> String
+pub fn HttpParam::string_literal(Self) -> String?
 pub fn HttpParam::type_(Self) -> TypeSpecType
 
 pub enum HttpParamKind {

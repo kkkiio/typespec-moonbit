@@ -23,7 +23,7 @@ pub(all) struct ModelWithArrayOfModelValueClient {
 }
 pub async fn ModelWithArrayOfModelValueClient::get_payload_xml_modelwitharrayofmodel(Self) -> ModelWithArrayOfModel
 pub fn ModelWithArrayOfModelValueClient::new(String) -> Self
-pub async fn ModelWithArrayOfModelValueClient::put_payload_xml_modelwitharrayofmodel(Self, String, ModelWithArrayOfModel) -> Unit
+pub async fn ModelWithArrayOfModelValueClient::put_payload_xml_modelwitharrayofmodel(Self, ModelWithArrayOfModel) -> Unit
 
 pub(all) struct ModelWithAttributes {
   id_1 : Int
@@ -39,7 +39,7 @@ pub(all) struct ModelWithAttributesValueClient {
 }
 pub async fn ModelWithAttributesValueClient::get_payload_xml_modelwithattributes(Self) -> ModelWithAttributes
 pub fn ModelWithAttributesValueClient::new(String) -> Self
-pub async fn ModelWithAttributesValueClient::put_payload_xml_modelwithattributes(Self, String, ModelWithAttributes) -> Unit
+pub async fn ModelWithAttributesValueClient::put_payload_xml_modelwithattributes(Self, ModelWithAttributes) -> Unit
 
 pub(all) struct ModelWithDictionary {
   metadata : Map[String, String]
@@ -53,7 +53,7 @@ pub(all) struct ModelWithDictionaryValueClient {
 }
 pub async fn ModelWithDictionaryValueClient::get_payload_xml_modelwithdictionary(Self) -> ModelWithDictionary
 pub fn ModelWithDictionaryValueClient::new(String) -> Self
-pub async fn ModelWithDictionaryValueClient::put_payload_xml_modelwithdictionary(Self, String, ModelWithDictionary) -> Unit
+pub async fn ModelWithDictionaryValueClient::put_payload_xml_modelwithdictionary(Self, ModelWithDictionary) -> Unit
 
 pub(all) struct ModelWithEmptyArray {
   items : Array[SimpleModel]
@@ -67,7 +67,7 @@ pub(all) struct ModelWithEmptyArrayValueClient {
 }
 pub async fn ModelWithEmptyArrayValueClient::get_payload_xml_modelwithemptyarray(Self) -> ModelWithEmptyArray
 pub fn ModelWithEmptyArrayValueClient::new(String) -> Self
-pub async fn ModelWithEmptyArrayValueClient::put_payload_xml_modelwithemptyarray(Self, String, ModelWithEmptyArray) -> Unit
+pub async fn ModelWithEmptyArrayValueClient::put_payload_xml_modelwithemptyarray(Self, ModelWithEmptyArray) -> Unit
 
 pub(all) struct ModelWithEncodedNames {
   model_data : SimpleModel
@@ -82,7 +82,7 @@ pub(all) struct ModelWithEncodedNamesValueClient {
 }
 pub async fn ModelWithEncodedNamesValueClient::get_payload_xml_modelwithencodednames(Self) -> ModelWithEncodedNames
 pub fn ModelWithEncodedNamesValueClient::new(String) -> Self
-pub async fn ModelWithEncodedNamesValueClient::put_payload_xml_modelwithencodednames(Self, String, ModelWithEncodedNames) -> Unit
+pub async fn ModelWithEncodedNamesValueClient::put_payload_xml_modelwithencodednames(Self, ModelWithEncodedNames) -> Unit
 
 pub(all) struct ModelWithOptionalField {
   item : String
@@ -97,7 +97,7 @@ pub(all) struct ModelWithOptionalFieldValueClient {
 }
 pub async fn ModelWithOptionalFieldValueClient::get_payload_xml_modelwithoptionalfield(Self) -> ModelWithOptionalField
 pub fn ModelWithOptionalFieldValueClient::new(String) -> Self
-pub async fn ModelWithOptionalFieldValueClient::put_payload_xml_modelwithoptionalfield(Self, String, ModelWithOptionalField) -> Unit
+pub async fn ModelWithOptionalFieldValueClient::put_payload_xml_modelwithoptionalfield(Self, ModelWithOptionalField) -> Unit
 
 pub(all) struct ModelWithRenamedArrays {
   colors : Array[String]
@@ -112,7 +112,7 @@ pub(all) struct ModelWithRenamedArraysValueClient {
 }
 pub async fn ModelWithRenamedArraysValueClient::get_payload_xml_modelwithrenamedarrays(Self) -> ModelWithRenamedArrays
 pub fn ModelWithRenamedArraysValueClient::new(String) -> Self
-pub async fn ModelWithRenamedArraysValueClient::put_payload_xml_modelwithrenamedarrays(Self, String, ModelWithRenamedArrays) -> Unit
+pub async fn ModelWithRenamedArraysValueClient::put_payload_xml_modelwithrenamedarrays(Self, ModelWithRenamedArrays) -> Unit
 
 pub(all) struct ModelWithRenamedFields {
   input_data : SimpleModel
@@ -127,7 +127,7 @@ pub(all) struct ModelWithRenamedFieldsValueClient {
 }
 pub async fn ModelWithRenamedFieldsValueClient::get_payload_xml_modelwithrenamedfields(Self) -> ModelWithRenamedFields
 pub fn ModelWithRenamedFieldsValueClient::new(String) -> Self
-pub async fn ModelWithRenamedFieldsValueClient::put_payload_xml_modelwithrenamedfields(Self, String, ModelWithRenamedFields) -> Unit
+pub async fn ModelWithRenamedFieldsValueClient::put_payload_xml_modelwithrenamedfields(Self, ModelWithRenamedFields) -> Unit
 
 pub(all) struct ModelWithSimpleArrays {
   colors : Array[String]
@@ -142,7 +142,7 @@ pub(all) struct ModelWithSimpleArraysValueClient {
 }
 pub async fn ModelWithSimpleArraysValueClient::get_payload_xml_modelwithsimplearrays(Self) -> ModelWithSimpleArrays
 pub fn ModelWithSimpleArraysValueClient::new(String) -> Self
-pub async fn ModelWithSimpleArraysValueClient::put_payload_xml_modelwithsimplearrays(Self, String, ModelWithSimpleArrays) -> Unit
+pub async fn ModelWithSimpleArraysValueClient::put_payload_xml_modelwithsimplearrays(Self, ModelWithSimpleArrays) -> Unit
 
 pub(all) struct ModelWithText {
   language : String
@@ -157,7 +157,7 @@ pub(all) struct ModelWithTextValueClient {
 }
 pub async fn ModelWithTextValueClient::get_payload_xml_modelwithtext(Self) -> ModelWithText
 pub fn ModelWithTextValueClient::new(String) -> Self
-pub async fn ModelWithTextValueClient::put_payload_xml_modelwithtext(Self, String, ModelWithText) -> Unit
+pub async fn ModelWithTextValueClient::put_payload_xml_modelwithtext(Self, ModelWithText) -> Unit
 
 pub(all) struct ModelWithUnwrappedArray {
   colors : Array[String]
@@ -172,7 +172,7 @@ pub(all) struct ModelWithUnwrappedArrayValueClient {
 }
 pub async fn ModelWithUnwrappedArrayValueClient::get_payload_xml_modelwithunwrappedarray(Self) -> ModelWithUnwrappedArray
 pub fn ModelWithUnwrappedArrayValueClient::new(String) -> Self
-pub async fn ModelWithUnwrappedArrayValueClient::put_payload_xml_modelwithunwrappedarray(Self, String, ModelWithUnwrappedArray) -> Unit
+pub async fn ModelWithUnwrappedArrayValueClient::put_payload_xml_modelwithunwrappedarray(Self, ModelWithUnwrappedArray) -> Unit
 
 pub(all) struct SimpleModel {
   name : String
@@ -187,7 +187,7 @@ pub(all) struct SimpleModelValueClient {
 }
 pub async fn SimpleModelValueClient::get_payload_xml_simplemodel(Self) -> SimpleModel
 pub fn SimpleModelValueClient::new(String) -> Self
-pub async fn SimpleModelValueClient::put_payload_xml_simplemodel(Self, String, SimpleModel) -> Unit
+pub async fn SimpleModelValueClient::put_payload_xml_simplemodel(Self, SimpleModel) -> Unit
 
 // Type aliases
 pub using @typespec-client-runtime {type Nullable}

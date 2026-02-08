@@ -16,8 +16,8 @@ pub(all) struct StringBodyClient {
 pub async fn StringBodyClient::get_payload_media_type_string_body_getasjson(Self) -> String
 pub async fn StringBodyClient::get_payload_media_type_string_body_getastext(Self) -> String
 pub fn StringBodyClient::new(String) -> Self
-pub async fn StringBodyClient::post_payload_media_type_string_body_sendasjson(Self, String, String) -> Unit
-pub async fn StringBodyClient::post_payload_media_type_string_body_sendastext(Self, String, String) -> Unit
+pub async fn StringBodyClient::post_payload_media_type_string_body_sendasjson(Self, String) -> Unit
+pub async fn StringBodyClient::post_payload_media_type_string_body_sendastext(Self, String) -> Unit
 
 // Type aliases
 pub using @typespec-client-runtime {type Nullable}

@@ -46,7 +46,6 @@ pub async fn SimpleModelValueClient::get_payload_xml_simplemodel(
 /// 调用 put /payload/xml/simpleModel（自动解析响应）。
 pub async fn SimpleModelValueClient::put_payload_xml_simplemodel(
   self : SimpleModelValueClient,
-  content_type : String,
   body : SimpleModel,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -55,7 +54,7 @@ pub async fn SimpleModelValueClient::put_payload_xml_simplemodel(
   let base_path = @runtime.encode_request_target("/payload/xml/simpleModel")
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/xml")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -122,7 +121,6 @@ pub async fn ModelWithSimpleArraysValueClient::get_payload_xml_modelwithsimplear
 /// 调用 put /payload/xml/modelWithSimpleArrays（自动解析响应）。
 pub async fn ModelWithSimpleArraysValueClient::put_payload_xml_modelwithsimplearrays(
   self : ModelWithSimpleArraysValueClient,
-  content_type : String,
   body : ModelWithSimpleArrays,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -133,7 +131,7 @@ pub async fn ModelWithSimpleArraysValueClient::put_payload_xml_modelwithsimplear
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/xml")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -200,7 +198,6 @@ pub async fn ModelWithArrayOfModelValueClient::get_payload_xml_modelwitharrayofm
 /// 调用 put /payload/xml/modelWithArrayOfModel（自动解析响应）。
 pub async fn ModelWithArrayOfModelValueClient::put_payload_xml_modelwitharrayofmodel(
   self : ModelWithArrayOfModelValueClient,
-  content_type : String,
   body : ModelWithArrayOfModel,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -211,7 +208,7 @@ pub async fn ModelWithArrayOfModelValueClient::put_payload_xml_modelwitharrayofm
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/xml")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -278,7 +275,6 @@ pub async fn ModelWithOptionalFieldValueClient::get_payload_xml_modelwithoptiona
 /// 调用 put /payload/xml/modelWithOptionalField（自动解析响应）。
 pub async fn ModelWithOptionalFieldValueClient::put_payload_xml_modelwithoptionalfield(
   self : ModelWithOptionalFieldValueClient,
-  content_type : String,
   body : ModelWithOptionalField,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -289,7 +285,7 @@ pub async fn ModelWithOptionalFieldValueClient::put_payload_xml_modelwithoptiona
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/xml")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -356,7 +352,6 @@ pub async fn ModelWithAttributesValueClient::get_payload_xml_modelwithattributes
 /// 调用 put /payload/xml/modelWithAttributes（自动解析响应）。
 pub async fn ModelWithAttributesValueClient::put_payload_xml_modelwithattributes(
   self : ModelWithAttributesValueClient,
-  content_type : String,
   body : ModelWithAttributes,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -367,7 +362,7 @@ pub async fn ModelWithAttributesValueClient::put_payload_xml_modelwithattributes
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/xml")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -434,7 +429,6 @@ pub async fn ModelWithUnwrappedArrayValueClient::get_payload_xml_modelwithunwrap
 /// 调用 put /payload/xml/modelWithUnwrappedArray（自动解析响应）。
 pub async fn ModelWithUnwrappedArrayValueClient::put_payload_xml_modelwithunwrappedarray(
   self : ModelWithUnwrappedArrayValueClient,
-  content_type : String,
   body : ModelWithUnwrappedArray,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -445,7 +439,7 @@ pub async fn ModelWithUnwrappedArrayValueClient::put_payload_xml_modelwithunwrap
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/xml")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -512,7 +506,6 @@ pub async fn ModelWithRenamedArraysValueClient::get_payload_xml_modelwithrenamed
 /// 调用 put /payload/xml/modelWithRenamedArrays（自动解析响应）。
 pub async fn ModelWithRenamedArraysValueClient::put_payload_xml_modelwithrenamedarrays(
   self : ModelWithRenamedArraysValueClient,
-  content_type : String,
   body : ModelWithRenamedArrays,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -523,7 +516,7 @@ pub async fn ModelWithRenamedArraysValueClient::put_payload_xml_modelwithrenamed
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/xml")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -590,7 +583,6 @@ pub async fn ModelWithRenamedFieldsValueClient::get_payload_xml_modelwithrenamed
 /// 调用 put /payload/xml/modelWithRenamedFields（自动解析响应）。
 pub async fn ModelWithRenamedFieldsValueClient::put_payload_xml_modelwithrenamedfields(
   self : ModelWithRenamedFieldsValueClient,
-  content_type : String,
   body : ModelWithRenamedFields,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -601,7 +593,7 @@ pub async fn ModelWithRenamedFieldsValueClient::put_payload_xml_modelwithrenamed
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/xml")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -668,7 +660,6 @@ pub async fn ModelWithEmptyArrayValueClient::get_payload_xml_modelwithemptyarray
 /// 调用 put /payload/xml/modelWithEmptyArray（自动解析响应）。
 pub async fn ModelWithEmptyArrayValueClient::put_payload_xml_modelwithemptyarray(
   self : ModelWithEmptyArrayValueClient,
-  content_type : String,
   body : ModelWithEmptyArray,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -679,7 +670,7 @@ pub async fn ModelWithEmptyArrayValueClient::put_payload_xml_modelwithemptyarray
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/xml")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -742,7 +733,6 @@ pub async fn ModelWithTextValueClient::get_payload_xml_modelwithtext(
 /// 调用 put /payload/xml/modelWithText（自动解析响应）。
 pub async fn ModelWithTextValueClient::put_payload_xml_modelwithtext(
   self : ModelWithTextValueClient,
-  content_type : String,
   body : ModelWithText,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -751,7 +741,7 @@ pub async fn ModelWithTextValueClient::put_payload_xml_modelwithtext(
   let base_path = @runtime.encode_request_target("/payload/xml/modelWithText")
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/xml")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -818,7 +808,6 @@ pub async fn ModelWithDictionaryValueClient::get_payload_xml_modelwithdictionary
 /// 调用 put /payload/xml/modelWithDictionary（自动解析响应）。
 pub async fn ModelWithDictionaryValueClient::put_payload_xml_modelwithdictionary(
   self : ModelWithDictionaryValueClient,
-  content_type : String,
   body : ModelWithDictionary,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -829,7 +818,7 @@ pub async fn ModelWithDictionaryValueClient::put_payload_xml_modelwithdictionary
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/xml")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -896,7 +885,6 @@ pub async fn ModelWithEncodedNamesValueClient::get_payload_xml_modelwithencodedn
 /// 调用 put /payload/xml/modelWithEncodedNames（自动解析响应）。
 pub async fn ModelWithEncodedNamesValueClient::put_payload_xml_modelwithencodednames(
   self : ModelWithEncodedNamesValueClient,
-  content_type : String,
   body : ModelWithEncodedNames,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -907,7 +895,7 @@ pub async fn ModelWithEncodedNamesValueClient::put_payload_xml_modelwithencodedn
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/xml")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)

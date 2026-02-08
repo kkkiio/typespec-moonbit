@@ -76,7 +76,6 @@ pub async fn StringClient::get_type_enum_extensible_string_unknown_value(
 /// 调用 put /type/enum/extensible/string/known-value（自动解析响应）。
 pub async fn StringClient::put_type_enum_extensible_string_known_value(
   self : StringClient,
-  content_type : String,
   body : String,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -87,7 +86,7 @@ pub async fn StringClient::put_type_enum_extensible_string_known_value(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)
@@ -106,7 +105,6 @@ pub async fn StringClient::put_type_enum_extensible_string_known_value(
 /// 调用 put /type/enum/extensible/string/unknown-value（自动解析响应）。
 pub async fn StringClient::put_type_enum_extensible_string_unknown_value(
   self : StringClient,
-  content_type : String,
   body : String,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
@@ -117,7 +115,7 @@ pub async fn StringClient::put_type_enum_extensible_string_unknown_value(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("Content-Type", content_type)
+  headers.set("Content-Type", "application/json")
   let path = sb.to_string()
   headers.set("content-type", "application/json")
   client.request(@http.Put, path, extra_headers=headers)

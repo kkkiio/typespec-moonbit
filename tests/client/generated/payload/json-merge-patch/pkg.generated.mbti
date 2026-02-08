@@ -23,8 +23,8 @@ pub(all) struct JsonMergePatchClient {
   base_url : String
 }
 pub fn JsonMergePatchClient::new(String) -> Self
-pub async fn JsonMergePatchClient::patch_json_merge_patch_update_resource(Self, String, ResourcePatch) -> Resource
-pub async fn JsonMergePatchClient::patch_json_merge_patch_update_resource_optional(Self, String, ResourcePatch?) -> Resource
+pub async fn JsonMergePatchClient::patch_json_merge_patch_update_resource(Self, ResourcePatch) -> Resource
+pub async fn JsonMergePatchClient::patch_json_merge_patch_update_resource_optional(Self, ResourcePatch?) -> Resource
 pub async fn JsonMergePatchClient::put_json_merge_patch_create_resource(Self, Resource) -> Resource
 
 pub(all) struct Resource {
