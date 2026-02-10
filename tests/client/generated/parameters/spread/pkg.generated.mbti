@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/parameters/spread"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -92,7 +91,6 @@ pub async fn ModelClient::put_parameters_spread_model_composite_request_without_
 pub async fn ModelClient::put_parameters_spread_model_request_body(Self, BodyParameter5) -> Unit
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

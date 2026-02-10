@@ -1,4 +1,4 @@
-import "test" {
+import {
   "moonbitlang/async",
-  "kkkiio/typespec-tests/client/generated/type/array" as @type_array_generated,
-}
+  "kkkiio/typespec-tests/client/generated/type/array" @type_array_generated,
+} for "test"

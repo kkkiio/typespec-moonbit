@@ -2,7 +2,7 @@
 package "kkkiio/typespec-moonbit/mbtgen"
 
 // Values
-pub fn exec_moon_fmt(String) -> Unit
+pub async fn exec_moon_fmt(String) -> Unit
 
 pub fn render(File) -> String
 

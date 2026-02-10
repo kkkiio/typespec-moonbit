@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/type/property/additional-properties"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -394,7 +393,6 @@ pub impl ToJson for WidgetData2
 pub impl @json.FromJson for WidgetData2
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

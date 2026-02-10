@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/versioning/typeChangedFrom"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -26,7 +25,6 @@ pub fn TypeChangedFromClient::new(String) -> Self
 pub async fn TypeChangedFromClient::post_versioning_type_changed_from_api_version__version__test__param_(Self, String, String, TestModel) -> TestModel
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

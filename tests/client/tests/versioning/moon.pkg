@@ -1,8 +1,8 @@
-import "test" {
+import {
   "moonbitlang/async",
-  "kkkiio/typespec-tests/client/generated/versioning/added" as @versioning_added,
-  "kkkiio/typespec-tests/client/generated/versioning/madeOptional" as @versioning_made_optional,
-  "kkkiio/typespec-tests/client/generated/versioning/removed" as @versioning_removed,
-  "kkkiio/typespec-tests/client/generated/versioning/renamedFrom" as @versioning_renamed_from,
-  "kkkiio/typespec-tests/client/generated/versioning/typeChangedFrom" as @versioning_type_changed_from,
-}
+  "kkkiio/typespec-tests/client/generated/versioning/added" @versioning_added,
+  "kkkiio/typespec-tests/client/generated/versioning/madeOptional" @versioning_made_optional,
+  "kkkiio/typespec-tests/client/generated/versioning/removed" @versioning_removed,
+  "kkkiio/typespec-tests/client/generated/versioning/renamedFrom" @versioning_renamed_from,
+  "kkkiio/typespec-tests/client/generated/versioning/typeChangedFrom" @versioning_type_changed_from,
+} for "test"

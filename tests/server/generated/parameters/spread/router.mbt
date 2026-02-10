@@ -478,6 +478,7 @@ pub fn[H0 : ModelHandler, H1 : AliasHandler] create_router(
           RouteId::ModelSpreadCompositeRequestWithoutBody(path_params) => {
             let name = path_params[0]
             ignore(body_stream)
+
             let p_5_test_header = @runtime.get_header(
               req.headers,
               "test-header",

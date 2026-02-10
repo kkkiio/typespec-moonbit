@@ -120,6 +120,7 @@ pub fn[H0 : DottedNameHandler] create_router(
         match route_id {
           RouteId::DottedNameWatchTasks => {
             ignore(body_stream)
+
             let p_1_mode = @runtime.get_query_param(full_path, "mode")
             let sse_result = dotted_name_handler.watch_tasks(group~, p_1_mode)
             match sse_result {

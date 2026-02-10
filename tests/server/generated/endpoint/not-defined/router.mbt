@@ -80,6 +80,7 @@ pub fn[H0 : NotDefinedHandler] create_router(
         match route_id {
           RouteId::NotDefinedValid => {
             ignore(body_stream)
+
             not_defined_handler.valid(group~)
             conn.send_response(200, "OK")
             conn.end_response()

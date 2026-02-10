@@ -16,7 +16,7 @@ async test "type/array" {
   let nullable_model_handler = NullableModelValueHandlerImpl::{  }
   let nullable_string_handler = NullableStringValueHandlerImpl::{  }
   let nullable_boolean_handler = NullableBooleanValueHandlerImpl::{  }
-  @async.with_task_group(fn(group) {
+  @async.with_task_group(group => {
     let router = @type_array.create_router(
       int32_value_handler=int32_handler,
       int64_value_handler=int64_handler,

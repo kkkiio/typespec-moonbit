@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/type/model/inheritance/nested-discriminator"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -30,7 +29,6 @@ pub async fn NestedDiscriminatorClient::put_type_model_inheritance_nested_discri
 pub async fn NestedDiscriminatorClient::put_type_model_inheritance_nested_discriminator_recursivemodel(Self, Fish) -> Unit
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

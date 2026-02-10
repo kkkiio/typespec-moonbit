@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/type/model/inheritance/enum-discriminator"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -41,7 +40,6 @@ pub impl ToJson for Snake
 pub impl @json.FromJson for Snake
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/encode/numeric"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -41,7 +40,6 @@ pub impl ToJson for Uint8AsStringProperty
 pub impl @json.FromJson for Uint8AsStringProperty
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

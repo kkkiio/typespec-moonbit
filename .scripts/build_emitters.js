@@ -16,16 +16,16 @@ function buildOne(kind) {
       baseName: "http_client",
     }
     : kind === "server"
-    ? {
-      entryDir: path.join(repoRoot, "emitter", "http_server"),
-      outDir: path.join(repoRoot, "emitter", "_build", "js", "release", "build", "http_server"),
-      baseName: "http_server",
-    }
-    : {
-      entryDir: path.join(repoRoot, "emitter", "emitters", kind),
-      outDir: path.join(repoRoot, "emitter", "_build", "js", "release", "build", "emitters", kind),
-      baseName: kind,
-    };
+      ? {
+        entryDir: path.join(repoRoot, "emitter", "http_server"),
+        outDir: path.join(repoRoot, "emitter", "_build", "js", "release", "build", "http_server"),
+        baseName: "http_server",
+      }
+      : {
+        entryDir: path.join(repoRoot, "emitter", "emitters", kind),
+        outDir: path.join(repoRoot, "emitter", "_build", "js", "release", "build", "emitters", kind),
+        baseName: kind,
+      };
   const jsFile = path.join(config.outDir, `${config.baseName}.js`);
   const dtsFile = path.join(config.outDir, `${config.baseName}.d.ts`);
   const moonbitDtsFile = path.join(config.outDir, "moonbit.d.ts");
@@ -33,7 +33,7 @@ function buildOne(kind) {
   const pkgDir = path.join(repoRoot, "packages", `typespec-moonbit-${kind}`);
   const distDir = path.join(pkgDir, "dist");
 
-  execSync(`moon build -C emitter --target js --release ${config.entryDir}`, { stdio: "inherit" });
+  execSync(`moon build --target js --release ${config.entryDir}`, { stdio: "inherit", cwd: path.join(repoRoot, "emitter") });
 
   fs.mkdirSync(distDir, { recursive: true });
   fs.copyFileSync(jsFile, path.join(distDir, "emitter.js"));

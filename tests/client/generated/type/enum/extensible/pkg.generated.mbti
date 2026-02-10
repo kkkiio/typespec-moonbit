@@ -1,10 +1,6 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "kkkiio/typespec-tests/client/generated/type/enum/extensible"
 
-import {
-  "kkkiio/typespec-client-runtime",
-}
-
 // Values
 
 // Errors
@@ -20,7 +16,6 @@ pub async fn StringClient::put_type_enum_extensible_string_known_value(Self, Str
 pub async fn StringClient::put_type_enum_extensible_string_unknown_value(Self, String) -> Unit
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

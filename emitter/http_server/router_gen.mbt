@@ -507,7 +507,7 @@ fn build_create_router_body(
         if param.location == "body" {
           break true
         }
-      } else {
+      } nobreak {
         false
       }
       if has_body {

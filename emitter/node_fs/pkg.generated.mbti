@@ -2,11 +2,11 @@
 package "kkkiio/typespec-moonbit/node_fs"
 
 // Values
-pub fn create_dir(String) -> Unit
+pub async fn create_dir(String) -> Unit
 
 pub fn path_exists(String) -> Bool
 
-pub fn write_string_to_file(String, String) -> Unit
+pub async fn write_string_to_file(String, String) -> Unit
 
 // Errors
 

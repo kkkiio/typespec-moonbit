@@ -173,6 +173,7 @@ pub fn[H0 : VersionedHandler] create_router(
         match route_id {
           RouteId::VersionedWithoutApiVersion => {
             ignore(body_stream)
+
             versioned_handler.without_api_version(group~)
             conn.send_response(200, "OK")
             conn.end_response()
@@ -181,6 +182,7 @@ pub fn[H0 : VersionedHandler] create_router(
           RouteId::VersionedWithPathApiVersion(path_params) => {
             let api_version = path_params[0]
             ignore(body_stream)
+
             versioned_handler.with_path_api_version(group~, api_version)
             conn.send_response(200, "OK")
             conn.end_response()
@@ -188,6 +190,7 @@ pub fn[H0 : VersionedHandler] create_router(
           }
           RouteId::VersionedWithQueryApiVersion => {
             ignore(body_stream)
+
             let p_3_api_version = @runtime.get_query_param(
               full_path, "api-version",
             )
@@ -198,6 +201,7 @@ pub fn[H0 : VersionedHandler] create_router(
           }
           RouteId::VersionedWithQueryOldApiVersion => {
             ignore(body_stream)
+
             let p_4_api_version = @runtime.get_query_param(
               full_path, "api-version",
             )

@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/type/property/value-types"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -425,7 +424,6 @@ pub impl ToJson for UnknownStringProperty
 pub impl @json.FromJson for UnknownStringProperty
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

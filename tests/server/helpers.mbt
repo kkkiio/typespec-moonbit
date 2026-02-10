@@ -7,7 +7,7 @@ pub fn[X] start_server(
   let server = @http.Server::new(addr)
   let port = server.addr().port()
   let base_url = "http://localhost:\{port}"
-  group.spawn_bg(no_wait=true, fn() { // see moonbitlang/async/src/websocket/external_client_test.mbt
+  group.spawn_bg(no_wait=true, () => { // see moonbitlang/async/src/websocket/external_client_test.mbt
     server.run_forever(
       (req, body, conn) => dispatch(req, body, conn),
       allow_failure=true,

@@ -117,6 +117,7 @@ pub fn[H0 : MultipleHandler] create_router(
         match route_id {
           RouteId::MultipleNoOperationParams => {
             ignore(body_stream)
+
             multiple_handler.no_operation_params(group~)
             conn.send_response(204, "No Content")
             conn.end_response()
@@ -125,6 +126,7 @@ pub fn[H0 : MultipleHandler] create_router(
           RouteId::MultipleWithOperationPathParam(path_params) => {
             let keyword = path_params[0]
             ignore(body_stream)
+
             multiple_handler.with_operation_path_param(group~, keyword)
             conn.send_response(204, "No Content")
             conn.end_response()

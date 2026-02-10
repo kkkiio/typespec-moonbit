@@ -118,6 +118,7 @@ pub fn[H0 : StringHandler] create_router(
         match route_id {
           RouteId::StringGetKnownValue => {
             ignore(body_stream)
+
             let resp_body = string_handler.get_known_value(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",
@@ -142,6 +143,7 @@ pub fn[H0 : StringHandler] create_router(
           }
           RouteId::StringGetUnknownValue => {
             ignore(body_stream)
+
             let resp_body = string_handler.get_unknown_value(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",

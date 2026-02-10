@@ -497,6 +497,7 @@ pub fn[
         match route_id {
           RouteId::Int32ValueGet => {
             ignore(body_stream)
+
             let resp_body = int32_value_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",
@@ -517,6 +518,7 @@ pub fn[
           }
           RouteId::Int64ValueGet => {
             ignore(body_stream)
+
             let resp_body = int64_value_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",
@@ -537,6 +539,7 @@ pub fn[
           }
           RouteId::BooleanValueGet => {
             ignore(body_stream)
+
             let resp_body = boolean_value_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",
@@ -557,6 +560,7 @@ pub fn[
           }
           RouteId::StringValueGet => {
             ignore(body_stream)
+
             let resp_body = string_value_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",
@@ -579,6 +583,7 @@ pub fn[
           }
           RouteId::Float32ValueGet => {
             ignore(body_stream)
+
             let resp_body = float32_value_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",
@@ -601,6 +606,7 @@ pub fn[
           }
           RouteId::DatetimeValueGet => {
             ignore(body_stream)
+
             let resp_body = datetime_value_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",
@@ -623,6 +629,7 @@ pub fn[
           }
           RouteId::DurationValueGet => {
             ignore(body_stream)
+
             let resp_body = duration_value_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",
@@ -645,6 +652,7 @@ pub fn[
           }
           RouteId::UnknownValueGet => {
             ignore(body_stream)
+
             let resp_body = unknown_value_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",
@@ -665,6 +673,7 @@ pub fn[
           }
           RouteId::ModelValueGet => {
             ignore(body_stream)
+
             let resp_body = model_value_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",
@@ -687,6 +696,7 @@ pub fn[
           }
           RouteId::NullableFloatValueGet => {
             ignore(body_stream)
+
             let resp_body = nullable_float_value_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",
@@ -709,6 +719,7 @@ pub fn[
           }
           RouteId::NullableInt32ValueGet => {
             ignore(body_stream)
+
             let resp_body = nullable_int32_value_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",
@@ -731,6 +742,7 @@ pub fn[
           }
           RouteId::NullableBooleanValueGet => {
             ignore(body_stream)
+
             let resp_body = nullable_boolean_value_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",
@@ -753,6 +765,7 @@ pub fn[
           }
           RouteId::NullableStringValueGet => {
             ignore(body_stream)
+
             let resp_body = nullable_string_value_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",
@@ -775,6 +788,7 @@ pub fn[
           }
           RouteId::NullableModelValueGet => {
             ignore(body_stream)
+
             let resp_body = nullable_model_value_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",

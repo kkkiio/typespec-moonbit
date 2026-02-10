@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/special-words"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -388,7 +387,6 @@ pub impl ToJson for Yield
 pub impl @json.FromJson for Yield
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

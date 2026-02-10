@@ -3,7 +3,7 @@
 /// Reference: .moonagent/repos/typespec/packages/http-server-js/test/e2e/http/type/model/empty/main.test.e2e.ts
 async test "type/model/empty" {
   let empty_handler = EmptyHandlerImpl::{  }
-  @async.with_task_group(fn(group) {
+  @async.with_task_group(group => {
     let router = @type_model_empty.create_router(empty_handler~, group~)
     let dispatch = @type_model_empty.create_dispatch(router)
     let base_url = @server.start_server(group, dispatch)

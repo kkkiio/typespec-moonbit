@@ -3,7 +3,7 @@
 /// Reference: .moonagent/repos/typespec/packages/http-server-js/test/e2e/http/type/model/inheritance/not-discriminated/main.test.e2e.ts
 async test "type/model/inheritance/not-discriminated" {
   let handler = NotDiscriminatedHandlerImpl::{  }
-  @async.with_task_group(fn(group) {
+  @async.with_task_group(group => {
     let router = @type_model_inheritance_not_discriminated.create_router(
       not_discriminated_handler=handler,
       group~,

@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/encode/duration"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -167,7 +166,6 @@ pub async fn QueryClient::get_encode_duration_query_iso8601__input_(Self, String
 pub fn QueryClient::new(String) -> Self
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

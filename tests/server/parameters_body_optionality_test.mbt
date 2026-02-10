@@ -4,7 +4,7 @@
 async test "parameters/body-optionality" {
   let body_optionality_handler = BodyOptionalityHandlerImpl::{  }
   let optional_explicit_handler = OptionalExplicitHandlerImpl::{  }
-  @async.with_task_group(fn(group) {
+  @async.with_task_group(group => {
     let router = @parameters_body_optionality.create_router(
       body_optionality_handler~,
       optional_explicit_handler~,

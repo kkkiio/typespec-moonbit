@@ -1,8 +1,8 @@
-import "test" {
+import {
   "moonbitlang/async",
-  "moonbitlang/x/fs" as @fs,
-  "kkkiio/typespec-tests/config" as @test_config,
-  "kkkiio/typespec-tests/client/generated/payload/content-negotiation" as @payload_content_negotiation,
-  "kkkiio/typespec-tests/client/generated/payload/json-merge-patch" as @payload_json_merge_patch,
-  "kkkiio/typespec-tests/client/generated/payload/media-type" as @payload_media_type,
-}
+  "moonbitlang/x/fs" @fs,
+  "kkkiio/typespec-tests/config" @test_config,
+  "kkkiio/typespec-tests/client/generated/payload/content-negotiation" @payload_content_negotiation,
+  "kkkiio/typespec-tests/client/generated/payload/json-merge-patch" @payload_json_merge_patch,
+  "kkkiio/typespec-tests/client/generated/payload/media-type" @payload_media_type,
+} for "test"

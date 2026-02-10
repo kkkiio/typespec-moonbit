@@ -114,6 +114,7 @@ pub fn[H0 : EmptyHandler] create_router(
         match route_id {
           RouteId::EmptyGetEmpty => {
             ignore(body_stream)
+
             let resp_body = empty_handler.get_empty(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",

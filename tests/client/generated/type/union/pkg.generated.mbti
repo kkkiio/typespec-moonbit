@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/type/union"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -333,7 +332,6 @@ pub impl ToJson for Union6
 pub impl @json.FromJson for Union6
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

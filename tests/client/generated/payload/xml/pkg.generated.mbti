@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/payload/xml"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -190,7 +189,6 @@ pub fn SimpleModelValueClient::new(String) -> Self
 pub async fn SimpleModelValueClient::put_payload_xml_simplemodel(Self, SimpleModel) -> Unit
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 
