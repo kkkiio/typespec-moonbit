@@ -2,7 +2,7 @@
 async test "parameters/basic" {
   let explicit = ParamBasicExplicit::{  }
   let implicit = ParamBasicImplicit::{  }
-  @async.with_task_group(fn(group) {
+  @async.with_task_group(group => {
     let router = @parameters_basic.create_router(
       explicit_body_handler=explicit,
       implicit_body_handler=implicit,

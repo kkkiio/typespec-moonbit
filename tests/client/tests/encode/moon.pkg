@@ -1,10 +1,10 @@
-import "test" {
+import {
   "moonbitlang/async",
-  "moonbitlang/core/encoding/utf8" as @encoding/utf8,
-  "moonbitlang/x/fs" as @fs,
-  "kkkiio/typespec-tests/config" as @test_config,
-  "kkkiio/typespec-client-runtime" as @runtime,
-  "kkkiio/typespec-tests/client/generated/encode/bytes" as @encode_bytes,
-  "kkkiio/typespec-tests/client/generated/encode/datetime" as @encode_datetime,
-  "kkkiio/typespec-tests/client/generated/encode/duration" as @encode_duration,
-}
+  "moonbitlang/core/encoding/utf8" @encoding/utf8,
+  "moonbitlang/x/fs" @fs,
+  "kkkiio/typespec-tests/config" @test_config,
+  "kkkiio/typespec-client-runtime" @runtime,
+  "kkkiio/typespec-tests/client/generated/encode/bytes" @encode_bytes,
+  "kkkiio/typespec-tests/client/generated/encode/datetime" @encode_datetime,
+  "kkkiio/typespec-tests/client/generated/encode/duration" @encode_duration,
+} for "test"

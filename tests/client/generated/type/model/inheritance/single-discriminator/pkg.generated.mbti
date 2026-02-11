@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/type/model/inheritance/single-discriminator"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -39,7 +38,6 @@ pub async fn SingleDiscriminatorClient::put_type_model_inheritance_single_discri
 pub async fn SingleDiscriminatorClient::put_type_model_inheritance_single_discriminator_recursivemodel(Self, Bird) -> Unit
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

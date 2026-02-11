@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/payload/content-negotiation"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -33,7 +32,6 @@ pub async fn SameBodyClient::get_avatar_as_png(Self) -> Bytes
 pub fn SameBodyClient::new(String) -> Self
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

@@ -159,13 +159,7 @@ fn emit_models_file(type_ctx : EncodeTypeContext) -> String raise {
       )
     }
   }
-  let rendered = @mbtgen.render({ package_name: None, imports: [], top_levels })
-  let prefix =
-    #|///|
-    #|#warnings("-unused_type_declaration")
-    #|pub using @runtime {type Nullable}
-    #|
-  prefix + rendered
+  @mbtgen.render({ package_name: None, imports: [], top_levels })
 }
 
 ///|

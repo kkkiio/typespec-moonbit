@@ -118,7 +118,6 @@ pub fn UnknownValueClient::new(String) -> Self
 pub async fn UnknownValueClient::put_type_array_unknown(Self, Array[Json]) -> Unit
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

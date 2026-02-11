@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/parameters/body-optionality"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -40,7 +39,6 @@ pub async fn OptionalExplicitClient::post_parameters_body_optionality_optional_e
 pub async fn OptionalExplicitClient::post_parameters_body_optionality_optional_explicit_set(Self, BodyModel?) -> Unit
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

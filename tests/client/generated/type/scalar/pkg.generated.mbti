@@ -1,10 +1,6 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "kkkiio/typespec-tests/client/generated/type/scalar"
 
-import {
-  "kkkiio/typespec-client-runtime",
-}
-
 // Values
 
 // Errors
@@ -62,7 +58,6 @@ pub fn UnknownClient::new(String) -> Self
 pub async fn UnknownClient::put_type_scalar_unknown(Self, Json) -> Unit
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

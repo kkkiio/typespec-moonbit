@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/encode/datetime"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -86,7 +85,6 @@ pub impl ToJson for UnixTimestampDatetimeProperty
 pub impl @json.FromJson for UnixTimestampDatetimeProperty
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

@@ -79,6 +79,7 @@ pub fn[H0 : SingleHandler] create_router(
         match route_id {
           RouteId::SingleMyOp => {
             ignore(body_stream)
+
             single_handler.my_op(group~)
             conn.send_response(200, "OK")
             conn.end_response()

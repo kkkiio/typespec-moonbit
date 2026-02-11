@@ -1,10 +1,6 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "kkkiio/typespec-tests/client/generated/routes"
 
-import {
-  "kkkiio/typespec-client-runtime",
-}
-
 // Values
 
 // Errors
@@ -92,7 +88,6 @@ pub async fn StandardClient::get_routes_query_query_expansion_standard_record__p
 pub fn StandardClient::new(String) -> Self
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

@@ -88,6 +88,7 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(
         match route_id {
           RouteId::NotDiscriminatedGetValid => {
             ignore(body_stream)
+
             let resp_body = not_discriminated_handler.get_valid(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",

@@ -1,10 +1,6 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "kkkiio/typespec-tests/client/generated/special-headers/conditional-request"
 
-import {
-  "kkkiio/typespec-client-runtime",
-}
-
 // Values
 
 // Errors
@@ -20,7 +16,6 @@ pub async fn ConditionalRequestClient::post_special_headers_conditional_request_
 pub async fn ConditionalRequestClient::post_special_headers_conditional_request_if_unmodified_since(Self, String?) -> Unit
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

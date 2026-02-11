@@ -138,7 +138,6 @@ pub impl ToJson for StringProperty
 pub impl @json.FromJson for StringProperty
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

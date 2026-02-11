@@ -1,10 +1,6 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "kkkiio/typespec-tests/client/generated/server/endpoint/not-defined"
 
-import {
-  "kkkiio/typespec-client-runtime",
-}
-
 // Values
 
 // Errors
@@ -17,7 +13,6 @@ pub async fn NotDefinedClient::head_server_endpoint_not_defined_valid(Self) -> U
 pub fn NotDefinedClient::new(String) -> Self
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

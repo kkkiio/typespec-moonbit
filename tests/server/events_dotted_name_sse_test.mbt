@@ -2,7 +2,7 @@
 /// Test for local events/dotted-name SSE case.
 async test "events/dotted-name/sse" {
   let handler = DottedNameHandlerImpl::{  }
-  @async.with_task_group(fn(group) {
+  @async.with_task_group(group => {
     let router = @events_dotted_name.create_router(
       dotted_name_handler=handler,
       group~,
@@ -29,7 +29,7 @@ impl @events_dotted_name.DottedNameHandler for DottedNameHandlerImpl with watch_
   }
   let stream = @events_dotted_name.TaskEventsStream::new()
   let writer = stream
-  group.spawn_bg(fn() {
+  group.spawn_bg(() => {
     defer writer.close()
     writer.write_event(
       @events_dotted_name.TaskEvents::MariaQueuedMessagesSynchronized({

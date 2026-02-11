@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/type/model/inheritance/recursive"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -27,7 +26,6 @@ pub fn RecursiveClient::new(String) -> Self
 pub async fn RecursiveClient::put_type_model_inheritance_recursive(Self, Extension) -> Unit
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

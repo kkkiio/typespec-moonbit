@@ -1,6 +1,6 @@
-import "test" {
+import {
   "moonbitlang/async",
-  "kkkiio/typespec-tests/client/generated/authentication/api-key" as @authentication_api_key,
-  "kkkiio/typespec-tests/client/generated/authentication/oauth2" as @authentication_oauth2,
-  "kkkiio/typespec-tests/client/generated/authentication/union" as @authentication_union,
-}
+  "kkkiio/typespec-tests/client/generated/authentication/api-key" @authentication_api_key,
+  "kkkiio/typespec-tests/client/generated/authentication/oauth2" @authentication_oauth2,
+  "kkkiio/typespec-tests/client/generated/authentication/union" @authentication_union,
+} for "test"

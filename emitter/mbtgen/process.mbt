@@ -1,11 +1,24 @@
 ///|
-/// `node:child_process` 静态模块绑定。
 #module("node:child_process")
-extern "js" fn exec_sync_ffi(cmd : String, options : @js.Value) -> Unit = "execSync"
+extern "js" fn exec_ffi(
+  cmd : String,
+  options : @js.Value,
+  callback : @js.Value,
+) -> @js.Value = "exec"
 
 ///|
-pub fn exec_moon_fmt(path : String) -> Unit {
+#module("node:util")
+extern "js" fn promisify(f : @js.Value) -> @js.Value = "promisify"
+
+///|
+let exec_promise_ffi : (String, @js.Value) -> @js.Promise = promisify(
+    exec_ffi |> @js.Value::cast_from,
+  )
+  |> @js.Value::cast
+
+///|
+pub async fn exec_moon_fmt(path : String) -> Unit {
   let options = @js.Object::new()
   options["cwd"] = path
-  exec_sync_ffi("moon fmt", options.to_value())
+  exec_promise_ffi("moon fmt", options.to_value()).wait() |> ignore
 }

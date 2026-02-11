@@ -4,7 +4,7 @@
 async test "parameters/spread" {
   let alias_handler = SpreadAliasHandlerImpl::{  }
   let model_handler = SpreadModelHandlerImpl::{  }
-  @async.with_task_group(fn(group) {
+  @async.with_task_group(group => {
     let router = @parameters_spread.create_router(
       alias_handler~,
       model_handler~,

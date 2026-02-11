@@ -3,7 +3,7 @@
 /// Reference: .moonagent/repos/typespec/packages/http-server-js/test/e2e/http/type/enum/extensible/main.test.e2e.ts
 async test "type/enum/extensible" {
   let string_handler = ExtensibleStringHandlerImpl::{  }
-  @async.with_task_group(fn(group) {
+  @async.with_task_group(group => {
     let router = @type_enum_extensible.create_router(string_handler~, group~)
     let dispatch = @type_enum_extensible.create_dispatch(router)
     let base_url = @server.start_server(group, dispatch)
@@ -40,7 +40,6 @@ impl @type_enum_extensible.StringHandler for ExtensibleStringHandlerImpl with ge
   //   contentType: "application/json",
   //   body: "Weekend",
   // }
-  ignore(group)
   "Weekend"
 }
 

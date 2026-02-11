@@ -1,10 +1,6 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "kkkiio/typespec-tests/client/generated/authentication/oauth2"
 
-import {
-  "kkkiio/typespec-client-runtime",
-}
-
 // Values
 
 // Errors
@@ -18,7 +14,6 @@ pub async fn OAuth2Client::get_authentication_oauth2_valid(Self) -> Unit
 pub fn OAuth2Client::new(String) -> Self
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

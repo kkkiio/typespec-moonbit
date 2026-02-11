@@ -1,8 +1,8 @@
-import "test" {
+import {
   "moonbitlang/async",
-  "kkkiio/typespec-tests/client/generated/server/endpoint/not-defined" as @server_endpoint_not_defined,
-  "kkkiio/typespec-tests/client/generated/server/path/single" as @server_path_single,
-  "kkkiio/typespec-tests/client/generated/server/path/multiple" as @server_path_multiple,
-  "kkkiio/typespec-tests/client/generated/server/versions/not-versioned" as @server_versions_not_versioned,
-  "kkkiio/typespec-tests/client/generated/server/versions/versioned" as @server_versions_versioned,
-}
+  "kkkiio/typespec-tests/client/generated/server/endpoint/not-defined" @server_endpoint_not_defined,
+  "kkkiio/typespec-tests/client/generated/server/path/single" @server_path_single,
+  "kkkiio/typespec-tests/client/generated/server/path/multiple" @server_path_multiple,
+  "kkkiio/typespec-tests/client/generated/server/versions/not-versioned" @server_versions_not_versioned,
+  "kkkiio/typespec-tests/client/generated/server/versions/versioned" @server_versions_versioned,
+} for "test"

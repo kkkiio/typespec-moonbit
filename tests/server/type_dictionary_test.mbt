@@ -13,7 +13,7 @@ async test "type/dictionary" {
   let duration_handler = DictDurationValueHandlerImpl::{  }
   let nullable_float_handler = DictNullableFloatValueHandlerImpl::{  }
   let recursive_model_handler = DictRecursiveModelValueHandlerImpl::{  }
-  @async.with_task_group(fn(group) {
+  @async.with_task_group(group => {
     let router = @type_dictionary.create_router(
       int32_value_handler=int32_handler,
       int64_value_handler=int64_handler,

@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/payload/multipart"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -306,7 +305,6 @@ pub fn NonStringClient::new(String) -> Self
 pub async fn NonStringClient::post_multipart_form_data_non_string_float(Self, Model0) -> Unit
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

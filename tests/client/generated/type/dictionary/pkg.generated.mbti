@@ -97,7 +97,6 @@ pub fn UnknownValueClient::new(String) -> Self
 pub async fn UnknownValueClient::put_type_dictionary_unknown(Self, Map[String, Json]) -> Unit
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

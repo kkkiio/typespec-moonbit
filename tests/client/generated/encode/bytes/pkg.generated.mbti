@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/encode/bytes"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -87,7 +86,6 @@ pub async fn ResponseBodyClient::get_encode_bytes_body_response_octet_stream(Sel
 pub fn ResponseBodyClient::new(String) -> Self
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

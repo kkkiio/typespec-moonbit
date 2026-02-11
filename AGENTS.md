@@ -1,10 +1,9 @@
 # Project Agents.md Guide
 
-本项目是一个 TypeSpec Emitter，核心逻辑完全由 MoonBit 编写并编译到 JS 后端。
+本项目是一个 TypeSpec Emitter, 核心逻辑完全由 MoonBit 编写并编译到 JS 后端.
 
-本仓库拆分为多个 MoonBit module（对齐 typespec-rust 的“生成+测试”分层），避免把测试依赖/目标污染 emitter 模块.
-
-In the module toplevel directory, this is a `moon.mod.json` file listing about the module and some meta information.
+本仓库拆分为多个 MoonBit module(对齐 typespec-rust 的“生成+测试”分层), 避免把测试依赖/目标污染 emitter 模块.
+根目录不是 MoonBit module, 不能直接执行`moon`命令.
 
 修改代码后必须执行 e2e 测试:
 
@@ -47,7 +46,7 @@ Server 运行时模块，给生成的 server 代码提供公共辅助函数与�
 Run `moon test` to check the test is passed.
 MoonBit supports snapshot testing, so when your changes indeed change the behavior of the code, you should run `moon test --update` to update the snapshot.
 
-When writing tests, you are encouraged to use `inspect` and run `moon test --update` to update the snapshots, only use assertions like `assert_eq` when you are in some loops where each snapshot may vary. 
+When writing tests, you are encouraged to use `inspect` and run `moon test --update` to update the snapshots, only use assertions like `assert_eq` when you are in some loops where each snapshot may vary.
 You can use `moon coverage analyze > uncovered.log` to see which parts of your code are not covered by tests.
 
 ### Coding convention
@@ -100,6 +99,6 @@ E2E 测试模块（native target），负责运行时验证与维护生成用例
 - In the last step, run:
   - `cd emitter && moon info && moon fmt`
   - `cd tests && moon info && moon fmt`
-  Check the diffs of `.mbti` file to see if the changes are expected.
+    Check the diffs of `.mbti` file to see if the changes are expected.
 
 - You can run `moon check` to check the code is linted correctly.

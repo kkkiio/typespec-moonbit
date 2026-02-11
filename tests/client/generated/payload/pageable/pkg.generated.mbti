@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/payload/pageable"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -172,7 +171,6 @@ pub async fn ServerDrivenPaginationClient::get_payload_pageable_server_driven_pa
 pub fn ServerDrivenPaginationClient::new(String) -> Self
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 

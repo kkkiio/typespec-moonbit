@@ -82,6 +82,7 @@ pub fn[H0 : RecursiveHandler] create_router(
         match route_id {
           RouteId::RecursiveGet => {
             ignore(body_stream)
+
             let resp_body = recursive_handler.get(group~)
             let headers : Map[String, String] = {
               "content-type": "application/json",

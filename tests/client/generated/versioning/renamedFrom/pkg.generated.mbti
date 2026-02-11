@@ -2,7 +2,6 @@
 package "kkkiio/typespec-tests/client/generated/versioning/renamedFrom"
 
 import {
-  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -41,7 +40,6 @@ pub fn RenamedFromClient::new(String) -> Self
 pub async fn RenamedFromClient::post_versioning_renamed_from_api_version__version__test__newquery_(Self, String, String, NewModel) -> NewModel
 
 // Type aliases
-pub using @typespec-client-runtime {type Nullable}
 
 // Traits
 
