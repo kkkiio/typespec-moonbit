@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// ApiKeyClient HTTP 客户端。
 pub(all) struct ApiKeyClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ApiKeyClient。
 pub fn ApiKeyClient::new(base_url : String) -> ApiKeyClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /authentication/api-key/valid（自动解析响应）。
@@ -38,8 +32,6 @@ pub async fn ApiKeyClient::get_authentication_api_key_valid(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /authentication/api-key/invalid（自动解析响应）。

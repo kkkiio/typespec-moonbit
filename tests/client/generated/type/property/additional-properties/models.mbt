@@ -1,14 +1,12 @@
 ///|
-
-///|
-/// Union Union0
-pub(all) enum Union0 {
+/// Union Union
+pub(all) enum Union {
   String(String)
   Float32(Double)
 } derive(Show)
 
 ///|
-pub impl ToJson for Union0 with to_json(self : Union0) -> Json {
+pub impl ToJson for Union with to_json(self : Union) -> Json {
   match self {
     String(v) => v.to_json()
     Float32(v) => v.to_json()
@@ -16,10 +14,10 @@ pub impl ToJson for Union0 with to_json(self : Union0) -> Json {
 }
 
 ///|
-pub impl @json.FromJson for Union0 with from_json(
+pub impl @json.FromJson for Union with from_json(
   json : Json,
   path : @json.JsonPath,
-) -> Union0 raise {
+) -> Union raise {
   let try_0 : Result[String, @json.JsonDecodeError] = try? @json.FromJson::from_json(
     json, path,
   )
@@ -32,10 +30,8 @@ pub impl @json.FromJson for Union0 with from_json(
   if try_1 is Ok(v) {
     return Float32(v)
   }
-  raise @json.JsonDecodeError((path, "cannot deserialize json as union Union0"))
+  raise @json.JsonDecodeError((path, "cannot deserialize json as union Union"))
 }
-
-///|
 
 ///|
 /// Union Union1
@@ -73,8 +69,6 @@ pub impl @json.FromJson for Union1 with from_json(
 }
 
 ///|
-
-///|
 /// Union Union2
 pub(all) enum Union2 {
   WidgetData0(WidgetData0)
@@ -108,8 +102,6 @@ pub impl @json.FromJson for Union2 with from_json(
   }
   raise @json.JsonDecodeError((path, "cannot deserialize json as union Union2"))
 }
-
-///|
 
 ///|
 /// Union Union3
@@ -147,8 +139,6 @@ pub impl @json.FromJson for Union3 with from_json(
 }
 
 ///|
-
-///|
 /// Union Union4
 pub(all) enum Union4 {
   Array(Array[WidgetData2])
@@ -184,8 +174,6 @@ pub impl @json.FromJson for Union4 with from_json(
 }
 
 ///|
-
-///|
 /// Model WidgetData0
 pub(all) struct WidgetData0 {
   kind : String
@@ -197,16 +185,12 @@ pub(all) struct WidgetData0 {
 )
 
 ///|
-
-///|
 /// Model WidgetData1
 pub(all) struct WidgetData1 {
   kind : String
   start : @runtime.UtcDateTime
   end : @runtime.UtcDateTime?
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model WidgetData2
@@ -216,14 +200,10 @@ pub(all) struct WidgetData2 {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model ModelForRecord
 pub(all) struct ModelForRecord {
   state : String
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model DifferentSpreadFloatDerived
@@ -235,8 +215,6 @@ pub(all) struct DifferentSpreadFloatDerived {
   ToJson(fields(derived_prop(rename="derivedProp"))),
   @json.FromJson(fields(derived_prop(rename="derivedProp"))),
 )
-
-///|
 
 ///|
 /// Model DifferentSpreadModelDerived
@@ -254,8 +232,6 @@ pub(all) struct DifferentSpreadModelDerived {
 )
 
 ///|
-
-///|
 /// Model DifferentSpreadStringDerived
 pub(all) struct DifferentSpreadStringDerived {
   id : Double
@@ -265,8 +241,6 @@ pub(all) struct DifferentSpreadStringDerived {
   ToJson(fields(derived_prop(rename="derivedProp"))),
   @json.FromJson(fields(derived_prop(rename="derivedProp"))),
 )
-
-///|
 
 ///|
 /// Model DifferentSpreadModelArrayDerived
@@ -284,14 +258,10 @@ pub(all) struct DifferentSpreadModelArrayDerived {
 )
 
 ///|
-
-///|
 /// Model ExtendsFloatAdditionalProperties
 pub(all) struct ExtendsFloatAdditionalProperties {
   id : Double
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model ExtendsModelAdditionalProperties
@@ -304,14 +274,10 @@ pub(all) struct ExtendsModelAdditionalProperties {
 )
 
 ///|
-
-///|
 /// Model ExtendsStringAdditionalProperties
 pub(all) struct ExtendsStringAdditionalProperties {
   name : String
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model ExtendsUnknownAdditionalProperties
@@ -320,16 +286,12 @@ pub(all) struct ExtendsUnknownAdditionalProperties {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model IsUnknownAdditionalPropertiesDerived
 pub(all) struct IsUnknownAdditionalPropertiesDerived {
   name : String
   index : Int
   age : Double?
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model ExtendsModelArrayAdditionalProperties
@@ -342,16 +304,12 @@ pub(all) struct ExtendsModelArrayAdditionalProperties {
 )
 
 ///|
-
-///|
 /// Model ExtendsUnknownAdditionalPropertiesDerived
 pub(all) struct ExtendsUnknownAdditionalPropertiesDerived {
   name : String
   index : Int
   age : Double?
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model ExtendsUnknownAdditionalPropertiesDiscriminated

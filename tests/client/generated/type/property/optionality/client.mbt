@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// StringClient HTTP 客户端。
 pub(all) struct StringClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 StringClient。
 pub fn StringClient::new(base_url : String) -> StringClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/string/all（自动解析响应）。
@@ -43,8 +37,6 @@ pub async fn StringClient::get_type_property_optional_string_all(
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/string/default（自动解析响应）。
 pub async fn StringClient::get_type_property_optional_string_default(
   self : StringClient,
@@ -69,8 +61,6 @@ pub async fn StringClient::get_type_property_optional_string_default(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/string/all（自动解析响应）。
@@ -99,8 +89,6 @@ pub async fn StringClient::put_type_property_optional_string_all(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/string/default（自动解析响应）。
 pub async fn StringClient::put_type_property_optional_string_default(
   self : StringClient,
@@ -127,22 +115,16 @@ pub async fn StringClient::put_type_property_optional_string_default(
 }
 
 ///|
-
-///|
 /// BytesClient HTTP 客户端。
 pub(all) struct BytesClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 BytesClient。
 pub fn BytesClient::new(base_url : String) -> BytesClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/bytes/all（自动解析响应）。
@@ -171,8 +153,6 @@ pub async fn BytesClient::get_type_property_optional_bytes_all(
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/bytes/default（自动解析响应）。
 pub async fn BytesClient::get_type_property_optional_bytes_default(
   self : BytesClient,
@@ -197,8 +177,6 @@ pub async fn BytesClient::get_type_property_optional_bytes_default(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/bytes/all（自动解析响应）。
@@ -227,8 +205,6 @@ pub async fn BytesClient::put_type_property_optional_bytes_all(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/bytes/default（自动解析响应）。
 pub async fn BytesClient::put_type_property_optional_bytes_default(
   self : BytesClient,
@@ -255,22 +231,16 @@ pub async fn BytesClient::put_type_property_optional_bytes_default(
 }
 
 ///|
-
-///|
 /// DatetimeClient HTTP 客户端。
 pub(all) struct DatetimeClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 DatetimeClient。
 pub fn DatetimeClient::new(base_url : String) -> DatetimeClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/datetime/all（自动解析响应）。
@@ -299,8 +269,6 @@ pub async fn DatetimeClient::get_type_property_optional_datetime_all(
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/datetime/default（自动解析响应）。
 pub async fn DatetimeClient::get_type_property_optional_datetime_default(
   self : DatetimeClient,
@@ -325,8 +293,6 @@ pub async fn DatetimeClient::get_type_property_optional_datetime_default(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/datetime/all（自动解析响应）。
@@ -355,8 +321,6 @@ pub async fn DatetimeClient::put_type_property_optional_datetime_all(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/datetime/default（自动解析响应）。
 pub async fn DatetimeClient::put_type_property_optional_datetime_default(
   self : DatetimeClient,
@@ -383,22 +347,16 @@ pub async fn DatetimeClient::put_type_property_optional_datetime_default(
 }
 
 ///|
-
-///|
 /// DurationClient HTTP 客户端。
 pub(all) struct DurationClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 DurationClient。
 pub fn DurationClient::new(base_url : String) -> DurationClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/duration/all（自动解析响应）。
@@ -427,8 +385,6 @@ pub async fn DurationClient::get_type_property_optional_duration_all(
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/duration/default（自动解析响应）。
 pub async fn DurationClient::get_type_property_optional_duration_default(
   self : DurationClient,
@@ -453,8 +409,6 @@ pub async fn DurationClient::get_type_property_optional_duration_default(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/duration/all（自动解析响应）。
@@ -483,8 +437,6 @@ pub async fn DurationClient::put_type_property_optional_duration_all(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/duration/default（自动解析响应）。
 pub async fn DurationClient::put_type_property_optional_duration_default(
   self : DurationClient,
@@ -511,22 +463,16 @@ pub async fn DurationClient::put_type_property_optional_duration_default(
 }
 
 ///|
-
-///|
 /// PlainDateClient HTTP 客户端。
 pub(all) struct PlainDateClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 PlainDateClient。
 pub fn PlainDateClient::new(base_url : String) -> PlainDateClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/plainDate/all（自动解析响应）。
@@ -555,8 +501,6 @@ pub async fn PlainDateClient::get_type_property_optional_plaindate_all(
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/plainDate/default（自动解析响应）。
 pub async fn PlainDateClient::get_type_property_optional_plaindate_default(
   self : PlainDateClient,
@@ -581,8 +525,6 @@ pub async fn PlainDateClient::get_type_property_optional_plaindate_default(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/plainDate/all（自动解析响应）。
@@ -611,8 +553,6 @@ pub async fn PlainDateClient::put_type_property_optional_plaindate_all(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/plainDate/default（自动解析响应）。
 pub async fn PlainDateClient::put_type_property_optional_plaindate_default(
   self : PlainDateClient,
@@ -639,22 +579,16 @@ pub async fn PlainDateClient::put_type_property_optional_plaindate_default(
 }
 
 ///|
-
-///|
 /// PlainTimeClient HTTP 客户端。
 pub(all) struct PlainTimeClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 PlainTimeClient。
 pub fn PlainTimeClient::new(base_url : String) -> PlainTimeClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/plainTime/all（自动解析响应）。
@@ -683,8 +617,6 @@ pub async fn PlainTimeClient::get_type_property_optional_plaintime_all(
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/plainTime/default（自动解析响应）。
 pub async fn PlainTimeClient::get_type_property_optional_plaintime_default(
   self : PlainTimeClient,
@@ -709,8 +641,6 @@ pub async fn PlainTimeClient::get_type_property_optional_plaintime_default(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/plainTime/all（自动解析响应）。
@@ -739,8 +669,6 @@ pub async fn PlainTimeClient::put_type_property_optional_plaintime_all(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/plainTime/default（自动解析响应）。
 pub async fn PlainTimeClient::put_type_property_optional_plaintime_default(
   self : PlainTimeClient,
@@ -767,22 +695,16 @@ pub async fn PlainTimeClient::put_type_property_optional_plaintime_default(
 }
 
 ///|
-
-///|
 /// CollectionsByteClient HTTP 客户端。
 pub(all) struct CollectionsByteClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 CollectionsByteClient。
 pub fn CollectionsByteClient::new(base_url : String) -> CollectionsByteClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/collections/bytes/all（自动解析响应）。
@@ -813,8 +735,6 @@ pub async fn CollectionsByteClient::get_type_property_optional_collections_bytes
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/collections/bytes/default（自动解析响应）。
 pub async fn CollectionsByteClient::get_type_property_optional_collections_bytes_default(
   self : CollectionsByteClient,
@@ -843,8 +763,6 @@ pub async fn CollectionsByteClient::get_type_property_optional_collections_bytes
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/collections/bytes/all（自动解析响应）。
 pub async fn CollectionsByteClient::put_type_property_optional_collections_bytes_all(
   self : CollectionsByteClient,
@@ -869,8 +787,6 @@ pub async fn CollectionsByteClient::put_type_property_optional_collections_bytes
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/collections/bytes/default（自动解析响应）。
@@ -899,22 +815,16 @@ pub async fn CollectionsByteClient::put_type_property_optional_collections_bytes
 }
 
 ///|
-
-///|
 /// CollectionsModelClient HTTP 客户端。
 pub(all) struct CollectionsModelClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 CollectionsModelClient。
 pub fn CollectionsModelClient::new(base_url : String) -> CollectionsModelClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/collections/model/all（自动解析响应）。
@@ -945,8 +855,6 @@ pub async fn CollectionsModelClient::get_type_property_optional_collections_mode
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/collections/model/default（自动解析响应）。
 pub async fn CollectionsModelClient::get_type_property_optional_collections_model_default(
   self : CollectionsModelClient,
@@ -975,8 +883,6 @@ pub async fn CollectionsModelClient::get_type_property_optional_collections_mode
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/collections/model/all（自动解析响应）。
 pub async fn CollectionsModelClient::put_type_property_optional_collections_model_all(
   self : CollectionsModelClient,
@@ -1001,8 +907,6 @@ pub async fn CollectionsModelClient::put_type_property_optional_collections_mode
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/collections/model/default（自动解析响应）。
@@ -1031,22 +935,16 @@ pub async fn CollectionsModelClient::put_type_property_optional_collections_mode
 }
 
 ///|
-
-///|
 /// StringLiteralClient HTTP 客户端。
 pub(all) struct StringLiteralClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 StringLiteralClient。
 pub fn StringLiteralClient::new(base_url : String) -> StringLiteralClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/string/literal/all（自动解析响应）。
@@ -1077,8 +975,6 @@ pub async fn StringLiteralClient::get_type_property_optional_string_literal_all(
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/string/literal/default（自动解析响应）。
 pub async fn StringLiteralClient::get_type_property_optional_string_literal_default(
   self : StringLiteralClient,
@@ -1107,8 +1003,6 @@ pub async fn StringLiteralClient::get_type_property_optional_string_literal_defa
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/string/literal/all（自动解析响应）。
 pub async fn StringLiteralClient::put_type_property_optional_string_literal_all(
   self : StringLiteralClient,
@@ -1133,8 +1027,6 @@ pub async fn StringLiteralClient::put_type_property_optional_string_literal_all(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/string/literal/default（自动解析响应）。
@@ -1163,22 +1055,16 @@ pub async fn StringLiteralClient::put_type_property_optional_string_literal_defa
 }
 
 ///|
-
-///|
 /// IntLiteralClient HTTP 客户端。
 pub(all) struct IntLiteralClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 IntLiteralClient。
 pub fn IntLiteralClient::new(base_url : String) -> IntLiteralClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/int/literal/all（自动解析响应）。
@@ -1209,8 +1095,6 @@ pub async fn IntLiteralClient::get_type_property_optional_int_literal_all(
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/int/literal/default（自动解析响应）。
 pub async fn IntLiteralClient::get_type_property_optional_int_literal_default(
   self : IntLiteralClient,
@@ -1239,8 +1123,6 @@ pub async fn IntLiteralClient::get_type_property_optional_int_literal_default(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/int/literal/all（自动解析响应）。
 pub async fn IntLiteralClient::put_type_property_optional_int_literal_all(
   self : IntLiteralClient,
@@ -1265,8 +1147,6 @@ pub async fn IntLiteralClient::put_type_property_optional_int_literal_all(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/int/literal/default（自动解析响应）。
@@ -1295,22 +1175,16 @@ pub async fn IntLiteralClient::put_type_property_optional_int_literal_default(
 }
 
 ///|
-
-///|
 /// FloatLiteralClient HTTP 客户端。
 pub(all) struct FloatLiteralClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 FloatLiteralClient。
 pub fn FloatLiteralClient::new(base_url : String) -> FloatLiteralClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/float/literal/all（自动解析响应）。
@@ -1341,8 +1215,6 @@ pub async fn FloatLiteralClient::get_type_property_optional_float_literal_all(
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/float/literal/default（自动解析响应）。
 pub async fn FloatLiteralClient::get_type_property_optional_float_literal_default(
   self : FloatLiteralClient,
@@ -1371,8 +1243,6 @@ pub async fn FloatLiteralClient::get_type_property_optional_float_literal_defaul
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/float/literal/all（自动解析响应）。
 pub async fn FloatLiteralClient::put_type_property_optional_float_literal_all(
   self : FloatLiteralClient,
@@ -1397,8 +1267,6 @@ pub async fn FloatLiteralClient::put_type_property_optional_float_literal_all(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/float/literal/default（自动解析响应）。
@@ -1427,22 +1295,16 @@ pub async fn FloatLiteralClient::put_type_property_optional_float_literal_defaul
 }
 
 ///|
-
-///|
 /// BooleanLiteralClient HTTP 客户端。
 pub(all) struct BooleanLiteralClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 BooleanLiteralClient。
 pub fn BooleanLiteralClient::new(base_url : String) -> BooleanLiteralClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/boolean/literal/all（自动解析响应）。
@@ -1473,8 +1335,6 @@ pub async fn BooleanLiteralClient::get_type_property_optional_boolean_literal_al
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/boolean/literal/default（自动解析响应）。
 pub async fn BooleanLiteralClient::get_type_property_optional_boolean_literal_default(
   self : BooleanLiteralClient,
@@ -1503,8 +1363,6 @@ pub async fn BooleanLiteralClient::get_type_property_optional_boolean_literal_de
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/boolean/literal/all（自动解析响应）。
 pub async fn BooleanLiteralClient::put_type_property_optional_boolean_literal_all(
   self : BooleanLiteralClient,
@@ -1529,8 +1387,6 @@ pub async fn BooleanLiteralClient::put_type_property_optional_boolean_literal_al
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/boolean/literal/default（自动解析响应）。
@@ -1559,14 +1415,10 @@ pub async fn BooleanLiteralClient::put_type_property_optional_boolean_literal_de
 }
 
 ///|
-
-///|
 /// UnionStringLiteralClient HTTP 客户端。
 pub(all) struct UnionStringLiteralClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 UnionStringLiteralClient。
@@ -1575,8 +1427,6 @@ pub fn UnionStringLiteralClient::new(
 ) -> UnionStringLiteralClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/union/string/literal/all（自动解析响应）。
@@ -1607,8 +1457,6 @@ pub async fn UnionStringLiteralClient::get_type_property_optional_union_string_l
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/union/string/literal/default（自动解析响应）。
 pub async fn UnionStringLiteralClient::get_type_property_optional_union_string_literal_default(
   self : UnionStringLiteralClient,
@@ -1637,8 +1485,6 @@ pub async fn UnionStringLiteralClient::get_type_property_optional_union_string_l
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/union/string/literal/all（自动解析响应）。
 pub async fn UnionStringLiteralClient::put_type_property_optional_union_string_literal_all(
   self : UnionStringLiteralClient,
@@ -1663,8 +1509,6 @@ pub async fn UnionStringLiteralClient::put_type_property_optional_union_string_l
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/union/string/literal/default（自动解析响应）。
@@ -1693,22 +1537,16 @@ pub async fn UnionStringLiteralClient::put_type_property_optional_union_string_l
 }
 
 ///|
-
-///|
 /// UnionIntLiteralClient HTTP 客户端。
 pub(all) struct UnionIntLiteralClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 UnionIntLiteralClient。
 pub fn UnionIntLiteralClient::new(base_url : String) -> UnionIntLiteralClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/union/int/literal/all（自动解析响应）。
@@ -1739,8 +1577,6 @@ pub async fn UnionIntLiteralClient::get_type_property_optional_union_int_literal
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/union/int/literal/default（自动解析响应）。
 pub async fn UnionIntLiteralClient::get_type_property_optional_union_int_literal_default(
   self : UnionIntLiteralClient,
@@ -1769,8 +1605,6 @@ pub async fn UnionIntLiteralClient::get_type_property_optional_union_int_literal
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/union/int/literal/all（自动解析响应）。
 pub async fn UnionIntLiteralClient::put_type_property_optional_union_int_literal_all(
   self : UnionIntLiteralClient,
@@ -1795,8 +1629,6 @@ pub async fn UnionIntLiteralClient::put_type_property_optional_union_int_literal
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/union/int/literal/default（自动解析响应）。
@@ -1825,14 +1657,10 @@ pub async fn UnionIntLiteralClient::put_type_property_optional_union_int_literal
 }
 
 ///|
-
-///|
 /// UnionFloatLiteralClient HTTP 客户端。
 pub(all) struct UnionFloatLiteralClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 UnionFloatLiteralClient。
@@ -1841,8 +1669,6 @@ pub fn UnionFloatLiteralClient::new(
 ) -> UnionFloatLiteralClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/union/float/literal/all（自动解析响应）。
@@ -1873,8 +1699,6 @@ pub async fn UnionFloatLiteralClient::get_type_property_optional_union_float_lit
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/union/float/literal/default（自动解析响应）。
 pub async fn UnionFloatLiteralClient::get_type_property_optional_union_float_literal_default(
   self : UnionFloatLiteralClient,
@@ -1903,8 +1727,6 @@ pub async fn UnionFloatLiteralClient::get_type_property_optional_union_float_lit
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/union/float/literal/all（自动解析响应）。
 pub async fn UnionFloatLiteralClient::put_type_property_optional_union_float_literal_all(
   self : UnionFloatLiteralClient,
@@ -1929,8 +1751,6 @@ pub async fn UnionFloatLiteralClient::put_type_property_optional_union_float_lit
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/union/float/literal/default（自动解析响应）。
@@ -1959,14 +1779,10 @@ pub async fn UnionFloatLiteralClient::put_type_property_optional_union_float_lit
 }
 
 ///|
-
-///|
 /// RequiredAndOptionalClient HTTP 客户端。
 pub(all) struct RequiredAndOptionalClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 RequiredAndOptionalClient。
@@ -1975,8 +1791,6 @@ pub fn RequiredAndOptionalClient::new(
 ) -> RequiredAndOptionalClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/optional/requiredAndOptional/all（自动解析响应）。
@@ -2007,8 +1821,6 @@ pub async fn RequiredAndOptionalClient::get_type_property_optional_requiredandop
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/optional/requiredAndOptional/requiredOnly（自动解析响应）。
 pub async fn RequiredAndOptionalClient::get_type_property_optional_requiredandoptional_requiredonly(
   self : RequiredAndOptionalClient,
@@ -2037,8 +1849,6 @@ pub async fn RequiredAndOptionalClient::get_type_property_optional_requiredandop
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/optional/requiredAndOptional/all（自动解析响应）。
 pub async fn RequiredAndOptionalClient::put_type_property_optional_requiredandoptional_all(
   self : RequiredAndOptionalClient,
@@ -2063,8 +1873,6 @@ pub async fn RequiredAndOptionalClient::put_type_property_optional_requiredandop
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/optional/requiredAndOptional/requiredOnly（自动解析响应）。

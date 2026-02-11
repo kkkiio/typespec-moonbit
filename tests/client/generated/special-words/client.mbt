@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// ModelsClient HTTP 客户端。
 pub(all) struct ModelsClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ModelsClient。
 pub fn ModelsClient::new(base_url : String) -> ModelsClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/and（自动解析响应）。
@@ -41,8 +35,6 @@ pub async fn ModelsClient::post_special_words_models_and(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/as（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_as(
   self : ModelsClient,
@@ -65,8 +57,6 @@ pub async fn ModelsClient::post_special_words_models_as(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/assert（自动解析响应）。
@@ -93,8 +83,6 @@ pub async fn ModelsClient::post_special_words_models_assert(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/async（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_async(
   self : ModelsClient,
@@ -117,8 +105,6 @@ pub async fn ModelsClient::post_special_words_models_async(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/await（自动解析响应）。
@@ -145,8 +131,6 @@ pub async fn ModelsClient::post_special_words_models_await(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/break（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_break(
   self : ModelsClient,
@@ -171,8 +155,6 @@ pub async fn ModelsClient::post_special_words_models_break(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/class（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_class(
   self : ModelsClient,
@@ -195,8 +177,6 @@ pub async fn ModelsClient::post_special_words_models_class(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/constructor（自动解析响应）。
@@ -225,8 +205,6 @@ pub async fn ModelsClient::post_special_words_models_constructor(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/continue（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_continue(
   self : ModelsClient,
@@ -253,8 +231,6 @@ pub async fn ModelsClient::post_special_words_models_continue(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/def（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_def(
   self : ModelsClient,
@@ -277,8 +253,6 @@ pub async fn ModelsClient::post_special_words_models_def(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/del（自动解析响应）。
@@ -305,8 +279,6 @@ pub async fn ModelsClient::post_special_words_models_del(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/elif（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_elif(
   self : ModelsClient,
@@ -329,8 +301,6 @@ pub async fn ModelsClient::post_special_words_models_elif(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/else（自动解析响应）。
@@ -357,8 +327,6 @@ pub async fn ModelsClient::post_special_words_models_else(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/except（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_except(
   self : ModelsClient,
@@ -383,8 +351,6 @@ pub async fn ModelsClient::post_special_words_models_except(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/exec（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_exec(
   self : ModelsClient,
@@ -407,8 +373,6 @@ pub async fn ModelsClient::post_special_words_models_exec(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/finally（自动解析响应）。
@@ -437,8 +401,6 @@ pub async fn ModelsClient::post_special_words_models_finally(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/for（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_for(
   self : ModelsClient,
@@ -461,8 +423,6 @@ pub async fn ModelsClient::post_special_words_models_for(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/from（自动解析响应）。
@@ -489,8 +449,6 @@ pub async fn ModelsClient::post_special_words_models_from(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/global（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_global(
   self : ModelsClient,
@@ -513,8 +471,6 @@ pub async fn ModelsClient::post_special_words_models_global(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/if（自动解析响应）。
@@ -541,8 +497,6 @@ pub async fn ModelsClient::post_special_words_models_if(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/import（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_import(
   self : ModelsClient,
@@ -565,8 +519,6 @@ pub async fn ModelsClient::post_special_words_models_import(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/in（自动解析响应）。
@@ -593,8 +545,6 @@ pub async fn ModelsClient::post_special_words_models_in(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/is（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_is(
   self : ModelsClient,
@@ -617,8 +567,6 @@ pub async fn ModelsClient::post_special_words_models_is(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/lambda（自动解析响应）。
@@ -645,8 +593,6 @@ pub async fn ModelsClient::post_special_words_models_lambda(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/not（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_not(
   self : ModelsClient,
@@ -669,8 +615,6 @@ pub async fn ModelsClient::post_special_words_models_not(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/or（自动解析响应）。
@@ -697,8 +641,6 @@ pub async fn ModelsClient::post_special_words_models_or(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/pass（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_pass(
   self : ModelsClient,
@@ -721,8 +663,6 @@ pub async fn ModelsClient::post_special_words_models_pass(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/raise（自动解析响应）。
@@ -749,8 +689,6 @@ pub async fn ModelsClient::post_special_words_models_raise(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/return（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_return(
   self : ModelsClient,
@@ -773,8 +711,6 @@ pub async fn ModelsClient::post_special_words_models_return(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/try（自动解析响应）。
@@ -801,8 +737,6 @@ pub async fn ModelsClient::post_special_words_models_try(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/while（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_while(
   self : ModelsClient,
@@ -825,8 +759,6 @@ pub async fn ModelsClient::post_special_words_models_while(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/models/with（自动解析响应）。
@@ -853,8 +785,6 @@ pub async fn ModelsClient::post_special_words_models_with(
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/models/yield（自动解析响应）。
 pub async fn ModelsClient::post_special_words_models_yield(
   self : ModelsClient,
@@ -879,22 +809,16 @@ pub async fn ModelsClient::post_special_words_models_yield(
 }
 
 ///|
-
-///|
 /// ModelPropertiesClient HTTP 客户端。
 pub(all) struct ModelPropertiesClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ModelPropertiesClient。
 pub fn ModelPropertiesClient::new(base_url : String) -> ModelPropertiesClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /special-words/model-properties/same-as-model（自动解析响应）。
@@ -923,8 +847,6 @@ pub async fn ModelPropertiesClient::post_special_words_model_properties_same_as_
 }
 
 ///|
-
-///|
 /// 调用 post /special-words/model-properties/dict-methods（自动解析响应）。
 pub async fn ModelPropertiesClient::post_special_words_model_properties_dict_methods(
   self : ModelPropertiesClient,
@@ -951,22 +873,16 @@ pub async fn ModelPropertiesClient::post_special_words_model_properties_dict_met
 }
 
 ///|
-
-///|
 /// OperationsClient HTTP 客户端。
 pub(all) struct OperationsClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 OperationsClient。
 pub fn OperationsClient::new(base_url : String) -> OperationsClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/and（自动解析响应）。
@@ -992,8 +908,6 @@ pub async fn OperationsClient::get_special_words_operations_and(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/as（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_as(
   self : OperationsClient,
@@ -1013,8 +927,6 @@ pub async fn OperationsClient::get_special_words_operations_as(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/assert（自动解析响应）。
@@ -1040,8 +952,6 @@ pub async fn OperationsClient::get_special_words_operations_assert(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/async（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_async(
   self : OperationsClient,
@@ -1063,8 +973,6 @@ pub async fn OperationsClient::get_special_words_operations_async(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/await（自动解析响应）。
@@ -1090,8 +998,6 @@ pub async fn OperationsClient::get_special_words_operations_await(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/break（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_break(
   self : OperationsClient,
@@ -1113,8 +1019,6 @@ pub async fn OperationsClient::get_special_words_operations_break(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/class（自动解析响应）。
@@ -1140,8 +1044,6 @@ pub async fn OperationsClient::get_special_words_operations_class(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/constructor（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_constructor(
   self : OperationsClient,
@@ -1163,8 +1065,6 @@ pub async fn OperationsClient::get_special_words_operations_constructor(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/continue（自动解析响应）。
@@ -1190,8 +1090,6 @@ pub async fn OperationsClient::get_special_words_operations_continue(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/def（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_def(
   self : OperationsClient,
@@ -1213,8 +1111,6 @@ pub async fn OperationsClient::get_special_words_operations_def(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/del（自动解析响应）。
@@ -1240,8 +1136,6 @@ pub async fn OperationsClient::get_special_words_operations_del(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/elif（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_elif(
   self : OperationsClient,
@@ -1263,8 +1157,6 @@ pub async fn OperationsClient::get_special_words_operations_elif(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/else（自动解析响应）。
@@ -1290,8 +1182,6 @@ pub async fn OperationsClient::get_special_words_operations_else(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/except（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_except(
   self : OperationsClient,
@@ -1313,8 +1203,6 @@ pub async fn OperationsClient::get_special_words_operations_except(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/exec（自动解析响应）。
@@ -1340,8 +1228,6 @@ pub async fn OperationsClient::get_special_words_operations_exec(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/finally（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_finally(
   self : OperationsClient,
@@ -1363,8 +1249,6 @@ pub async fn OperationsClient::get_special_words_operations_finally(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/for（自动解析响应）。
@@ -1390,8 +1274,6 @@ pub async fn OperationsClient::get_special_words_operations_for(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/from（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_from(
   self : OperationsClient,
@@ -1413,8 +1295,6 @@ pub async fn OperationsClient::get_special_words_operations_from(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/global（自动解析响应）。
@@ -1440,8 +1320,6 @@ pub async fn OperationsClient::get_special_words_operations_global(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/if（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_if(
   self : OperationsClient,
@@ -1461,8 +1339,6 @@ pub async fn OperationsClient::get_special_words_operations_if(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/import（自动解析响应）。
@@ -1488,8 +1364,6 @@ pub async fn OperationsClient::get_special_words_operations_import(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/in（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_in(
   self : OperationsClient,
@@ -1511,8 +1385,6 @@ pub async fn OperationsClient::get_special_words_operations_in(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/is（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_is(
   self : OperationsClient,
@@ -1532,8 +1404,6 @@ pub async fn OperationsClient::get_special_words_operations_is(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/lambda（自动解析响应）。
@@ -1559,8 +1429,6 @@ pub async fn OperationsClient::get_special_words_operations_lambda(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/not（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_not(
   self : OperationsClient,
@@ -1584,8 +1452,6 @@ pub async fn OperationsClient::get_special_words_operations_not(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/or（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_or(
   self : OperationsClient,
@@ -1605,8 +1471,6 @@ pub async fn OperationsClient::get_special_words_operations_or(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/pass（自动解析响应）。
@@ -1632,8 +1496,6 @@ pub async fn OperationsClient::get_special_words_operations_pass(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/raise（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_raise(
   self : OperationsClient,
@@ -1655,8 +1517,6 @@ pub async fn OperationsClient::get_special_words_operations_raise(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/return（自动解析响应）。
@@ -1682,8 +1542,6 @@ pub async fn OperationsClient::get_special_words_operations_return(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/try（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_try(
   self : OperationsClient,
@@ -1705,8 +1563,6 @@ pub async fn OperationsClient::get_special_words_operations_try(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/while（自动解析响应）。
@@ -1732,8 +1588,6 @@ pub async fn OperationsClient::get_special_words_operations_while(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/operations/with（自动解析响应）。
 pub async fn OperationsClient::get_special_words_operations_with(
   self : OperationsClient,
@@ -1755,8 +1609,6 @@ pub async fn OperationsClient::get_special_words_operations_with(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/operations/yield（自动解析响应）。
@@ -1782,22 +1634,16 @@ pub async fn OperationsClient::get_special_words_operations_yield(
 }
 
 ///|
-
-///|
 /// ParametersClient HTTP 客户端。
 pub(all) struct ParametersClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ParametersClient。
 pub fn ParametersClient::new(base_url : String) -> ParametersClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/and{?and}（自动解析响应）。
@@ -1826,8 +1672,6 @@ pub async fn ParametersClient::get_special_words_parameters_and__and_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/as{?as}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_as__as_(
   self : ParametersClient,
@@ -1852,8 +1696,6 @@ pub async fn ParametersClient::get_special_words_parameters_as__as_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/assert{?assert}（自动解析响应）。
@@ -1882,8 +1724,6 @@ pub async fn ParametersClient::get_special_words_parameters_assert__assert_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/async{?async}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_async__async_(
   self : ParametersClient,
@@ -1908,8 +1748,6 @@ pub async fn ParametersClient::get_special_words_parameters_async__async_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/await{?await}（自动解析响应）。
@@ -1938,8 +1776,6 @@ pub async fn ParametersClient::get_special_words_parameters_await__await_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/break{?break}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_break__break_(
   self : ParametersClient,
@@ -1966,8 +1802,6 @@ pub async fn ParametersClient::get_special_words_parameters_break__break_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/class{?class}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_class__class_(
   self : ParametersClient,
@@ -1992,8 +1826,6 @@ pub async fn ParametersClient::get_special_words_parameters_class__class_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/constructor{?constructor}（自动解析响应）。
@@ -2024,8 +1856,6 @@ pub async fn ParametersClient::get_special_words_parameters_constructor__constru
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/continue{?continue}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_continue__continue_(
   self : ParametersClient,
@@ -2050,8 +1880,6 @@ pub async fn ParametersClient::get_special_words_parameters_continue__continue_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/def{?def}（自动解析响应）。
@@ -2080,8 +1908,6 @@ pub async fn ParametersClient::get_special_words_parameters_def__def_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/del{?del}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_del__del_(
   self : ParametersClient,
@@ -2106,8 +1932,6 @@ pub async fn ParametersClient::get_special_words_parameters_del__del_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/elif{?elif}（自动解析响应）。
@@ -2136,8 +1960,6 @@ pub async fn ParametersClient::get_special_words_parameters_elif__elif_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/else{?else}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_else__else_(
   self : ParametersClient,
@@ -2162,8 +1984,6 @@ pub async fn ParametersClient::get_special_words_parameters_else__else_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/except{?except}（自动解析响应）。
@@ -2192,8 +2012,6 @@ pub async fn ParametersClient::get_special_words_parameters_except__except_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/exec{?exec}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_exec__exec_(
   self : ParametersClient,
@@ -2218,8 +2036,6 @@ pub async fn ParametersClient::get_special_words_parameters_exec__exec_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/finally{?finally}（自动解析响应）。
@@ -2248,8 +2064,6 @@ pub async fn ParametersClient::get_special_words_parameters_finally__finally_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/for{?for}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_for__for_(
   self : ParametersClient,
@@ -2274,8 +2088,6 @@ pub async fn ParametersClient::get_special_words_parameters_for__for_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/from{?from}（自动解析响应）。
@@ -2304,8 +2116,6 @@ pub async fn ParametersClient::get_special_words_parameters_from__from_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/global{?global}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_global__global_(
   self : ParametersClient,
@@ -2330,8 +2140,6 @@ pub async fn ParametersClient::get_special_words_parameters_global__global_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/if{?if}（自动解析响应）。
@@ -2360,8 +2168,6 @@ pub async fn ParametersClient::get_special_words_parameters_if__if_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/import{?import}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_import__import_(
   self : ParametersClient,
@@ -2386,8 +2192,6 @@ pub async fn ParametersClient::get_special_words_parameters_import__import_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/in{?in}（自动解析响应）。
@@ -2416,8 +2220,6 @@ pub async fn ParametersClient::get_special_words_parameters_in__in_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/is{?is}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_is__is_(
   self : ParametersClient,
@@ -2442,8 +2244,6 @@ pub async fn ParametersClient::get_special_words_parameters_is__is_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/lambda{?lambda}（自动解析响应）。
@@ -2472,8 +2272,6 @@ pub async fn ParametersClient::get_special_words_parameters_lambda__lambda_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/not{?not}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_not__not_(
   self : ParametersClient,
@@ -2498,8 +2296,6 @@ pub async fn ParametersClient::get_special_words_parameters_not__not_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/or{?or}（自动解析响应）。
@@ -2528,8 +2324,6 @@ pub async fn ParametersClient::get_special_words_parameters_or__or_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/pass{?pass}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_pass__pass_(
   self : ParametersClient,
@@ -2554,8 +2348,6 @@ pub async fn ParametersClient::get_special_words_parameters_pass__pass_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/raise{?raise}（自动解析响应）。
@@ -2584,8 +2376,6 @@ pub async fn ParametersClient::get_special_words_parameters_raise__raise_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/return{?return}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_return__return_(
   self : ParametersClient,
@@ -2610,8 +2400,6 @@ pub async fn ParametersClient::get_special_words_parameters_return__return_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/try{?try}（自动解析响应）。
@@ -2640,8 +2428,6 @@ pub async fn ParametersClient::get_special_words_parameters_try__try_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/while{?while}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_while__while_(
   self : ParametersClient,
@@ -2666,8 +2452,6 @@ pub async fn ParametersClient::get_special_words_parameters_while__while_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/with{?with}（自动解析响应）。
@@ -2696,8 +2480,6 @@ pub async fn ParametersClient::get_special_words_parameters_with__with_(
 }
 
 ///|
-
-///|
 /// 调用 get /special-words/parameters/yield{?yield}（自动解析响应）。
 pub async fn ParametersClient::get_special_words_parameters_yield__yield_(
   self : ParametersClient,
@@ -2722,8 +2504,6 @@ pub async fn ParametersClient::get_special_words_parameters_yield__yield_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /special-words/parameters/cancellationToken{?cancellationToken}（自动解析响应）。

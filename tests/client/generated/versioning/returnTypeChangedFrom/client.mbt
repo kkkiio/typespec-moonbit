@@ -1,12 +1,8 @@
 ///|
-
-///|
 /// ReturnTypeChangedFromClient HTTP 客户端。
 pub(all) struct ReturnTypeChangedFromClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ReturnTypeChangedFromClient。
@@ -15,8 +11,6 @@ pub fn ReturnTypeChangedFromClient::new(
 ) -> ReturnTypeChangedFromClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /versioning/return-type-changed-from/api-version:{version}/test（自动解析响应）。

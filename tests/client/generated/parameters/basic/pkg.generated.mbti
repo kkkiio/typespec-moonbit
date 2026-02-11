@@ -20,14 +20,14 @@ pub(all) struct ImplicitBodyClient {
   base_url : String
 }
 pub fn ImplicitBodyClient::new(String) -> Self
-pub async fn ImplicitBodyClient::put_parameters_basic_implicit_body_simple(Self, Model0) -> Unit
+pub async fn ImplicitBodyClient::put_parameters_basic_implicit_body_simple(Self, Model) -> Unit
 
-pub(all) struct Model0 {
+pub(all) struct Model {
   name : String
 }
-pub impl Show for Model0
-pub impl ToJson for Model0
-pub impl @json.FromJson for Model0
+pub impl Show for Model
+pub impl ToJson for Model
+pub impl @json.FromJson for Model
 
 pub(all) struct User {
   name : String

@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// NotDiscriminatedClient HTTP 客户端。
 pub(all) struct NotDiscriminatedClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 NotDiscriminatedClient。
 pub fn NotDiscriminatedClient::new(base_url : String) -> NotDiscriminatedClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /type/model/inheritance/not-discriminated/valid（自动解析响应）。
@@ -43,8 +37,6 @@ pub async fn NotDiscriminatedClient::post_type_model_inheritance_not_discriminat
 }
 
 ///|
-
-///|
 /// 调用 get /type/model/inheritance/not-discriminated/valid（自动解析响应）。
 pub async fn NotDiscriminatedClient::get_type_model_inheritance_not_discriminated_valid(
   self : NotDiscriminatedClient,
@@ -69,8 +61,6 @@ pub async fn NotDiscriminatedClient::get_type_model_inheritance_not_discriminate
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/model/inheritance/not-discriminated/valid（自动解析响应）。

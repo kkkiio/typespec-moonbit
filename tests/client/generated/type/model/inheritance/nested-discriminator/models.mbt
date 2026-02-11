@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// Model Fish
 pub(all) struct Fish {
   age : Int

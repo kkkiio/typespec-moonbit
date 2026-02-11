@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// RemovedClient HTTP 客户端。
 pub(all) struct RemovedClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 RemovedClient。
 pub fn RemovedClient::new(base_url : String) -> RemovedClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /versioning/removed/api-version:{version}/v1（自动解析响应）。
@@ -48,8 +42,6 @@ pub async fn RemovedClient::post_versioning_removed_api_version__version__v1(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /versioning/removed/api-version:{version}/v2{?param}（自动解析响应）。
@@ -87,8 +79,6 @@ pub async fn RemovedClient::post_versioning_removed_api_version__version__v2__pa
 }
 
 ///|
-
-///|
 /// 调用 post /versioning/removed/api-version:{version}/v3（自动解析响应）。
 pub async fn RemovedClient::post_versioning_removed_api_version__version__v3(
   self : RemovedClient,
@@ -122,22 +112,16 @@ pub async fn RemovedClient::post_versioning_removed_api_version__version__v3(
 }
 
 ///|
-
-///|
 /// InterfaceV1Client HTTP 客户端。
 pub(all) struct InterfaceV1Client {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 InterfaceV1Client。
 pub fn InterfaceV1Client::new(base_url : String) -> InterfaceV1Client {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /versioning/removed/api-version:{version}/interface-v1/v1（自动解析响应）。

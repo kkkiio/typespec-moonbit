@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// BooleanClient HTTP 客户端。
 pub(all) struct BooleanClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 BooleanClient。
 pub fn BooleanClient::new(base_url : String) -> BooleanClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/boolean（自动解析响应）。
@@ -43,8 +37,6 @@ pub async fn BooleanClient::get_type_property_value_types_boolean(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/boolean（自动解析响应）。
 pub async fn BooleanClient::put_type_property_value_types_boolean(
   self : BooleanClient,
@@ -71,22 +63,16 @@ pub async fn BooleanClient::put_type_property_value_types_boolean(
 }
 
 ///|
-
-///|
 /// StringClient HTTP 客户端。
 pub(all) struct StringClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 StringClient。
 pub fn StringClient::new(base_url : String) -> StringClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/string（自动解析响应）。
@@ -115,8 +101,6 @@ pub async fn StringClient::get_type_property_value_types_string(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/string（自动解析响应）。
 pub async fn StringClient::put_type_property_value_types_string(
   self : StringClient,
@@ -143,22 +127,16 @@ pub async fn StringClient::put_type_property_value_types_string(
 }
 
 ///|
-
-///|
 /// BytesClient HTTP 客户端。
 pub(all) struct BytesClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 BytesClient。
 pub fn BytesClient::new(base_url : String) -> BytesClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/bytes（自动解析响应）。
@@ -187,8 +165,6 @@ pub async fn BytesClient::get_type_property_value_types_bytes(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/bytes（自动解析响应）。
 pub async fn BytesClient::put_type_property_value_types_bytes(
   self : BytesClient,
@@ -215,22 +191,16 @@ pub async fn BytesClient::put_type_property_value_types_bytes(
 }
 
 ///|
-
-///|
 /// IntClient HTTP 客户端。
 pub(all) struct IntClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 IntClient。
 pub fn IntClient::new(base_url : String) -> IntClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/int（自动解析响应）。
@@ -259,8 +229,6 @@ pub async fn IntClient::get_type_property_value_types_int(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/int（自动解析响应）。
 pub async fn IntClient::put_type_property_value_types_int(
   self : IntClient,
@@ -287,22 +255,16 @@ pub async fn IntClient::put_type_property_value_types_int(
 }
 
 ///|
-
-///|
 /// FloatClient HTTP 客户端。
 pub(all) struct FloatClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 FloatClient。
 pub fn FloatClient::new(base_url : String) -> FloatClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/float（自动解析响应）。
@@ -331,8 +293,6 @@ pub async fn FloatClient::get_type_property_value_types_float(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/float（自动解析响应）。
 pub async fn FloatClient::put_type_property_value_types_float(
   self : FloatClient,
@@ -359,22 +319,16 @@ pub async fn FloatClient::put_type_property_value_types_float(
 }
 
 ///|
-
-///|
 /// DecimalClient HTTP 客户端。
 pub(all) struct DecimalClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 DecimalClient。
 pub fn DecimalClient::new(base_url : String) -> DecimalClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/decimal（自动解析响应）。
@@ -403,8 +357,6 @@ pub async fn DecimalClient::get_type_property_value_types_decimal(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/decimal（自动解析响应）。
 pub async fn DecimalClient::put_type_property_value_types_decimal(
   self : DecimalClient,
@@ -431,22 +383,16 @@ pub async fn DecimalClient::put_type_property_value_types_decimal(
 }
 
 ///|
-
-///|
 /// Decimal128Client HTTP 客户端。
 pub(all) struct Decimal128Client {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 Decimal128Client。
 pub fn Decimal128Client::new(base_url : String) -> Decimal128Client {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/decimal128（自动解析响应）。
@@ -477,8 +423,6 @@ pub async fn Decimal128Client::get_type_property_value_types_decimal128(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/decimal128（自动解析响应）。
 pub async fn Decimal128Client::put_type_property_value_types_decimal128(
   self : Decimal128Client,
@@ -505,22 +449,16 @@ pub async fn Decimal128Client::put_type_property_value_types_decimal128(
 }
 
 ///|
-
-///|
 /// DatetimeClient HTTP 客户端。
 pub(all) struct DatetimeClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 DatetimeClient。
 pub fn DatetimeClient::new(base_url : String) -> DatetimeClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/datetime（自动解析响应）。
@@ -549,8 +487,6 @@ pub async fn DatetimeClient::get_type_property_value_types_datetime(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/datetime（自动解析响应）。
 pub async fn DatetimeClient::put_type_property_value_types_datetime(
   self : DatetimeClient,
@@ -577,22 +513,16 @@ pub async fn DatetimeClient::put_type_property_value_types_datetime(
 }
 
 ///|
-
-///|
 /// DurationClient HTTP 客户端。
 pub(all) struct DurationClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 DurationClient。
 pub fn DurationClient::new(base_url : String) -> DurationClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/duration（自动解析响应）。
@@ -621,8 +551,6 @@ pub async fn DurationClient::get_type_property_value_types_duration(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/duration（自动解析响应）。
 pub async fn DurationClient::put_type_property_value_types_duration(
   self : DurationClient,
@@ -649,22 +577,16 @@ pub async fn DurationClient::put_type_property_value_types_duration(
 }
 
 ///|
-
-///|
 /// EnumClient HTTP 客户端。
 pub(all) struct EnumClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 EnumClient。
 pub fn EnumClient::new(base_url : String) -> EnumClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/enum（自动解析响应）。
@@ -693,8 +615,6 @@ pub async fn EnumClient::get_type_property_value_types_enum(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/enum（自动解析响应）。
 pub async fn EnumClient::put_type_property_value_types_enum(
   self : EnumClient,
@@ -721,22 +641,16 @@ pub async fn EnumClient::put_type_property_value_types_enum(
 }
 
 ///|
-
-///|
 /// ExtensibleEnumClient HTTP 客户端。
 pub(all) struct ExtensibleEnumClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ExtensibleEnumClient。
 pub fn ExtensibleEnumClient::new(base_url : String) -> ExtensibleEnumClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/extensible-enum（自动解析响应）。
@@ -767,8 +681,6 @@ pub async fn ExtensibleEnumClient::get_type_property_value_types_extensible_enum
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/extensible-enum（自动解析响应）。
 pub async fn ExtensibleEnumClient::put_type_property_value_types_extensible_enum(
   self : ExtensibleEnumClient,
@@ -795,22 +707,16 @@ pub async fn ExtensibleEnumClient::put_type_property_value_types_extensible_enum
 }
 
 ///|
-
-///|
 /// ModelClient HTTP 客户端。
 pub(all) struct ModelClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ModelClient。
 pub fn ModelClient::new(base_url : String) -> ModelClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/model（自动解析响应）。
@@ -839,8 +745,6 @@ pub async fn ModelClient::get_type_property_value_types_model(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/model（自动解析响应）。
 pub async fn ModelClient::put_type_property_value_types_model(
   self : ModelClient,
@@ -867,14 +771,10 @@ pub async fn ModelClient::put_type_property_value_types_model(
 }
 
 ///|
-
-///|
 /// CollectionsStringClient HTTP 客户端。
 pub(all) struct CollectionsStringClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 CollectionsStringClient。
@@ -883,8 +783,6 @@ pub fn CollectionsStringClient::new(
 ) -> CollectionsStringClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/collections/string（自动解析响应）。
@@ -915,8 +813,6 @@ pub async fn CollectionsStringClient::get_type_property_value_types_collections_
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/collections/string（自动解析响应）。
 pub async fn CollectionsStringClient::put_type_property_value_types_collections_string(
   self : CollectionsStringClient,
@@ -943,22 +839,16 @@ pub async fn CollectionsStringClient::put_type_property_value_types_collections_
 }
 
 ///|
-
-///|
 /// CollectionsIntClient HTTP 客户端。
 pub(all) struct CollectionsIntClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 CollectionsIntClient。
 pub fn CollectionsIntClient::new(base_url : String) -> CollectionsIntClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/collections/int（自动解析响应）。
@@ -989,8 +879,6 @@ pub async fn CollectionsIntClient::get_type_property_value_types_collections_int
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/collections/int（自动解析响应）。
 pub async fn CollectionsIntClient::put_type_property_value_types_collections_int(
   self : CollectionsIntClient,
@@ -1017,22 +905,16 @@ pub async fn CollectionsIntClient::put_type_property_value_types_collections_int
 }
 
 ///|
-
-///|
 /// CollectionsModelClient HTTP 客户端。
 pub(all) struct CollectionsModelClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 CollectionsModelClient。
 pub fn CollectionsModelClient::new(base_url : String) -> CollectionsModelClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/collections/model（自动解析响应）。
@@ -1063,8 +945,6 @@ pub async fn CollectionsModelClient::get_type_property_value_types_collections_m
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/collections/model（自动解析响应）。
 pub async fn CollectionsModelClient::put_type_property_value_types_collections_model(
   self : CollectionsModelClient,
@@ -1091,22 +971,16 @@ pub async fn CollectionsModelClient::put_type_property_value_types_collections_m
 }
 
 ///|
-
-///|
 /// DictionaryStringClient HTTP 客户端。
 pub(all) struct DictionaryStringClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 DictionaryStringClient。
 pub fn DictionaryStringClient::new(base_url : String) -> DictionaryStringClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/dictionary/string（自动解析响应）。
@@ -1137,8 +1011,6 @@ pub async fn DictionaryStringClient::get_type_property_value_types_dictionary_st
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/dictionary/string（自动解析响应）。
 pub async fn DictionaryStringClient::put_type_property_value_types_dictionary_string(
   self : DictionaryStringClient,
@@ -1165,22 +1037,16 @@ pub async fn DictionaryStringClient::put_type_property_value_types_dictionary_st
 }
 
 ///|
-
-///|
 /// NeverClient HTTP 客户端。
 pub(all) struct NeverClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 NeverClient。
 pub fn NeverClient::new(base_url : String) -> NeverClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/never（自动解析响应）。
@@ -1209,8 +1075,6 @@ pub async fn NeverClient::get_type_property_value_types_never(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/never（自动解析响应）。
 pub async fn NeverClient::put_type_property_value_types_never(
   self : NeverClient,
@@ -1237,22 +1101,16 @@ pub async fn NeverClient::put_type_property_value_types_never(
 }
 
 ///|
-
-///|
 /// UnknownStringClient HTTP 客户端。
 pub(all) struct UnknownStringClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 UnknownStringClient。
 pub fn UnknownStringClient::new(base_url : String) -> UnknownStringClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/unknown/string（自动解析响应）。
@@ -1283,8 +1141,6 @@ pub async fn UnknownStringClient::get_type_property_value_types_unknown_string(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/unknown/string（自动解析响应）。
 pub async fn UnknownStringClient::put_type_property_value_types_unknown_string(
   self : UnknownStringClient,
@@ -1311,22 +1167,16 @@ pub async fn UnknownStringClient::put_type_property_value_types_unknown_string(
 }
 
 ///|
-
-///|
 /// UnknownIntClient HTTP 客户端。
 pub(all) struct UnknownIntClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 UnknownIntClient。
 pub fn UnknownIntClient::new(base_url : String) -> UnknownIntClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/unknown/int（自动解析响应）。
@@ -1357,8 +1207,6 @@ pub async fn UnknownIntClient::get_type_property_value_types_unknown_int(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/unknown/int（自动解析响应）。
 pub async fn UnknownIntClient::put_type_property_value_types_unknown_int(
   self : UnknownIntClient,
@@ -1385,22 +1233,16 @@ pub async fn UnknownIntClient::put_type_property_value_types_unknown_int(
 }
 
 ///|
-
-///|
 /// UnknownDictClient HTTP 客户端。
 pub(all) struct UnknownDictClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 UnknownDictClient。
 pub fn UnknownDictClient::new(base_url : String) -> UnknownDictClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/unknown/dict（自动解析响应）。
@@ -1431,8 +1273,6 @@ pub async fn UnknownDictClient::get_type_property_value_types_unknown_dict(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/unknown/dict（自动解析响应）。
 pub async fn UnknownDictClient::put_type_property_value_types_unknown_dict(
   self : UnknownDictClient,
@@ -1459,22 +1299,16 @@ pub async fn UnknownDictClient::put_type_property_value_types_unknown_dict(
 }
 
 ///|
-
-///|
 /// UnknownArrayClient HTTP 客户端。
 pub(all) struct UnknownArrayClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 UnknownArrayClient。
 pub fn UnknownArrayClient::new(base_url : String) -> UnknownArrayClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/unknown/array（自动解析响应）。
@@ -1505,8 +1339,6 @@ pub async fn UnknownArrayClient::get_type_property_value_types_unknown_array(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/unknown/array（自动解析响应）。
 pub async fn UnknownArrayClient::put_type_property_value_types_unknown_array(
   self : UnknownArrayClient,
@@ -1533,22 +1365,16 @@ pub async fn UnknownArrayClient::put_type_property_value_types_unknown_array(
 }
 
 ///|
-
-///|
 /// StringLiteralClient HTTP 客户端。
 pub(all) struct StringLiteralClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 StringLiteralClient。
 pub fn StringLiteralClient::new(base_url : String) -> StringLiteralClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/string/literal（自动解析响应）。
@@ -1579,8 +1405,6 @@ pub async fn StringLiteralClient::get_type_property_value_types_string_literal(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/string/literal（自动解析响应）。
 pub async fn StringLiteralClient::put_type_property_value_types_string_literal(
   self : StringLiteralClient,
@@ -1607,22 +1431,16 @@ pub async fn StringLiteralClient::put_type_property_value_types_string_literal(
 }
 
 ///|
-
-///|
 /// IntLiteralClient HTTP 客户端。
 pub(all) struct IntLiteralClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 IntLiteralClient。
 pub fn IntLiteralClient::new(base_url : String) -> IntLiteralClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/int/literal（自动解析响应）。
@@ -1653,8 +1471,6 @@ pub async fn IntLiteralClient::get_type_property_value_types_int_literal(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/int/literal（自动解析响应）。
 pub async fn IntLiteralClient::put_type_property_value_types_int_literal(
   self : IntLiteralClient,
@@ -1681,22 +1497,16 @@ pub async fn IntLiteralClient::put_type_property_value_types_int_literal(
 }
 
 ///|
-
-///|
 /// FloatLiteralClient HTTP 客户端。
 pub(all) struct FloatLiteralClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 FloatLiteralClient。
 pub fn FloatLiteralClient::new(base_url : String) -> FloatLiteralClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/float/literal（自动解析响应）。
@@ -1727,8 +1537,6 @@ pub async fn FloatLiteralClient::get_type_property_value_types_float_literal(
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/float/literal（自动解析响应）。
 pub async fn FloatLiteralClient::put_type_property_value_types_float_literal(
   self : FloatLiteralClient,
@@ -1755,22 +1563,16 @@ pub async fn FloatLiteralClient::put_type_property_value_types_float_literal(
 }
 
 ///|
-
-///|
 /// BooleanLiteralClient HTTP 客户端。
 pub(all) struct BooleanLiteralClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 BooleanLiteralClient。
 pub fn BooleanLiteralClient::new(base_url : String) -> BooleanLiteralClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/boolean/literal（自动解析响应）。
@@ -1801,8 +1603,6 @@ pub async fn BooleanLiteralClient::get_type_property_value_types_boolean_literal
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/boolean/literal（自动解析响应）。
 pub async fn BooleanLiteralClient::put_type_property_value_types_boolean_literal(
   self : BooleanLiteralClient,
@@ -1829,14 +1629,10 @@ pub async fn BooleanLiteralClient::put_type_property_value_types_boolean_literal
 }
 
 ///|
-
-///|
 /// UnionStringLiteralClient HTTP 客户端。
 pub(all) struct UnionStringLiteralClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 UnionStringLiteralClient。
@@ -1845,8 +1641,6 @@ pub fn UnionStringLiteralClient::new(
 ) -> UnionStringLiteralClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/union/string/literal（自动解析响应）。
@@ -1877,8 +1671,6 @@ pub async fn UnionStringLiteralClient::get_type_property_value_types_union_strin
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/union/string/literal（自动解析响应）。
 pub async fn UnionStringLiteralClient::put_type_property_value_types_union_string_literal(
   self : UnionStringLiteralClient,
@@ -1905,22 +1697,16 @@ pub async fn UnionStringLiteralClient::put_type_property_value_types_union_strin
 }
 
 ///|
-
-///|
 /// UnionIntLiteralClient HTTP 客户端。
 pub(all) struct UnionIntLiteralClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 UnionIntLiteralClient。
 pub fn UnionIntLiteralClient::new(base_url : String) -> UnionIntLiteralClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/union/int/literal（自动解析响应）。
@@ -1951,8 +1737,6 @@ pub async fn UnionIntLiteralClient::get_type_property_value_types_union_int_lite
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/union/int/literal（自动解析响应）。
 pub async fn UnionIntLiteralClient::put_type_property_value_types_union_int_literal(
   self : UnionIntLiteralClient,
@@ -1979,14 +1763,10 @@ pub async fn UnionIntLiteralClient::put_type_property_value_types_union_int_lite
 }
 
 ///|
-
-///|
 /// UnionFloatLiteralClient HTTP 客户端。
 pub(all) struct UnionFloatLiteralClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 UnionFloatLiteralClient。
@@ -1995,8 +1775,6 @@ pub fn UnionFloatLiteralClient::new(
 ) -> UnionFloatLiteralClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/union/float/literal（自动解析响应）。
@@ -2027,8 +1805,6 @@ pub async fn UnionFloatLiteralClient::get_type_property_value_types_union_float_
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/value-types/union/float/literal（自动解析响应）。
 pub async fn UnionFloatLiteralClient::put_type_property_value_types_union_float_literal(
   self : UnionFloatLiteralClient,
@@ -2055,22 +1831,16 @@ pub async fn UnionFloatLiteralClient::put_type_property_value_types_union_float_
 }
 
 ///|
-
-///|
 /// UnionEnumValueClient HTTP 客户端。
 pub(all) struct UnionEnumValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 UnionEnumValueClient。
 pub fn UnionEnumValueClient::new(base_url : String) -> UnionEnumValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/value-types/union-enum-value（自动解析响应）。
@@ -2099,8 +1869,6 @@ pub async fn UnionEnumValueClient::get_type_property_value_types_union_enum_valu
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/value-types/union-enum-value（自动解析响应）。

@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// FormDataClient HTTP 客户端。
 pub(all) struct FormDataClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 FormDataClient。
 pub fn FormDataClient::new(base_url : String) -> FormDataClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /multipart/form-data/mixed-parts（自动解析响应）。
@@ -44,8 +38,6 @@ pub async fn FormDataClient::post_multipart_form_data_mixed_parts(
 }
 
 ///|
-
-///|
 /// 调用 post /multipart/form-data/mixed-parts-with-wire-name（自动解析响应）。
 pub async fn FormDataClient::post_multipart_form_data_mixed_parts_with_wire_name(
   self : FormDataClient,
@@ -71,8 +63,6 @@ pub async fn FormDataClient::post_multipart_form_data_mixed_parts_with_wire_name
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /multipart/form-data/optional-parts（自动解析响应）。
@@ -102,8 +92,6 @@ pub async fn FormDataClient::post_multipart_form_data_optional_parts(
 }
 
 ///|
-
-///|
 /// 调用 post /multipart/form-data/complex-parts（自动解析响应）。
 pub async fn FormDataClient::post_multipart_form_data_complex_parts(
   self : FormDataClient,
@@ -129,8 +117,6 @@ pub async fn FormDataClient::post_multipart_form_data_complex_parts(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /multipart/form-data/json-part（自动解析响应）。
@@ -160,8 +146,6 @@ pub async fn FormDataClient::post_multipart_form_data_json_part(
 }
 
 ///|
-
-///|
 /// 调用 post /multipart/form-data/binary-array-parts（自动解析响应）。
 pub async fn FormDataClient::post_multipart_form_data_binary_array_parts(
   self : FormDataClient,
@@ -187,8 +171,6 @@ pub async fn FormDataClient::post_multipart_form_data_binary_array_parts(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /multipart/form-data/multi-binary-parts（自动解析响应）。
@@ -218,8 +200,6 @@ pub async fn FormDataClient::post_multipart_form_data_multi_binary_parts(
 }
 
 ///|
-
-///|
 /// 调用 post /multipart/form-data/check-filename-and-content-type（自动解析响应）。
 pub async fn FormDataClient::post_multipart_form_data_check_filename_and_content_type(
   self : FormDataClient,
@@ -245,8 +225,6 @@ pub async fn FormDataClient::post_multipart_form_data_check_filename_and_content
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /multipart/form-data/anonymous-model（自动解析响应）。
@@ -276,22 +254,16 @@ pub async fn FormDataClient::post_multipart_form_data_anonymous_model(
 }
 
 ///|
-
-///|
 /// HttpPartsClient HTTP 客户端。
 pub(all) struct HttpPartsClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 HttpPartsClient。
 pub fn HttpPartsClient::new(base_url : String) -> HttpPartsClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /multipart/form-data/complex-parts-with-httppart（自动解析响应）。
@@ -321,22 +293,16 @@ pub async fn HttpPartsClient::post_multipart_form_data_complex_parts_with_httppa
 }
 
 ///|
-
-///|
 /// ContentTypeClient HTTP 客户端。
 pub(all) struct ContentTypeClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ContentTypeClient。
 pub fn ContentTypeClient::new(base_url : String) -> ContentTypeClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /multipart/form-data/check-filename-and-specific-content-type-with-httppart（自动解析响应）。
@@ -366,8 +332,6 @@ pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_spec
 }
 
 ///|
-
-///|
 /// 调用 post /multipart/form-data/check-filename-and-required-content-type-with-httppart（自动解析响应）。
 pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_required_content_type_with_httppart(
   self : ContentTypeClient,
@@ -393,8 +357,6 @@ pub async fn ContentTypeClient::post_multipart_form_data_check_filename_and_requ
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /multipart/form-data/file-with-http-part-optional-content-type（自动解析响应）。
@@ -424,14 +386,10 @@ pub async fn ContentTypeClient::post_multipart_form_data_file_with_http_part_opt
 }
 
 ///|
-
-///|
 /// NonStringClient HTTP 客户端。
 pub(all) struct NonStringClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 NonStringClient。
@@ -440,12 +398,10 @@ pub fn NonStringClient::new(base_url : String) -> NonStringClient {
 }
 
 ///|
-
-///|
 /// 调用 post /multipart/form-data/non-string-float（自动解析响应）。
 pub async fn NonStringClient::post_multipart_form_data_non_string_float(
   self : NonStringClient,
-  body : Model0,
+  body : Model,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()

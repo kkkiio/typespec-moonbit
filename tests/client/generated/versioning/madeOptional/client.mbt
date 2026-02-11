@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// MadeOptionalClient HTTP 客户端。
 pub(all) struct MadeOptionalClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 MadeOptionalClient。
 pub fn MadeOptionalClient::new(base_url : String) -> MadeOptionalClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /versioning/made-optional/api-version:{version}/test{?param}（自动解析响应）。

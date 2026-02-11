@@ -1,12 +1,8 @@
 ///|
-
-///|
 /// StringsOnlyClient HTTP 客户端。
 pub(all) struct StringsOnlyClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 StringsOnlyClient。
@@ -15,12 +11,10 @@ pub fn StringsOnlyClient::new(base_url : String) -> StringsOnlyClient {
 }
 
 ///|
-
-///|
 /// 调用 get /type/union/strings-only（自动解析响应）。
 pub async fn StringsOnlyClient::get_type_union_strings_only(
   self : StringsOnlyClient,
-) -> Model10 {
+) -> Model4 {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -33,7 +27,7 @@ pub async fn StringsOnlyClient::get_type_union_strings_only(
   if response.code == 200 {
     @runtime.expect_json_content_type(response)
     let response_body = client.read_all().text()
-    let parsed : Model10 = @json.from_json(@json.parse(response_body))
+    let parsed : Model4 = @json.from_json(@json.parse(response_body))
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())
@@ -41,12 +35,10 @@ pub async fn StringsOnlyClient::get_type_union_strings_only(
 }
 
 ///|
-
-///|
 /// 调用 post /type/union/strings-only（自动解析响应）。
 pub async fn StringsOnlyClient::post_type_union_strings_only(
   self : StringsOnlyClient,
-  body : Model11,
+  body : Model14,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -67,14 +59,10 @@ pub async fn StringsOnlyClient::post_type_union_strings_only(
 }
 
 ///|
-
-///|
 /// StringExtensibleClient HTTP 客户端。
 pub(all) struct StringExtensibleClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 StringExtensibleClient。
@@ -83,17 +71,81 @@ pub fn StringExtensibleClient::new(base_url : String) -> StringExtensibleClient 
 }
 
 ///|
-
-///|
 /// 调用 get /type/union/string-extensible（自动解析响应）。
 pub async fn StringExtensibleClient::get_type_union_string_extensible(
   self : StringExtensibleClient,
-) -> Model16 {
+) -> Model9 {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let base_path = @runtime.encode_request_target(
     "/type/union/string-extensible",
+  )
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
+  let path = sb.to_string()
+  client.request(@http.Get, path, extra_headers=headers)
+  let response = client.end_request()
+  if response.code == 200 {
+    @runtime.expect_json_content_type(response)
+    let response_body = client.read_all().text()
+    let parsed : Model9 = @json.from_json(@json.parse(response_body))
+    parsed
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
+}
+
+///|
+/// 调用 post /type/union/string-extensible（自动解析响应）。
+pub async fn StringExtensibleClient::post_type_union_string_extensible(
+  self : StringExtensibleClient,
+  body : Model18,
+) -> Unit {
+  let client = @http.Client::new(self.base_url)
+  defer client.close()
+  let headers : Map[String, String] = {}
+  let base_path = @runtime.encode_request_target(
+    "/type/union/string-extensible",
+  )
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
+  let path = sb.to_string()
+  headers.set("content-type", "application/json")
+  client.request(@http.Post, path, extra_headers=headers)
+  client.write(body.to_json())
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
+}
+
+///|
+/// StringExtensibleNamedClient HTTP 客户端。
+pub(all) struct StringExtensibleNamedClient {
+  base_url : String
+}
+
+///|
+/// 创建 StringExtensibleNamedClient。
+pub fn StringExtensibleNamedClient::new(
+  base_url : String,
+) -> StringExtensibleNamedClient {
+  { base_url, }
+}
+
+///|
+/// 调用 get /type/union/string-extensible-named（自动解析响应）。
+pub async fn StringExtensibleNamedClient::get_type_union_string_extensible_named(
+  self : StringExtensibleNamedClient,
+) -> Model16 {
+  let client = @http.Client::new(self.base_url)
+  defer client.close()
+  let headers : Map[String, String] = {}
+  let base_path = @runtime.encode_request_target(
+    "/type/union/string-extensible-named",
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
@@ -109,82 +161,6 @@ pub async fn StringExtensibleClient::get_type_union_string_extensible(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
-
-///|
-/// 调用 post /type/union/string-extensible（自动解析响应）。
-pub async fn StringExtensibleClient::post_type_union_string_extensible(
-  self : StringExtensibleClient,
-  body : Model17,
-) -> Unit {
-  let client = @http.Client::new(self.base_url)
-  defer client.close()
-  let headers : Map[String, String] = {}
-  let base_path = @runtime.encode_request_target(
-    "/type/union/string-extensible",
-  )
-  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
-  sb.write_string(base_path)
-  let path = sb.to_string()
-  headers.set("content-type", "application/json")
-  client.request(@http.Post, path, extra_headers=headers)
-  client.write(body.to_json())
-  let response = client.end_request()
-  if response.code == 204 {
-    ()
-  } else {
-    fail("unexpected status code: " + response.code.to_string())
-  }
-}
-
-///|
-
-///|
-/// StringExtensibleNamedClient HTTP 客户端。
-pub(all) struct StringExtensibleNamedClient {
-  base_url : String
-}
-
-///|
-
-///|
-/// 创建 StringExtensibleNamedClient。
-pub fn StringExtensibleNamedClient::new(
-  base_url : String,
-) -> StringExtensibleNamedClient {
-  { base_url, }
-}
-
-///|
-
-///|
-/// 调用 get /type/union/string-extensible-named（自动解析响应）。
-pub async fn StringExtensibleNamedClient::get_type_union_string_extensible_named(
-  self : StringExtensibleNamedClient,
-) -> Model18 {
-  let client = @http.Client::new(self.base_url)
-  defer client.close()
-  let headers : Map[String, String] = {}
-  let base_path = @runtime.encode_request_target(
-    "/type/union/string-extensible-named",
-  )
-  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
-  sb.write_string(base_path)
-  let path = sb.to_string()
-  client.request(@http.Get, path, extra_headers=headers)
-  let response = client.end_request()
-  if response.code == 200 {
-    @runtime.expect_json_content_type(response)
-    let response_body = client.read_all().text()
-    let parsed : Model18 = @json.from_json(@json.parse(response_body))
-    parsed
-  } else {
-    fail("unexpected status code: " + response.code.to_string())
-  }
-}
-
-///|
 
 ///|
 /// 调用 post /type/union/string-extensible-named（自动解析响应）。
@@ -213,14 +189,10 @@ pub async fn StringExtensibleNamedClient::post_type_union_string_extensible_name
 }
 
 ///|
-
-///|
 /// IntsOnlyClient HTTP 客户端。
 pub(all) struct IntsOnlyClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 IntsOnlyClient。
@@ -229,12 +201,10 @@ pub fn IntsOnlyClient::new(base_url : String) -> IntsOnlyClient {
 }
 
 ///|
-
-///|
 /// 调用 get /type/union/ints-only（自动解析响应）。
 pub async fn IntsOnlyClient::get_type_union_ints_only(
   self : IntsOnlyClient,
-) -> Model0 {
+) -> Model {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -247,7 +217,7 @@ pub async fn IntsOnlyClient::get_type_union_ints_only(
   if response.code == 200 {
     @runtime.expect_json_content_type(response)
     let response_body = client.read_all().text()
-    let parsed : Model0 = @json.from_json(@json.parse(response_body))
+    let parsed : Model = @json.from_json(@json.parse(response_body))
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())
@@ -255,12 +225,10 @@ pub async fn IntsOnlyClient::get_type_union_ints_only(
 }
 
 ///|
-
-///|
 /// 调用 post /type/union/ints-only（自动解析响应）。
 pub async fn IntsOnlyClient::post_type_union_ints_only(
   self : IntsOnlyClient,
-  body : Model2,
+  body : Model8,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -281,14 +249,10 @@ pub async fn IntsOnlyClient::post_type_union_ints_only(
 }
 
 ///|
-
-///|
 /// FloatsOnlyClient HTTP 客户端。
 pub(all) struct FloatsOnlyClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 FloatsOnlyClient。
@@ -297,16 +261,74 @@ pub fn FloatsOnlyClient::new(base_url : String) -> FloatsOnlyClient {
 }
 
 ///|
-
-///|
 /// 调用 get /type/union/floats-only（自动解析响应）。
 pub async fn FloatsOnlyClient::get_type_union_floats_only(
   self : FloatsOnlyClient,
-) -> Model5 {
+) -> Model2 {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let base_path = @runtime.encode_request_target("/type/union/floats-only")
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
+  let path = sb.to_string()
+  client.request(@http.Get, path, extra_headers=headers)
+  let response = client.end_request()
+  if response.code == 200 {
+    @runtime.expect_json_content_type(response)
+    let response_body = client.read_all().text()
+    let parsed : Model2 = @json.from_json(@json.parse(response_body))
+    parsed
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
+}
+
+///|
+/// 调用 post /type/union/floats-only（自动解析响应）。
+pub async fn FloatsOnlyClient::post_type_union_floats_only(
+  self : FloatsOnlyClient,
+  body : Model11,
+) -> Unit {
+  let client = @http.Client::new(self.base_url)
+  defer client.close()
+  let headers : Map[String, String] = {}
+  let base_path = @runtime.encode_request_target("/type/union/floats-only")
+  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
+  sb.write_string(base_path)
+  let path = sb.to_string()
+  headers.set("content-type", "application/json")
+  client.request(@http.Post, path, extra_headers=headers)
+  client.write(body.to_json())
+  let response = client.end_request()
+  if response.code == 204 {
+    ()
+  } else {
+    fail("unexpected status code: " + response.code.to_string())
+  }
+}
+
+///|
+/// ModelsOnlyClient HTTP 客户端。
+pub(all) struct ModelsOnlyClient {
+  base_url : String
+}
+
+///|
+/// 创建 ModelsOnlyClient。
+pub fn ModelsOnlyClient::new(base_url : String) -> ModelsOnlyClient {
+  { base_url, }
+}
+
+///|
+/// 调用 get /type/union/models-only（自动解析响应）。
+pub async fn ModelsOnlyClient::get_type_union_models_only(
+  self : ModelsOnlyClient,
+) -> Model5 {
+  let client = @http.Client::new(self.base_url)
+  defer client.close()
+  let headers : Map[String, String] = {}
+  let base_path = @runtime.encode_request_target("/type/union/models-only")
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
   let path = sb.to_string()
@@ -323,80 +345,10 @@ pub async fn FloatsOnlyClient::get_type_union_floats_only(
 }
 
 ///|
-
-///|
-/// 调用 post /type/union/floats-only（自动解析响应）。
-pub async fn FloatsOnlyClient::post_type_union_floats_only(
-  self : FloatsOnlyClient,
-  body : Model7,
-) -> Unit {
-  let client = @http.Client::new(self.base_url)
-  defer client.close()
-  let headers : Map[String, String] = {}
-  let base_path = @runtime.encode_request_target("/type/union/floats-only")
-  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
-  sb.write_string(base_path)
-  let path = sb.to_string()
-  headers.set("content-type", "application/json")
-  client.request(@http.Post, path, extra_headers=headers)
-  client.write(body.to_json())
-  let response = client.end_request()
-  if response.code == 204 {
-    ()
-  } else {
-    fail("unexpected status code: " + response.code.to_string())
-  }
-}
-
-///|
-
-///|
-/// ModelsOnlyClient HTTP 客户端。
-pub(all) struct ModelsOnlyClient {
-  base_url : String
-}
-
-///|
-
-///|
-/// 创建 ModelsOnlyClient。
-pub fn ModelsOnlyClient::new(base_url : String) -> ModelsOnlyClient {
-  { base_url, }
-}
-
-///|
-
-///|
-/// 调用 get /type/union/models-only（自动解析响应）。
-pub async fn ModelsOnlyClient::get_type_union_models_only(
-  self : ModelsOnlyClient,
-) -> Model6 {
-  let client = @http.Client::new(self.base_url)
-  defer client.close()
-  let headers : Map[String, String] = {}
-  let base_path = @runtime.encode_request_target("/type/union/models-only")
-  let sb = StringBuilder::new(size_hint=base_path.length() + 128)
-  sb.write_string(base_path)
-  let path = sb.to_string()
-  client.request(@http.Get, path, extra_headers=headers)
-  let response = client.end_request()
-  if response.code == 200 {
-    @runtime.expect_json_content_type(response)
-    let response_body = client.read_all().text()
-    let parsed : Model6 = @json.from_json(@json.parse(response_body))
-    parsed
-  } else {
-    fail("unexpected status code: " + response.code.to_string())
-  }
-}
-
-///|
-
-///|
 /// 调用 post /type/union/models-only（自动解析响应）。
 pub async fn ModelsOnlyClient::post_type_union_models_only(
   self : ModelsOnlyClient,
-  body : Model9,
+  body : Model13,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -415,8 +367,6 @@ pub async fn ModelsOnlyClient::post_type_union_models_only(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// EnumsOnlyClient HTTP 客户端。
@@ -425,14 +375,10 @@ pub(all) struct EnumsOnlyClient {
 }
 
 ///|
-
-///|
 /// 创建 EnumsOnlyClient。
 pub fn EnumsOnlyClient::new(base_url : String) -> EnumsOnlyClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/union/enums-only（自动解析响应）。
@@ -459,12 +405,10 @@ pub async fn EnumsOnlyClient::get_type_union_enums_only(
 }
 
 ///|
-
-///|
 /// 调用 post /type/union/enums-only（自动解析响应）。
 pub async fn EnumsOnlyClient::post_type_union_enums_only(
   self : EnumsOnlyClient,
-  body : Model3,
+  body : Model10,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -485,14 +429,10 @@ pub async fn EnumsOnlyClient::post_type_union_enums_only(
 }
 
 ///|
-
-///|
 /// StringAndArrayClient HTTP 客户端。
 pub(all) struct StringAndArrayClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 StringAndArrayClient。
@@ -501,12 +441,10 @@ pub fn StringAndArrayClient::new(base_url : String) -> StringAndArrayClient {
 }
 
 ///|
-
-///|
 /// 调用 get /type/union/string-and-array（自动解析响应）。
 pub async fn StringAndArrayClient::get_type_union_string_and_array(
   self : StringAndArrayClient,
-) -> Model14 {
+) -> Model7 {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -519,7 +457,7 @@ pub async fn StringAndArrayClient::get_type_union_string_and_array(
   if response.code == 200 {
     @runtime.expect_json_content_type(response)
     let response_body = client.read_all().text()
-    let parsed : Model14 = @json.from_json(@json.parse(response_body))
+    let parsed : Model7 = @json.from_json(@json.parse(response_body))
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())
@@ -527,12 +465,10 @@ pub async fn StringAndArrayClient::get_type_union_string_and_array(
 }
 
 ///|
-
-///|
 /// 调用 post /type/union/string-and-array（自动解析响应）。
 pub async fn StringAndArrayClient::post_type_union_string_and_array(
   self : StringAndArrayClient,
-  body : Model15,
+  body : Model17,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -551,8 +487,6 @@ pub async fn StringAndArrayClient::post_type_union_string_and_array(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// MixedLiteralsClient HTTP 客户端。
@@ -561,20 +495,16 @@ pub(all) struct MixedLiteralsClient {
 }
 
 ///|
-
-///|
 /// 创建 MixedLiteralsClient。
 pub fn MixedLiteralsClient::new(base_url : String) -> MixedLiteralsClient {
   { base_url, }
 }
 
 ///|
-
-///|
 /// 调用 get /type/union/mixed-literals（自动解析响应）。
 pub async fn MixedLiteralsClient::get_type_union_mixed_literals(
   self : MixedLiteralsClient,
-) -> Model12 {
+) -> Model6 {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -587,7 +517,7 @@ pub async fn MixedLiteralsClient::get_type_union_mixed_literals(
   if response.code == 200 {
     @runtime.expect_json_content_type(response)
     let response_body = client.read_all().text()
-    let parsed : Model12 = @json.from_json(@json.parse(response_body))
+    let parsed : Model6 = @json.from_json(@json.parse(response_body))
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())
@@ -595,12 +525,10 @@ pub async fn MixedLiteralsClient::get_type_union_mixed_literals(
 }
 
 ///|
-
-///|
 /// 调用 post /type/union/mixed-literals（自动解析响应）。
 pub async fn MixedLiteralsClient::post_type_union_mixed_literals(
   self : MixedLiteralsClient,
-  body : Model13,
+  body : Model15,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -621,14 +549,10 @@ pub async fn MixedLiteralsClient::post_type_union_mixed_literals(
 }
 
 ///|
-
-///|
 /// MixedTypesClient HTTP 客户端。
 pub(all) struct MixedTypesClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 MixedTypesClient。
@@ -637,12 +561,10 @@ pub fn MixedTypesClient::new(base_url : String) -> MixedTypesClient {
 }
 
 ///|
-
-///|
 /// 调用 get /type/union/mixed-types（自动解析响应）。
 pub async fn MixedTypesClient::get_type_union_mixed_types(
   self : MixedTypesClient,
-) -> Model4 {
+) -> Model3 {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -655,7 +577,7 @@ pub async fn MixedTypesClient::get_type_union_mixed_types(
   if response.code == 200 {
     @runtime.expect_json_content_type(response)
     let response_body = client.read_all().text()
-    let parsed : Model4 = @json.from_json(@json.parse(response_body))
+    let parsed : Model3 = @json.from_json(@json.parse(response_body))
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())
@@ -663,12 +585,10 @@ pub async fn MixedTypesClient::get_type_union_mixed_types(
 }
 
 ///|
-
-///|
 /// 调用 post /type/union/mixed-types（自动解析响应）。
 pub async fn MixedTypesClient::post_type_union_mixed_types(
   self : MixedTypesClient,
-  body : Model8,
+  body : Model12,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()

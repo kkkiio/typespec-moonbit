@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// Model Siamese
 pub(all) struct Siamese {
   name : String

@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// EmptyClient HTTP 客户端。
 pub(all) struct EmptyClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 EmptyClient。
 pub fn EmptyClient::new(base_url : String) -> EmptyClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 put /type/model/empty/alone（自动解析响应）。
@@ -41,8 +35,6 @@ pub async fn EmptyClient::put_type_model_empty_alone(
 }
 
 ///|
-
-///|
 /// 调用 get /type/model/empty/alone（自动解析响应）。
 pub async fn EmptyClient::get_type_model_empty_alone(
   self : EmptyClient,
@@ -65,8 +57,6 @@ pub async fn EmptyClient::get_type_model_empty_alone(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /type/model/empty/round-trip（自动解析响应）。

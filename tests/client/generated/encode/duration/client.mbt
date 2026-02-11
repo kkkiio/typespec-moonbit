@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// QueryClient HTTP 客户端。
 pub(all) struct QueryClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 QueryClient。
 pub fn QueryClient::new(base_url : String) -> QueryClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/duration/query/default{?input}（自动解析响应）。
@@ -45,8 +39,6 @@ pub async fn QueryClient::get_encode_duration_query_default__input_(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/duration/query/iso8601{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_iso8601__input_(
   self : QueryClient,
@@ -73,8 +65,6 @@ pub async fn QueryClient::get_encode_duration_query_iso8601__input_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/duration/query/int32-seconds{?input}（自动解析响应）。
@@ -105,8 +95,6 @@ pub async fn QueryClient::get_encode_duration_query_int32_seconds__input_(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/duration/query/int32-seconds-larger-unit{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_int32_seconds_larger_unit__input_(
   self : QueryClient,
@@ -133,8 +121,6 @@ pub async fn QueryClient::get_encode_duration_query_int32_seconds_larger_unit__i
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/duration/query/float-seconds{?input}（自动解析响应）。
@@ -165,8 +151,6 @@ pub async fn QueryClient::get_encode_duration_query_float_seconds__input_(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/duration/query/float-seconds-larger-unit{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_float_seconds_larger_unit__input_(
   self : QueryClient,
@@ -193,8 +177,6 @@ pub async fn QueryClient::get_encode_duration_query_float_seconds_larger_unit__i
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/duration/query/float64-seconds{?input}（自动解析响应）。
@@ -225,8 +207,6 @@ pub async fn QueryClient::get_encode_duration_query_float64_seconds__input_(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/duration/query/int32-milliseconds{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_int32_milliseconds__input_(
   self : QueryClient,
@@ -253,8 +233,6 @@ pub async fn QueryClient::get_encode_duration_query_int32_milliseconds__input_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/duration/query/int32-milliseconds-larger-unit{?input}（自动解析响应）。
@@ -285,8 +263,6 @@ pub async fn QueryClient::get_encode_duration_query_int32_milliseconds_larger_un
 }
 
 ///|
-
-///|
 /// 调用 get /encode/duration/query/float-milliseconds{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_float_milliseconds__input_(
   self : QueryClient,
@@ -313,8 +289,6 @@ pub async fn QueryClient::get_encode_duration_query_float_milliseconds__input_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/duration/query/float-milliseconds-larger-unit{?input}（自动解析响应）。
@@ -345,8 +319,6 @@ pub async fn QueryClient::get_encode_duration_query_float_milliseconds_larger_un
 }
 
 ///|
-
-///|
 /// 调用 get /encode/duration/query/float64-milliseconds{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_float64_milliseconds__input_(
   self : QueryClient,
@@ -375,8 +347,6 @@ pub async fn QueryClient::get_encode_duration_query_float64_milliseconds__input_
 }
 
 ///|
-
-///|
 /// 调用 get /encode/duration/query/int32-seconds-array{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_int32_seconds_array__input_(
   self : QueryClient,
@@ -401,8 +371,6 @@ pub async fn QueryClient::get_encode_duration_query_int32_seconds_array__input_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/duration/query/int32-milliseconds-array{?input}（自动解析响应）。
@@ -431,22 +399,16 @@ pub async fn QueryClient::get_encode_duration_query_int32_milliseconds_array__in
 }
 
 ///|
-
-///|
 /// PropertyClient HTTP 客户端。
 pub(all) struct PropertyClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 PropertyClient。
 pub fn PropertyClient::new(base_url : String) -> PropertyClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /encode/duration/property/default（自动解析响应）。
@@ -480,8 +442,6 @@ pub async fn PropertyClient::post_encode_duration_property_default(
 }
 
 ///|
-
-///|
 /// 调用 post /encode/duration/property/iso8601（自动解析响应）。
 pub async fn PropertyClient::post_encode_duration_property_iso8601(
   self : PropertyClient,
@@ -511,8 +471,6 @@ pub async fn PropertyClient::post_encode_duration_property_iso8601(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /encode/duration/property/int32-seconds（自动解析响应）。
@@ -546,8 +504,6 @@ pub async fn PropertyClient::post_encode_duration_property_int32_seconds(
 }
 
 ///|
-
-///|
 /// 调用 post /encode/duration/property/float-seconds（自动解析响应）。
 pub async fn PropertyClient::post_encode_duration_property_float_seconds(
   self : PropertyClient,
@@ -577,8 +533,6 @@ pub async fn PropertyClient::post_encode_duration_property_float_seconds(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /encode/duration/property/float64-seconds（自动解析响应）。
@@ -612,8 +566,6 @@ pub async fn PropertyClient::post_encode_duration_property_float64_seconds(
 }
 
 ///|
-
-///|
 /// 调用 post /encode/duration/property/int32-milliseconds（自动解析响应）。
 pub async fn PropertyClient::post_encode_duration_property_int32_milliseconds(
   self : PropertyClient,
@@ -643,8 +595,6 @@ pub async fn PropertyClient::post_encode_duration_property_int32_milliseconds(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /encode/duration/property/float-milliseconds（自动解析响应）。
@@ -678,8 +628,6 @@ pub async fn PropertyClient::post_encode_duration_property_float_milliseconds(
 }
 
 ///|
-
-///|
 /// 调用 post /encode/duration/property/float64-milliseconds（自动解析响应）。
 pub async fn PropertyClient::post_encode_duration_property_float64_milliseconds(
   self : PropertyClient,
@@ -709,8 +657,6 @@ pub async fn PropertyClient::post_encode_duration_property_float64_milliseconds(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /encode/duration/property/float-seconds-array（自动解析响应）。
@@ -744,8 +690,6 @@ pub async fn PropertyClient::post_encode_duration_property_float_seconds_array(
 }
 
 ///|
-
-///|
 /// 调用 post /encode/duration/property/float-milliseconds-array（自动解析响应）。
 pub async fn PropertyClient::post_encode_duration_property_float_milliseconds_array(
   self : PropertyClient,
@@ -775,8 +719,6 @@ pub async fn PropertyClient::post_encode_duration_property_float_milliseconds_ar
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /encode/duration/property/int32-seconds-larger-unit（自动解析响应）。
@@ -810,8 +752,6 @@ pub async fn PropertyClient::post_encode_duration_property_int32_seconds_larger_
 }
 
 ///|
-
-///|
 /// 调用 post /encode/duration/property/float-seconds-larger-unit（自动解析响应）。
 pub async fn PropertyClient::post_encode_duration_property_float_seconds_larger_unit(
   self : PropertyClient,
@@ -841,8 +781,6 @@ pub async fn PropertyClient::post_encode_duration_property_float_seconds_larger_
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /encode/duration/property/int32-milliseconds-larger-unit（自动解析响应）。
@@ -876,8 +814,6 @@ pub async fn PropertyClient::post_encode_duration_property_int32_milliseconds_la
 }
 
 ///|
-
-///|
 /// 调用 post /encode/duration/property/float-milliseconds-larger-unit（自动解析响应）。
 pub async fn PropertyClient::post_encode_duration_property_float_milliseconds_larger_unit(
   self : PropertyClient,
@@ -909,22 +845,16 @@ pub async fn PropertyClient::post_encode_duration_property_float_milliseconds_la
 }
 
 ///|
-
-///|
 /// HeaderClient HTTP 客户端。
 pub(all) struct HeaderClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 HeaderClient。
 pub fn HeaderClient::new(base_url : String) -> HeaderClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/duration/header/default（自动解析响应）。
@@ -959,8 +889,6 @@ pub async fn HeaderClient::get_encode_duration_header_default(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/duration/header/iso8601（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_iso8601(
   self : HeaderClient,
@@ -991,8 +919,6 @@ pub async fn HeaderClient::get_encode_duration_header_iso8601(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/duration/header/iso8601-array（自动解析响应）。
@@ -1030,8 +956,6 @@ pub async fn HeaderClient::get_encode_duration_header_iso8601_array(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/duration/header/int32-seconds（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_int32_seconds(
   self : HeaderClient,
@@ -1062,8 +986,6 @@ pub async fn HeaderClient::get_encode_duration_header_int32_seconds(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/duration/header/int32-seconds-larger-unit（自动解析响应）。
@@ -1098,8 +1020,6 @@ pub async fn HeaderClient::get_encode_duration_header_int32_seconds_larger_unit(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/duration/header/float-seconds（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_float_seconds(
   self : HeaderClient,
@@ -1130,8 +1050,6 @@ pub async fn HeaderClient::get_encode_duration_header_float_seconds(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/duration/header/float-seconds-larger-unit（自动解析响应）。
@@ -1166,8 +1084,6 @@ pub async fn HeaderClient::get_encode_duration_header_float_seconds_larger_unit(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/duration/header/float64-seconds（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_float64_seconds(
   self : HeaderClient,
@@ -1198,8 +1114,6 @@ pub async fn HeaderClient::get_encode_duration_header_float64_seconds(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/duration/header/int32-milliseconds（自动解析响应）。
@@ -1234,8 +1148,6 @@ pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/duration/header/int32-milliseconds-larger-unit（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds_larger_unit(
   self : HeaderClient,
@@ -1266,8 +1178,6 @@ pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds_larger_
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/duration/header/float-milliseconds（自动解析响应）。
@@ -1302,8 +1212,6 @@ pub async fn HeaderClient::get_encode_duration_header_float_milliseconds(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/duration/header/float-milliseconds-larger-unit（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_float_milliseconds_larger_unit(
   self : HeaderClient,
@@ -1336,8 +1244,6 @@ pub async fn HeaderClient::get_encode_duration_header_float_milliseconds_larger_
 }
 
 ///|
-
-///|
 /// 调用 get /encode/duration/header/float64-milliseconds（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_float64_milliseconds(
   self : HeaderClient,
@@ -1368,8 +1274,6 @@ pub async fn HeaderClient::get_encode_duration_header_float64_milliseconds(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/duration/header/int32-milliseconds-array（自动解析响应）。

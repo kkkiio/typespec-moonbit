@@ -14,11 +14,11 @@ pub(all) struct AliasClient {
   base_url : String
 }
 pub fn AliasClient::new(String) -> Self
-pub async fn AliasClient::post_parameters_spread_alias_inner_alias_parameter__id_(Self, String, String, Model4) -> Unit
-pub async fn AliasClient::post_parameters_spread_alias_inner_model_parameter__id_(Self, String, String, Model1) -> Unit
-pub async fn AliasClient::put_parameters_spread_alias_multiple_parameters__id_(Self, String, String, Model3) -> Unit
-pub async fn AliasClient::put_parameters_spread_alias_request_body(Self, Model0) -> Unit
-pub async fn AliasClient::put_parameters_spread_alias_request_parameter__id_(Self, String, String, Model2) -> Unit
+pub async fn AliasClient::post_parameters_spread_alias_inner_alias_parameter__id_(Self, String, String, Model6) -> Unit
+pub async fn AliasClient::post_parameters_spread_alias_inner_model_parameter__id_(Self, String, String, Model4) -> Unit
+pub async fn AliasClient::put_parameters_spread_alias_multiple_parameters__id_(Self, String, String, Model2) -> Unit
+pub async fn AliasClient::put_parameters_spread_alias_request_body(Self, Model) -> Unit
+pub async fn AliasClient::put_parameters_spread_alias_request_parameter__id_(Self, String, String, Model1) -> Unit
 
 pub(all) struct BodyParameter {
   name : String
@@ -34,12 +34,12 @@ pub impl Show for BodyParameter5
 pub impl ToJson for BodyParameter5
 pub impl @json.FromJson for BodyParameter5
 
-pub(all) struct Model0 {
+pub(all) struct Model {
   name : String
 }
-pub impl Show for Model0
-pub impl ToJson for Model0
-pub impl @json.FromJson for Model0
+pub impl Show for Model
+pub impl ToJson for Model
+pub impl @json.FromJson for Model
 
 pub(all) struct Model1 {
   name : String
@@ -49,17 +49,17 @@ pub impl ToJson for Model1
 pub impl @json.FromJson for Model1
 
 pub(all) struct Model2 {
-  name : String
+  required_string : String
+  optional_int : Int?
+  required_int_list : Array[Int]
+  optional_string_list : Array[String]?
 }
 pub impl Show for Model2
 pub impl ToJson for Model2
 pub impl @json.FromJson for Model2
 
 pub(all) struct Model3 {
-  required_string : String
-  optional_int : Int?
-  required_int_list : Array[Int]
-  optional_string_list : Array[String]?
+  prop : String
 }
 pub impl Show for Model3
 pub impl ToJson for Model3
@@ -67,14 +67,14 @@ pub impl @json.FromJson for Model3
 
 pub(all) struct Model4 {
   name : String
-  age : Int
 }
 pub impl Show for Model4
 pub impl ToJson for Model4
 pub impl @json.FromJson for Model4
 
 pub(all) struct Model6 {
-  prop : String
+  name : String
+  age : Int
 }
 pub impl Show for Model6
 pub impl ToJson for Model6
@@ -84,11 +84,11 @@ pub(all) struct ModelClient {
   base_url : String
 }
 pub fn ModelClient::new(String) -> Self
-pub async fn ModelClient::put_parameters_spread_model_composite_request__name_(Self, String, String, BodyParameter) -> Unit
-pub async fn ModelClient::put_parameters_spread_model_composite_request_mix__name_(Self, String, String, Model6) -> Unit
-pub async fn ModelClient::put_parameters_spread_model_composite_request_only_with_body(Self, BodyParameter) -> Unit
+pub async fn ModelClient::put_parameters_spread_model_composite_request__name_(Self, String, String, BodyParameter5) -> Unit
+pub async fn ModelClient::put_parameters_spread_model_composite_request_mix__name_(Self, String, String, Model3) -> Unit
+pub async fn ModelClient::put_parameters_spread_model_composite_request_only_with_body(Self, BodyParameter5) -> Unit
 pub async fn ModelClient::put_parameters_spread_model_composite_request_without_body__name_(Self, String, String) -> Unit
-pub async fn ModelClient::put_parameters_spread_model_request_body(Self, BodyParameter5) -> Unit
+pub async fn ModelClient::put_parameters_spread_model_request_body(Self, BodyParameter) -> Unit
 
 // Type aliases
 

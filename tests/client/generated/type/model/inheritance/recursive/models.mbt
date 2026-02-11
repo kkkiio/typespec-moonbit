@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// Model Extension
 pub(all) struct Extension {
   extension : Array[Extension]?

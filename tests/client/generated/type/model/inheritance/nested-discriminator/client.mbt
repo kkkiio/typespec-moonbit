@@ -1,12 +1,8 @@
 ///|
-
-///|
 /// NestedDiscriminatorClient HTTP 客户端。
 pub(all) struct NestedDiscriminatorClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 NestedDiscriminatorClient。
@@ -15,8 +11,6 @@ pub fn NestedDiscriminatorClient::new(
 ) -> NestedDiscriminatorClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/model/inheritance/nested-discriminator/model（自动解析响应）。
@@ -45,8 +39,6 @@ pub async fn NestedDiscriminatorClient::get_type_model_inheritance_nested_discri
 }
 
 ///|
-
-///|
 /// 调用 put /type/model/inheritance/nested-discriminator/model（自动解析响应）。
 pub async fn NestedDiscriminatorClient::put_type_model_inheritance_nested_discriminator_model(
   self : NestedDiscriminatorClient,
@@ -71,8 +63,6 @@ pub async fn NestedDiscriminatorClient::put_type_model_inheritance_nested_discri
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /type/model/inheritance/nested-discriminator/recursivemodel（自动解析响应）。
@@ -101,8 +91,6 @@ pub async fn NestedDiscriminatorClient::get_type_model_inheritance_nested_discri
 }
 
 ///|
-
-///|
 /// 调用 put /type/model/inheritance/nested-discriminator/recursivemodel（自动解析响应）。
 pub async fn NestedDiscriminatorClient::put_type_model_inheritance_nested_discriminator_recursivemodel(
   self : NestedDiscriminatorClient,
@@ -129,8 +117,6 @@ pub async fn NestedDiscriminatorClient::put_type_model_inheritance_nested_discri
 }
 
 ///|
-
-///|
 /// 调用 get /type/model/inheritance/nested-discriminator/missingdiscriminator（自动解析响应）。
 pub async fn NestedDiscriminatorClient::get_type_model_inheritance_nested_discriminator_missingdiscriminator(
   self : NestedDiscriminatorClient,
@@ -155,8 +141,6 @@ pub async fn NestedDiscriminatorClient::get_type_model_inheritance_nested_discri
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /type/model/inheritance/nested-discriminator/wrongdiscriminator（自动解析响应）。

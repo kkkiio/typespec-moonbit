@@ -1,12 +1,8 @@
 ///|
-
-///|
 /// Model InnerModel
 pub(all) struct InnerModel {
   property : String
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model BytesProperty
@@ -30,8 +26,6 @@ pub(all) struct BytesProperty {
 )
 
 ///|
-
-///|
 /// Model StringProperty
 pub(all) struct StringProperty {
   required_property : String
@@ -51,8 +45,6 @@ pub(all) struct StringProperty {
     ),
   ),
 )
-
-///|
 
 ///|
 /// Model DatetimeProperty
@@ -76,8 +68,6 @@ pub(all) struct DatetimeProperty {
 )
 
 ///|
-
-///|
 /// Model DurationProperty
 pub(all) struct DurationProperty {
   required_property : String
@@ -97,8 +87,6 @@ pub(all) struct DurationProperty {
     ),
   ),
 )
-
-///|
 
 ///|
 /// Model CollectionsByteProperty
@@ -122,8 +110,6 @@ pub(all) struct CollectionsByteProperty {
 )
 
 ///|
-
-///|
 /// Model CollectionsModelProperty
 pub(all) struct CollectionsModelProperty {
   required_property : String
@@ -143,8 +129,6 @@ pub(all) struct CollectionsModelProperty {
     ),
   ),
 )
-
-///|
 
 ///|
 /// Model CollectionsStringProperty

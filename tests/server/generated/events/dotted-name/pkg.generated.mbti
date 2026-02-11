@@ -21,7 +21,7 @@ pub fn match_route(@http.RequestMethod, String) -> MatchRouteResult
 // Types and methods
 pub(all) enum DottedNameWatchTasksResult {
   Stream(TaskEventsStream)
-  Status400(Model0)
+  Status400(Model)
 }
 
 pub(all) enum MatchRouteResult {
@@ -30,12 +30,12 @@ pub(all) enum MatchRouteResult {
   Matched(RouteId)
 }
 
-pub(all) struct Model0 {
+pub(all) struct Model {
   error : Json
 }
-pub impl Show for Model0
-pub impl ToJson for Model0
-pub impl @json.FromJson for Model0
+pub impl Show for Model
+pub impl ToJson for Model
+pub impl @json.FromJson for Model
 
 pub(all) enum RouteId {
   DottedNameWatchTasks

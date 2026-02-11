@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// Model Base64BytesProperty
 pub(all) struct Base64BytesProperty {
   value : Bytes
@@ -36,8 +34,6 @@ pub impl @json.FromJson for Base64BytesProperty with from_json(
   }
   { value: __value }
 }
-
-///|
 
 ///|
 /// Model DefaultBytesProperty
@@ -79,8 +75,6 @@ pub impl @json.FromJson for DefaultBytesProperty with from_json(
 }
 
 ///|
-
-///|
 /// Model Base64UrlBytesProperty
 pub(all) struct Base64UrlBytesProperty {
   value : Bytes
@@ -118,8 +112,6 @@ pub impl @json.FromJson for Base64UrlBytesProperty with from_json(
   }
   { value: __value }
 }
-
-///|
 
 ///|
 /// Model Base64UrlArrayBytesProperty

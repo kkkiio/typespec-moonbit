@@ -25,12 +25,12 @@ pub impl Show for BodyModel
 pub impl ToJson for BodyModel
 pub impl @json.FromJson for BodyModel
 
-pub(all) struct BodyModel0 {
+pub(all) struct BodyModel1 {
   name : String
 }
-pub impl Show for BodyModel0
-pub impl ToJson for BodyModel0
-pub impl @json.FromJson for BodyModel0
+pub impl Show for BodyModel1
+pub impl ToJson for BodyModel1
+pub impl @json.FromJson for BodyModel1
 
 pub(all) enum MatchRouteResult {
   NotMatched
@@ -57,7 +57,7 @@ pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> 
 // Traits
 pub(open) trait BodyOptionalityHandler {
   async required_explicit(Self, group~ : @async.TaskGroup[Unit], BodyModel) -> Unit
-  async required_implicit(Self, group~ : @async.TaskGroup[Unit], BodyModel0) -> Unit
+  async required_implicit(Self, group~ : @async.TaskGroup[Unit], BodyModel1) -> Unit
 }
 
 pub(open) trait OptionalExplicitHandler {

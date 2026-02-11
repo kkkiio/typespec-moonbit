@@ -56,16 +56,13 @@ test "render_file" {
       #|import "z/pkg"
       #|
       #|///|
-      #|///|
       #|/// 用户模型
       #|pub(all) struct User {
-      #|  ///|
       #|  /// 用户名
       #|  name : String // rename="user_name"
       #|  age : Int?
       #|} derive(Show)
       #|
-      #|///|
       #|///|
       #|/// 返回问候
       #|pub fn greet(user : User) -> String {

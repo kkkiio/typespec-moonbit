@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// RepeatabilityClient HTTP 客户端。
 pub(all) struct RepeatabilityClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 RepeatabilityClient。
 pub fn RepeatabilityClient::new(base_url : String) -> RepeatabilityClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /special-headers/repeatability/immediateSuccess（自动解析响应）。

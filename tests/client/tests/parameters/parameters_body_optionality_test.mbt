@@ -7,7 +7,7 @@ async test "runtime parameters/body-optionality" {
   )
   let body = @parameters_body_optionality.BodyModel::{ name: "foo" }
   client.post_parameters_body_optionality_required_explicit(body)
-  let body = @parameters_body_optionality.BodyModel0::{ name: "foo" }
+  let body = @parameters_body_optionality.BodyModel1::{ name: "foo" }
   client.post_parameters_body_optionality_required_implicit(body)
   let optional = @parameters_body_optionality.OptionalExplicitClient::new(
     "http://localhost:3000",

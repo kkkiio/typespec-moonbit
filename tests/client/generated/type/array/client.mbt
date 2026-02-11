@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// Int32ValueClient HTTP 客户端。
 pub(all) struct Int32ValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 Int32ValueClient。
 pub fn Int32ValueClient::new(base_url : String) -> Int32ValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/array/int32（自动解析响应）。
@@ -41,8 +35,6 @@ pub async fn Int32ValueClient::get_type_array_int32(
 }
 
 ///|
-
-///|
 /// 调用 put /type/array/int32（自动解析响应）。
 pub async fn Int32ValueClient::put_type_array_int32(
   self : Int32ValueClient,
@@ -67,22 +59,16 @@ pub async fn Int32ValueClient::put_type_array_int32(
 }
 
 ///|
-
-///|
 /// Int64ValueClient HTTP 客户端。
 pub(all) struct Int64ValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 Int64ValueClient。
 pub fn Int64ValueClient::new(base_url : String) -> Int64ValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/array/int64（自动解析响应）。
@@ -109,8 +95,6 @@ pub async fn Int64ValueClient::get_type_array_int64(
 }
 
 ///|
-
-///|
 /// 调用 put /type/array/int64（自动解析响应）。
 pub async fn Int64ValueClient::put_type_array_int64(
   self : Int64ValueClient,
@@ -135,22 +119,16 @@ pub async fn Int64ValueClient::put_type_array_int64(
 }
 
 ///|
-
-///|
 /// BooleanValueClient HTTP 客户端。
 pub(all) struct BooleanValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 BooleanValueClient。
 pub fn BooleanValueClient::new(base_url : String) -> BooleanValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/array/boolean（自动解析响应）。
@@ -177,8 +155,6 @@ pub async fn BooleanValueClient::get_type_array_boolean(
 }
 
 ///|
-
-///|
 /// 调用 put /type/array/boolean（自动解析响应）。
 pub async fn BooleanValueClient::put_type_array_boolean(
   self : BooleanValueClient,
@@ -203,22 +179,16 @@ pub async fn BooleanValueClient::put_type_array_boolean(
 }
 
 ///|
-
-///|
 /// StringValueClient HTTP 客户端。
 pub(all) struct StringValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 StringValueClient。
 pub fn StringValueClient::new(base_url : String) -> StringValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/array/string（自动解析响应）。
@@ -245,8 +215,6 @@ pub async fn StringValueClient::get_type_array_string(
 }
 
 ///|
-
-///|
 /// 调用 put /type/array/string（自动解析响应）。
 pub async fn StringValueClient::put_type_array_string(
   self : StringValueClient,
@@ -271,22 +239,16 @@ pub async fn StringValueClient::put_type_array_string(
 }
 
 ///|
-
-///|
 /// Float32ValueClient HTTP 客户端。
 pub(all) struct Float32ValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 Float32ValueClient。
 pub fn Float32ValueClient::new(base_url : String) -> Float32ValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/array/float32（自动解析响应）。
@@ -313,8 +275,6 @@ pub async fn Float32ValueClient::get_type_array_float32(
 }
 
 ///|
-
-///|
 /// 调用 put /type/array/float32（自动解析响应）。
 pub async fn Float32ValueClient::put_type_array_float32(
   self : Float32ValueClient,
@@ -339,22 +299,16 @@ pub async fn Float32ValueClient::put_type_array_float32(
 }
 
 ///|
-
-///|
 /// DatetimeValueClient HTTP 客户端。
 pub(all) struct DatetimeValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 DatetimeValueClient。
 pub fn DatetimeValueClient::new(base_url : String) -> DatetimeValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/array/datetime（自动解析响应）。
@@ -383,8 +337,6 @@ pub async fn DatetimeValueClient::get_type_array_datetime(
 }
 
 ///|
-
-///|
 /// 调用 put /type/array/datetime（自动解析响应）。
 pub async fn DatetimeValueClient::put_type_array_datetime(
   self : DatetimeValueClient,
@@ -409,22 +361,16 @@ pub async fn DatetimeValueClient::put_type_array_datetime(
 }
 
 ///|
-
-///|
 /// DurationValueClient HTTP 客户端。
 pub(all) struct DurationValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 DurationValueClient。
 pub fn DurationValueClient::new(base_url : String) -> DurationValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/array/duration（自动解析响应）。
@@ -453,8 +399,6 @@ pub async fn DurationValueClient::get_type_array_duration(
 }
 
 ///|
-
-///|
 /// 调用 put /type/array/duration（自动解析响应）。
 pub async fn DurationValueClient::put_type_array_duration(
   self : DurationValueClient,
@@ -479,22 +423,16 @@ pub async fn DurationValueClient::put_type_array_duration(
 }
 
 ///|
-
-///|
 /// UnknownValueClient HTTP 客户端。
 pub(all) struct UnknownValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 UnknownValueClient。
 pub fn UnknownValueClient::new(base_url : String) -> UnknownValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/array/unknown（自动解析响应）。
@@ -521,8 +459,6 @@ pub async fn UnknownValueClient::get_type_array_unknown(
 }
 
 ///|
-
-///|
 /// 调用 put /type/array/unknown（自动解析响应）。
 pub async fn UnknownValueClient::put_type_array_unknown(
   self : UnknownValueClient,
@@ -547,22 +483,16 @@ pub async fn UnknownValueClient::put_type_array_unknown(
 }
 
 ///|
-
-///|
 /// ModelValueClient HTTP 客户端。
 pub(all) struct ModelValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ModelValueClient。
 pub fn ModelValueClient::new(base_url : String) -> ModelValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/array/model（自动解析响应）。
@@ -589,8 +519,6 @@ pub async fn ModelValueClient::get_type_array_model(
 }
 
 ///|
-
-///|
 /// 调用 put /type/array/model（自动解析响应）。
 pub async fn ModelValueClient::put_type_array_model(
   self : ModelValueClient,
@@ -615,14 +543,10 @@ pub async fn ModelValueClient::put_type_array_model(
 }
 
 ///|
-
-///|
 /// NullableFloatValueClient HTTP 客户端。
 pub(all) struct NullableFloatValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 NullableFloatValueClient。
@@ -631,8 +555,6 @@ pub fn NullableFloatValueClient::new(
 ) -> NullableFloatValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/array/nullable-float（自动解析响应）。
@@ -661,8 +583,6 @@ pub async fn NullableFloatValueClient::get_type_array_nullable_float(
 }
 
 ///|
-
-///|
 /// 调用 put /type/array/nullable-float（自动解析响应）。
 pub async fn NullableFloatValueClient::put_type_array_nullable_float(
   self : NullableFloatValueClient,
@@ -687,14 +607,10 @@ pub async fn NullableFloatValueClient::put_type_array_nullable_float(
 }
 
 ///|
-
-///|
 /// NullableInt32ValueClient HTTP 客户端。
 pub(all) struct NullableInt32ValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 NullableInt32ValueClient。
@@ -703,8 +619,6 @@ pub fn NullableInt32ValueClient::new(
 ) -> NullableInt32ValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/array/nullable-int32（自动解析响应）。
@@ -733,8 +647,6 @@ pub async fn NullableInt32ValueClient::get_type_array_nullable_int32(
 }
 
 ///|
-
-///|
 /// 调用 put /type/array/nullable-int32（自动解析响应）。
 pub async fn NullableInt32ValueClient::put_type_array_nullable_int32(
   self : NullableInt32ValueClient,
@@ -759,14 +671,10 @@ pub async fn NullableInt32ValueClient::put_type_array_nullable_int32(
 }
 
 ///|
-
-///|
 /// NullableBooleanValueClient HTTP 客户端。
 pub(all) struct NullableBooleanValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 NullableBooleanValueClient。
@@ -775,8 +683,6 @@ pub fn NullableBooleanValueClient::new(
 ) -> NullableBooleanValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/array/nullable-boolean（自动解析响应）。
@@ -805,8 +711,6 @@ pub async fn NullableBooleanValueClient::get_type_array_nullable_boolean(
 }
 
 ///|
-
-///|
 /// 调用 put /type/array/nullable-boolean（自动解析响应）。
 pub async fn NullableBooleanValueClient::put_type_array_nullable_boolean(
   self : NullableBooleanValueClient,
@@ -831,14 +735,10 @@ pub async fn NullableBooleanValueClient::put_type_array_nullable_boolean(
 }
 
 ///|
-
-///|
 /// NullableStringValueClient HTTP 客户端。
 pub(all) struct NullableStringValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 NullableStringValueClient。
@@ -847,8 +747,6 @@ pub fn NullableStringValueClient::new(
 ) -> NullableStringValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/array/nullable-string（自动解析响应）。
@@ -877,8 +775,6 @@ pub async fn NullableStringValueClient::get_type_array_nullable_string(
 }
 
 ///|
-
-///|
 /// 调用 put /type/array/nullable-string（自动解析响应）。
 pub async fn NullableStringValueClient::put_type_array_nullable_string(
   self : NullableStringValueClient,
@@ -903,14 +799,10 @@ pub async fn NullableStringValueClient::put_type_array_nullable_string(
 }
 
 ///|
-
-///|
 /// NullableModelValueClient HTTP 客户端。
 pub(all) struct NullableModelValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 NullableModelValueClient。
@@ -919,8 +811,6 @@ pub fn NullableModelValueClient::new(
 ) -> NullableModelValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/array/nullable-model（自动解析响应）。
@@ -947,8 +837,6 @@ pub async fn NullableModelValueClient::get_type_array_nullable_model(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/array/nullable-model（自动解析响应）。

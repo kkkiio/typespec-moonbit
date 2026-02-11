@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// Int32ValueClient HTTP 客户端。
 pub(all) struct Int32ValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 Int32ValueClient。
 pub fn Int32ValueClient::new(base_url : String) -> Int32ValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/dictionary/int32（自动解析响应）。
@@ -41,8 +35,6 @@ pub async fn Int32ValueClient::get_type_dictionary_int32(
 }
 
 ///|
-
-///|
 /// 调用 put /type/dictionary/int32（自动解析响应）。
 pub async fn Int32ValueClient::put_type_dictionary_int32(
   self : Int32ValueClient,
@@ -67,22 +59,16 @@ pub async fn Int32ValueClient::put_type_dictionary_int32(
 }
 
 ///|
-
-///|
 /// Int64ValueClient HTTP 客户端。
 pub(all) struct Int64ValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 Int64ValueClient。
 pub fn Int64ValueClient::new(base_url : String) -> Int64ValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/dictionary/int64（自动解析响应）。
@@ -111,8 +97,6 @@ pub async fn Int64ValueClient::get_type_dictionary_int64(
 }
 
 ///|
-
-///|
 /// 调用 put /type/dictionary/int64（自动解析响应）。
 pub async fn Int64ValueClient::put_type_dictionary_int64(
   self : Int64ValueClient,
@@ -137,22 +121,16 @@ pub async fn Int64ValueClient::put_type_dictionary_int64(
 }
 
 ///|
-
-///|
 /// BooleanValueClient HTTP 客户端。
 pub(all) struct BooleanValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 BooleanValueClient。
 pub fn BooleanValueClient::new(base_url : String) -> BooleanValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/dictionary/boolean（自动解析响应）。
@@ -179,8 +157,6 @@ pub async fn BooleanValueClient::get_type_dictionary_boolean(
 }
 
 ///|
-
-///|
 /// 调用 put /type/dictionary/boolean（自动解析响应）。
 pub async fn BooleanValueClient::put_type_dictionary_boolean(
   self : BooleanValueClient,
@@ -205,22 +181,16 @@ pub async fn BooleanValueClient::put_type_dictionary_boolean(
 }
 
 ///|
-
-///|
 /// StringValueClient HTTP 客户端。
 pub(all) struct StringValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 StringValueClient。
 pub fn StringValueClient::new(base_url : String) -> StringValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/dictionary/string（自动解析响应）。
@@ -249,8 +219,6 @@ pub async fn StringValueClient::get_type_dictionary_string(
 }
 
 ///|
-
-///|
 /// 调用 put /type/dictionary/string（自动解析响应）。
 pub async fn StringValueClient::put_type_dictionary_string(
   self : StringValueClient,
@@ -275,22 +243,16 @@ pub async fn StringValueClient::put_type_dictionary_string(
 }
 
 ///|
-
-///|
 /// Float32ValueClient HTTP 客户端。
 pub(all) struct Float32ValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 Float32ValueClient。
 pub fn Float32ValueClient::new(base_url : String) -> Float32ValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/dictionary/float32（自动解析响应）。
@@ -319,8 +281,6 @@ pub async fn Float32ValueClient::get_type_dictionary_float32(
 }
 
 ///|
-
-///|
 /// 调用 put /type/dictionary/float32（自动解析响应）。
 pub async fn Float32ValueClient::put_type_dictionary_float32(
   self : Float32ValueClient,
@@ -345,22 +305,16 @@ pub async fn Float32ValueClient::put_type_dictionary_float32(
 }
 
 ///|
-
-///|
 /// DatetimeValueClient HTTP 客户端。
 pub(all) struct DatetimeValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 DatetimeValueClient。
 pub fn DatetimeValueClient::new(base_url : String) -> DatetimeValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/dictionary/datetime（自动解析响应）。
@@ -389,8 +343,6 @@ pub async fn DatetimeValueClient::get_type_dictionary_datetime(
 }
 
 ///|
-
-///|
 /// 调用 put /type/dictionary/datetime（自动解析响应）。
 pub async fn DatetimeValueClient::put_type_dictionary_datetime(
   self : DatetimeValueClient,
@@ -415,22 +367,16 @@ pub async fn DatetimeValueClient::put_type_dictionary_datetime(
 }
 
 ///|
-
-///|
 /// DurationValueClient HTTP 客户端。
 pub(all) struct DurationValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 DurationValueClient。
 pub fn DurationValueClient::new(base_url : String) -> DurationValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/dictionary/duration（自动解析响应）。
@@ -459,8 +405,6 @@ pub async fn DurationValueClient::get_type_dictionary_duration(
 }
 
 ///|
-
-///|
 /// 调用 put /type/dictionary/duration（自动解析响应）。
 pub async fn DurationValueClient::put_type_dictionary_duration(
   self : DurationValueClient,
@@ -485,22 +429,16 @@ pub async fn DurationValueClient::put_type_dictionary_duration(
 }
 
 ///|
-
-///|
 /// UnknownValueClient HTTP 客户端。
 pub(all) struct UnknownValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 UnknownValueClient。
 pub fn UnknownValueClient::new(base_url : String) -> UnknownValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/dictionary/unknown（自动解析响应）。
@@ -527,8 +465,6 @@ pub async fn UnknownValueClient::get_type_dictionary_unknown(
 }
 
 ///|
-
-///|
 /// 调用 put /type/dictionary/unknown（自动解析响应）。
 pub async fn UnknownValueClient::put_type_dictionary_unknown(
   self : UnknownValueClient,
@@ -553,22 +489,16 @@ pub async fn UnknownValueClient::put_type_dictionary_unknown(
 }
 
 ///|
-
-///|
 /// ModelValueClient HTTP 客户端。
 pub(all) struct ModelValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ModelValueClient。
 pub fn ModelValueClient::new(base_url : String) -> ModelValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/dictionary/model（自动解析响应）。
@@ -597,8 +527,6 @@ pub async fn ModelValueClient::get_type_dictionary_model(
 }
 
 ///|
-
-///|
 /// 调用 put /type/dictionary/model（自动解析响应）。
 pub async fn ModelValueClient::put_type_dictionary_model(
   self : ModelValueClient,
@@ -623,14 +551,10 @@ pub async fn ModelValueClient::put_type_dictionary_model(
 }
 
 ///|
-
-///|
 /// RecursiveModelValueClient HTTP 客户端。
 pub(all) struct RecursiveModelValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 RecursiveModelValueClient。
@@ -639,8 +563,6 @@ pub fn RecursiveModelValueClient::new(
 ) -> RecursiveModelValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/dictionary/model/recursive（自动解析响应）。
@@ -671,8 +593,6 @@ pub async fn RecursiveModelValueClient::get_type_dictionary_model_recursive(
 }
 
 ///|
-
-///|
 /// 调用 put /type/dictionary/model/recursive（自动解析响应）。
 pub async fn RecursiveModelValueClient::put_type_dictionary_model_recursive(
   self : RecursiveModelValueClient,
@@ -699,14 +619,10 @@ pub async fn RecursiveModelValueClient::put_type_dictionary_model_recursive(
 }
 
 ///|
-
-///|
 /// NullableFloatValueClient HTTP 客户端。
 pub(all) struct NullableFloatValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 NullableFloatValueClient。
@@ -715,8 +631,6 @@ pub fn NullableFloatValueClient::new(
 ) -> NullableFloatValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/dictionary/nullable-float（自动解析响应）。
@@ -745,8 +659,6 @@ pub async fn NullableFloatValueClient::get_type_dictionary_nullable_float(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/dictionary/nullable-float（自动解析响应）。

@@ -317,9 +317,9 @@ pub async fn SpreadRecordNonDiscriminatedUnionClient::put_type_property_addition
 pub(all) struct SpreadRecordUnionClient {
   base_url : String
 }
-pub async fn SpreadRecordUnionClient::get_type_property_additionalproperties_spreadrecordunion(Self) -> Map[String, Union0]
+pub async fn SpreadRecordUnionClient::get_type_property_additionalproperties_spreadrecordunion(Self) -> Map[String, Union]
 pub fn SpreadRecordUnionClient::new(String) -> Self
-pub async fn SpreadRecordUnionClient::put_type_property_additionalproperties_spreadrecordunion(Self, Map[String, Union0]) -> Unit
+pub async fn SpreadRecordUnionClient::put_type_property_additionalproperties_spreadrecordunion(Self, Map[String, Union]) -> Unit
 
 pub(all) struct SpreadStringClient {
   base_url : String
@@ -328,13 +328,13 @@ pub async fn SpreadStringClient::get_type_property_additionalproperties_spreadre
 pub fn SpreadStringClient::new(String) -> Self
 pub async fn SpreadStringClient::put_type_property_additionalproperties_spreadrecordstring(Self, Map[String, String]) -> Unit
 
-pub(all) enum Union0 {
+pub(all) enum Union {
   String(String)
   Float32(Double)
 }
-pub impl Show for Union0
-pub impl ToJson for Union0
-pub impl @json.FromJson for Union0
+pub impl Show for Union
+pub impl ToJson for Union
+pub impl @json.FromJson for Union
 
 pub(all) enum Union1 {
   String(String)

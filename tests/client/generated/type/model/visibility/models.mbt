@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// Model ReadOnlyModel
 pub(all) struct ReadOnlyModel {
   optional_nullable_int_list : @runtime.Nullable[Array[Int]]?
@@ -20,8 +18,6 @@ pub(all) struct ReadOnlyModel {
     ),
   ),
 )
-
-///|
 
 ///|
 /// Model VisibilityModel

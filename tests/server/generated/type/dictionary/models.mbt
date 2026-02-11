@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// Model InnerModel
 pub(all) struct InnerModel {
   property : String

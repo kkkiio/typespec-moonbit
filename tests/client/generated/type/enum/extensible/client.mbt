@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// StringClient HTTP 客户端。
 pub(all) struct StringClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 StringClient。
 pub fn StringClient::new(base_url : String) -> StringClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/enum/extensible/string/known-value（自动解析响应）。
@@ -43,8 +37,6 @@ pub async fn StringClient::get_type_enum_extensible_string_known_value(
 }
 
 ///|
-
-///|
 /// 调用 get /type/enum/extensible/string/unknown-value（自动解析响应）。
 pub async fn StringClient::get_type_enum_extensible_string_unknown_value(
   self : StringClient,
@@ -69,8 +61,6 @@ pub async fn StringClient::get_type_enum_extensible_string_unknown_value(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/enum/extensible/string/known-value（自动解析响应）。
@@ -98,8 +88,6 @@ pub async fn StringClient::put_type_enum_extensible_string_known_value(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/enum/extensible/string/unknown-value（自动解析响应）。

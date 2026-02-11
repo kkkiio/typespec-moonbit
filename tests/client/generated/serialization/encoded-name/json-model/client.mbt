@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// PropertyClient HTTP 客户端。
 pub(all) struct PropertyClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 PropertyClient。
 pub fn PropertyClient::new(base_url : String) -> PropertyClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /serialization/encoded-name/json/property（自动解析响应）。
@@ -41,8 +35,6 @@ pub async fn PropertyClient::post_serialization_encoded_name_json_property(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /serialization/encoded-name/json/property（自动解析响应）。

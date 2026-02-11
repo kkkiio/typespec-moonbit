@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// AddedClient HTTP 客户端。
 pub(all) struct AddedClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 AddedClient。
 pub fn AddedClient::new(base_url : String) -> AddedClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /versioning/added/api-version:{version}/v1（自动解析响应）。
@@ -52,8 +46,6 @@ pub async fn AddedClient::post_versioning_added_api_version__version__v1(
 }
 
 ///|
-
-///|
 /// 调用 post /versioning/added/api-version:{version}/v2（自动解析响应）。
 pub async fn AddedClient::post_versioning_added_api_version__version__v2(
   self : AddedClient,
@@ -87,22 +79,16 @@ pub async fn AddedClient::post_versioning_added_api_version__version__v2(
 }
 
 ///|
-
-///|
 /// InterfaceV2Client HTTP 客户端。
 pub(all) struct InterfaceV2Client {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 InterfaceV2Client。
 pub fn InterfaceV2Client::new(base_url : String) -> InterfaceV2Client {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /versioning/added/api-version:{version}/interface-v2/v2（自动解析响应）。

@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// Union UnionV1
 pub(all) enum UnionV1 {
   String(String)
@@ -36,8 +34,6 @@ pub impl @json.FromJson for UnionV1 with from_json(
     (path, "cannot deserialize json as union UnionV1"),
   )
 }
-
-///|
 
 ///|
 /// Union UnionV2
@@ -77,8 +73,6 @@ pub impl @json.FromJson for UnionV2 with from_json(
 }
 
 ///|
-
-///|
 /// Model ModelV1
 pub(all) struct ModelV1 {
   prop : String
@@ -91,8 +85,6 @@ pub(all) struct ModelV1 {
     fields(enum_prop(rename="enumProp"), union_prop(rename="unionProp")),
   ),
 )
-
-///|
 
 ///|
 /// Model ModelV2

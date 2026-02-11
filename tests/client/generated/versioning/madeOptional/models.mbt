@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// Model TestModel
 pub(all) struct TestModel {
   prop : String

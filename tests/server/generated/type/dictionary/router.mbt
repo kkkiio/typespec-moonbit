@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// Traits for operation handlers
 pub(open) trait Int32ValueHandler {
   async get(self : Self, group~ : @async.TaskGroup[Unit]) -> Map[String, Int]
@@ -10,8 +8,6 @@ pub(open) trait Int32ValueHandler {
     body : Map[String, Int],
   ) -> Unit
 }
-
-///|
 
 ///|
 /// Traits for operation handlers
@@ -25,8 +21,6 @@ pub(open) trait Int64ValueHandler {
 }
 
 ///|
-
-///|
 /// Traits for operation handlers
 pub(open) trait BooleanValueHandler {
   async get(self : Self, group~ : @async.TaskGroup[Unit]) -> Map[String, Bool]
@@ -36,8 +30,6 @@ pub(open) trait BooleanValueHandler {
     body : Map[String, Bool],
   ) -> Unit
 }
-
-///|
 
 ///|
 /// Traits for operation handlers
@@ -51,8 +43,6 @@ pub(open) trait StringValueHandler {
 }
 
 ///|
-
-///|
 /// Traits for operation handlers
 pub(open) trait Float32ValueHandler {
   async get(self : Self, group~ : @async.TaskGroup[Unit]) -> Map[String, Double]
@@ -62,8 +52,6 @@ pub(open) trait Float32ValueHandler {
     body : Map[String, Double],
   ) -> Unit
 }
-
-///|
 
 ///|
 /// Traits for operation handlers
@@ -80,8 +68,6 @@ pub(open) trait DatetimeValueHandler {
 }
 
 ///|
-
-///|
 /// Traits for operation handlers
 pub(open) trait DurationValueHandler {
   async get(self : Self, group~ : @async.TaskGroup[Unit]) -> Map[
@@ -96,8 +82,6 @@ pub(open) trait DurationValueHandler {
 }
 
 ///|
-
-///|
 /// Traits for operation handlers
 pub(open) trait UnknownValueHandler {
   async get(self : Self, group~ : @async.TaskGroup[Unit]) -> Map[String, Json]
@@ -107,8 +91,6 @@ pub(open) trait UnknownValueHandler {
     body : Map[String, Json],
   ) -> Unit
 }
-
-///|
 
 ///|
 /// Traits for operation handlers
@@ -125,8 +107,6 @@ pub(open) trait ModelValueHandler {
 }
 
 ///|
-
-///|
 /// Traits for operation handlers
 pub(open) trait RecursiveModelValueHandler {
   async get(self : Self, group~ : @async.TaskGroup[Unit]) -> Map[
@@ -139,8 +119,6 @@ pub(open) trait RecursiveModelValueHandler {
     body : Map[String, InnerModel],
   ) -> Unit
 }
-
-///|
 
 ///|
 /// Traits for operation handlers
@@ -157,8 +135,6 @@ pub(open) trait NullableFloatValueHandler {
 }
 
 ///|
-
-///|
 /// 路由匹配结果。
 pub(all) enum RouteMatch {
   Handled
@@ -168,8 +144,6 @@ pub(all) enum RouteMatch {
 
 ///|
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
-
-///|
 
 ///|
 /// 生成期固定的路由 ID（用于 match_route 的返回值）。
@@ -199,16 +173,12 @@ pub(all) enum RouteId {
 }
 
 ///|
-
-///|
 /// 路由匹配结果（纯匹配：不读 body、不写响应、不调用 handler）。
 pub(all) enum MatchRouteResult {
   NotMatched
   MethodNotAllowed
   Matched(RouteId)
 }
-
-///|
 
 ///|
 /// 匹配 method + path，并返回命中的 RouteId（若命中）。
@@ -682,8 +652,6 @@ pub fn[
     }
   }
 }
-
-///|
 
 ///|
 /// 创建一个带默认 fallback 的 dispatch。

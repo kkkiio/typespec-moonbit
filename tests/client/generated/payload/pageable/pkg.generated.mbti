@@ -16,18 +16,18 @@ pub(all) struct ContinuationTokenClient {
 pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_pagination_continuationtoken_request_header_nested_response_body__bar_(Self, String, String?, String?) -> Model11
 pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_pagination_continuationtoken_request_header_response_body__bar_(Self, String, String?, String?) -> Model7
 pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_pagination_continuationtoken_request_header_response_header__bar_(Self, String, String?, String?) -> Model8
-pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_pagination_continuationtoken_request_query_nested_response_body__token_bar_(Self, String, String?, String?) -> Model14
+pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_pagination_continuationtoken_request_query_nested_response_body__token_bar_(Self, String, String?, String?) -> Model12
 pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_pagination_continuationtoken_request_query_response_body__token_bar_(Self, String, String?, String?) -> Model9
 pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_pagination_continuationtoken_request_query_response_header__token_bar_(Self, String, String?, String?) -> Model10
 pub fn ContinuationTokenClient::new(String) -> Self
 
-pub(all) struct Model0 {
+pub(all) struct Model {
   pets : Array[Pet]
   next : String?
 }
-pub impl Show for Model0
-pub impl ToJson for Model0
-pub impl @json.FromJson for Model0
+pub impl Show for Model
+pub impl ToJson for Model
+pub impl @json.FromJson for Model
 
 pub(all) struct Model1 {
   pets : Array[Pet]
@@ -44,7 +44,7 @@ pub impl ToJson for Model10
 pub impl @json.FromJson for Model10
 
 pub(all) struct Model11 {
-  nested_items : Model12
+  nested_items : Model14
   nested_next : Model13?
 }
 pub impl Show for Model11
@@ -52,7 +52,8 @@ pub impl ToJson for Model11
 pub impl @json.FromJson for Model11
 
 pub(all) struct Model12 {
-  pets : Array[Pet]
+  nested_items : Model16
+  nested_next : Model15?
 }
 pub impl Show for Model12
 pub impl ToJson for Model12
@@ -66,22 +67,21 @@ pub impl ToJson for Model13
 pub impl @json.FromJson for Model13
 
 pub(all) struct Model14 {
-  nested_items : Model15
-  nested_next : Model16?
+  pets : Array[Pet]
 }
 pub impl Show for Model14
 pub impl ToJson for Model14
 pub impl @json.FromJson for Model14
 
 pub(all) struct Model15 {
-  pets : Array[Pet]
+  next_token : String?
 }
 pub impl Show for Model15
 pub impl ToJson for Model15
 pub impl @json.FromJson for Model15
 
 pub(all) struct Model16 {
-  next_token : String?
+  pets : Array[Pet]
 }
 pub impl Show for Model16
 pub impl ToJson for Model16
@@ -96,7 +96,7 @@ pub impl ToJson for Model2
 pub impl @json.FromJson for Model2
 
 pub(all) struct Model3 {
-  nested_items : Model5
+  nested_items : Model6
   nested_next : Model4
 }
 pub impl Show for Model3
@@ -151,7 +151,7 @@ pub(all) struct PageSizeClient {
   base_url : String
 }
 pub async fn PageSizeClient::get_payload_pageable_pagesize_list__pagesize_(Self, Int) -> Model1
-pub async fn PageSizeClient::get_payload_pageable_pagesize_without_continuation(Self) -> Model6
+pub async fn PageSizeClient::get_payload_pageable_pagesize_without_continuation(Self) -> Model5
 pub fn PageSizeClient::new(String) -> Self
 
 pub(all) struct Pet {
@@ -165,7 +165,7 @@ pub impl @json.FromJson for Pet
 pub(all) struct ServerDrivenPaginationClient {
   base_url : String
 }
-pub async fn ServerDrivenPaginationClient::get_payload_pageable_server_driven_pagination_link(Self) -> Model0
+pub async fn ServerDrivenPaginationClient::get_payload_pageable_server_driven_pagination_link(Self) -> Model
 pub async fn ServerDrivenPaginationClient::get_payload_pageable_server_driven_pagination_link_string(Self) -> Model2
 pub async fn ServerDrivenPaginationClient::get_payload_pageable_server_driven_pagination_nested_link(Self) -> Model3
 pub fn ServerDrivenPaginationClient::new(String) -> Self

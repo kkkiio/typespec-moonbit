@@ -1,12 +1,8 @@
 ///|
-
-///|
 /// ServerDrivenPaginationClient HTTP 客户端。
 pub(all) struct ServerDrivenPaginationClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ServerDrivenPaginationClient。
@@ -17,12 +13,10 @@ pub fn ServerDrivenPaginationClient::new(
 }
 
 ///|
-
-///|
 /// 调用 get /payload/pageable/server-driven-pagination/link（自动解析响应）。
 pub async fn ServerDrivenPaginationClient::get_payload_pageable_server_driven_pagination_link(
   self : ServerDrivenPaginationClient,
-) -> Model0 {
+) -> Model {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -37,14 +31,12 @@ pub async fn ServerDrivenPaginationClient::get_payload_pageable_server_driven_pa
   if response.code == 200 {
     @runtime.expect_json_content_type(response)
     let response_body = client.read_all().text()
-    let parsed : Model0 = @json.from_json(@json.parse(response_body))
+    let parsed : Model = @json.from_json(@json.parse(response_body))
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/pageable/server-driven-pagination/link-string（自动解析响应）。
@@ -73,8 +65,6 @@ pub async fn ServerDrivenPaginationClient::get_payload_pageable_server_driven_pa
 }
 
 ///|
-
-///|
 /// 调用 get /payload/pageable/server-driven-pagination/nested-link（自动解析响应）。
 pub async fn ServerDrivenPaginationClient::get_payload_pageable_server_driven_pagination_nested_link(
   self : ServerDrivenPaginationClient,
@@ -101,14 +91,10 @@ pub async fn ServerDrivenPaginationClient::get_payload_pageable_server_driven_pa
 }
 
 ///|
-
-///|
 /// ContinuationTokenClient HTTP 客户端。
 pub(all) struct ContinuationTokenClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ContinuationTokenClient。
@@ -117,8 +103,6 @@ pub fn ContinuationTokenClient::new(
 ) -> ContinuationTokenClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/pageable/server-driven-pagination/continuationtoken/request-query-response-body{?token,bar}（自动解析响应）。
@@ -168,8 +152,6 @@ pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_paginat
 }
 
 ///|
-
-///|
 /// 调用 get /payload/pageable/server-driven-pagination/continuationtoken/request-header-response-body{?bar}（自动解析响应）。
 pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_pagination_continuationtoken_request_header_response_body__bar_(
   self : ContinuationTokenClient,
@@ -207,8 +189,6 @@ pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_paginat
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/pageable/server-driven-pagination/continuationtoken/request-query-response-header{?token,bar}（自动解析响应）。
@@ -258,8 +238,6 @@ pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_paginat
 }
 
 ///|
-
-///|
 /// 调用 get /payload/pageable/server-driven-pagination/continuationtoken/request-header-response-header{?bar}（自动解析响应）。
 pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_pagination_continuationtoken_request_header_response_header__bar_(
   self : ContinuationTokenClient,
@@ -299,15 +277,13 @@ pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_paginat
 }
 
 ///|
-
-///|
 /// 调用 get /payload/pageable/server-driven-pagination/continuationtoken/request-query-nested-response-body{?token,bar}（自动解析响应）。
 pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_pagination_continuationtoken_request_query_nested_response_body__token_bar_(
   self : ContinuationTokenClient,
   token : String,
   foo : String?,
   bar : String?,
-) -> Model14 {
+) -> Model12 {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -340,14 +316,12 @@ pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_paginat
   if response.code == 200 {
     @runtime.expect_json_content_type(response)
     let response_body = client.read_all().text()
-    let parsed : Model14 = @json.from_json(@json.parse(response_body))
+    let parsed : Model12 = @json.from_json(@json.parse(response_body))
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/pageable/server-driven-pagination/continuationtoken/request-header-nested-response-body{?bar}（自动解析响应）。
@@ -389,14 +363,10 @@ pub async fn ContinuationTokenClient::get_payload_pageable_server_driven_paginat
 }
 
 ///|
-
-///|
 /// PageSizeClient HTTP 客户端。
 pub(all) struct PageSizeClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 PageSizeClient。
@@ -405,12 +375,10 @@ pub fn PageSizeClient::new(base_url : String) -> PageSizeClient {
 }
 
 ///|
-
-///|
 /// 调用 get /payload/pageable/pagesize/without-continuation（自动解析响应）。
 pub async fn PageSizeClient::get_payload_pageable_pagesize_without_continuation(
   self : PageSizeClient,
-) -> Model6 {
+) -> Model5 {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -425,14 +393,12 @@ pub async fn PageSizeClient::get_payload_pageable_pagesize_without_continuation(
   if response.code == 200 {
     @runtime.expect_json_content_type(response)
     let response_body = client.read_all().text()
-    let parsed : Model6 = @json.from_json(@json.parse(response_body))
+    let parsed : Model5 = @json.from_json(@json.parse(response_body))
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/pageable/pagesize/list{?pageSize}（自动解析响应）。

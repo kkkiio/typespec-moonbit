@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// Model SimpleModel
 pub(all) struct SimpleModel {
   name : String
@@ -8,15 +6,11 @@ pub(all) struct SimpleModel {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model ModelWithText
 pub(all) struct ModelWithText {
   language : String
   content : String
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model ModelWithAttributes
@@ -31,14 +25,10 @@ pub(all) struct ModelWithAttributes {
 )
 
 ///|
-
-///|
 /// Model ModelWithDictionary
 pub(all) struct ModelWithDictionary {
   metadata : Map[String, String]
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model ModelWithEmptyArray
@@ -47,14 +37,10 @@ pub(all) struct ModelWithEmptyArray {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model ModelWithArrayOfModel
 pub(all) struct ModelWithArrayOfModel {
   items : Array[SimpleModel]
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model ModelWithEncodedNames
@@ -68,15 +54,11 @@ pub(all) struct ModelWithEncodedNames {
 )
 
 ///|
-
-///|
 /// Model ModelWithSimpleArrays
 pub(all) struct ModelWithSimpleArrays {
   colors : Array[String]
   counts : Array[Int]
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model ModelWithOptionalField
@@ -86,15 +68,11 @@ pub(all) struct ModelWithOptionalField {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model ModelWithRenamedArrays
 pub(all) struct ModelWithRenamedArrays {
   colors : Array[String]
   counts : Array[Int]
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model ModelWithRenamedFields
@@ -110,8 +88,6 @@ pub(all) struct ModelWithRenamedFields {
     fields(input_data(rename="inputData"), output_data(rename="outputData")),
   ),
 )
-
-///|
 
 ///|
 /// Model ModelWithUnwrappedArray
