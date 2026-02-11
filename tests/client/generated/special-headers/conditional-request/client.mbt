@@ -80,7 +80,7 @@ pub async fn ConditionalRequestClient::post_special_headers_conditional_request_
 /// 调用 head /special-headers/conditional-request/if-modified-since（自动解析响应）。
 pub async fn ConditionalRequestClient::head_special_headers_conditional_request_if_modified_since(
   self : ConditionalRequestClient,
-  if_modified_since : String?,
+  if_modified_since : @runtime.UtcDateTime?,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -91,7 +91,14 @@ pub async fn ConditionalRequestClient::head_special_headers_conditional_request_
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
   if if_modified_since is Some(v) {
-    headers.set("If-Modified-Since", v)
+    headers.set(
+      "If-Modified-Since",
+      @runtime.encode_utc_datetime_uri(
+        v,
+        @runtime.DateTimeEncoding::Rfc7231,
+        @runtime.NumberWireType::Int64,
+      ),
+    )
   }
   let path = sb.to_string()
   client.request(@http.Head, path, extra_headers=headers)
@@ -109,7 +116,7 @@ pub async fn ConditionalRequestClient::head_special_headers_conditional_request_
 /// 调用 post /special-headers/conditional-request/if-unmodified-since（自动解析响应）。
 pub async fn ConditionalRequestClient::post_special_headers_conditional_request_if_unmodified_since(
   self : ConditionalRequestClient,
-  if_unmodified_since : String?,
+  if_unmodified_since : @runtime.UtcDateTime?,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -120,7 +127,14 @@ pub async fn ConditionalRequestClient::post_special_headers_conditional_request_
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
   if if_unmodified_since is Some(v) {
-    headers.set("If-Unmodified-Since", v)
+    headers.set(
+      "If-Unmodified-Since",
+      @runtime.encode_utc_datetime_uri(
+        v,
+        @runtime.DateTimeEncoding::Rfc7231,
+        @runtime.NumberWireType::Int64,
+      ),
+    )
   }
   let path = sb.to_string()
   client.request(@http.Post, path, extra_headers=headers)

@@ -66,24 +66,27 @@ fn emit_http_server_files(
     collect_all_operations(services),
   )
   let router = emit_router_file(services, type_ctx)
+  let needs_aqueue = router.contains("@aqueue.")
   [
-    GeneratedFile::new("moon.pkg", emit_server_moon_pkg(pkg_name)),
+    GeneratedFile::new("moon.pkg", emit_server_moon_pkg(pkg_name, needs_aqueue)),
     GeneratedFile::new("models.mbt", models),
     GeneratedFile::new("router.mbt", router),
   ]
 }
 
 ///|
-fn emit_server_moon_pkg(package_name : String) -> String {
+fn emit_server_moon_pkg(package_name : String, needs_aqueue : Bool) -> String {
   ignore(package_name)
-  (
-    #|import {
-    #|  "moonbitlang/core/json",
-    #|  "moonbitlang/async",
-    #|  "moonbitlang/async/http",
-    #|  "moonbitlang/async/io",
-    #|  "moonbitlang/async/aqueue",
-    #|  "kkkiio/typespec-server-runtime" as @runtime,
-    #|}
-  )
+  let sb = StringBuilder::new()
+  sb.write_string("import {\n")
+  sb.write_string("  \"moonbitlang/core/json\",\n")
+  sb.write_string("  \"moonbitlang/async\",\n")
+  sb.write_string("  \"moonbitlang/async/http\",\n")
+  sb.write_string("  \"moonbitlang/async/io\",\n")
+  if needs_aqueue {
+    sb.write_string("  \"moonbitlang/async/aqueue\",\n")
+  }
+  sb.write_string("  \"kkkiio/typespec-server-runtime\" @runtime,\n")
+  sb.write_string("}\n")
+  sb.to_string()
 }

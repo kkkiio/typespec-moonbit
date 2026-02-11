@@ -1,6 +1,10 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "kkkiio/typespec-tests/client/generated/special-headers/repeatability"
 
+import {
+  "kkkiio/typespec-client-runtime",
+}
+
 // Values
 
 // Errors
@@ -10,7 +14,7 @@ pub(all) struct RepeatabilityClient {
   base_url : String
 }
 pub fn RepeatabilityClient::new(String) -> Self
-pub async fn RepeatabilityClient::post_special_headers_repeatability_immediatesuccess(Self, String, String) -> Unit
+pub async fn RepeatabilityClient::post_special_headers_repeatability_immediatesuccess(Self, String, @typespec-client-runtime.UtcDateTime) -> Unit
 
 // Type aliases
 

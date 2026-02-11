@@ -241,7 +241,7 @@ impl @type_array.DatetimeValueHandler for DatetimeValueHandlerImpl with get(
 ) {
   ignore(group)
   // Should return [Temporal.Instant.from("2022-08-26T18:38:00Z")]
-  ["2022-08-26T18:38:00Z"]
+  [@runtime.UtcDateTime::from_string("2022-08-26T18:38:00Z")]
 }
 
 ///|
@@ -252,7 +252,7 @@ impl @type_array.DatetimeValueHandler for DatetimeValueHandlerImpl with put(
 ) {
   ignore(group)
   assert_eq(body.length(), 1)
-  assert_eq(body[0], "2022-08-26T18:38:00Z")
+  assert_eq(body[0].to_string(), "2022-08-26T18:38:00Z")
 }
 
 ///|
@@ -265,7 +265,7 @@ impl @type_array.DurationValueHandler for DurationValueHandlerImpl with get(
 ) {
   ignore(group)
   // Should return [Temporal.Duration.from("P123DT22H14M12.011S")]
-  ["P123DT22H14M12.011S"]
+  [@runtime.Duration::from_string("P123DT22H14M12.011S")]
 }
 
 ///|
@@ -276,7 +276,7 @@ impl @type_array.DurationValueHandler for DurationValueHandlerImpl with put(
 ) {
   ignore(group)
   assert_eq(body.length(), 1)
-  assert_eq(body[0], "P123DT22H14M12.011S")
+  assert_eq(body[0].to_string(), "P123DT22H14M12.011S")
 }
 
 ///|

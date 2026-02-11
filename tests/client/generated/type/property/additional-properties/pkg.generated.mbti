@@ -2,6 +2,7 @@
 package "kkkiio/typespec-tests/client/generated/type/property/additional-properties"
 
 import {
+  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -377,8 +378,8 @@ pub impl @json.FromJson for WidgetData0
 
 pub(all) struct WidgetData1 {
   kind : String
-  start : String
-  end : String?
+  start : @typespec-client-runtime.UtcDateTime
+  end : @typespec-client-runtime.UtcDateTime?
 }
 pub impl Show for WidgetData1
 pub impl ToJson for WidgetData1

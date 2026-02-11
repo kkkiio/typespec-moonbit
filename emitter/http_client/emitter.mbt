@@ -101,7 +101,6 @@ fn emit_client_moon_pkg(package_name : String) -> String {
   (
     #|import {
     #|  "moonbitlang/async/http" as @http,
-    #|  "moonbitlang/core/encoding/utf8" as @encoding/utf8,
     #|  "moonbitlang/core/json",
     #|  "kkkiio/typespec-client-runtime" as @runtime,
     #|}
@@ -123,6 +122,7 @@ priv struct ModelFieldInfo {
   type_ : @typespec.TypeSpecType
   optional : Bool
   bytes_encoding : String?
+  encode_wire_type : String?
 }
 
 ///|
@@ -365,7 +365,8 @@ fn emit_model_struct(
       wire_name,
       type_: prop.type_(),
       optional: prop.is_optional(),
-      bytes_encoding: prop.bytes_encoding(),
+      bytes_encoding: prop.encoding(),
+      encode_wire_type: prop.encoding_wire_type(),
     })
     if field_name != wire_name {
       rename_entries.push((field_name, wire_name))
@@ -422,6 +423,11 @@ fn model_property_type_string(
     @typespec.TypeSpecType::Bytes => "Bytes"
     @typespec.TypeSpecType::Array(@typespec.TypeSpecType::Bytes) =>
       "Array[Bytes]"
+    @typespec.TypeSpecType::Duration => "@runtime.Duration"
+    @typespec.TypeSpecType::UtcDateTime => "@runtime.UtcDateTime"
+    @typespec.TypeSpecType::OffsetDateTime => "@runtime.OffsetDateTime"
+    @typespec.TypeSpecType::PlainDate => "@runtime.PlainDate"
+    @typespec.TypeSpecType::PlainTime => "@runtime.PlainTime"
     _ => type_spec_to_type_string_with_ctx(type_ctx, type_)
   }
 }
@@ -445,6 +451,82 @@ fn bytes_encoding_runtime_expr(encoding : String) -> String raise {
     "base64" => "@runtime.BytesEncoding::Base64"
     "base64url" => "@runtime.BytesEncoding::Base64Url"
     _ => fail("unsupported bytes encoding: " + encoding)
+  }
+}
+
+///|
+fn resolve_datetime_encoding(raw : String?) -> String raise {
+  let lower = match raw {
+    Some(v) => v.to_lower()
+    None => "rfc3339"
+  }
+  match lower {
+    "rfc3339" => "rfc3339"
+    "rfc7231" => "rfc7231"
+    "unixtimestamp" => "unixtimestamp"
+    _ => fail("unsupported datetime encoding: " + lower)
+  }
+}
+
+///|
+fn datetime_encoding_runtime_expr(encoding : String) -> String raise {
+  match encoding {
+    "rfc3339" => "@runtime.DateTimeEncoding::Rfc3339"
+    "rfc7231" => "@runtime.DateTimeEncoding::Rfc7231"
+    "unixtimestamp" => "@runtime.DateTimeEncoding::UnixTimestamp"
+    _ => fail("unsupported datetime encoding: " + encoding)
+  }
+}
+
+///|
+fn resolve_duration_encoding(raw : String?) -> String raise {
+  let lower = match raw {
+    Some(v) => v.to_lower()
+    None => "iso8601"
+  }
+  match lower {
+    "iso8601" => "iso8601"
+    "seconds" => "seconds"
+    "milliseconds" => "milliseconds"
+    _ => fail("unsupported duration encoding: " + lower)
+  }
+}
+
+///|
+fn duration_encoding_runtime_expr(encoding : String) -> String raise {
+  match encoding {
+    "iso8601" => "@runtime.DurationEncoding::Iso8601"
+    "seconds" => "@runtime.DurationEncoding::Seconds"
+    "milliseconds" => "@runtime.DurationEncoding::Milliseconds"
+    _ => fail("unsupported duration encoding: " + encoding)
+  }
+}
+
+///|
+fn resolve_wire_type(raw : String?, default_wire : String) -> String raise {
+  let lower = match raw {
+    Some(v) => v.to_lower()
+    None => default_wire
+  }
+  match lower {
+    "int32" => "int32"
+    "int64" => "int64"
+    "float" => "float"
+    "float32" => "float32"
+    "float64" => "float64"
+    _ => fail("unsupported encode wire type: " + lower)
+  }
+}
+
+///|
+fn wire_type_runtime_expr(wire_type : String) -> String raise {
+  match wire_type {
+    "int32" => "@runtime.NumberWireType::Int32"
+    "int64" => "@runtime.NumberWireType::Int64"
+    "float" => "@runtime.NumberWireType::Float"
+    "float32" => "@runtime.NumberWireType::Float32"
+    "float64" => "@runtime.NumberWireType::Float64"
+    _ => fail("unsupported encode wire type: " + wire_type)
   }
 }
 
@@ -546,6 +628,96 @@ fn emit_model_from_json_impl(
           sb.write_string("}\n")
         }
       }
+      @typespec.TypeSpecType::UtcDateTime => {
+        let encoding = resolve_datetime_encoding(info.bytes_encoding)
+        let encoding_expr = datetime_encoding_runtime_expr(encoding)
+        let wire_type = resolve_wire_type(info.encode_wire_type, "int64")
+        let wire_expr = wire_type_runtime_expr(wire_type)
+        if info.optional {
+          sb.write_string(
+            "let \{var_name} : @runtime.UtcDateTime? = if Json::equal(\{raw_name}, Json::null()) { None } else { Some(@runtime.decode_utc_datetime_json(\{raw_name}, \{encoding_expr}, \{wire_expr}, path)) }\n",
+          )
+        } else {
+          sb.write_string(
+            "let \{var_name} : @runtime.UtcDateTime = @runtime.decode_utc_datetime_json(\{raw_name}, \{encoding_expr}, \{wire_expr}, path)\n",
+          )
+        }
+      }
+      @typespec.TypeSpecType::OffsetDateTime => {
+        let encoding = resolve_datetime_encoding(info.bytes_encoding)
+        let encoding_expr = datetime_encoding_runtime_expr(encoding)
+        let wire_type = resolve_wire_type(info.encode_wire_type, "int64")
+        let wire_expr = wire_type_runtime_expr(wire_type)
+        if info.optional {
+          sb.write_string(
+            "let \{var_name} : @runtime.OffsetDateTime? = if Json::equal(\{raw_name}, Json::null()) { None } else { Some(@runtime.decode_offset_datetime_json(\{raw_name}, \{encoding_expr}, \{wire_expr}, path)) }\n",
+          )
+        } else {
+          sb.write_string(
+            "let \{var_name} : @runtime.OffsetDateTime = @runtime.decode_offset_datetime_json(\{raw_name}, \{encoding_expr}, \{wire_expr}, path)\n",
+          )
+        }
+      }
+      @typespec.TypeSpecType::Duration => {
+        let encoding = resolve_duration_encoding(info.bytes_encoding)
+        let encoding_expr = duration_encoding_runtime_expr(encoding)
+        let wire_type = resolve_wire_type(info.encode_wire_type, "float64")
+        let wire_expr = wire_type_runtime_expr(wire_type)
+        if info.optional {
+          sb.write_string(
+            "let \{var_name} : @runtime.Duration? = if Json::equal(\{raw_name}, Json::null()) { None } else { Some(@runtime.decode_duration_json(\{raw_name}, \{encoding_expr}, \{wire_expr}, path)) }\n",
+          )
+        } else {
+          sb.write_string(
+            "let \{var_name} : @runtime.Duration = @runtime.decode_duration_json(\{raw_name}, \{encoding_expr}, \{wire_expr}, path)\n",
+          )
+        }
+      }
+      @typespec.TypeSpecType::Array(@typespec.TypeSpecType::UtcDateTime) => {
+        let encoding = resolve_datetime_encoding(info.bytes_encoding)
+        let encoding_expr = datetime_encoding_runtime_expr(encoding)
+        let wire_type = resolve_wire_type(info.encode_wire_type, "int64")
+        let wire_expr = wire_type_runtime_expr(wire_type)
+        if info.optional {
+          sb.write_string(
+            "let \{var_name} : Array[@runtime.UtcDateTime]? = if Json::equal(\{raw_name}, Json::null()) { None } else { Some(@runtime.decode_utc_datetime_array_json(\{raw_name}, \{encoding_expr}, \{wire_expr}, path)) }\n",
+          )
+        } else {
+          sb.write_string(
+            "let \{var_name} : Array[@runtime.UtcDateTime] = @runtime.decode_utc_datetime_array_json(\{raw_name}, \{encoding_expr}, \{wire_expr}, path)\n",
+          )
+        }
+      }
+      @typespec.TypeSpecType::Array(@typespec.TypeSpecType::OffsetDateTime) => {
+        let encoding = resolve_datetime_encoding(info.bytes_encoding)
+        let encoding_expr = datetime_encoding_runtime_expr(encoding)
+        let wire_type = resolve_wire_type(info.encode_wire_type, "int64")
+        let wire_expr = wire_type_runtime_expr(wire_type)
+        if info.optional {
+          sb.write_string(
+            "let \{var_name} : Array[@runtime.OffsetDateTime]? = if Json::equal(\{raw_name}, Json::null()) { None } else { Some(@runtime.decode_offset_datetime_array_json(\{raw_name}, \{encoding_expr}, \{wire_expr}, path)) }\n",
+          )
+        } else {
+          sb.write_string(
+            "let \{var_name} : Array[@runtime.OffsetDateTime] = @runtime.decode_offset_datetime_array_json(\{raw_name}, \{encoding_expr}, \{wire_expr}, path)\n",
+          )
+        }
+      }
+      @typespec.TypeSpecType::Array(@typespec.TypeSpecType::Duration) => {
+        let encoding = resolve_duration_encoding(info.bytes_encoding)
+        let encoding_expr = duration_encoding_runtime_expr(encoding)
+        let wire_type = resolve_wire_type(info.encode_wire_type, "float64")
+        let wire_expr = wire_type_runtime_expr(wire_type)
+        if info.optional {
+          sb.write_string(
+            "let \{var_name} : Array[@runtime.Duration]? = if Json::equal(\{raw_name}, Json::null()) { None } else { Some(@runtime.decode_duration_array_json(\{raw_name}, \{encoding_expr}, \{wire_expr}, path)) }\n",
+          )
+        } else {
+          sb.write_string(
+            "let \{var_name} : Array[@runtime.Duration] = @runtime.decode_duration_array_json(\{raw_name}, \{encoding_expr}, \{wire_expr}, path)\n",
+          )
+        }
+      }
       _ => {
         let tstr = model_property_type_string(type_ctx, info.type_)
         if info.optional {
@@ -613,6 +785,72 @@ fn emit_model_to_json_impl(
           "match \{field_ref} { Some(v) => @runtime.encode_bytes_list(v, \{encoding_expr}).to_json(), None => Json::null() }"
         } else {
           "@runtime.encode_bytes_list(\{field_ref}, \{encoding_expr}).to_json()"
+        }
+      }
+      @typespec.TypeSpecType::UtcDateTime => {
+        let encoding = resolve_datetime_encoding(info.bytes_encoding)
+        let encoding_expr = datetime_encoding_runtime_expr(encoding)
+        let wire_type = resolve_wire_type(info.encode_wire_type, "int64")
+        let wire_expr = wire_type_runtime_expr(wire_type)
+        if info.optional {
+          "match \{field_ref} { Some(v) => @runtime.encode_utc_datetime_json(v, \{encoding_expr}, \{wire_expr}), None => Json::null() }"
+        } else {
+          "@runtime.encode_utc_datetime_json(\{field_ref}, \{encoding_expr}, \{wire_expr})"
+        }
+      }
+      @typespec.TypeSpecType::OffsetDateTime => {
+        let encoding = resolve_datetime_encoding(info.bytes_encoding)
+        let encoding_expr = datetime_encoding_runtime_expr(encoding)
+        let wire_type = resolve_wire_type(info.encode_wire_type, "int64")
+        let wire_expr = wire_type_runtime_expr(wire_type)
+        if info.optional {
+          "match \{field_ref} { Some(v) => @runtime.encode_offset_datetime_json(v, \{encoding_expr}, \{wire_expr}), None => Json::null() }"
+        } else {
+          "@runtime.encode_offset_datetime_json(\{field_ref}, \{encoding_expr}, \{wire_expr})"
+        }
+      }
+      @typespec.TypeSpecType::Duration => {
+        let encoding = resolve_duration_encoding(info.bytes_encoding)
+        let encoding_expr = duration_encoding_runtime_expr(encoding)
+        let wire_type = resolve_wire_type(info.encode_wire_type, "float64")
+        let wire_expr = wire_type_runtime_expr(wire_type)
+        if info.optional {
+          "match \{field_ref} { Some(v) => @runtime.encode_duration_json(v, \{encoding_expr}, \{wire_expr}), None => Json::null() }"
+        } else {
+          "@runtime.encode_duration_json(\{field_ref}, \{encoding_expr}, \{wire_expr})"
+        }
+      }
+      @typespec.TypeSpecType::Array(@typespec.TypeSpecType::UtcDateTime) => {
+        let encoding = resolve_datetime_encoding(info.bytes_encoding)
+        let encoding_expr = datetime_encoding_runtime_expr(encoding)
+        let wire_type = resolve_wire_type(info.encode_wire_type, "int64")
+        let wire_expr = wire_type_runtime_expr(wire_type)
+        if info.optional {
+          "match \{field_ref} { Some(v) => @runtime.encode_utc_datetime_array_json(v, \{encoding_expr}, \{wire_expr}), None => Json::null() }"
+        } else {
+          "@runtime.encode_utc_datetime_array_json(\{field_ref}, \{encoding_expr}, \{wire_expr})"
+        }
+      }
+      @typespec.TypeSpecType::Array(@typespec.TypeSpecType::OffsetDateTime) => {
+        let encoding = resolve_datetime_encoding(info.bytes_encoding)
+        let encoding_expr = datetime_encoding_runtime_expr(encoding)
+        let wire_type = resolve_wire_type(info.encode_wire_type, "int64")
+        let wire_expr = wire_type_runtime_expr(wire_type)
+        if info.optional {
+          "match \{field_ref} { Some(v) => @runtime.encode_offset_datetime_array_json(v, \{encoding_expr}, \{wire_expr}), None => Json::null() }"
+        } else {
+          "@runtime.encode_offset_datetime_array_json(\{field_ref}, \{encoding_expr}, \{wire_expr})"
+        }
+      }
+      @typespec.TypeSpecType::Array(@typespec.TypeSpecType::Duration) => {
+        let encoding = resolve_duration_encoding(info.bytes_encoding)
+        let encoding_expr = duration_encoding_runtime_expr(encoding)
+        let wire_type = resolve_wire_type(info.encode_wire_type, "float64")
+        let wire_expr = wire_type_runtime_expr(wire_type)
+        if info.optional {
+          "match \{field_ref} { Some(v) => @runtime.encode_duration_array_json(v, \{encoding_expr}, \{wire_expr}), None => Json::null() }"
+        } else {
+          "@runtime.encode_duration_array_json(\{field_ref}, \{encoding_expr}, \{wire_expr})"
         }
       }
       _ => "\{field_ref}.to_json()"
@@ -948,6 +1186,7 @@ priv struct OpParam {
   explode : Bool
   array_encoding : String?
   bytes_encoding : String?
+  encode_wire_type : String?
   string_literal : String?
 }
 
@@ -1021,6 +1260,15 @@ fn emit_client_method(
             kind = "string"
             ty = "String"
             kept_template_var_stringify.set(v.param_name, false)
+          }
+          @typespec.TypeSpecType::UtcDateTime
+          | @typespec.TypeSpecType::OffsetDateTime
+          | @typespec.TypeSpecType::PlainDate
+          | @typespec.TypeSpecType::PlainTime
+          | @typespec.TypeSpecType::Duration => {
+            kind = "string"
+            ty = type_spec_to_type_string_with_ctx(type_ctx, p.type_)
+            kept_template_var_stringify.set(v.param_name, true)
           }
           @typespec.TypeSpecType::Int => {
             kind = "string"
@@ -1119,6 +1367,7 @@ fn emit_client_method(
       explode: p.explode,
       array_encoding: p.array_encoding,
       bytes_encoding: p.bytes_encoding,
+      encode_wire_type: p.encode_wire_type,
       string_literal: p.string_literal,
     })
   }
@@ -1291,6 +1540,7 @@ fn collect_op_params(op : @typespec.HttpOperation) -> Array[OpParam] {
       explode: p.explode(),
       array_encoding: p.array_encoding(),
       bytes_encoding: p.bytes_encoding(),
+      encode_wire_type: p.encode_wire_type(),
       string_literal: p.string_literal(),
     })
   }
@@ -1501,6 +1751,52 @@ fn build_method_body(
 }
 
 ///|
+fn encode_time_value_expr(
+  value_expr : String,
+  type_ : @typespec.TypeSpecType,
+  raw_encoding : String?,
+  raw_wire_type : String?,
+  default_datetime_encoding : String,
+) -> String raise {
+  match type_ {
+    @typespec.TypeSpecType::UtcDateTime => {
+      let encoding = resolve_datetime_encoding(
+        match raw_encoding {
+          Some(v) => Some(v)
+          None => Some(default_datetime_encoding)
+        },
+      )
+      let encoding_expr = datetime_encoding_runtime_expr(encoding)
+      let wire_type = resolve_wire_type(raw_wire_type, "int64")
+      let wire_expr = wire_type_runtime_expr(wire_type)
+      "@runtime.encode_utc_datetime_uri(\{value_expr}, \{encoding_expr}, \{wire_expr})"
+    }
+    @typespec.TypeSpecType::OffsetDateTime => {
+      let encoding = resolve_datetime_encoding(
+        match raw_encoding {
+          Some(v) => Some(v)
+          None => Some(default_datetime_encoding)
+        },
+      )
+      let encoding_expr = datetime_encoding_runtime_expr(encoding)
+      let wire_type = resolve_wire_type(raw_wire_type, "int64")
+      let wire_expr = wire_type_runtime_expr(wire_type)
+      "@runtime.encode_offset_datetime_uri(\{value_expr}, \{encoding_expr}, \{wire_expr})"
+    }
+    @typespec.TypeSpecType::PlainDate | @typespec.TypeSpecType::PlainTime =>
+      "\{value_expr}.to_string()"
+    @typespec.TypeSpecType::Duration => {
+      let encoding = resolve_duration_encoding(raw_encoding)
+      let encoding_expr = duration_encoding_runtime_expr(encoding)
+      let wire_type = resolve_wire_type(raw_wire_type, "float64")
+      let wire_expr = wire_type_runtime_expr(wire_type)
+      "@runtime.encode_duration_uri(\{value_expr}, \{encoding_expr}, \{wire_expr})"
+    }
+    _ => fail("unsupported time value type")
+  }
+}
+
+///|
 fn write_header_param(buf : StringBuilder, p : OpParam) -> Unit raise {
   let header_key = escape_string(p.name)
   match p.string_literal {
@@ -1527,6 +1823,45 @@ fn write_header_param(buf : StringBuilder, p : OpParam) -> Unit raise {
         wln(
           buf,
           "  headers.set(\"\{header_key}\", @runtime.encode_bytes_array(v, \{encoding_expr}, \",\"))",
+        )
+      }
+      @typespec.TypeSpecType::UtcDateTime
+      | @typespec.TypeSpecType::OffsetDateTime
+      | @typespec.TypeSpecType::PlainDate
+      | @typespec.TypeSpecType::PlainTime
+      | @typespec.TypeSpecType::Duration => {
+        let encoded = encode_time_value_expr(
+          "v",
+          p.type_,
+          p.bytes_encoding,
+          p.encode_wire_type,
+          "rfc7231",
+        )
+        wln(buf, "  headers.set(\"\{header_key}\", \{encoded})")
+      }
+      @typespec.TypeSpecType::Array(@typespec.TypeSpecType::UtcDateTime)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::OffsetDateTime)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::PlainDate)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::PlainTime)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::Duration) => {
+        wln(buf, "  let encoded_items : Array[String] = []")
+        wln(buf, "  for x in v {")
+        let encoded = match p.type_ {
+          @typespec.TypeSpecType::Array(item) =>
+            encode_time_value_expr(
+              "x",
+              item,
+              p.bytes_encoding,
+              p.encode_wire_type,
+              "rfc7231",
+            )
+          _ => fail("unreachable")
+        }
+        wln(buf, "    encoded_items.push(\{encoded})")
+        wln(buf, "  }")
+        wln(
+          buf,
+          "  headers.set(\"\{header_key}\", @runtime.join(encoded_items, \",\"))",
         )
       }
       @typespec.TypeSpecType::Array(@typespec.TypeSpecType::String)
@@ -1558,6 +1893,45 @@ fn write_header_param(buf : StringBuilder, p : OpParam) -> Unit raise {
         wln(
           buf,
           "headers.set(\"\{header_key}\", @runtime.encode_bytes_array(\{p.var_name}, \{encoding_expr}, \",\"))",
+        )
+      }
+      @typespec.TypeSpecType::UtcDateTime
+      | @typespec.TypeSpecType::OffsetDateTime
+      | @typespec.TypeSpecType::PlainDate
+      | @typespec.TypeSpecType::PlainTime
+      | @typespec.TypeSpecType::Duration => {
+        let encoded = encode_time_value_expr(
+          p.var_name,
+          p.type_,
+          p.bytes_encoding,
+          p.encode_wire_type,
+          "rfc7231",
+        )
+        wln(buf, "headers.set(\"\{header_key}\", \{encoded})")
+      }
+      @typespec.TypeSpecType::Array(@typespec.TypeSpecType::UtcDateTime)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::OffsetDateTime)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::PlainDate)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::PlainTime)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::Duration) => {
+        wln(buf, "let encoded_items : Array[String] = []")
+        wln(buf, "for x in \{p.var_name} {")
+        let encoded = match p.type_ {
+          @typespec.TypeSpecType::Array(item) =>
+            encode_time_value_expr(
+              "x",
+              item,
+              p.bytes_encoding,
+              p.encode_wire_type,
+              "rfc7231",
+            )
+          _ => fail("unreachable")
+        }
+        wln(buf, "  encoded_items.push(\{encoded})")
+        wln(buf, "}")
+        wln(
+          buf,
+          "headers.set(\"\{header_key}\", @runtime.join(encoded_items, \",\"))",
         )
       }
       @typespec.TypeSpecType::Array(@typespec.TypeSpecType::String)
@@ -1633,8 +2007,71 @@ fn write_query_param(buf : StringBuilder, p : OpParam) -> Unit raise {
           )
         }
       }
-      @typespec.TypeSpecType::Array(@typespec.TypeSpecType::String)
-      | @typespec.TypeSpecType::Array(_) =>
+      @typespec.TypeSpecType::Array(@typespec.TypeSpecType::String) =>
+        if p.explode {
+          wln(buf, "  for x in v {")
+          write_query_pair(buf, query_key, "x")
+          wln(buf, "  }")
+        } else {
+          write_query_pair(buf, query_key, "@runtime.join(v, \"\{delimiter}\")")
+        }
+      @typespec.TypeSpecType::UtcDateTime
+      | @typespec.TypeSpecType::OffsetDateTime
+      | @typespec.TypeSpecType::PlainDate
+      | @typespec.TypeSpecType::PlainTime
+      | @typespec.TypeSpecType::Duration => {
+        let encoded = encode_time_value_expr(
+          "v",
+          p.type_,
+          p.bytes_encoding,
+          p.encode_wire_type,
+          "rfc3339",
+        )
+        write_query_pair(buf, query_key, encoded)
+      }
+      @typespec.TypeSpecType::Array(@typespec.TypeSpecType::UtcDateTime)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::OffsetDateTime)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::PlainDate)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::PlainTime)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::Duration) =>
+        if p.explode {
+          wln(buf, "  for x in v {")
+          let encoded = match p.type_ {
+            @typespec.TypeSpecType::Array(item) =>
+              encode_time_value_expr(
+                "x",
+                item,
+                p.bytes_encoding,
+                p.encode_wire_type,
+                "rfc3339",
+              )
+            _ => fail("unreachable")
+          }
+          write_query_pair(buf, query_key, encoded)
+          wln(buf, "  }")
+        } else {
+          wln(buf, "  let encoded_items : Array[String] = []")
+          wln(buf, "  for x in v {")
+          let encoded = match p.type_ {
+            @typespec.TypeSpecType::Array(item) =>
+              encode_time_value_expr(
+                "x",
+                item,
+                p.bytes_encoding,
+                p.encode_wire_type,
+                "rfc3339",
+              )
+            _ => fail("unreachable")
+          }
+          wln(buf, "    encoded_items.push(\{encoded})")
+          wln(buf, "  }")
+          write_query_pair(
+            buf,
+            query_key,
+            "@runtime.join(encoded_items, \"\{delimiter}\")",
+          )
+        }
+      @typespec.TypeSpecType::Array(_) =>
         if p.explode {
           wln(buf, "  for x in v {")
           write_query_pair(buf, query_key, "x")
@@ -1681,8 +2118,75 @@ fn write_query_param(buf : StringBuilder, p : OpParam) -> Unit raise {
           )
         }
       }
-      @typespec.TypeSpecType::Array(@typespec.TypeSpecType::String)
-      | @typespec.TypeSpecType::Array(_) =>
+      @typespec.TypeSpecType::Array(@typespec.TypeSpecType::String) =>
+        if p.explode {
+          wln(buf, "for x in \{p.var_name} {")
+          write_query_pair(buf, query_key, "x")
+          wln(buf, "}")
+        } else {
+          write_query_pair(
+            buf,
+            query_key,
+            "@runtime.join(\{p.var_name}, \"\{delimiter}\")",
+          )
+        }
+      @typespec.TypeSpecType::UtcDateTime
+      | @typespec.TypeSpecType::OffsetDateTime
+      | @typespec.TypeSpecType::PlainDate
+      | @typespec.TypeSpecType::PlainTime
+      | @typespec.TypeSpecType::Duration => {
+        let encoded = encode_time_value_expr(
+          p.var_name,
+          p.type_,
+          p.bytes_encoding,
+          p.encode_wire_type,
+          "rfc3339",
+        )
+        write_query_pair(buf, query_key, encoded)
+      }
+      @typespec.TypeSpecType::Array(@typespec.TypeSpecType::UtcDateTime)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::OffsetDateTime)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::PlainDate)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::PlainTime)
+      | @typespec.TypeSpecType::Array(@typespec.TypeSpecType::Duration) =>
+        if p.explode {
+          wln(buf, "for x in \{p.var_name} {")
+          let encoded = match p.type_ {
+            @typespec.TypeSpecType::Array(item) =>
+              encode_time_value_expr(
+                "x",
+                item,
+                p.bytes_encoding,
+                p.encode_wire_type,
+                "rfc3339",
+              )
+            _ => fail("unreachable")
+          }
+          write_query_pair(buf, query_key, encoded)
+          wln(buf, "}")
+        } else {
+          wln(buf, "let encoded_items : Array[String] = []")
+          wln(buf, "for x in \{p.var_name} {")
+          let encoded = match p.type_ {
+            @typespec.TypeSpecType::Array(item) =>
+              encode_time_value_expr(
+                "x",
+                item,
+                p.bytes_encoding,
+                p.encode_wire_type,
+                "rfc3339",
+              )
+            _ => fail("unreachable")
+          }
+          wln(buf, "  encoded_items.push(\{encoded})")
+          wln(buf, "}")
+          write_query_pair(
+            buf,
+            query_key,
+            "@runtime.join(encoded_items, \"\{delimiter}\")",
+          )
+        }
+      @typespec.TypeSpecType::Array(_) =>
         if p.explode {
           wln(buf, "for x in \{p.var_name} {")
           write_query_pair(buf, query_key, "x")
@@ -1914,6 +2418,11 @@ fn type_spec_to_type_string_with_ctx(
 ) -> String raise {
   match type_ {
     @typespec.TypeSpecType::String => "String"
+    @typespec.TypeSpecType::Duration => "@runtime.Duration"
+    @typespec.TypeSpecType::UtcDateTime => "@runtime.UtcDateTime"
+    @typespec.TypeSpecType::OffsetDateTime => "@runtime.OffsetDateTime"
+    @typespec.TypeSpecType::PlainDate => "@runtime.PlainDate"
+    @typespec.TypeSpecType::PlainTime => "@runtime.PlainTime"
     @typespec.TypeSpecType::Bytes => "String"
     @typespec.TypeSpecType::Int => "Int"
     @typespec.TypeSpecType::Int64 => "Int64"

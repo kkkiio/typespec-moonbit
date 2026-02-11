@@ -21,7 +21,7 @@ pub fn RepeatabilityClient::new(base_url : String) -> RepeatabilityClient {
 pub async fn RepeatabilityClient::post_special_headers_repeatability_immediatesuccess(
   self : RepeatabilityClient,
   repeatability_request_id : String,
-  repeatability_first_sent : String,
+  repeatability_first_sent : @runtime.UtcDateTime,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -32,7 +32,14 @@ pub async fn RepeatabilityClient::post_special_headers_repeatability_immediatesu
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
   headers.set("Repeatability-Request-ID", repeatability_request_id)
-  headers.set("Repeatability-First-Sent", repeatability_first_sent)
+  headers.set(
+    "Repeatability-First-Sent",
+    @runtime.encode_utc_datetime_uri(
+      repeatability_first_sent,
+      @runtime.DateTimeEncoding::Rfc7231,
+      @runtime.NumberWireType::Int64,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Post, path, extra_headers=headers)
   let response = client.end_request()

@@ -1,6 +1,5 @@
 import {
   "moonbitlang/async/http" @http,
-  "moonbitlang/core/encoding/utf8" @encoding/utf8,
   "moonbitlang/core/json",
   "kkkiio/typespec-client-runtime" @runtime,
 }

@@ -2,6 +2,7 @@
 package "kkkiio/typespec-tests/client/generated/type/property/value-types"
 
 import {
+  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -102,7 +103,7 @@ pub fn DatetimeClient::new(String) -> Self
 pub async fn DatetimeClient::put_type_property_value_types_datetime(Self, DatetimeProperty) -> Unit
 
 pub(all) struct DatetimeProperty {
-  property : String
+  property : @typespec-client-runtime.UtcDateTime
 }
 pub impl Show for DatetimeProperty
 pub impl ToJson for DatetimeProperty
@@ -158,7 +159,7 @@ pub fn DurationClient::new(String) -> Self
 pub async fn DurationClient::put_type_property_value_types_duration(Self, DurationProperty) -> Unit
 
 pub(all) struct DurationProperty {
-  property : String
+  property : @typespec-client-runtime.Duration
 }
 pub impl Show for DurationProperty
 pub impl ToJson for DurationProperty

@@ -20,14 +20,16 @@ pub fn QueryClient::new(base_url : String) -> QueryClient {
 /// 调用 get /encode/datetime/query/default{?value}（自动解析响应）。
 pub async fn QueryClient::get_encode_datetime_query_default__value_(
   self : QueryClient,
-  value : String,
+  value : @runtime.UtcDateTime,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=102)
   sb0.write_string("/encode/datetime/query/default")
-  sb0.write_string(@runtime.expand_string("?", "value", false, value))
+  sb0.write_string(
+    @runtime.expand_string("?", "value", false, value.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -48,14 +50,16 @@ pub async fn QueryClient::get_encode_datetime_query_default__value_(
 /// 调用 get /encode/datetime/query/rfc3339{?value}（自动解析响应）。
 pub async fn QueryClient::get_encode_datetime_query_rfc3339__value_(
   self : QueryClient,
-  value : String,
+  value : @runtime.UtcDateTime,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=102)
   sb0.write_string("/encode/datetime/query/rfc3339")
-  sb0.write_string(@runtime.expand_string("?", "value", false, value))
+  sb0.write_string(
+    @runtime.expand_string("?", "value", false, value.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -76,14 +80,16 @@ pub async fn QueryClient::get_encode_datetime_query_rfc3339__value_(
 /// 调用 get /encode/datetime/query/rfc7231{?value}（自动解析响应）。
 pub async fn QueryClient::get_encode_datetime_query_rfc7231__value_(
   self : QueryClient,
-  value : String,
+  value : @runtime.UtcDateTime,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=102)
   sb0.write_string("/encode/datetime/query/rfc7231")
-  sb0.write_string(@runtime.expand_string("?", "value", false, value))
+  sb0.write_string(
+    @runtime.expand_string("?", "value", false, value.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -104,14 +110,16 @@ pub async fn QueryClient::get_encode_datetime_query_rfc7231__value_(
 /// 调用 get /encode/datetime/query/unix-timestamp{?value}（自动解析响应）。
 pub async fn QueryClient::get_encode_datetime_query_unix_timestamp__value_(
   self : QueryClient,
-  value : String,
+  value : @runtime.UtcDateTime,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=109)
   sb0.write_string("/encode/datetime/query/unix-timestamp")
-  sb0.write_string(@runtime.expand_string("?", "value", false, value))
+  sb0.write_string(
+    @runtime.expand_string("?", "value", false, value.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -357,7 +365,7 @@ pub fn HeaderClient::new(base_url : String) -> HeaderClient {
 /// 调用 get /encode/datetime/header/default（自动解析响应）。
 pub async fn HeaderClient::get_encode_datetime_header_default(
   self : HeaderClient,
-  value : String,
+  value : @runtime.UtcDateTime,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -367,7 +375,14 @@ pub async fn HeaderClient::get_encode_datetime_header_default(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("value", value)
+  headers.set(
+    "value",
+    @runtime.encode_utc_datetime_uri(
+      value,
+      @runtime.DateTimeEncoding::Rfc7231,
+      @runtime.NumberWireType::Int64,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -384,7 +399,7 @@ pub async fn HeaderClient::get_encode_datetime_header_default(
 /// 调用 get /encode/datetime/header/rfc3339（自动解析响应）。
 pub async fn HeaderClient::get_encode_datetime_header_rfc3339(
   self : HeaderClient,
-  value : String,
+  value : @runtime.UtcDateTime,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -394,7 +409,14 @@ pub async fn HeaderClient::get_encode_datetime_header_rfc3339(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("value", value)
+  headers.set(
+    "value",
+    @runtime.encode_utc_datetime_uri(
+      value,
+      @runtime.DateTimeEncoding::Rfc3339,
+      @runtime.NumberWireType::Int64,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -411,7 +433,7 @@ pub async fn HeaderClient::get_encode_datetime_header_rfc3339(
 /// 调用 get /encode/datetime/header/rfc7231（自动解析响应）。
 pub async fn HeaderClient::get_encode_datetime_header_rfc7231(
   self : HeaderClient,
-  value : String,
+  value : @runtime.UtcDateTime,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -421,7 +443,14 @@ pub async fn HeaderClient::get_encode_datetime_header_rfc7231(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("value", value)
+  headers.set(
+    "value",
+    @runtime.encode_utc_datetime_uri(
+      value,
+      @runtime.DateTimeEncoding::Rfc7231,
+      @runtime.NumberWireType::Int64,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -438,7 +467,7 @@ pub async fn HeaderClient::get_encode_datetime_header_rfc7231(
 /// 调用 get /encode/datetime/header/unix-timestamp（自动解析响应）。
 pub async fn HeaderClient::get_encode_datetime_header_unix_timestamp(
   self : HeaderClient,
-  value : String,
+  value : @runtime.UtcDateTime,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -448,7 +477,14 @@ pub async fn HeaderClient::get_encode_datetime_header_unix_timestamp(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("value", value)
+  headers.set(
+    "value",
+    @runtime.encode_utc_datetime_uri(
+      value,
+      @runtime.DateTimeEncoding::UnixTimestamp,
+      @runtime.NumberWireType::Int64,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -465,7 +501,7 @@ pub async fn HeaderClient::get_encode_datetime_header_unix_timestamp(
 /// 调用 get /encode/datetime/header/unix-timestamp-array（自动解析响应）。
 pub async fn HeaderClient::get_encode_datetime_header_unix_timestamp_array(
   self : HeaderClient,
-  value : Array[String],
+  value : Array[@runtime.UtcDateTime],
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -475,7 +511,17 @@ pub async fn HeaderClient::get_encode_datetime_header_unix_timestamp_array(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("value", @runtime.join(value, ","))
+  let encoded_items : Array[String] = []
+  for x in value {
+    encoded_items.push(
+      @runtime.encode_utc_datetime_uri(
+        x,
+        @runtime.DateTimeEncoding::Rfc7231,
+        @runtime.NumberWireType::Int64,
+      ),
+    )
+  }
+  headers.set("value", @runtime.join(encoded_items, ","))
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()

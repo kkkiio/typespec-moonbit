@@ -48,8 +48,14 @@ pub(open) trait Float32ValueHandler {
 ///|
 /// Traits for operation handlers
 pub(open) trait DatetimeValueHandler {
-  async get(self : Self, group~ : @async.TaskGroup[Unit]) -> Array[String]
-  async put(self : Self, group~ : @async.TaskGroup[Unit], body : Array[String]) -> Unit
+  async get(self : Self, group~ : @async.TaskGroup[Unit]) -> Array[
+    @runtime.UtcDateTime,
+  ]
+  async put(
+    self : Self,
+    group~ : @async.TaskGroup[Unit],
+    body : Array[@runtime.UtcDateTime],
+  ) -> Unit
 }
 
 ///|
@@ -57,8 +63,14 @@ pub(open) trait DatetimeValueHandler {
 ///|
 /// Traits for operation handlers
 pub(open) trait DurationValueHandler {
-  async get(self : Self, group~ : @async.TaskGroup[Unit]) -> Array[String]
-  async put(self : Self, group~ : @async.TaskGroup[Unit], body : Array[String]) -> Unit
+  async get(self : Self, group~ : @async.TaskGroup[Unit]) -> Array[
+    @runtime.Duration,
+  ]
+  async put(
+    self : Self,
+    group~ : @async.TaskGroup[Unit],
+    body : Array[@runtime.Duration],
+  ) -> Unit
 }
 
 ///|
@@ -619,7 +631,7 @@ pub fn[
           RouteId::DatetimeValuePut => {
             let body_bytes = body_stream.read_all()
             let body_str = body_bytes.text()
-            let p_12_body : Array[String] = @json.from_json(
+            let p_12_body : Array[@runtime.UtcDateTime] = @json.from_json(
               @json.parse(body_str),
             )
             datetime_value_handler.put(group~, p_12_body)
@@ -642,7 +654,7 @@ pub fn[
           RouteId::DurationValuePut => {
             let body_bytes = body_stream.read_all()
             let body_str = body_bytes.text()
-            let p_14_body : Array[String] = @json.from_json(
+            let p_14_body : Array[@runtime.Duration] = @json.from_json(
               @json.parse(body_str),
             )
             duration_value_handler.put(group~, p_14_body)

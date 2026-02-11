@@ -58,7 +58,7 @@ pub(all) struct StringProperty {
 ///|
 /// Model DatetimeProperty
 pub(all) struct DatetimeProperty {
-  property : String?
+  property : @runtime.UtcDateTime?
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -66,7 +66,7 @@ pub(all) struct DatetimeProperty {
 ///|
 /// Model DurationProperty
 pub(all) struct DurationProperty {
-  property : String?
+  property : @runtime.Duration?
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -74,7 +74,7 @@ pub(all) struct DurationProperty {
 ///|
 /// Model PlainDateProperty
 pub(all) struct PlainDateProperty {
-  property : String?
+  property : @runtime.PlainDate?
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -82,7 +82,7 @@ pub(all) struct PlainDateProperty {
 ///|
 /// Model PlainTimeProperty
 pub(all) struct PlainTimeProperty {
-  property : String?
+  property : @runtime.PlainTime?
 } derive(Show, ToJson, @json.FromJson)
 
 ///|

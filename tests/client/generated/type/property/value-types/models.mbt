@@ -116,7 +116,7 @@ pub(all) struct DecimalProperty {
 ///|
 /// Model DatetimeProperty
 pub(all) struct DatetimeProperty {
-  property : String
+  property : @runtime.UtcDateTime
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -124,7 +124,7 @@ pub(all) struct DatetimeProperty {
 ///|
 /// Model DurationProperty
 pub(all) struct DurationProperty {
-  property : String
+  property : @runtime.Duration
 } derive(Show, ToJson, @json.FromJson)
 
 ///|

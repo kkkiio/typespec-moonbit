@@ -90,7 +90,7 @@ pub async fn DatetimeClient::patch_type_property_nullable_datetime_null(Self, Da
 
 pub(all) struct DatetimeProperty {
   required_property : String
-  nullable_property : @typespec-client-runtime.Nullable[String]
+  nullable_property : @typespec-client-runtime.Nullable[@typespec-client-runtime.UtcDateTime]
 }
 pub impl Show for DatetimeProperty
 pub impl ToJson for DatetimeProperty
@@ -107,7 +107,7 @@ pub async fn DurationClient::patch_type_property_nullable_duration_null(Self, Du
 
 pub(all) struct DurationProperty {
   required_property : String
-  nullable_property : @typespec-client-runtime.Nullable[String]
+  nullable_property : @typespec-client-runtime.Nullable[@typespec-client-runtime.Duration]
 }
 pub impl Show for DurationProperty
 pub impl ToJson for DurationProperty

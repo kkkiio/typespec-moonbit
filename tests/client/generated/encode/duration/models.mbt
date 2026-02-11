@@ -3,7 +3,7 @@
 ///|
 /// Model DefaultDurationProperty
 pub(all) struct DefaultDurationProperty {
-  value : String
+  value : @runtime.Duration
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -11,7 +11,7 @@ pub(all) struct DefaultDurationProperty {
 ///|
 /// Model Iso8601DurationProperty
 pub(all) struct Iso8601DurationProperty {
-  value : String
+  value : @runtime.Duration
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -19,7 +19,7 @@ pub(all) struct Iso8601DurationProperty {
 ///|
 /// Model FloatSecondsDurationProperty
 pub(all) struct FloatSecondsDurationProperty {
-  value : String
+  value : @runtime.Duration
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -27,7 +27,7 @@ pub(all) struct FloatSecondsDurationProperty {
 ///|
 /// Model Int32SecondsDurationProperty
 pub(all) struct Int32SecondsDurationProperty {
-  value : String
+  value : @runtime.Duration
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -35,7 +35,7 @@ pub(all) struct Int32SecondsDurationProperty {
 ///|
 /// Model Float64SecondsDurationProperty
 pub(all) struct Float64SecondsDurationProperty {
-  value : String
+  value : @runtime.Duration
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -43,7 +43,7 @@ pub(all) struct Float64SecondsDurationProperty {
 ///|
 /// Model FloatMillisecondsDurationProperty
 pub(all) struct FloatMillisecondsDurationProperty {
-  value : String
+  value : @runtime.Duration
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -51,7 +51,7 @@ pub(all) struct FloatMillisecondsDurationProperty {
 ///|
 /// Model FloatSecondsDurationArrayProperty
 pub(all) struct FloatSecondsDurationArrayProperty {
-  value : Array[String]
+  value : Array[@runtime.Duration]
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -59,7 +59,7 @@ pub(all) struct FloatSecondsDurationArrayProperty {
 ///|
 /// Model Int32MillisecondsDurationProperty
 pub(all) struct Int32MillisecondsDurationProperty {
-  value : String
+  value : @runtime.Duration
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -67,7 +67,7 @@ pub(all) struct Int32MillisecondsDurationProperty {
 ///|
 /// Model Float64MillisecondsDurationProperty
 pub(all) struct Float64MillisecondsDurationProperty {
-  value : String
+  value : @runtime.Duration
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -75,7 +75,7 @@ pub(all) struct Float64MillisecondsDurationProperty {
 ///|
 /// Model FloatMillisecondsDurationArrayProperty
 pub(all) struct FloatMillisecondsDurationArrayProperty {
-  value : Array[String]
+  value : Array[@runtime.Duration]
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -83,7 +83,7 @@ pub(all) struct FloatMillisecondsDurationArrayProperty {
 ///|
 /// Model FloatSecondsLargerUnitDurationProperty
 pub(all) struct FloatSecondsLargerUnitDurationProperty {
-  value : String
+  value : @runtime.Duration
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -91,7 +91,7 @@ pub(all) struct FloatSecondsLargerUnitDurationProperty {
 ///|
 /// Model Int32SecondsLargerUnitDurationProperty
 pub(all) struct Int32SecondsLargerUnitDurationProperty {
-  value : String
+  value : @runtime.Duration
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -99,7 +99,7 @@ pub(all) struct Int32SecondsLargerUnitDurationProperty {
 ///|
 /// Model FloatMillisecondsLargerUnitDurationProperty
 pub(all) struct FloatMillisecondsLargerUnitDurationProperty {
-  value : String
+  value : @runtime.Duration
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -107,5 +107,5 @@ pub(all) struct FloatMillisecondsLargerUnitDurationProperty {
 ///|
 /// Model Int32MillisecondsLargerUnitDurationProperty
 pub(all) struct Int32MillisecondsLargerUnitDurationProperty {
-  value : String
+  value : @runtime.Duration
 } derive(Show, ToJson, @json.FromJson)

@@ -366,7 +366,7 @@ pub fn DatetimeValueClient::new(base_url : String) -> DatetimeValueClient {
 /// 调用 get /type/dictionary/datetime（自动解析响应）。
 pub async fn DatetimeValueClient::get_type_dictionary_datetime(
   self : DatetimeValueClient,
-) -> Map[String, String] {
+) -> Map[String, @runtime.UtcDateTime] {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -379,7 +379,7 @@ pub async fn DatetimeValueClient::get_type_dictionary_datetime(
   if response.code == 200 {
     @runtime.expect_json_content_type(response)
     let response_body = client.read_all().text()
-    let parsed : Map[String, String] = @json.from_json(
+    let parsed : Map[String, @runtime.UtcDateTime] = @json.from_json(
       @json.parse(response_body),
     )
     parsed
@@ -394,7 +394,7 @@ pub async fn DatetimeValueClient::get_type_dictionary_datetime(
 /// 调用 put /type/dictionary/datetime（自动解析响应）。
 pub async fn DatetimeValueClient::put_type_dictionary_datetime(
   self : DatetimeValueClient,
-  body : Map[String, String],
+  body : Map[String, @runtime.UtcDateTime],
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -436,7 +436,7 @@ pub fn DurationValueClient::new(base_url : String) -> DurationValueClient {
 /// 调用 get /type/dictionary/duration（自动解析响应）。
 pub async fn DurationValueClient::get_type_dictionary_duration(
   self : DurationValueClient,
-) -> Map[String, String] {
+) -> Map[String, @runtime.Duration] {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -449,7 +449,7 @@ pub async fn DurationValueClient::get_type_dictionary_duration(
   if response.code == 200 {
     @runtime.expect_json_content_type(response)
     let response_body = client.read_all().text()
-    let parsed : Map[String, String] = @json.from_json(
+    let parsed : Map[String, @runtime.Duration] = @json.from_json(
       @json.parse(response_body),
     )
     parsed
@@ -464,7 +464,7 @@ pub async fn DurationValueClient::get_type_dictionary_duration(
 /// 调用 put /type/dictionary/duration（自动解析响应）。
 pub async fn DurationValueClient::put_type_dictionary_duration(
   self : DurationValueClient,
-  body : Map[String, String],
+  body : Map[String, @runtime.Duration],
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
