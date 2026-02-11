@@ -1,9 +1,4 @@
 ///|
-/// server emitter 生成代码所依赖的通用 helper。
-///
-/// 注意：这些 helper 需要被“生成的 server package”跨 package 调用，因此必须是 `pub`。
-
-///|
 pub fn strip_request_query(path : String) -> StringView {
   let view = path.view()
   match view.find("?"[:]) {

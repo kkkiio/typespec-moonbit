@@ -1,29 +1,19 @@
-# typespec-moonbit-tests
+# typespec-tests
 
-端到端/运行时验证模块（native target）。
+End-to-End / Runtime verification module (native target).
 
-## 测试结构
+## Test Structure
 
-- **Server Emitter 测试** (`server/`)：启动 MoonBit HTTP server 并调用 `tsp-spector knock` 验证
-- **Client Emitter 测试** (`client/`)：调用生成的 client 发起请求（mock server 由脚本启动）
+- **Server Emitter Tests** (`server/`): Starts a MoonBit HTTP server and invokes `tsp-spector knock` for verification.
+- **Client Emitter Tests** (`client/`): Invokes the generated client to send requests (mock server is started by script).
 
-## 运行
+## Running Tests
 
 ```bash
-# 在 tests 目录直接运行全部测试
-moon test
-
-# 仅运行 Server E2E 测试
+# Run Server E2E tests only
 moon test -p kkkiio/typespec-tests/server
 
-# 仅运行 Client Runtime 测试
+# Run Client E2E tests only
+# First run 'npm run spector -- --start' in the repository root
 moon test --target native -p kkkiio/typespec-tests/client/tests
-```
-
-如果你希望通过仓库根目录脚本串联生成流程（以下命令在仓库根目录执行），可以使用：
-
-```bash
-npm run spector -- --start
-npm run test:client
-npm run spector -- --stop
 ```
