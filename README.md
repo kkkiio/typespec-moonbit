@@ -1,6 +1,10 @@
 # kkkiio/typespec-moonbit
 
-Typespec MoonBit Emitter. Writen in MoonBit.
+Generate type-safe MoonBit HTTP server and client code from TypeSpec definitions.
+
+## Why TypeSpec instead of OpenAPI 3
+
+I prefer a standalone project over the [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator/) monorepo.
 
 ## Features
 
