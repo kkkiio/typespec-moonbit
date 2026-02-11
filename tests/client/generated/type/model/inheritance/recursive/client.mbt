@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// RecursiveClient HTTP 客户端。
 pub(all) struct RecursiveClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 RecursiveClient。
 pub fn RecursiveClient::new(base_url : String) -> RecursiveClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 put /type/model/inheritance/recursive（自动解析响应）。
@@ -41,8 +35,6 @@ pub async fn RecursiveClient::put_type_model_inheritance_recursive(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /type/model/inheritance/recursive（自动解析响应）。

@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// QueryClient HTTP 客户端。
 pub(all) struct QueryClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 QueryClient。
 pub fn QueryClient::new(base_url : String) -> QueryClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /parameters/collection-format/query/multi{?colors*}（自动解析响应）。
@@ -41,8 +35,6 @@ pub async fn QueryClient::get_parameters_collection_format_query_multi__colors__
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /parameters/collection-format/query/ssv{?colors}（自动解析响应）。
@@ -79,8 +71,6 @@ pub async fn QueryClient::get_parameters_collection_format_query_ssv__colors_(
 }
 
 ///|
-
-///|
 /// 调用 get /parameters/collection-format/query/pipes{?colors}（自动解析响应）。
 pub async fn QueryClient::get_parameters_collection_format_query_pipes__colors_(
   self : QueryClient,
@@ -115,8 +105,6 @@ pub async fn QueryClient::get_parameters_collection_format_query_pipes__colors_(
 }
 
 ///|
-
-///|
 /// 调用 get /parameters/collection-format/query/csv{?colors}（自动解析响应）。
 pub async fn QueryClient::get_parameters_collection_format_query_csv__colors_(
   self : QueryClient,
@@ -143,22 +131,16 @@ pub async fn QueryClient::get_parameters_collection_format_query_csv__colors_(
 }
 
 ///|
-
-///|
 /// HeaderClient HTTP 客户端。
 pub(all) struct HeaderClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 HeaderClient。
 pub fn HeaderClient::new(base_url : String) -> HeaderClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /parameters/collection-format/header/csv（自动解析响应）。

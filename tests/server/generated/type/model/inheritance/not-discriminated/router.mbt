@@ -1,14 +1,10 @@
 ///|
-
-///|
 /// Traits for operation handlers
 pub(open) trait NotDiscriminatedHandler {
   async get_valid(self : Self, group~ : @async.TaskGroup[Unit]) -> Siamese
   async put_valid(self : Self, group~ : @async.TaskGroup[Unit], body : Siamese) -> Siamese
   async post_valid(self : Self, group~ : @async.TaskGroup[Unit], body : Siamese) -> Unit
 }
-
-///|
 
 ///|
 /// 路由匹配结果。
@@ -22,8 +18,6 @@ pub(all) enum RouteMatch {
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
 
 ///|
-
-///|
 /// 生成期固定的路由 ID（用于 match_route 的返回值）。
 pub(all) enum RouteId {
   NotDiscriminatedGetValid
@@ -32,16 +26,12 @@ pub(all) enum RouteId {
 }
 
 ///|
-
-///|
 /// 路由匹配结果（纯匹配：不读 body、不写响应、不调用 handler）。
 pub(all) enum MatchRouteResult {
   NotMatched
   MethodNotAllowed
   Matched(RouteId)
 }
-
-///|
 
 ///|
 /// 匹配 method + path，并返回命中的 RouteId（若命中）。
@@ -129,8 +119,6 @@ pub fn[H0 : NotDiscriminatedHandler] create_router(
     }
   }
 }
-
-///|
 
 ///|
 /// 创建一个带默认 fallback 的 dispatch。

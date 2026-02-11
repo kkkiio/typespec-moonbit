@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// JsonMergePatchClient HTTP 客户端。
 pub(all) struct JsonMergePatchClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 JsonMergePatchClient。
 pub fn JsonMergePatchClient::new(base_url : String) -> JsonMergePatchClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 put /json-merge-patch/create/resource（自动解析响应）。
@@ -46,8 +40,6 @@ pub async fn JsonMergePatchClient::put_json_merge_patch_create_resource(
 }
 
 ///|
-
-///|
 /// 调用 patch /json-merge-patch/update/resource（自动解析响应）。
 pub async fn JsonMergePatchClient::patch_json_merge_patch_update_resource(
   self : JsonMergePatchClient,
@@ -76,8 +68,6 @@ pub async fn JsonMergePatchClient::patch_json_merge_patch_update_resource(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 patch /json-merge-patch/update/resource/optional（自动解析响应）。

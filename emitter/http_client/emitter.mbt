@@ -166,77 +166,73 @@ fn emit_models_file(type_ctx : EncodeTypeContext) -> String raise {
 fn build_encode_type_context(
   ops : Array[@typespec.HttpOperation],
 ) -> EncodeTypeContext raise {
-  let used_type_names : Map[String, Bool] = Map::new()
   let model_types : Map[String, @typespec.Model] = Map::new()
   let union_types : Map[String, @typespec.Union] = Map::new()
   let model_names : Map[String, String] = Map::new()
   let union_names : Map[String, String] = Map::new()
-  let mut next_anon_model_index = 0
-  let mut next_anon_union_index = 0
-  fn alloc_type_name(base : String) -> String {
-    let mut candidate = base
-    let mut idx = 1
-    while used_type_names.contains(candidate) {
-      candidate = "\{base}\{idx.to_string()}"
-      idx += 1
+  let model_stable_keys : Map[String, String] = Map::new()
+  let union_stable_keys : Map[String, String] = Map::new()
+  let model_preferred_names : Map[String, String] = Map::new()
+  let union_preferred_names : Map[String, String] = Map::new()
+
+  fn register_type_name_seed(
+    stable_keys : Map[String, String],
+    preferred_names : Map[String, String],
+    id : String,
+    stable_key : String,
+    preferred_name : String,
+  ) -> Unit {
+    match stable_keys.get(id) {
+      Some(existing_key) =>
+        if stable_key < existing_key {
+          stable_keys.set(id, stable_key)
+          preferred_names.set(id, preferred_name)
+        }
+      None => {
+        stable_keys.set(id, stable_key)
+        preferred_names.set(id, preferred_name)
+      }
     }
-    used_type_names.set(candidate, true)
-    candidate
   }
 
-  fn collect(type_ : @typespec.TypeSpecType) -> Unit raise {
+  fn collect(type_ : @typespec.TypeSpecType, path_key : String) -> Unit raise {
     match type_ {
       @typespec.TypeSpecType::Model(model) => {
         let model_id = model.identity()
-        if model_names.contains(model_id) {
+        let stable_key = "model|\{path_key}"
+        let preferred = preferred_model_name(model)
+        register_type_name_seed(
+          model_stable_keys, model_preferred_names, model_id, stable_key, preferred,
+        )
+        if model_types.contains(model_id) {
           return
         }
-        let raw_name = model.name()
-        let preferred = if raw_name.length() == 0 {
-          let suffix = next_anon_model_index.to_string()
-          next_anon_model_index += 1
-          let candidate = match model.anon_name_prefix() {
-            Some(prefix) =>
-              if prefix != "" {
-                prefix + suffix
-              } else {
-                "Model" + suffix
-              }
-            None => "Model" + suffix
-          }
-          sanitize_identifier(candidate)
-        } else {
-          @case.pascal_case(raw_name)
-        }
-        let resolved_name = alloc_type_name(preferred)
-        model_names.set(model_id, resolved_name)
         model_types.set(model_id, model)
-        for prop in model.properties() {
-          collect(prop.type_())
+        for prop in sorted_model_properties(model) {
+          collect(prop.type_(), "\{path_key}|prop:\{prop.name()}")
         }
       }
       @typespec.TypeSpecType::Union(union) => {
         let union_id = union.identity()
-        if union_names.contains(union_id) {
+        let stable_key = "union|\{path_key}"
+        let preferred = preferred_union_name(union)
+        register_type_name_seed(
+          union_stable_keys, union_preferred_names, union_id, stable_key, preferred,
+        )
+        if union_types.contains(union_id) {
           return
         }
-        let raw_name = union.name()
-        let preferred = if raw_name.length() == 0 {
-          let name = "Union\{next_anon_union_index.to_string()}"
-          next_anon_union_index += 1
-          name
-        } else {
-          @case.pascal_case(raw_name)
-        }
-        union_names.set(union_id, alloc_type_name(preferred))
         union_types.set(union_id, union)
-        for variant in union.variants() {
-          collect(variant.type_())
+        for variant in sorted_union_variants(union) {
+          collect(variant.type_(), "\{path_key}|variant:\{variant.name()}")
         }
       }
-      @typespec.TypeSpecType::Array(inner) => collect(inner)
-      @typespec.TypeSpecType::Record(inner) => collect(inner)
-      @typespec.TypeSpecType::Nullable(inner) => collect(inner)
+      @typespec.TypeSpecType::Array(inner) =>
+        collect(inner, "\{path_key}|array")
+      @typespec.TypeSpecType::Record(inner) =>
+        collect(inner, "\{path_key}|record")
+      @typespec.TypeSpecType::Nullable(inner) =>
+        collect(inner, "\{path_key}|nullable")
       _ => ()
     }
   }
@@ -247,19 +243,138 @@ fn build_encode_type_context(
   }
   ordered_ops.sort_by_key(fn(op) { op.path() + "#" + op.name() })
   for op in ordered_ops {
-    for param in op.parameters() {
-      collect(param.type_())
+    let ordered_params = sorted_http_params(op.parameters())
+    for param in ordered_params {
+      collect(
+        param.type_(),
+        "\{op.path()}#\{op.name()}|param:\{param_kind_key(param.kind())}:\{param.name()}",
+      )
     }
     let success = collect_success_responses(op)
-    for r in success {
+    let ordered_success = sorted_success_responses(success)
+    for r in ordered_success {
       match r.body {
-        Some(type_) => collect(type_)
+        Some(type_) =>
+          collect(type_, "\{op.path()}#\{op.name()}|resp:\{r.code.to_string()}")
         None => ()
       }
     }
   }
+  let requests = Array::new()
+  for item in model_stable_keys.to_array() {
+    let model_id = item.0
+    let stable_key = item.1
+    let preferred = model_preferred_names.get(model_id).unwrap_or("Model")
+    requests.push(@mbtgen.NameRequest::new(stable_key, preferred))
+  }
+  for item in union_stable_keys.to_array() {
+    let union_id = item.0
+    let stable_key = item.1
+    let preferred = union_preferred_names.get(union_id).unwrap_or("Union")
+    requests.push(@mbtgen.NameRequest::new(stable_key, preferred))
+  }
+  let name_state = @mbtgen.new_name_state()
+  let resolved = name_state.alloc_batch(requests)
+  for item in model_stable_keys.to_array() {
+    let model_id = item.0
+    let stable_key = item.1
+    model_names.set(model_id, resolved.get(stable_key).unwrap_or("Model"))
+  }
+  for item in union_stable_keys.to_array() {
+    let union_id = item.0
+    let stable_key = item.1
+    union_names.set(union_id, resolved.get(stable_key).unwrap_or("Union"))
+  }
   apply_legacy_model_name_renames(model_names)
   { model_types, union_types, model_names, union_names }
+}
+
+///|
+fn preferred_model_name(model : @typespec.Model) -> String {
+  let raw_name = model.name()
+  if raw_name.length() > 0 {
+    return @case.pascal_case(raw_name)
+  }
+  match model.anon_name_prefix() {
+    Some(prefix) =>
+      if prefix != "" {
+        @case.pascal_case(sanitize_identifier(prefix))
+      } else {
+        "Model"
+      }
+    None => "Model"
+  }
+}
+
+///|
+fn preferred_union_name(union : @typespec.Union) -> String {
+  let raw_name = union.name()
+  if raw_name.length() > 0 {
+    @case.pascal_case(raw_name)
+  } else {
+    "Union"
+  }
+}
+
+///|
+fn sorted_model_properties(
+  model : @typespec.Model,
+) -> Array[@typespec.Property] {
+  let props = Array::new()
+  for prop in model.properties() {
+    props.push(prop)
+  }
+  props.sort_by_key(fn(prop) { prop.name() })
+  props
+}
+
+///|
+fn sorted_union_variants(
+  union : @typespec.Union,
+) -> Array[@typespec.UnionVariant] {
+  let variants = Array::new()
+  for variant in union.variants() {
+    variants.push(variant)
+  }
+  variants.sort_by_key(fn(variant) { variant.name() })
+  variants
+}
+
+///|
+fn sorted_http_params(
+  params : Iter[@typespec.HttpParam],
+) -> Array[@typespec.HttpParam] {
+  let out = Array::new()
+  for param in params {
+    out.push(param)
+  }
+  out.sort_by_key(fn(param) {
+    "\{param_kind_key(param.kind())}:\{param.name()}"
+  })
+  out
+}
+
+///|
+fn param_kind_key(kind : @typespec.HttpParamKind) -> String {
+  match kind {
+    @typespec.HttpParamKind::Query => "query"
+    @typespec.HttpParamKind::Header => "header"
+    @typespec.HttpParamKind::Path => "path"
+    @typespec.HttpParamKind::Body => "body"
+    @typespec.HttpParamKind::Unknown(name) => "unknown:\{name}"
+  }
+}
+
+///|
+fn sorted_success_responses(
+  responses : Array[SuccessResponse],
+) -> Array[SuccessResponse] {
+  let out = Array::new(capacity=responses.length())
+  for resp in responses {
+    out.push(resp)
+  }
+  out.sort_by_key(fn(resp) { resp.code.to_string() })
+  out
 }
 
 ///|

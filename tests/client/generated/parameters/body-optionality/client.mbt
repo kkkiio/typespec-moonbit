@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// BodyOptionalityClient HTTP 客户端。
 pub(all) struct BodyOptionalityClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 BodyOptionalityClient。
 pub fn BodyOptionalityClient::new(base_url : String) -> BodyOptionalityClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /parameters/body-optionality/required-explicit（自动解析响应）。
@@ -43,12 +37,10 @@ pub async fn BodyOptionalityClient::post_parameters_body_optionality_required_ex
 }
 
 ///|
-
-///|
 /// 调用 post /parameters/body-optionality/required-implicit（自动解析响应）。
 pub async fn BodyOptionalityClient::post_parameters_body_optionality_required_implicit(
   self : BodyOptionalityClient,
-  body : BodyModel0,
+  body : BodyModel1,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -71,22 +63,16 @@ pub async fn BodyOptionalityClient::post_parameters_body_optionality_required_im
 }
 
 ///|
-
-///|
 /// OptionalExplicitClient HTTP 客户端。
 pub(all) struct OptionalExplicitClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 OptionalExplicitClient。
 pub fn OptionalExplicitClient::new(base_url : String) -> OptionalExplicitClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /parameters/body-optionality/optional-explicit/set（自动解析响应）。
@@ -117,8 +103,6 @@ pub async fn OptionalExplicitClient::post_parameters_body_optionality_optional_e
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /parameters/body-optionality/optional-explicit/omit（自动解析响应）。

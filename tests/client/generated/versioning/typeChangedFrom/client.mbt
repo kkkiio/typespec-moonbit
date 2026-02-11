@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// TypeChangedFromClient HTTP 客户端。
 pub(all) struct TypeChangedFromClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 TypeChangedFromClient。
 pub fn TypeChangedFromClient::new(base_url : String) -> TypeChangedFromClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /versioning/type-changed-from/api-version:{version}/test{?param}（自动解析响应）。

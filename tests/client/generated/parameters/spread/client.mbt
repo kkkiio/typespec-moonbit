@@ -1,12 +1,8 @@
 ///|
-
-///|
 /// ModelClient HTTP 客户端。
 pub(all) struct ModelClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ModelClient。
@@ -15,12 +11,10 @@ pub fn ModelClient::new(base_url : String) -> ModelClient {
 }
 
 ///|
-
-///|
 /// 调用 put /parameters/spread/model/request-body（自动解析响应）。
 pub async fn ModelClient::put_parameters_spread_model_request_body(
   self : ModelClient,
-  body : BodyParameter5,
+  body : BodyParameter,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -43,12 +37,10 @@ pub async fn ModelClient::put_parameters_spread_model_request_body(
 }
 
 ///|
-
-///|
 /// 调用 put /parameters/spread/model/composite-request-only-with-body（自动解析响应）。
 pub async fn ModelClient::put_parameters_spread_model_composite_request_only_with_body(
   self : ModelClient,
-  body : BodyParameter,
+  body : BodyParameter5,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -69,8 +61,6 @@ pub async fn ModelClient::put_parameters_spread_model_composite_request_only_wit
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /parameters/spread/model/composite-request-without-body/{name}（自动解析响应）。
@@ -101,14 +91,12 @@ pub async fn ModelClient::put_parameters_spread_model_composite_request_without_
 }
 
 ///|
-
-///|
 /// 调用 put /parameters/spread/model/composite-request/{name}（自动解析响应）。
 pub async fn ModelClient::put_parameters_spread_model_composite_request__name_(
   self : ModelClient,
   name : String,
   test_header : String,
-  body : BodyParameter,
+  body : BodyParameter5,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -134,14 +122,12 @@ pub async fn ModelClient::put_parameters_spread_model_composite_request__name_(
 }
 
 ///|
-
-///|
 /// 调用 put /parameters/spread/model/composite-request-mix/{name}（自动解析响应）。
 pub async fn ModelClient::put_parameters_spread_model_composite_request_mix__name_(
   self : ModelClient,
   name : String,
   test_header : String,
-  body : Model6,
+  body : Model3,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -167,14 +153,10 @@ pub async fn ModelClient::put_parameters_spread_model_composite_request_mix__nam
 }
 
 ///|
-
-///|
 /// AliasClient HTTP 客户端。
 pub(all) struct AliasClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 AliasClient。
@@ -183,12 +165,10 @@ pub fn AliasClient::new(base_url : String) -> AliasClient {
 }
 
 ///|
-
-///|
 /// 调用 put /parameters/spread/alias/request-body（自动解析响应）。
 pub async fn AliasClient::put_parameters_spread_alias_request_body(
   self : AliasClient,
-  body : Model0,
+  body : Model,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -211,14 +191,12 @@ pub async fn AliasClient::put_parameters_spread_alias_request_body(
 }
 
 ///|
-
-///|
 /// 调用 post /parameters/spread/alias/inner-model-parameter/{id}（自动解析响应）。
 pub async fn AliasClient::post_parameters_spread_alias_inner_model_parameter__id_(
   self : AliasClient,
   id : String,
   x_ms_test_header : String,
-  body : Model1,
+  body : Model4,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -244,14 +222,12 @@ pub async fn AliasClient::post_parameters_spread_alias_inner_model_parameter__id
 }
 
 ///|
-
-///|
 /// 调用 put /parameters/spread/alias/request-parameter/{id}（自动解析响应）。
 pub async fn AliasClient::put_parameters_spread_alias_request_parameter__id_(
   self : AliasClient,
   id : String,
   x_ms_test_header : String,
-  body : Model2,
+  body : Model1,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -277,14 +253,12 @@ pub async fn AliasClient::put_parameters_spread_alias_request_parameter__id_(
 }
 
 ///|
-
-///|
 /// 调用 put /parameters/spread/alias/multiple-parameters/{id}（自动解析响应）。
 pub async fn AliasClient::put_parameters_spread_alias_multiple_parameters__id_(
   self : AliasClient,
   id : String,
   x_ms_test_header : String,
-  body : Model3,
+  body : Model2,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -310,14 +284,12 @@ pub async fn AliasClient::put_parameters_spread_alias_multiple_parameters__id_(
 }
 
 ///|
-
-///|
 /// 调用 post /parameters/spread/alias/inner-alias-parameter/{id}（自动解析响应）。
 pub async fn AliasClient::post_parameters_spread_alias_inner_alias_parameter__id_(
   self : AliasClient,
   id : String,
   x_ms_test_header : String,
-  body : Model4,
+  body : Model6,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()

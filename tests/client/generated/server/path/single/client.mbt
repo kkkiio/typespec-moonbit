@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// SingleClient HTTP 客户端。
 pub(all) struct SingleClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 SingleClient。
 pub fn SingleClient::new(base_url : String) -> SingleClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 head /server/path/single/myOp（自动解析响应）。

@@ -17,19 +17,19 @@ pub impl Show for BodyModel
 pub impl ToJson for BodyModel
 pub impl @json.FromJson for BodyModel
 
-pub(all) struct BodyModel0 {
+pub(all) struct BodyModel1 {
   name : String
 }
-pub impl Show for BodyModel0
-pub impl ToJson for BodyModel0
-pub impl @json.FromJson for BodyModel0
+pub impl Show for BodyModel1
+pub impl ToJson for BodyModel1
+pub impl @json.FromJson for BodyModel1
 
 pub(all) struct BodyOptionalityClient {
   base_url : String
 }
 pub fn BodyOptionalityClient::new(String) -> Self
 pub async fn BodyOptionalityClient::post_parameters_body_optionality_required_explicit(Self, BodyModel) -> Unit
-pub async fn BodyOptionalityClient::post_parameters_body_optionality_required_implicit(Self, BodyModel0) -> Unit
+pub async fn BodyOptionalityClient::post_parameters_body_optionality_required_implicit(Self, BodyModel1) -> Unit
 
 pub(all) struct OptionalExplicitClient {
   base_url : String

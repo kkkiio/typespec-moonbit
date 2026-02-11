@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// QueryClient HTTP 客户端。
 pub(all) struct QueryClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 QueryClient。
 pub fn QueryClient::new(base_url : String) -> QueryClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/bytes/query/default{?value}（自动解析响应）。
@@ -50,8 +44,6 @@ pub async fn QueryClient::get_encode_bytes_query_default__value_(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/bytes/query/base64{?value}（自动解析响应）。
 pub async fn QueryClient::get_encode_bytes_query_base64__value_(
   self : QueryClient,
@@ -83,8 +75,6 @@ pub async fn QueryClient::get_encode_bytes_query_base64__value_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/bytes/query/base64url{?value}（自动解析响应）。
@@ -120,8 +110,6 @@ pub async fn QueryClient::get_encode_bytes_query_base64url__value_(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/bytes/query/base64url-array{?value}（自动解析响应）。
 pub async fn QueryClient::get_encode_bytes_query_base64url_array__value_(
   self : QueryClient,
@@ -155,22 +143,16 @@ pub async fn QueryClient::get_encode_bytes_query_base64url_array__value_(
 }
 
 ///|
-
-///|
 /// PropertyClient HTTP 客户端。
 pub(all) struct PropertyClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 PropertyClient。
 pub fn PropertyClient::new(base_url : String) -> PropertyClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /encode/bytes/property/default（自动解析响应）。
@@ -204,8 +186,6 @@ pub async fn PropertyClient::post_encode_bytes_property_default(
 }
 
 ///|
-
-///|
 /// 调用 post /encode/bytes/property/base64（自动解析响应）。
 pub async fn PropertyClient::post_encode_bytes_property_base64(
   self : PropertyClient,
@@ -235,8 +215,6 @@ pub async fn PropertyClient::post_encode_bytes_property_base64(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /encode/bytes/property/base64url（自动解析响应）。
@@ -270,8 +248,6 @@ pub async fn PropertyClient::post_encode_bytes_property_base64url(
 }
 
 ///|
-
-///|
 /// 调用 post /encode/bytes/property/base64url-array（自动解析响应）。
 pub async fn PropertyClient::post_encode_bytes_property_base64url_array(
   self : PropertyClient,
@@ -303,22 +279,16 @@ pub async fn PropertyClient::post_encode_bytes_property_base64url_array(
 }
 
 ///|
-
-///|
 /// HeaderClient HTTP 客户端。
 pub(all) struct HeaderClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 HeaderClient。
 pub fn HeaderClient::new(base_url : String) -> HeaderClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/bytes/header/default（自动解析响应）。
@@ -347,8 +317,6 @@ pub async fn HeaderClient::get_encode_bytes_header_default(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/bytes/header/base64（自动解析响应）。
 pub async fn HeaderClient::get_encode_bytes_header_base64(
   self : HeaderClient,
@@ -373,8 +341,6 @@ pub async fn HeaderClient::get_encode_bytes_header_base64(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/bytes/header/base64url（自动解析响应）。
@@ -405,8 +371,6 @@ pub async fn HeaderClient::get_encode_bytes_header_base64url(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/bytes/header/base64url-array（自动解析响应）。
 pub async fn HeaderClient::get_encode_bytes_header_base64url_array(
   self : HeaderClient,
@@ -435,22 +399,16 @@ pub async fn HeaderClient::get_encode_bytes_header_base64url_array(
 }
 
 ///|
-
-///|
 /// RequestBodyClient HTTP 客户端。
 pub(all) struct RequestBodyClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 RequestBodyClient。
 pub fn RequestBodyClient::new(base_url : String) -> RequestBodyClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /encode/bytes/body/request/default（自动解析响应）。
@@ -479,8 +437,6 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_default(
 }
 
 ///|
-
-///|
 /// 调用 post /encode/bytes/body/request/octet-stream（自动解析响应）。
 pub async fn RequestBodyClient::post_encode_bytes_body_request_octet_stream(
   self : RequestBodyClient,
@@ -507,8 +463,6 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_octet_stream(
 }
 
 ///|
-
-///|
 /// 调用 post /encode/bytes/body/request/custom-content-type（自动解析响应）。
 pub async fn RequestBodyClient::post_encode_bytes_body_request_custom_content_type(
   self : RequestBodyClient,
@@ -533,8 +487,6 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_custom_content_ty
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /encode/bytes/body/request/base64（自动解析响应）。
@@ -564,8 +516,6 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_base64(
 }
 
 ///|
-
-///|
 /// 调用 post /encode/bytes/body/request/base64url（自动解析响应）。
 pub async fn RequestBodyClient::post_encode_bytes_body_request_base64url(
   self : RequestBodyClient,
@@ -593,22 +543,16 @@ pub async fn RequestBodyClient::post_encode_bytes_body_request_base64url(
 }
 
 ///|
-
-///|
 /// ResponseBodyClient HTTP 客户端。
 pub(all) struct ResponseBodyClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ResponseBodyClient。
 pub fn ResponseBodyClient::new(base_url : String) -> ResponseBodyClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/bytes/body/response/default（自动解析响应）。
@@ -635,8 +579,6 @@ pub async fn ResponseBodyClient::get_encode_bytes_body_response_default(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/bytes/body/response/octet-stream（自动解析响应）。
 pub async fn ResponseBodyClient::get_encode_bytes_body_response_octet_stream(
   self : ResponseBodyClient,
@@ -661,8 +603,6 @@ pub async fn ResponseBodyClient::get_encode_bytes_body_response_octet_stream(
 }
 
 ///|
-
-///|
 /// 调用 get /encode/bytes/body/response/custom-content-type（自动解析响应）。
 pub async fn ResponseBodyClient::get_encode_bytes_body_response_custom_content_type(
   self : ResponseBodyClient,
@@ -685,8 +625,6 @@ pub async fn ResponseBodyClient::get_encode_bytes_body_response_custom_content_t
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/bytes/body/response/base64（自动解析响应）。
@@ -714,8 +652,6 @@ pub async fn ResponseBodyClient::get_encode_bytes_body_response_base64(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /encode/bytes/body/response/base64url（自动解析响应）。

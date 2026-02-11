@@ -1,31 +1,29 @@
 ///|
-
-///|
 /// Traits for operation handlers
 pub(open) trait ModelHandler {
   async spread_as_request_body(
     self : Self,
     group~ : @async.TaskGroup[Unit],
-    body : BodyParameter5,
+    body : BodyParameter,
   ) -> Unit
   async spread_composite_request(
     self : Self,
     group~ : @async.TaskGroup[Unit],
     name : String,
     test_header : String,
-    body : BodyParameter,
+    body : BodyParameter5,
   ) -> Unit
   async spread_composite_request_mix(
     self : Self,
     group~ : @async.TaskGroup[Unit],
     name : String,
     test_header : String,
-    body : Model6,
+    body : Model3,
   ) -> Unit
   async spread_composite_request_only_with_body(
     self : Self,
     group~ : @async.TaskGroup[Unit],
-    body : BodyParameter,
+    body : BodyParameter5,
   ) -> Unit
   async spread_composite_request_without_body(
     self : Self,
@@ -36,46 +34,42 @@ pub(open) trait ModelHandler {
 }
 
 ///|
-
-///|
 /// Traits for operation handlers
 pub(open) trait AliasHandler {
   async spread_as_request_body(
     self : Self,
     group~ : @async.TaskGroup[Unit],
-    body : Model0,
+    body : Model,
   ) -> Unit
   async spread_as_request_parameter(
     self : Self,
     group~ : @async.TaskGroup[Unit],
     id : String,
     x_ms_test_header : String,
-    body : Model2,
+    body : Model1,
   ) -> Unit
   async spread_with_multiple_parameters(
     self : Self,
     group~ : @async.TaskGroup[Unit],
     id : String,
     x_ms_test_header : String,
-    body : Model3,
+    body : Model2,
   ) -> Unit
   async spread_parameter_with_inner_alias(
     self : Self,
     group~ : @async.TaskGroup[Unit],
     id : String,
     x_ms_test_header : String,
-    body : Model4,
+    body : Model6,
   ) -> Unit
   async spread_parameter_with_inner_model(
     self : Self,
     group~ : @async.TaskGroup[Unit],
     id : String,
     x_ms_test_header : String,
-    body : Model1,
+    body : Model4,
   ) -> Unit
 }
-
-///|
 
 ///|
 /// 路由匹配结果。
@@ -87,8 +81,6 @@ pub(all) enum RouteMatch {
 
 ///|
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
-
-///|
 
 ///|
 /// 生成期固定的路由 ID（用于 match_route 的返回值）。
@@ -106,16 +98,12 @@ pub(all) enum RouteId {
 }
 
 ///|
-
-///|
 /// 路由匹配结果（纯匹配：不读 body、不写响应、不调用 handler）。
 pub(all) enum MatchRouteResult {
   NotMatched
   MethodNotAllowed
   Matched(RouteId)
 }
-
-///|
 
 ///|
 /// 匹配 method + path，并返回命中的 RouteId（若命中）。
@@ -413,7 +401,7 @@ pub fn[H0 : ModelHandler, H1 : AliasHandler] create_router(
           RouteId::ModelSpreadAsRequestBody => {
             let body_bytes = body_stream.read_all()
             let body_str = body_bytes.text()
-            let p_1_body : BodyParameter5 = @json.from_json(
+            let p_1_body : BodyParameter = @json.from_json(
               @json.parse(body_str),
             )
             model_handler.spread_as_request_body(group~, p_1_body)
@@ -429,7 +417,7 @@ pub fn[H0 : ModelHandler, H1 : AliasHandler] create_router(
               req.headers,
               "test-header",
             )
-            let p_2_body : BodyParameter = @json.from_json(
+            let p_2_body : BodyParameter5 = @json.from_json(
               @json.parse(body_str),
             )
             model_handler.spread_composite_request(
@@ -450,7 +438,7 @@ pub fn[H0 : ModelHandler, H1 : AliasHandler] create_router(
               req.headers,
               "test-header",
             )
-            let p_3_body : Model6 = @json.from_json(@json.parse(body_str))
+            let p_3_body : Model3 = @json.from_json(@json.parse(body_str))
             model_handler.spread_composite_request_mix(
               group~,
               name,
@@ -464,7 +452,7 @@ pub fn[H0 : ModelHandler, H1 : AliasHandler] create_router(
           RouteId::ModelSpreadCompositeRequestOnlyWithBody => {
             let body_bytes = body_stream.read_all()
             let body_str = body_bytes.text()
-            let p_4_body : BodyParameter = @json.from_json(
+            let p_4_body : BodyParameter5 = @json.from_json(
               @json.parse(body_str),
             )
             model_handler.spread_composite_request_only_with_body(
@@ -495,7 +483,7 @@ pub fn[H0 : ModelHandler, H1 : AliasHandler] create_router(
           RouteId::AliasSpreadAsRequestBody => {
             let body_bytes = body_stream.read_all()
             let body_str = body_bytes.text()
-            let p_6_body : Model0 = @json.from_json(@json.parse(body_str))
+            let p_6_body : Model = @json.from_json(@json.parse(body_str))
             alias_handler.spread_as_request_body(group~, p_6_body)
             conn.send_response(204, "No Content")
             conn.end_response()
@@ -509,7 +497,7 @@ pub fn[H0 : ModelHandler, H1 : AliasHandler] create_router(
               req.headers,
               "x-ms-test-header",
             )
-            let p_7_body : Model2 = @json.from_json(@json.parse(body_str))
+            let p_7_body : Model1 = @json.from_json(@json.parse(body_str))
             alias_handler.spread_as_request_parameter(
               group~,
               id,
@@ -528,7 +516,7 @@ pub fn[H0 : ModelHandler, H1 : AliasHandler] create_router(
               req.headers,
               "x-ms-test-header",
             )
-            let p_8_body : Model3 = @json.from_json(@json.parse(body_str))
+            let p_8_body : Model2 = @json.from_json(@json.parse(body_str))
             alias_handler.spread_with_multiple_parameters(
               group~,
               id,
@@ -547,7 +535,7 @@ pub fn[H0 : ModelHandler, H1 : AliasHandler] create_router(
               req.headers,
               "x-ms-test-header",
             )
-            let p_9_body : Model4 = @json.from_json(@json.parse(body_str))
+            let p_9_body : Model6 = @json.from_json(@json.parse(body_str))
             alias_handler.spread_parameter_with_inner_alias(
               group~,
               id,
@@ -566,7 +554,7 @@ pub fn[H0 : ModelHandler, H1 : AliasHandler] create_router(
               req.headers,
               "x-ms-test-header",
             )
-            let p_10_body : Model1 = @json.from_json(@json.parse(body_str))
+            let p_10_body : Model4 = @json.from_json(@json.parse(body_str))
             alias_handler.spread_parameter_with_inner_model(
               group~,
               id,
@@ -583,8 +571,6 @@ pub fn[H0 : ModelHandler, H1 : AliasHandler] create_router(
     }
   }
 }
-
-///|
 
 ///|
 /// 创建一个带默认 fallback 的 dispatch。

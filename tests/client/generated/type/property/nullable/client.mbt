@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// StringClient HTTP 客户端。
 pub(all) struct StringClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 StringClient。
 pub fn StringClient::new(base_url : String) -> StringClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/nullable/string/non-null（自动解析响应）。
@@ -43,8 +37,6 @@ pub async fn StringClient::get_type_property_nullable_string_non_null(
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/nullable/string/null（自动解析响应）。
 pub async fn StringClient::get_type_property_nullable_string_null(
   self : StringClient,
@@ -69,8 +61,6 @@ pub async fn StringClient::get_type_property_nullable_string_null(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 patch /type/property/nullable/string/non-null（自动解析响应）。
@@ -100,8 +90,6 @@ pub async fn StringClient::patch_type_property_nullable_string_non_null(
 }
 
 ///|
-
-///|
 /// 调用 patch /type/property/nullable/string/null（自动解析响应）。
 pub async fn StringClient::patch_type_property_nullable_string_null(
   self : StringClient,
@@ -129,22 +117,16 @@ pub async fn StringClient::patch_type_property_nullable_string_null(
 }
 
 ///|
-
-///|
 /// BytesClient HTTP 客户端。
 pub(all) struct BytesClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 BytesClient。
 pub fn BytesClient::new(base_url : String) -> BytesClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/nullable/bytes/non-null（自动解析响应）。
@@ -173,8 +155,6 @@ pub async fn BytesClient::get_type_property_nullable_bytes_non_null(
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/nullable/bytes/null（自动解析响应）。
 pub async fn BytesClient::get_type_property_nullable_bytes_null(
   self : BytesClient,
@@ -199,8 +179,6 @@ pub async fn BytesClient::get_type_property_nullable_bytes_null(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 patch /type/property/nullable/bytes/non-null（自动解析响应）。
@@ -230,8 +208,6 @@ pub async fn BytesClient::patch_type_property_nullable_bytes_non_null(
 }
 
 ///|
-
-///|
 /// 调用 patch /type/property/nullable/bytes/null（自动解析响应）。
 pub async fn BytesClient::patch_type_property_nullable_bytes_null(
   self : BytesClient,
@@ -259,22 +235,16 @@ pub async fn BytesClient::patch_type_property_nullable_bytes_null(
 }
 
 ///|
-
-///|
 /// DatetimeClient HTTP 客户端。
 pub(all) struct DatetimeClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 DatetimeClient。
 pub fn DatetimeClient::new(base_url : String) -> DatetimeClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/nullable/datetime/non-null（自动解析响应）。
@@ -303,8 +273,6 @@ pub async fn DatetimeClient::get_type_property_nullable_datetime_non_null(
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/nullable/datetime/null（自动解析响应）。
 pub async fn DatetimeClient::get_type_property_nullable_datetime_null(
   self : DatetimeClient,
@@ -329,8 +297,6 @@ pub async fn DatetimeClient::get_type_property_nullable_datetime_null(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 patch /type/property/nullable/datetime/non-null（自动解析响应）。
@@ -360,8 +326,6 @@ pub async fn DatetimeClient::patch_type_property_nullable_datetime_non_null(
 }
 
 ///|
-
-///|
 /// 调用 patch /type/property/nullable/datetime/null（自动解析响应）。
 pub async fn DatetimeClient::patch_type_property_nullable_datetime_null(
   self : DatetimeClient,
@@ -389,22 +353,16 @@ pub async fn DatetimeClient::patch_type_property_nullable_datetime_null(
 }
 
 ///|
-
-///|
 /// DurationClient HTTP 客户端。
 pub(all) struct DurationClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 DurationClient。
 pub fn DurationClient::new(base_url : String) -> DurationClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/nullable/duration/non-null（自动解析响应）。
@@ -433,8 +391,6 @@ pub async fn DurationClient::get_type_property_nullable_duration_non_null(
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/nullable/duration/null（自动解析响应）。
 pub async fn DurationClient::get_type_property_nullable_duration_null(
   self : DurationClient,
@@ -459,8 +415,6 @@ pub async fn DurationClient::get_type_property_nullable_duration_null(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 patch /type/property/nullable/duration/non-null（自动解析响应）。
@@ -490,8 +444,6 @@ pub async fn DurationClient::patch_type_property_nullable_duration_non_null(
 }
 
 ///|
-
-///|
 /// 调用 patch /type/property/nullable/duration/null（自动解析响应）。
 pub async fn DurationClient::patch_type_property_nullable_duration_null(
   self : DurationClient,
@@ -519,22 +471,16 @@ pub async fn DurationClient::patch_type_property_nullable_duration_null(
 }
 
 ///|
-
-///|
 /// CollectionsByteClient HTTP 客户端。
 pub(all) struct CollectionsByteClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 CollectionsByteClient。
 pub fn CollectionsByteClient::new(base_url : String) -> CollectionsByteClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/nullable/collections/bytes/non-null（自动解析响应）。
@@ -565,8 +511,6 @@ pub async fn CollectionsByteClient::get_type_property_nullable_collections_bytes
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/nullable/collections/bytes/null（自动解析响应）。
 pub async fn CollectionsByteClient::get_type_property_nullable_collections_bytes_null(
   self : CollectionsByteClient,
@@ -593,8 +537,6 @@ pub async fn CollectionsByteClient::get_type_property_nullable_collections_bytes
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 patch /type/property/nullable/collections/bytes/non-null（自动解析响应）。
@@ -624,8 +566,6 @@ pub async fn CollectionsByteClient::patch_type_property_nullable_collections_byt
 }
 
 ///|
-
-///|
 /// 调用 patch /type/property/nullable/collections/bytes/null（自动解析响应）。
 pub async fn CollectionsByteClient::patch_type_property_nullable_collections_bytes_null(
   self : CollectionsByteClient,
@@ -653,22 +593,16 @@ pub async fn CollectionsByteClient::patch_type_property_nullable_collections_byt
 }
 
 ///|
-
-///|
 /// CollectionsModelClient HTTP 客户端。
 pub(all) struct CollectionsModelClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 CollectionsModelClient。
 pub fn CollectionsModelClient::new(base_url : String) -> CollectionsModelClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/nullable/collections/model/non-null（自动解析响应）。
@@ -699,8 +633,6 @@ pub async fn CollectionsModelClient::get_type_property_nullable_collections_mode
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/nullable/collections/model/null（自动解析响应）。
 pub async fn CollectionsModelClient::get_type_property_nullable_collections_model_null(
   self : CollectionsModelClient,
@@ -727,8 +659,6 @@ pub async fn CollectionsModelClient::get_type_property_nullable_collections_mode
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 patch /type/property/nullable/collections/model/non-null（自动解析响应）。
@@ -758,8 +688,6 @@ pub async fn CollectionsModelClient::patch_type_property_nullable_collections_mo
 }
 
 ///|
-
-///|
 /// 调用 patch /type/property/nullable/collections/model/null（自动解析响应）。
 pub async fn CollectionsModelClient::patch_type_property_nullable_collections_model_null(
   self : CollectionsModelClient,
@@ -787,14 +715,10 @@ pub async fn CollectionsModelClient::patch_type_property_nullable_collections_mo
 }
 
 ///|
-
-///|
 /// CollectionsStringClient HTTP 客户端。
 pub(all) struct CollectionsStringClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 CollectionsStringClient。
@@ -803,8 +727,6 @@ pub fn CollectionsStringClient::new(
 ) -> CollectionsStringClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/nullable/collections/string/non-null（自动解析响应）。
@@ -835,8 +757,6 @@ pub async fn CollectionsStringClient::get_type_property_nullable_collections_str
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/nullable/collections/string/null（自动解析响应）。
 pub async fn CollectionsStringClient::get_type_property_nullable_collections_string_null(
   self : CollectionsStringClient,
@@ -865,8 +785,6 @@ pub async fn CollectionsStringClient::get_type_property_nullable_collections_str
 }
 
 ///|
-
-///|
 /// 调用 patch /type/property/nullable/collections/string/non-null（自动解析响应）。
 pub async fn CollectionsStringClient::patch_type_property_nullable_collections_string_non_null(
   self : CollectionsStringClient,
@@ -892,8 +810,6 @@ pub async fn CollectionsStringClient::patch_type_property_nullable_collections_s
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 patch /type/property/nullable/collections/string/null（自动解析响应）。

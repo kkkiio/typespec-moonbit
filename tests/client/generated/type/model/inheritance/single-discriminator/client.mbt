@@ -1,12 +1,8 @@
 ///|
-
-///|
 /// SingleDiscriminatorClient HTTP 客户端。
 pub(all) struct SingleDiscriminatorClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 SingleDiscriminatorClient。
@@ -15,8 +11,6 @@ pub fn SingleDiscriminatorClient::new(
 ) -> SingleDiscriminatorClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/model/inheritance/single-discriminator/model（自动解析响应）。
@@ -45,8 +39,6 @@ pub async fn SingleDiscriminatorClient::get_type_model_inheritance_single_discri
 }
 
 ///|
-
-///|
 /// 调用 put /type/model/inheritance/single-discriminator/model（自动解析响应）。
 pub async fn SingleDiscriminatorClient::put_type_model_inheritance_single_discriminator_model(
   self : SingleDiscriminatorClient,
@@ -71,8 +63,6 @@ pub async fn SingleDiscriminatorClient::put_type_model_inheritance_single_discri
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /type/model/inheritance/single-discriminator/recursivemodel（自动解析响应）。
@@ -101,8 +91,6 @@ pub async fn SingleDiscriminatorClient::get_type_model_inheritance_single_discri
 }
 
 ///|
-
-///|
 /// 调用 put /type/model/inheritance/single-discriminator/recursivemodel（自动解析响应）。
 pub async fn SingleDiscriminatorClient::put_type_model_inheritance_single_discriminator_recursivemodel(
   self : SingleDiscriminatorClient,
@@ -127,8 +115,6 @@ pub async fn SingleDiscriminatorClient::put_type_model_inheritance_single_discri
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /type/model/inheritance/single-discriminator/missingdiscriminator（自动解析响应）。
@@ -157,8 +143,6 @@ pub async fn SingleDiscriminatorClient::get_type_model_inheritance_single_discri
 }
 
 ///|
-
-///|
 /// 调用 get /type/model/inheritance/single-discriminator/wrongdiscriminator（自动解析响应）。
 pub async fn SingleDiscriminatorClient::get_type_model_inheritance_single_discriminator_wrongdiscriminator(
   self : SingleDiscriminatorClient,
@@ -183,8 +167,6 @@ pub async fn SingleDiscriminatorClient::get_type_model_inheritance_single_discri
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /type/model/inheritance/single-discriminator/legacy-model（自动解析响应）。

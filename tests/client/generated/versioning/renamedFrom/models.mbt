@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// Union NewUnion
 pub(all) enum NewUnion {
   String(String)
@@ -36,8 +34,6 @@ pub impl @json.FromJson for NewUnion with from_json(
     (path, "cannot deserialize json as union NewUnion"),
   )
 }
-
-///|
 
 ///|
 /// Model NewModel

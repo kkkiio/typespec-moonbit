@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// PropertyClient HTTP 客户端。
 pub(all) struct PropertyClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 PropertyClient。
 pub fn PropertyClient::new(base_url : String) -> PropertyClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /encode/numeric/property/safeint（自动解析响应）。
@@ -48,8 +42,6 @@ pub async fn PropertyClient::post_encode_numeric_property_safeint(
 }
 
 ///|
-
-///|
 /// 调用 post /encode/numeric/property/uint32（自动解析响应）。
 pub async fn PropertyClient::post_encode_numeric_property_uint32(
   self : PropertyClient,
@@ -79,8 +71,6 @@ pub async fn PropertyClient::post_encode_numeric_property_uint32(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /encode/numeric/property/uint8（自动解析响应）。

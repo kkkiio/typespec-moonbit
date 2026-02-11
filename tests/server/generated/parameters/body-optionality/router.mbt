@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// Traits for operation handlers
 pub(open) trait BodyOptionalityHandler {
   async required_explicit(
@@ -11,11 +9,9 @@ pub(open) trait BodyOptionalityHandler {
   async required_implicit(
     self : Self,
     group~ : @async.TaskGroup[Unit],
-    body : BodyModel0,
+    body : BodyModel1,
   ) -> Unit
 }
-
-///|
 
 ///|
 /// Traits for operation handlers
@@ -23,8 +19,6 @@ pub(open) trait OptionalExplicitHandler {
   async set(self : Self, group~ : @async.TaskGroup[Unit], body : BodyModel) -> Unit
   async omit(self : Self, group~ : @async.TaskGroup[Unit], body : BodyModel) -> Unit
 }
-
-///|
 
 ///|
 /// 路由匹配结果。
@@ -38,8 +32,6 @@ pub(all) enum RouteMatch {
 pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> RouteMatch
 
 ///|
-
-///|
 /// 生成期固定的路由 ID（用于 match_route 的返回值）。
 pub(all) enum RouteId {
   BodyOptionalityRequiredExplicit
@@ -49,16 +41,12 @@ pub(all) enum RouteId {
 }
 
 ///|
-
-///|
 /// 路由匹配结果（纯匹配：不读 body、不写响应、不调用 handler）。
 pub(all) enum MatchRouteResult {
   NotMatched
   MethodNotAllowed
   Matched(RouteId)
 }
-
-///|
 
 ///|
 /// 匹配 method + path，并返回命中的 RouteId（若命中）。
@@ -174,7 +162,7 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
           RouteId::BodyOptionalityRequiredImplicit => {
             let body_bytes = body_stream.read_all()
             let body_str = body_bytes.text()
-            let p_2_body : BodyModel0 = @json.from_json(@json.parse(body_str))
+            let p_2_body : BodyModel1 = @json.from_json(@json.parse(body_str))
             body_optionality_handler.required_implicit(group~, p_2_body)
             conn.send_response(204, "No Content")
             conn.end_response()
@@ -204,8 +192,6 @@ pub fn[H0 : BodyOptionalityHandler, H1 : OptionalExplicitHandler] create_router(
     }
   }
 }
-
-///|
 
 ///|
 /// 创建一个带默认 fallback 的 dispatch。

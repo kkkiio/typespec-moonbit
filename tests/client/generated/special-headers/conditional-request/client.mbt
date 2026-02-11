@@ -1,12 +1,8 @@
 ///|
-
-///|
 /// ConditionalRequestClient HTTP 客户端。
 pub(all) struct ConditionalRequestClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ConditionalRequestClient。
@@ -15,8 +11,6 @@ pub fn ConditionalRequestClient::new(
 ) -> ConditionalRequestClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /special-headers/conditional-request/if-match（自动解析响应）。
@@ -46,8 +40,6 @@ pub async fn ConditionalRequestClient::post_special_headers_conditional_request_
 }
 
 ///|
-
-///|
 /// 调用 post /special-headers/conditional-request/if-none-match（自动解析响应）。
 pub async fn ConditionalRequestClient::post_special_headers_conditional_request_if_none_match(
   self : ConditionalRequestClient,
@@ -73,8 +65,6 @@ pub async fn ConditionalRequestClient::post_special_headers_conditional_request_
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 head /special-headers/conditional-request/if-modified-since（自动解析响应）。
@@ -109,8 +99,6 @@ pub async fn ConditionalRequestClient::head_special_headers_conditional_request_
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /special-headers/conditional-request/if-unmodified-since（自动解析响应）。

@@ -76,12 +76,10 @@ fn format_doc_line(line : String) -> String {
 ///|
 fn render_doc(state : RenderState, doc : String?) -> Unit {
   match doc {
-    Some(text) => {
-      push_line(state, "///|")
+    Some(text) =>
       for line in split_lines(text) {
         push_line(state, format_doc_line(line))
       }
-    }
     None => ()
   }
 }

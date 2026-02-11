@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// Model JsonEncodedNameModel
 pub(all) struct JsonEncodedNameModel {
   default_name : Bool

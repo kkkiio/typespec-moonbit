@@ -24,12 +24,12 @@ pub(all) enum MatchRouteResult {
   Matched(RouteId)
 }
 
-pub(all) struct Model0 {
+pub(all) struct Model {
   name : String
 }
-pub impl Show for Model0
-pub impl ToJson for Model0
-pub impl @json.FromJson for Model0
+pub impl Show for Model
+pub impl ToJson for Model
+pub impl @json.FromJson for Model
 
 pub(all) enum RouteId {
   ExplicitBodySimple
@@ -58,6 +58,6 @@ pub(open) trait ExplicitBodyHandler {
 }
 
 pub(open) trait ImplicitBodyHandler {
-  async simple(Self, group~ : @async.TaskGroup[Unit], Model0) -> Unit
+  async simple(Self, group~ : @async.TaskGroup[Unit], Model) -> Unit
 }
 

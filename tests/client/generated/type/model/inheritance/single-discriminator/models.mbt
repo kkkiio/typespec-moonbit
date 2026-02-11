@@ -1,13 +1,9 @@
 ///|
-
-///|
 /// Model Bird
 pub(all) struct Bird {
   kind : String
   wingspan : Int
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model Dinosaur

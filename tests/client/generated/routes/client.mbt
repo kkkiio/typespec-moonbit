@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// RoutesClient HTTP 客户端。
 pub(all) struct RoutesClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 RoutesClient。
 pub fn RoutesClient::new(base_url : String) -> RoutesClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/fixed（自动解析响应）。
@@ -36,22 +30,16 @@ pub async fn RoutesClient::get_routes_fixed(self : RoutesClient) -> Unit {
 }
 
 ///|
-
-///|
 /// PathParametersClient HTTP 客户端。
 pub(all) struct PathParametersClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 PathParametersClient。
 pub fn PathParametersClient::new(base_url : String) -> PathParametersClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/template-only/{param}（自动解析响应）。
@@ -80,8 +68,6 @@ pub async fn PathParametersClient::get_routes_path_template_only__param_(
 }
 
 ///|
-
-///|
 /// 调用 get /routes/path/explicit/{param}（自动解析响应）。
 pub async fn PathParametersClient::get_routes_path_explicit__param_(
   self : PathParametersClient,
@@ -106,8 +92,6 @@ pub async fn PathParametersClient::get_routes_path_explicit__param_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/annotation-only/{param}（自动解析响应）。
@@ -136,14 +120,10 @@ pub async fn PathParametersClient::get_routes_path_annotation_only__param_(
 }
 
 ///|
-
-///|
 /// ReservedExpansionClient HTTP 客户端。
 pub(all) struct ReservedExpansionClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ReservedExpansionClient。
@@ -152,8 +132,6 @@ pub fn ReservedExpansionClient::new(
 ) -> ReservedExpansionClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/reserved-expansion/template/{+param}（自动解析响应）。
@@ -182,8 +160,6 @@ pub async fn ReservedExpansionClient::get_routes_path_reserved_expansion_templat
 }
 
 ///|
-
-///|
 /// 调用 get /routes/path/reserved-expansion/annotation/{+param}（自动解析响应）。
 pub async fn ReservedExpansionClient::get_routes_path_reserved_expansion_annotation___param_(
   self : ReservedExpansionClient,
@@ -210,22 +186,16 @@ pub async fn ReservedExpansionClient::get_routes_path_reserved_expansion_annotat
 }
 
 ///|
-
-///|
 /// StandardClient HTTP 客户端。
 pub(all) struct StandardClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 StandardClient。
 pub fn StandardClient::new(base_url : String) -> StandardClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/simple/standard/primitive{param}（自动解析响应）。
@@ -254,8 +224,6 @@ pub async fn StandardClient::get_routes_path_simple_standard_primitive_param_(
 }
 
 ///|
-
-///|
 /// 调用 get /routes/path/simple/standard/array{param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_simple_standard_array_param_(
   self : StandardClient,
@@ -280,8 +248,6 @@ pub async fn StandardClient::get_routes_path_simple_standard_array_param_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/simple/standard/record{param}（自动解析响应）。
@@ -310,8 +276,6 @@ pub async fn StandardClient::get_routes_path_simple_standard_record_param_(
 }
 
 ///|
-
-///|
 /// 调用 get /routes/path/path/standard/primitive{/param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_path_standard_primitive__param_(
   self : StandardClient,
@@ -336,8 +300,6 @@ pub async fn StandardClient::get_routes_path_path_standard_primitive__param_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/path/standard/array{/param}（自动解析响应）。
@@ -366,8 +328,6 @@ pub async fn StandardClient::get_routes_path_path_standard_array__param_(
 }
 
 ///|
-
-///|
 /// 调用 get /routes/path/path/standard/record{/param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_path_standard_record__param_(
   self : StandardClient,
@@ -392,8 +352,6 @@ pub async fn StandardClient::get_routes_path_path_standard_record__param_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/label/standard/primitive{.param}（自动解析响应）。
@@ -422,8 +380,6 @@ pub async fn StandardClient::get_routes_path_label_standard_primitive__param_(
 }
 
 ///|
-
-///|
 /// 调用 get /routes/path/label/standard/array{.param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_label_standard_array__param_(
   self : StandardClient,
@@ -448,8 +404,6 @@ pub async fn StandardClient::get_routes_path_label_standard_array__param_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/label/standard/record{.param}（自动解析响应）。
@@ -478,8 +432,6 @@ pub async fn StandardClient::get_routes_path_label_standard_record__param_(
 }
 
 ///|
-
-///|
 /// 调用 get /routes/path/matrix/standard/primitive{;param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_matrix_standard_primitive__param_(
   self : StandardClient,
@@ -504,8 +456,6 @@ pub async fn StandardClient::get_routes_path_matrix_standard_primitive__param_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/matrix/standard/array{;param}（自动解析响应）。
@@ -534,8 +484,6 @@ pub async fn StandardClient::get_routes_path_matrix_standard_array__param_(
 }
 
 ///|
-
-///|
 /// 调用 get /routes/path/matrix/standard/record{;param}（自动解析响应）。
 pub async fn StandardClient::get_routes_path_matrix_standard_record__param_(
   self : StandardClient,
@@ -560,8 +508,6 @@ pub async fn StandardClient::get_routes_path_matrix_standard_record__param_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/query/query-expansion/standard/primitive{?param}（自动解析响应）。
@@ -590,8 +536,6 @@ pub async fn StandardClient::get_routes_query_query_expansion_standard_primitive
 }
 
 ///|
-
-///|
 /// 调用 get /routes/query/query-expansion/standard/array{?param}（自动解析响应）。
 pub async fn StandardClient::get_routes_query_query_expansion_standard_array__param_(
   self : StandardClient,
@@ -618,8 +562,6 @@ pub async fn StandardClient::get_routes_query_query_expansion_standard_array__pa
 }
 
 ///|
-
-///|
 /// 调用 get /routes/query/query-expansion/standard/record{?param}（自动解析响应）。
 pub async fn StandardClient::get_routes_query_query_expansion_standard_record__param_(
   self : StandardClient,
@@ -644,8 +586,6 @@ pub async fn StandardClient::get_routes_query_query_expansion_standard_record__p
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/query/query-continuation/standard/primitive?fixed=true{&param}（自动解析响应）。
@@ -676,8 +616,6 @@ pub async fn StandardClient::get_routes_query_query_continuation_standard_primit
 }
 
 ///|
-
-///|
 /// 调用 get /routes/query/query-continuation/standard/array?fixed=true{&param}（自动解析响应）。
 pub async fn StandardClient::get_routes_query_query_continuation_standard_array_fixed_true__param_(
   self : StandardClient,
@@ -702,8 +640,6 @@ pub async fn StandardClient::get_routes_query_query_continuation_standard_array_
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/query/query-continuation/standard/record?fixed=true{&param}（自动解析响应）。
@@ -734,22 +670,16 @@ pub async fn StandardClient::get_routes_query_query_continuation_standard_record
 }
 
 ///|
-
-///|
 /// ExplodeClient HTTP 客户端。
 pub(all) struct ExplodeClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ExplodeClient。
 pub fn ExplodeClient::new(base_url : String) -> ExplodeClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/simple/explode/primitive{param*}（自动解析响应）。
@@ -778,8 +708,6 @@ pub async fn ExplodeClient::get_routes_path_simple_explode_primitive_param__(
 }
 
 ///|
-
-///|
 /// 调用 get /routes/path/simple/explode/array{param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_simple_explode_array_param__(
   self : ExplodeClient,
@@ -804,8 +732,6 @@ pub async fn ExplodeClient::get_routes_path_simple_explode_array_param__(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/simple/explode/record{param*}（自动解析响应）。
@@ -834,8 +760,6 @@ pub async fn ExplodeClient::get_routes_path_simple_explode_record_param__(
 }
 
 ///|
-
-///|
 /// 调用 get /routes/path/path/explode/primitive{/param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_path_explode_primitive__param__(
   self : ExplodeClient,
@@ -860,8 +784,6 @@ pub async fn ExplodeClient::get_routes_path_path_explode_primitive__param__(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/path/explode/array{/param*}（自动解析响应）。
@@ -890,8 +812,6 @@ pub async fn ExplodeClient::get_routes_path_path_explode_array__param__(
 }
 
 ///|
-
-///|
 /// 调用 get /routes/path/path/explode/record{/param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_path_explode_record__param__(
   self : ExplodeClient,
@@ -916,8 +836,6 @@ pub async fn ExplodeClient::get_routes_path_path_explode_record__param__(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/label/explode/primitive{.param*}（自动解析响应）。
@@ -946,8 +864,6 @@ pub async fn ExplodeClient::get_routes_path_label_explode_primitive__param__(
 }
 
 ///|
-
-///|
 /// 调用 get /routes/path/label/explode/array{.param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_label_explode_array__param__(
   self : ExplodeClient,
@@ -972,8 +888,6 @@ pub async fn ExplodeClient::get_routes_path_label_explode_array__param__(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/label/explode/record{.param*}（自动解析响应）。
@@ -1002,8 +916,6 @@ pub async fn ExplodeClient::get_routes_path_label_explode_record__param__(
 }
 
 ///|
-
-///|
 /// 调用 get /routes/path/matrix/explode/primitive{;param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_matrix_explode_primitive__param__(
   self : ExplodeClient,
@@ -1028,8 +940,6 @@ pub async fn ExplodeClient::get_routes_path_matrix_explode_primitive__param__(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/path/matrix/explode/array{;param*}（自动解析响应）。
@@ -1058,8 +968,6 @@ pub async fn ExplodeClient::get_routes_path_matrix_explode_array__param__(
 }
 
 ///|
-
-///|
 /// 调用 get /routes/path/matrix/explode/record{;param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_path_matrix_explode_record__param__(
   self : ExplodeClient,
@@ -1084,8 +992,6 @@ pub async fn ExplodeClient::get_routes_path_matrix_explode_record__param__(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/query/query-expansion/explode/primitive{?param*}（自动解析响应）。
@@ -1114,8 +1020,6 @@ pub async fn ExplodeClient::get_routes_query_query_expansion_explode_primitive__
 }
 
 ///|
-
-///|
 /// 调用 get /routes/query/query-expansion/explode/array{?param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_query_query_expansion_explode_array__param__(
   self : ExplodeClient,
@@ -1142,8 +1046,6 @@ pub async fn ExplodeClient::get_routes_query_query_expansion_explode_array__para
 }
 
 ///|
-
-///|
 /// 调用 get /routes/query/query-expansion/explode/record{?param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_query_query_expansion_explode_record__param__(
   self : ExplodeClient,
@@ -1168,8 +1070,6 @@ pub async fn ExplodeClient::get_routes_query_query_expansion_explode_record__par
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/query/query-continuation/explode/primitive?fixed=true{&param*}（自动解析响应）。
@@ -1200,8 +1100,6 @@ pub async fn ExplodeClient::get_routes_query_query_continuation_explode_primitiv
 }
 
 ///|
-
-///|
 /// 调用 get /routes/query/query-continuation/explode/array?fixed=true{&param*}（自动解析响应）。
 pub async fn ExplodeClient::get_routes_query_query_continuation_explode_array_fixed_true__param__(
   self : ExplodeClient,
@@ -1226,8 +1124,6 @@ pub async fn ExplodeClient::get_routes_query_query_continuation_explode_array_fi
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/query/query-continuation/explode/record?fixed=true{&param*}（自动解析响应）。
@@ -1256,22 +1152,16 @@ pub async fn ExplodeClient::get_routes_query_query_continuation_explode_record_f
 }
 
 ///|
-
-///|
 /// QueryParametersClient HTTP 客户端。
 pub(all) struct QueryParametersClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 QueryParametersClient。
 pub fn QueryParametersClient::new(base_url : String) -> QueryParametersClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/query/template-only{?param}（自动解析响应）。
@@ -1300,8 +1190,6 @@ pub async fn QueryParametersClient::get_routes_query_template_only__param_(
 }
 
 ///|
-
-///|
 /// 调用 get /routes/query/explicit{?param}（自动解析响应）。
 pub async fn QueryParametersClient::get_routes_query_explicit__param_(
   self : QueryParametersClient,
@@ -1326,8 +1214,6 @@ pub async fn QueryParametersClient::get_routes_query_explicit__param_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/query/annotation-only{?param}（自动解析响应）。
@@ -1356,22 +1242,16 @@ pub async fn QueryParametersClient::get_routes_query_annotation_only__param_(
 }
 
 ///|
-
-///|
 /// InInterfaceClient HTTP 客户端。
 pub(all) struct InInterfaceClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 InInterfaceClient。
 pub fn InInterfaceClient::new(base_url : String) -> InInterfaceClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /routes/in-interface/fixed（自动解析响应）。

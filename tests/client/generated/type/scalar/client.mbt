@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// StringClient HTTP 客户端。
 pub(all) struct StringClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 StringClient。
 pub fn StringClient::new(base_url : String) -> StringClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/scalar/string（自动解析响应）。
@@ -39,8 +33,6 @@ pub async fn StringClient::get_type_scalar_string(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/scalar/string（自动解析响应）。
@@ -68,22 +60,16 @@ pub async fn StringClient::put_type_scalar_string(
 }
 
 ///|
-
-///|
 /// BooleanClient HTTP 客户端。
 pub(all) struct BooleanClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 BooleanClient。
 pub fn BooleanClient::new(base_url : String) -> BooleanClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/scalar/boolean（自动解析响应）。
@@ -108,8 +94,6 @@ pub async fn BooleanClient::get_type_scalar_boolean(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/scalar/boolean（自动解析响应）。
@@ -137,22 +121,16 @@ pub async fn BooleanClient::put_type_scalar_boolean(
 }
 
 ///|
-
-///|
 /// UnknownClient HTTP 客户端。
 pub(all) struct UnknownClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 UnknownClient。
 pub fn UnknownClient::new(base_url : String) -> UnknownClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/scalar/unknown（自动解析响应）。
@@ -177,8 +155,6 @@ pub async fn UnknownClient::get_type_scalar_unknown(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/scalar/unknown（自动解析响应）。
@@ -206,22 +182,16 @@ pub async fn UnknownClient::put_type_scalar_unknown(
 }
 
 ///|
-
-///|
 /// DecimalTypeClient HTTP 客户端。
 pub(all) struct DecimalTypeClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 DecimalTypeClient。
 pub fn DecimalTypeClient::new(base_url : String) -> DecimalTypeClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/scalar/decimal/response_body（自动解析响应）。
@@ -250,8 +220,6 @@ pub async fn DecimalTypeClient::get_type_scalar_decimal_response_body(
 }
 
 ///|
-
-///|
 /// 调用 put /type/scalar/decimal/resquest_body（自动解析响应）。
 pub async fn DecimalTypeClient::put_type_scalar_decimal_resquest_body(
   self : DecimalTypeClient,
@@ -277,8 +245,6 @@ pub async fn DecimalTypeClient::put_type_scalar_decimal_resquest_body(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /type/scalar/decimal/request_parameter{?value}（自动解析响应）。
@@ -309,22 +275,16 @@ pub async fn DecimalTypeClient::get_type_scalar_decimal_request_parameter__value
 }
 
 ///|
-
-///|
 /// Decimal128TypeClient HTTP 客户端。
 pub(all) struct Decimal128TypeClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 Decimal128TypeClient。
 pub fn Decimal128TypeClient::new(base_url : String) -> Decimal128TypeClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/scalar/decimal128/response_body（自动解析响应）。
@@ -353,8 +313,6 @@ pub async fn Decimal128TypeClient::get_type_scalar_decimal128_response_body(
 }
 
 ///|
-
-///|
 /// 调用 put /type/scalar/decimal128/resquest_body（自动解析响应）。
 pub async fn Decimal128TypeClient::put_type_scalar_decimal128_resquest_body(
   self : Decimal128TypeClient,
@@ -380,8 +338,6 @@ pub async fn Decimal128TypeClient::put_type_scalar_decimal128_resquest_body(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /type/scalar/decimal128/request_parameter{?value}（自动解析响应）。
@@ -412,22 +368,16 @@ pub async fn Decimal128TypeClient::get_type_scalar_decimal128_request_parameter_
 }
 
 ///|
-
-///|
 /// DecimalVerifyClient HTTP 客户端。
 pub(all) struct DecimalVerifyClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 DecimalVerifyClient。
 pub fn DecimalVerifyClient::new(base_url : String) -> DecimalVerifyClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/scalar/decimal/prepare_verify（自动解析响应）。
@@ -456,8 +406,6 @@ pub async fn DecimalVerifyClient::get_type_scalar_decimal_prepare_verify(
 }
 
 ///|
-
-///|
 /// 调用 post /type/scalar/decimal/verify（自动解析响应）。
 pub async fn DecimalVerifyClient::post_type_scalar_decimal_verify(
   self : DecimalVerifyClient,
@@ -483,22 +431,16 @@ pub async fn DecimalVerifyClient::post_type_scalar_decimal_verify(
 }
 
 ///|
-
-///|
 /// Decimal128VerifyClient HTTP 客户端。
 pub(all) struct Decimal128VerifyClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 Decimal128VerifyClient。
 pub fn Decimal128VerifyClient::new(base_url : String) -> Decimal128VerifyClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/scalar/decimal128/prepare_verify（自动解析响应）。
@@ -525,8 +467,6 @@ pub async fn Decimal128VerifyClient::get_type_scalar_decimal128_prepare_verify(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /type/scalar/decimal128/verify（自动解析响应）。

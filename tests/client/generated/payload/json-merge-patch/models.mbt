@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// Model Resource
 pub(all) struct Resource {
   name : String
@@ -32,15 +30,11 @@ pub(all) struct Resource {
 )
 
 ///|
-
-///|
 /// Model InnerModel
 pub(all) struct InnerModel {
   name : String?
   description : String?
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model ResourcePatch

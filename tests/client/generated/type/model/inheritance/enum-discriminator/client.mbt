@@ -1,12 +1,8 @@
 ///|
-
-///|
 /// EnumDiscriminatorClient HTTP 客户端。
 pub(all) struct EnumDiscriminatorClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 EnumDiscriminatorClient。
@@ -15,8 +11,6 @@ pub fn EnumDiscriminatorClient::new(
 ) -> EnumDiscriminatorClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/model/inheritance/enum-discriminator/extensible-enum（自动解析响应）。
@@ -45,8 +39,6 @@ pub async fn EnumDiscriminatorClient::get_type_model_inheritance_enum_discrimina
 }
 
 ///|
-
-///|
 /// 调用 put /type/model/inheritance/enum-discriminator/extensible-enum（自动解析响应）。
 pub async fn EnumDiscriminatorClient::put_type_model_inheritance_enum_discriminator_extensible_enum(
   self : EnumDiscriminatorClient,
@@ -71,8 +63,6 @@ pub async fn EnumDiscriminatorClient::put_type_model_inheritance_enum_discrimina
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /type/model/inheritance/enum-discriminator/extensible-enum/missingdiscriminator（自动解析响应）。
@@ -101,8 +91,6 @@ pub async fn EnumDiscriminatorClient::get_type_model_inheritance_enum_discrimina
 }
 
 ///|
-
-///|
 /// 调用 get /type/model/inheritance/enum-discriminator/extensible-enum/wrongdiscriminator（自动解析响应）。
 pub async fn EnumDiscriminatorClient::get_type_model_inheritance_enum_discriminator_extensible_enum_wrongdiscriminator(
   self : EnumDiscriminatorClient,
@@ -127,8 +115,6 @@ pub async fn EnumDiscriminatorClient::get_type_model_inheritance_enum_discrimina
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /type/model/inheritance/enum-discriminator/fixed-enum（自动解析响应）。
@@ -157,8 +143,6 @@ pub async fn EnumDiscriminatorClient::get_type_model_inheritance_enum_discrimina
 }
 
 ///|
-
-///|
 /// 调用 put /type/model/inheritance/enum-discriminator/fixed-enum（自动解析响应）。
 pub async fn EnumDiscriminatorClient::put_type_model_inheritance_enum_discriminator_fixed_enum(
   self : EnumDiscriminatorClient,
@@ -185,8 +169,6 @@ pub async fn EnumDiscriminatorClient::put_type_model_inheritance_enum_discrimina
 }
 
 ///|
-
-///|
 /// 调用 get /type/model/inheritance/enum-discriminator/fixed-enum/missingdiscriminator（自动解析响应）。
 pub async fn EnumDiscriminatorClient::get_type_model_inheritance_enum_discriminator_fixed_enum_missingdiscriminator(
   self : EnumDiscriminatorClient,
@@ -211,8 +193,6 @@ pub async fn EnumDiscriminatorClient::get_type_model_inheritance_enum_discrimina
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /type/model/inheritance/enum-discriminator/fixed-enum/wrongdiscriminator（自动解析响应）。

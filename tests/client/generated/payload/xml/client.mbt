@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// SimpleModelValueClient HTTP 客户端。
 pub(all) struct SimpleModelValueClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 SimpleModelValueClient。
 pub fn SimpleModelValueClient::new(base_url : String) -> SimpleModelValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/xml/simpleModel（自动解析响应）。
@@ -39,8 +33,6 @@ pub async fn SimpleModelValueClient::get_payload_xml_simplemodel(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /payload/xml/simpleModel（自动解析响应）。
@@ -68,14 +60,10 @@ pub async fn SimpleModelValueClient::put_payload_xml_simplemodel(
 }
 
 ///|
-
-///|
 /// ModelWithSimpleArraysValueClient HTTP 客户端。
 pub(all) struct ModelWithSimpleArraysValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ModelWithSimpleArraysValueClient。
@@ -84,8 +72,6 @@ pub fn ModelWithSimpleArraysValueClient::new(
 ) -> ModelWithSimpleArraysValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/xml/modelWithSimpleArrays（自动解析响应）。
@@ -116,8 +102,6 @@ pub async fn ModelWithSimpleArraysValueClient::get_payload_xml_modelwithsimplear
 }
 
 ///|
-
-///|
 /// 调用 put /payload/xml/modelWithSimpleArrays（自动解析响应）。
 pub async fn ModelWithSimpleArraysValueClient::put_payload_xml_modelwithsimplearrays(
   self : ModelWithSimpleArraysValueClient,
@@ -145,14 +129,10 @@ pub async fn ModelWithSimpleArraysValueClient::put_payload_xml_modelwithsimplear
 }
 
 ///|
-
-///|
 /// ModelWithArrayOfModelValueClient HTTP 客户端。
 pub(all) struct ModelWithArrayOfModelValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ModelWithArrayOfModelValueClient。
@@ -161,8 +141,6 @@ pub fn ModelWithArrayOfModelValueClient::new(
 ) -> ModelWithArrayOfModelValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/xml/modelWithArrayOfModel（自动解析响应）。
@@ -193,8 +171,6 @@ pub async fn ModelWithArrayOfModelValueClient::get_payload_xml_modelwitharrayofm
 }
 
 ///|
-
-///|
 /// 调用 put /payload/xml/modelWithArrayOfModel（自动解析响应）。
 pub async fn ModelWithArrayOfModelValueClient::put_payload_xml_modelwitharrayofmodel(
   self : ModelWithArrayOfModelValueClient,
@@ -222,14 +198,10 @@ pub async fn ModelWithArrayOfModelValueClient::put_payload_xml_modelwitharrayofm
 }
 
 ///|
-
-///|
 /// ModelWithOptionalFieldValueClient HTTP 客户端。
 pub(all) struct ModelWithOptionalFieldValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ModelWithOptionalFieldValueClient。
@@ -238,8 +210,6 @@ pub fn ModelWithOptionalFieldValueClient::new(
 ) -> ModelWithOptionalFieldValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/xml/modelWithOptionalField（自动解析响应）。
@@ -270,8 +240,6 @@ pub async fn ModelWithOptionalFieldValueClient::get_payload_xml_modelwithoptiona
 }
 
 ///|
-
-///|
 /// 调用 put /payload/xml/modelWithOptionalField（自动解析响应）。
 pub async fn ModelWithOptionalFieldValueClient::put_payload_xml_modelwithoptionalfield(
   self : ModelWithOptionalFieldValueClient,
@@ -299,14 +267,10 @@ pub async fn ModelWithOptionalFieldValueClient::put_payload_xml_modelwithoptiona
 }
 
 ///|
-
-///|
 /// ModelWithAttributesValueClient HTTP 客户端。
 pub(all) struct ModelWithAttributesValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ModelWithAttributesValueClient。
@@ -315,8 +279,6 @@ pub fn ModelWithAttributesValueClient::new(
 ) -> ModelWithAttributesValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/xml/modelWithAttributes（自动解析响应）。
@@ -347,8 +309,6 @@ pub async fn ModelWithAttributesValueClient::get_payload_xml_modelwithattributes
 }
 
 ///|
-
-///|
 /// 调用 put /payload/xml/modelWithAttributes（自动解析响应）。
 pub async fn ModelWithAttributesValueClient::put_payload_xml_modelwithattributes(
   self : ModelWithAttributesValueClient,
@@ -376,14 +336,10 @@ pub async fn ModelWithAttributesValueClient::put_payload_xml_modelwithattributes
 }
 
 ///|
-
-///|
 /// ModelWithUnwrappedArrayValueClient HTTP 客户端。
 pub(all) struct ModelWithUnwrappedArrayValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ModelWithUnwrappedArrayValueClient。
@@ -392,8 +348,6 @@ pub fn ModelWithUnwrappedArrayValueClient::new(
 ) -> ModelWithUnwrappedArrayValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/xml/modelWithUnwrappedArray（自动解析响应）。
@@ -424,8 +378,6 @@ pub async fn ModelWithUnwrappedArrayValueClient::get_payload_xml_modelwithunwrap
 }
 
 ///|
-
-///|
 /// 调用 put /payload/xml/modelWithUnwrappedArray（自动解析响应）。
 pub async fn ModelWithUnwrappedArrayValueClient::put_payload_xml_modelwithunwrappedarray(
   self : ModelWithUnwrappedArrayValueClient,
@@ -453,14 +405,10 @@ pub async fn ModelWithUnwrappedArrayValueClient::put_payload_xml_modelwithunwrap
 }
 
 ///|
-
-///|
 /// ModelWithRenamedArraysValueClient HTTP 客户端。
 pub(all) struct ModelWithRenamedArraysValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ModelWithRenamedArraysValueClient。
@@ -469,8 +417,6 @@ pub fn ModelWithRenamedArraysValueClient::new(
 ) -> ModelWithRenamedArraysValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/xml/modelWithRenamedArrays（自动解析响应）。
@@ -501,8 +447,6 @@ pub async fn ModelWithRenamedArraysValueClient::get_payload_xml_modelwithrenamed
 }
 
 ///|
-
-///|
 /// 调用 put /payload/xml/modelWithRenamedArrays（自动解析响应）。
 pub async fn ModelWithRenamedArraysValueClient::put_payload_xml_modelwithrenamedarrays(
   self : ModelWithRenamedArraysValueClient,
@@ -530,14 +474,10 @@ pub async fn ModelWithRenamedArraysValueClient::put_payload_xml_modelwithrenamed
 }
 
 ///|
-
-///|
 /// ModelWithRenamedFieldsValueClient HTTP 客户端。
 pub(all) struct ModelWithRenamedFieldsValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ModelWithRenamedFieldsValueClient。
@@ -546,8 +486,6 @@ pub fn ModelWithRenamedFieldsValueClient::new(
 ) -> ModelWithRenamedFieldsValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/xml/modelWithRenamedFields（自动解析响应）。
@@ -578,8 +516,6 @@ pub async fn ModelWithRenamedFieldsValueClient::get_payload_xml_modelwithrenamed
 }
 
 ///|
-
-///|
 /// 调用 put /payload/xml/modelWithRenamedFields（自动解析响应）。
 pub async fn ModelWithRenamedFieldsValueClient::put_payload_xml_modelwithrenamedfields(
   self : ModelWithRenamedFieldsValueClient,
@@ -607,14 +543,10 @@ pub async fn ModelWithRenamedFieldsValueClient::put_payload_xml_modelwithrenamed
 }
 
 ///|
-
-///|
 /// ModelWithEmptyArrayValueClient HTTP 客户端。
 pub(all) struct ModelWithEmptyArrayValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ModelWithEmptyArrayValueClient。
@@ -623,8 +555,6 @@ pub fn ModelWithEmptyArrayValueClient::new(
 ) -> ModelWithEmptyArrayValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/xml/modelWithEmptyArray（自动解析响应）。
@@ -655,8 +585,6 @@ pub async fn ModelWithEmptyArrayValueClient::get_payload_xml_modelwithemptyarray
 }
 
 ///|
-
-///|
 /// 调用 put /payload/xml/modelWithEmptyArray（自动解析响应）。
 pub async fn ModelWithEmptyArrayValueClient::put_payload_xml_modelwithemptyarray(
   self : ModelWithEmptyArrayValueClient,
@@ -684,14 +612,10 @@ pub async fn ModelWithEmptyArrayValueClient::put_payload_xml_modelwithemptyarray
 }
 
 ///|
-
-///|
 /// ModelWithTextValueClient HTTP 客户端。
 pub(all) struct ModelWithTextValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ModelWithTextValueClient。
@@ -700,8 +624,6 @@ pub fn ModelWithTextValueClient::new(
 ) -> ModelWithTextValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/xml/modelWithText（自动解析响应）。
@@ -726,8 +648,6 @@ pub async fn ModelWithTextValueClient::get_payload_xml_modelwithtext(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /payload/xml/modelWithText（自动解析响应）。
@@ -755,14 +675,10 @@ pub async fn ModelWithTextValueClient::put_payload_xml_modelwithtext(
 }
 
 ///|
-
-///|
 /// ModelWithDictionaryValueClient HTTP 客户端。
 pub(all) struct ModelWithDictionaryValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ModelWithDictionaryValueClient。
@@ -771,8 +687,6 @@ pub fn ModelWithDictionaryValueClient::new(
 ) -> ModelWithDictionaryValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/xml/modelWithDictionary（自动解析响应）。
@@ -803,8 +717,6 @@ pub async fn ModelWithDictionaryValueClient::get_payload_xml_modelwithdictionary
 }
 
 ///|
-
-///|
 /// 调用 put /payload/xml/modelWithDictionary（自动解析响应）。
 pub async fn ModelWithDictionaryValueClient::put_payload_xml_modelwithdictionary(
   self : ModelWithDictionaryValueClient,
@@ -832,14 +744,10 @@ pub async fn ModelWithDictionaryValueClient::put_payload_xml_modelwithdictionary
 }
 
 ///|
-
-///|
 /// ModelWithEncodedNamesValueClient HTTP 客户端。
 pub(all) struct ModelWithEncodedNamesValueClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ModelWithEncodedNamesValueClient。
@@ -848,8 +756,6 @@ pub fn ModelWithEncodedNamesValueClient::new(
 ) -> ModelWithEncodedNamesValueClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/xml/modelWithEncodedNames（自动解析响应）。
@@ -878,8 +784,6 @@ pub async fn ModelWithEncodedNamesValueClient::get_payload_xml_modelwithencodedn
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /payload/xml/modelWithEncodedNames（自动解析响应）。

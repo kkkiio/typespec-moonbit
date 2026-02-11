@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// NotVersionedClient HTTP 客户端。
 pub(all) struct NotVersionedClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 NotVersionedClient。
 pub fn NotVersionedClient::new(base_url : String) -> NotVersionedClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 head /server/versions/not-versioned/without-api-version（自动解析响应）。
@@ -38,8 +32,6 @@ pub async fn NotVersionedClient::head_server_versions_not_versioned_without_api_
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 head /server/versions/not-versioned/with-query-api-version{?api%2Dversion}（自动解析响应）。
@@ -78,8 +70,6 @@ pub async fn NotVersionedClient::head_server_versions_not_versioned_with_query_a
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 head /server/versions/not-versioned/with-path-api-version/{apiVersion}（自动解析响应）。

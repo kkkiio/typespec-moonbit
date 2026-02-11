@@ -1,12 +1,8 @@
 ///|
-
-///|
 /// Model InnerModel
 pub(all) struct InnerModel {
   property : String
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model IntProperty
@@ -15,14 +11,10 @@ pub(all) struct IntProperty {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model EnumProperty
 pub(all) struct EnumProperty {
   property : Json
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model BytesProperty
@@ -64,14 +56,10 @@ pub impl @json.FromJson for BytesProperty with from_json(
 }
 
 ///|
-
-///|
 /// Model FloatProperty
 pub(all) struct FloatProperty {
   property : Double
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model ModelProperty
@@ -80,14 +68,10 @@ pub(all) struct ModelProperty {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model NeverProperty
 pub(all) struct NeverProperty {
   property : Json
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model StringProperty
@@ -96,14 +80,10 @@ pub(all) struct StringProperty {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model BooleanProperty
 pub(all) struct BooleanProperty {
   property : Bool
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model DecimalProperty
@@ -112,14 +92,10 @@ pub(all) struct DecimalProperty {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model DatetimeProperty
 pub(all) struct DatetimeProperty {
   property : @runtime.UtcDateTime
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model DurationProperty
@@ -128,14 +104,10 @@ pub(all) struct DurationProperty {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model Decimal128Property
 pub(all) struct Decimal128Property {
   property : Double
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model IntLiteralProperty
@@ -144,14 +116,10 @@ pub(all) struct IntLiteralProperty {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model UnknownIntProperty
 pub(all) struct UnknownIntProperty {
   property : Json
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model UnknownDictProperty
@@ -160,14 +128,10 @@ pub(all) struct UnknownDictProperty {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model FloatLiteralProperty
 pub(all) struct FloatLiteralProperty {
   property : Double
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model UnknownArrayProperty
@@ -176,14 +140,10 @@ pub(all) struct UnknownArrayProperty {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model StringLiteralProperty
 pub(all) struct StringLiteralProperty {
   property : String
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model UnknownStringProperty
@@ -192,14 +152,10 @@ pub(all) struct UnknownStringProperty {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model BooleanLiteralProperty
 pub(all) struct BooleanLiteralProperty {
   property : Bool
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model CollectionsIntProperty
@@ -208,14 +164,10 @@ pub(all) struct CollectionsIntProperty {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model ExtensibleEnumProperty
 pub(all) struct ExtensibleEnumProperty {
   property : String
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model UnionEnumValueProperty
@@ -224,14 +176,10 @@ pub(all) struct UnionEnumValueProperty {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model UnionIntLiteralProperty
 pub(all) struct UnionIntLiteralProperty {
   property : Double
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model CollectionsModelProperty
@@ -240,14 +188,10 @@ pub(all) struct CollectionsModelProperty {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model DictionaryStringProperty
 pub(all) struct DictionaryStringProperty {
   property : Map[String, String]
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model CollectionsStringProperty
@@ -256,14 +200,10 @@ pub(all) struct CollectionsStringProperty {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model UnionFloatLiteralProperty
 pub(all) struct UnionFloatLiteralProperty {
   property : Double
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model UnionStringLiteralProperty

@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// StringBodyClient HTTP 客户端。
 pub(all) struct StringBodyClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 StringBodyClient。
 pub fn StringBodyClient::new(base_url : String) -> StringBodyClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /payload/media-type/string-body/sendAsText（自动解析响应）。
@@ -44,8 +38,6 @@ pub async fn StringBodyClient::post_payload_media_type_string_body_sendastext(
 }
 
 ///|
-
-///|
 /// 调用 get /payload/media-type/string-body/getAsText（自动解析响应）。
 pub async fn StringBodyClient::get_payload_media_type_string_body_getastext(
   self : StringBodyClient,
@@ -70,8 +62,6 @@ pub async fn StringBodyClient::get_payload_media_type_string_body_getastext(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 post /payload/media-type/string-body/sendAsJson（自动解析响应）。
@@ -99,8 +89,6 @@ pub async fn StringBodyClient::post_payload_media_type_string_body_sendasjson(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /payload/media-type/string-body/getAsJson（自动解析响应）。

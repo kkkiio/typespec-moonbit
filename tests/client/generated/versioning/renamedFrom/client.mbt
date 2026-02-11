@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// RenamedFromClient HTTP 客户端。
 pub(all) struct RenamedFromClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 RenamedFromClient。
 pub fn RenamedFromClient::new(base_url : String) -> RenamedFromClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /versioning/renamed-from/api-version:{version}/test{?newQuery}（自动解析响应）。
@@ -52,22 +46,16 @@ pub async fn RenamedFromClient::post_versioning_renamed_from_api_version__versio
 }
 
 ///|
-
-///|
 /// NewInterfaceClient HTTP 客户端。
 pub(all) struct NewInterfaceClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 NewInterfaceClient。
 pub fn NewInterfaceClient::new(base_url : String) -> NewInterfaceClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 post /versioning/renamed-from/api-version:{version}/interface/test（自动解析响应）。

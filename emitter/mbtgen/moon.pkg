@@ -6,6 +6,7 @@ options(
   targets: {
     "ast.mbt": [ "js", "wasm-gc", "native" ],
     "identifier.mbt": [ "js", "wasm-gc", "native" ],
+    "naming.mbt": [ "js", "wasm-gc", "native" ],
     "process.mbt": [ "js" ],
     "renderer.mbt": [ "js", "wasm-gc", "native" ],
     "renderer_test.mbt": [ "js", "wasm-gc", "native" ],

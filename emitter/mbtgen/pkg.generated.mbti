@@ -4,6 +4,8 @@ package "kkkiio/typespec-moonbit/mbtgen"
 // Values
 pub async fn exec_moon_fmt(String) -> Unit
 
+pub fn new_name_state() -> NameState
+
 pub fn render(File) -> String
 
 pub fn sanitize_identifier(String) -> String
@@ -61,6 +63,21 @@ pub(all) struct FunctionSignature {
   can_raise : Bool
   doc : String?
 }
+
+pub(all) struct NameRequest {
+  stable_key : String
+  preferred_name : String
+}
+pub fn NameRequest::new(String, String) -> Self
+
+pub(all) struct NameState {
+  key_to_name : Map[String, String]
+  name_to_key : Map[String, String]
+  next_suffix : Map[String, Int]
+}
+pub fn NameState::alloc(Self, String, String) -> String
+pub fn NameState::alloc_batch(Self, Array[NameRequest]) -> Map[String, String] raise
+pub fn NameState::lookup(Self, String) -> String?
 
 pub(all) struct Param {
   name : String

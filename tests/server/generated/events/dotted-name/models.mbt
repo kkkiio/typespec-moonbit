@@ -1,6 +1,4 @@
 ///|
-
-///|
 /// SSE events TaskEvents
 pub(all) enum TaskEvents {
   MariaQueuedMessagesSynchronized(Json)
@@ -8,9 +6,7 @@ pub(all) enum TaskEvents {
 } derive(Show)
 
 ///|
-
-///|
-/// Model Model0
-pub(all) struct Model0 {
+/// Model Model
+pub(all) struct Model {
   error : Json
 } derive(Show, ToJson, @json.FromJson)

@@ -13,16 +13,16 @@ import {
 pub(all) struct DifferentBodyClient {
   base_url : String
 }
-pub async fn DifferentBodyClient::get_avatar_as_json(Self) -> PngImageAsJson0
+pub async fn DifferentBodyClient::get_avatar_as_json(Self) -> PngImageAsJson
 pub async fn DifferentBodyClient::get_avatar_as_png(Self) -> Bytes
 pub fn DifferentBodyClient::new(String) -> Self
 
-pub(all) struct PngImageAsJson0 {
+pub(all) struct PngImageAsJson {
   content : Bytes
 }
-pub impl Show for PngImageAsJson0
-pub impl ToJson for PngImageAsJson0
-pub impl @json.FromJson for PngImageAsJson0
+pub impl Show for PngImageAsJson
+pub impl ToJson for PngImageAsJson
+pub impl @json.FromJson for PngImageAsJson
 
 pub(all) struct SameBodyClient {
   base_url : String

@@ -1,13 +1,9 @@
 ///|
-
-///|
 /// Model Dog
 pub(all) struct Dog {
   kind : String
   weight : Int
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model Snake

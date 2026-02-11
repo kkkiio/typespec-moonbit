@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// VersionedClient HTTP 客户端。
 pub(all) struct VersionedClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 VersionedClient。
 pub fn VersionedClient::new(base_url : String) -> VersionedClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 head /server/versions/versioned/without-api-version（自动解析响应）。
@@ -38,8 +32,6 @@ pub async fn VersionedClient::head_server_versions_versioned_without_api_version
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 head /server/versions/versioned/with-query-api-version{?api%2Dversion}（自动解析响应）。
@@ -80,8 +72,6 @@ pub async fn VersionedClient::head_server_versions_versioned_with_query_api_vers
 }
 
 ///|
-
-///|
 /// 调用 head /server/versions/versioned/with-path-api-version/{apiVersion}（自动解析响应）。
 pub async fn VersionedClient::head_server_versions_versioned_with_path_api_version__apiversion_(
   self : VersionedClient,
@@ -106,8 +96,6 @@ pub async fn VersionedClient::head_server_versions_versioned_with_path_api_versi
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 head /server/versions/versioned/with-query-old-api-version{?api%2Dversion}（自动解析响应）。

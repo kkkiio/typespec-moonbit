@@ -11,8 +11,8 @@ import {
 
 // Types and methods
 pub(all) struct BinaryArrayPartsRequest {
-  id : HttpPart12
-  pictures : Array[HttpPart13]
+  id : HttpPart7
+  pictures : Array[HttpPart16]
 }
 pub impl Show for BinaryArrayPartsRequest
 pub impl ToJson for BinaryArrayPartsRequest
@@ -22,18 +22,18 @@ pub(all) struct ComplexHttpPartsModelRequest {
   id : HttpPart18
   address : HttpPart19
   profile_image : HttpPart20
-  previous_addresses : HttpPart21
-  pictures : Array[HttpPart22]
+  previous_addresses : HttpPart22
+  pictures : Array[HttpPart21]
 }
 pub impl Show for ComplexHttpPartsModelRequest
 pub impl ToJson for ComplexHttpPartsModelRequest
 pub impl @json.FromJson for ComplexHttpPartsModelRequest
 
 pub(all) struct ComplexPartsRequest {
-  id : HttpPart8
-  address : HttpPart9
-  profile_image : HttpPart10
-  pictures : Array[HttpPart11]
+  id : HttpPart5
+  address : HttpPart8
+  profile_image : HttpPart12
+  pictures : Array[HttpPart14]
 }
 pub impl Show for ComplexPartsRequest
 pub impl ToJson for ComplexPartsRequest
@@ -245,38 +245,38 @@ pub fn HttpPartsClient::new(String) -> Self
 pub async fn HttpPartsClient::post_multipart_form_data_complex_parts_with_httppart(Self, ComplexHttpPartsModelRequest) -> Unit
 
 pub(all) struct JsonPartRequest {
-  address : HttpPart2
+  address : HttpPart1
   profile_image : HttpPart3
 }
 pub impl Show for JsonPartRequest
 pub impl ToJson for JsonPartRequest
 pub impl @json.FromJson for JsonPartRequest
 
-pub(all) struct Model0 {
-  temperature : HttpPart4
+pub(all) struct Model {
+  temperature : HttpPart6
 }
-pub impl Show for Model0
-pub impl ToJson for Model0
-pub impl @json.FromJson for Model0
+pub impl Show for Model
+pub impl ToJson for Model
+pub impl @json.FromJson for Model
 
 pub(all) struct Model1 {
-  profile_image : HttpPart7
+  profile_image : HttpPart10
 }
 pub impl Show for Model1
 pub impl ToJson for Model1
 pub impl @json.FromJson for Model1
 
 pub(all) struct MultiBinaryPartsRequest {
-  profile_image : HttpPart14
-  picture : HttpPart15?
+  profile_image : HttpPart15
+  picture : HttpPart11?
 }
 pub impl Show for MultiBinaryPartsRequest
 pub impl ToJson for MultiBinaryPartsRequest
 pub impl @json.FromJson for MultiBinaryPartsRequest
 
 pub(all) struct MultiPartOptionalRequest {
-  id : HttpPart5?
-  profile_image : HttpPart6?
+  id : HttpPart4?
+  profile_image : HttpPart9?
 }
 pub impl Show for MultiPartOptionalRequest
 pub impl ToJson for MultiPartOptionalRequest
@@ -284,15 +284,15 @@ pub impl @json.FromJson for MultiPartOptionalRequest
 
 pub(all) struct MultiPartRequest {
   id : HttpPart
-  profile_image : HttpPart1
+  profile_image : HttpPart2
 }
 pub impl Show for MultiPartRequest
 pub impl ToJson for MultiPartRequest
 pub impl @json.FromJson for MultiPartRequest
 
 pub(all) struct MultiPartRequestWithWireName {
-  identifier : HttpPart16
-  image : HttpPart17
+  identifier : HttpPart17
+  image : HttpPart13
 }
 pub impl Show for MultiPartRequestWithWireName
 pub impl ToJson for MultiPartRequestWithWireName
@@ -302,7 +302,7 @@ pub(all) struct NonStringClient {
   base_url : String
 }
 pub fn NonStringClient::new(String) -> Self
-pub async fn NonStringClient::post_multipart_form_data_non_string_float(Self, Model0) -> Unit
+pub async fn NonStringClient::post_multipart_form_data_non_string_float(Self, Model) -> Unit
 
 // Type aliases
 

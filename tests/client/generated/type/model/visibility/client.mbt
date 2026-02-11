@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// VisibilityClient HTTP 客户端。
 pub(all) struct VisibilityClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 VisibilityClient。
 pub fn VisibilityClient::new(base_url : String) -> VisibilityClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/model/visibility{?queryProp}（自动解析响应）。
@@ -51,8 +45,6 @@ pub async fn VisibilityClient::get_type_model_visibility__queryprop_(
 }
 
 ///|
-
-///|
 /// 调用 head /type/model/visibility{?queryProp}（自动解析响应）。
 pub async fn VisibilityClient::head_type_model_visibility__queryprop_(
   self : VisibilityClient,
@@ -84,8 +76,6 @@ pub async fn VisibilityClient::head_type_model_visibility__queryprop_(
 }
 
 ///|
-
-///|
 /// 调用 put /type/model/visibility（自动解析响应）。
 pub async fn VisibilityClient::put_type_model_visibility(
   self : VisibilityClient,
@@ -108,8 +98,6 @@ pub async fn VisibilityClient::put_type_model_visibility(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 patch /type/model/visibility（自动解析响应）。
@@ -136,8 +124,6 @@ pub async fn VisibilityClient::patch_type_model_visibility(
 }
 
 ///|
-
-///|
 /// 调用 post /type/model/visibility（自动解析响应）。
 pub async fn VisibilityClient::post_type_model_visibility(
   self : VisibilityClient,
@@ -162,8 +148,6 @@ pub async fn VisibilityClient::post_type_model_visibility(
 }
 
 ///|
-
-///|
 /// 调用 delete /type/model/visibility（自动解析响应）。
 pub async fn VisibilityClient::delete_type_model_visibility(
   self : VisibilityClient,
@@ -186,8 +170,6 @@ pub async fn VisibilityClient::delete_type_model_visibility(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/model/visibility/readonlyroundtrip（自动解析响应）。

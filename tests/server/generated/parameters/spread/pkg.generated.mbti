@@ -38,12 +38,12 @@ pub(all) enum MatchRouteResult {
   Matched(RouteId)
 }
 
-pub(all) struct Model0 {
+pub(all) struct Model {
   name : String
 }
-pub impl Show for Model0
-pub impl ToJson for Model0
-pub impl @json.FromJson for Model0
+pub impl Show for Model
+pub impl ToJson for Model
+pub impl @json.FromJson for Model
 
 pub(all) struct Model1 {
   name : String
@@ -53,17 +53,17 @@ pub impl ToJson for Model1
 pub impl @json.FromJson for Model1
 
 pub(all) struct Model2 {
-  name : String
+  required_string : String
+  optional_int : Int?
+  required_int_list : Array[Int]
+  optional_string_list : Array[String]?
 }
 pub impl Show for Model2
 pub impl ToJson for Model2
 pub impl @json.FromJson for Model2
 
 pub(all) struct Model3 {
-  required_string : String
-  optional_int : Int?
-  required_int_list : Array[Int]
-  optional_string_list : Array[String]?
+  prop : String
 }
 pub impl Show for Model3
 pub impl ToJson for Model3
@@ -71,14 +71,14 @@ pub impl @json.FromJson for Model3
 
 pub(all) struct Model4 {
   name : String
-  age : Int
 }
 pub impl Show for Model4
 pub impl ToJson for Model4
 pub impl @json.FromJson for Model4
 
 pub(all) struct Model6 {
-  prop : String
+  name : String
+  age : Int
 }
 pub impl Show for Model6
 pub impl ToJson for Model6
@@ -108,18 +108,18 @@ pub type Router = async (@http.Request, &@io.Reader, @http.ServerConnection) -> 
 
 // Traits
 pub(open) trait AliasHandler {
-  async spread_as_request_body(Self, group~ : @async.TaskGroup[Unit], Model0) -> Unit
-  async spread_as_request_parameter(Self, group~ : @async.TaskGroup[Unit], String, String, Model2) -> Unit
-  async spread_with_multiple_parameters(Self, group~ : @async.TaskGroup[Unit], String, String, Model3) -> Unit
-  async spread_parameter_with_inner_alias(Self, group~ : @async.TaskGroup[Unit], String, String, Model4) -> Unit
-  async spread_parameter_with_inner_model(Self, group~ : @async.TaskGroup[Unit], String, String, Model1) -> Unit
+  async spread_as_request_body(Self, group~ : @async.TaskGroup[Unit], Model) -> Unit
+  async spread_as_request_parameter(Self, group~ : @async.TaskGroup[Unit], String, String, Model1) -> Unit
+  async spread_with_multiple_parameters(Self, group~ : @async.TaskGroup[Unit], String, String, Model2) -> Unit
+  async spread_parameter_with_inner_alias(Self, group~ : @async.TaskGroup[Unit], String, String, Model6) -> Unit
+  async spread_parameter_with_inner_model(Self, group~ : @async.TaskGroup[Unit], String, String, Model4) -> Unit
 }
 
 pub(open) trait ModelHandler {
-  async spread_as_request_body(Self, group~ : @async.TaskGroup[Unit], BodyParameter5) -> Unit
-  async spread_composite_request(Self, group~ : @async.TaskGroup[Unit], String, String, BodyParameter) -> Unit
-  async spread_composite_request_mix(Self, group~ : @async.TaskGroup[Unit], String, String, Model6) -> Unit
-  async spread_composite_request_only_with_body(Self, group~ : @async.TaskGroup[Unit], BodyParameter) -> Unit
+  async spread_as_request_body(Self, group~ : @async.TaskGroup[Unit], BodyParameter) -> Unit
+  async spread_composite_request(Self, group~ : @async.TaskGroup[Unit], String, String, BodyParameter5) -> Unit
+  async spread_composite_request_mix(Self, group~ : @async.TaskGroup[Unit], String, String, Model3) -> Unit
+  async spread_composite_request_only_with_body(Self, group~ : @async.TaskGroup[Unit], BodyParameter5) -> Unit
   async spread_composite_request_without_body(Self, group~ : @async.TaskGroup[Unit], String, String) -> Unit
 }
 

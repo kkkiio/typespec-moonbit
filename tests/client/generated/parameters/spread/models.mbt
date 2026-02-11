@@ -1,12 +1,8 @@
 ///|
-
-///|
-/// Model Model0
-pub(all) struct Model0 {
+/// Model Model
+pub(all) struct Model {
   name : String
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model Model1
@@ -15,18 +11,8 @@ pub(all) struct Model1 {
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
-
-///|
 /// Model Model2
 pub(all) struct Model2 {
-  name : String
-} derive(Show, ToJson, @json.FromJson)
-
-///|
-
-///|
-/// Model Model3
-pub(all) struct Model3 {
   required_string : String
   optional_int : Int?
   required_int_list : Array[Int]
@@ -52,31 +38,29 @@ pub(all) struct Model3 {
 )
 
 ///|
+/// Model Model3
+pub(all) struct Model3 {
+  prop : String
+} derive(Show, ToJson, @json.FromJson)
 
 ///|
 /// Model Model4
 pub(all) struct Model4 {
   name : String
-  age : Int
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model Model6
 pub(all) struct Model6 {
-  prop : String
+  name : String
+  age : Int
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model BodyParameter
 pub(all) struct BodyParameter {
   name : String
 } derive(Show, ToJson, @json.FromJson)
-
-///|
 
 ///|
 /// Model BodyParameter5

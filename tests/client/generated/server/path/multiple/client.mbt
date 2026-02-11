@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// MultipleClient HTTP 客户端。
 pub(all) struct MultipleClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 MultipleClient。
 pub fn MultipleClient::new(base_url : String) -> MultipleClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /server/path/multiple/{apiVersion}（自动解析响应）。
@@ -41,8 +35,6 @@ pub async fn MultipleClient::get_server_path_multiple__apiversion_(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /server/path/multiple/{apiVersion}/{keyword}（自动解析响应）。

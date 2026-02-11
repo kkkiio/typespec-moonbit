@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// NotDefinedClient HTTP 客户端。
 pub(all) struct NotDefinedClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 NotDefinedClient。
 pub fn NotDefinedClient::new(base_url : String) -> NotDefinedClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 head /server/endpoint/not-defined/valid（自动解析响应）。

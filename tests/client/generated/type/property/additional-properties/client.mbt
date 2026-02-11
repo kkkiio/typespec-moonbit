@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// ExtendsUnknownClient HTTP 客户端。
 pub(all) struct ExtendsUnknownClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ExtendsUnknownClient。
 pub fn ExtendsUnknownClient::new(base_url : String) -> ExtendsUnknownClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/extendsRecordUnknown（自动解析响应）。
@@ -45,8 +39,6 @@ pub async fn ExtendsUnknownClient::get_type_property_additionalproperties_extend
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/extendsRecordUnknown（自动解析响应）。
 pub async fn ExtendsUnknownClient::put_type_property_additionalproperties_extendsrecordunknown(
   self : ExtendsUnknownClient,
@@ -73,14 +65,10 @@ pub async fn ExtendsUnknownClient::put_type_property_additionalproperties_extend
 }
 
 ///|
-
-///|
 /// ExtendsUnknownDerivedClient HTTP 客户端。
 pub(all) struct ExtendsUnknownDerivedClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ExtendsUnknownDerivedClient。
@@ -89,8 +77,6 @@ pub fn ExtendsUnknownDerivedClient::new(
 ) -> ExtendsUnknownDerivedClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/extendsRecordUnknownDerived（自动解析响应）。
@@ -121,8 +107,6 @@ pub async fn ExtendsUnknownDerivedClient::get_type_property_additionalproperties
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/extendsRecordUnknownDerived（自动解析响应）。
 pub async fn ExtendsUnknownDerivedClient::put_type_property_additionalproperties_extendsrecordunknownderived(
   self : ExtendsUnknownDerivedClient,
@@ -149,14 +133,10 @@ pub async fn ExtendsUnknownDerivedClient::put_type_property_additionalproperties
 }
 
 ///|
-
-///|
 /// ExtendsUnknownDiscriminatedClient HTTP 客户端。
 pub(all) struct ExtendsUnknownDiscriminatedClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ExtendsUnknownDiscriminatedClient。
@@ -165,8 +145,6 @@ pub fn ExtendsUnknownDiscriminatedClient::new(
 ) -> ExtendsUnknownDiscriminatedClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/extendsUnknownDiscriminated（自动解析响应）。
@@ -197,8 +175,6 @@ pub async fn ExtendsUnknownDiscriminatedClient::get_type_property_additionalprop
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/extendsUnknownDiscriminated（自动解析响应）。
 pub async fn ExtendsUnknownDiscriminatedClient::put_type_property_additionalproperties_extendsunknowndiscriminated(
   self : ExtendsUnknownDiscriminatedClient,
@@ -225,22 +201,16 @@ pub async fn ExtendsUnknownDiscriminatedClient::put_type_property_additionalprop
 }
 
 ///|
-
-///|
 /// IsUnknownClient HTTP 客户端。
 pub(all) struct IsUnknownClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 IsUnknownClient。
 pub fn IsUnknownClient::new(base_url : String) -> IsUnknownClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/isRecordUnknown（自动解析响应）。
@@ -269,8 +239,6 @@ pub async fn IsUnknownClient::get_type_property_additionalproperties_isrecordunk
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/isRecordUnknown（自动解析响应）。
 pub async fn IsUnknownClient::put_type_property_additionalproperties_isrecordunknown(
   self : IsUnknownClient,
@@ -297,22 +265,16 @@ pub async fn IsUnknownClient::put_type_property_additionalproperties_isrecordunk
 }
 
 ///|
-
-///|
 /// IsUnknownDerivedClient HTTP 客户端。
 pub(all) struct IsUnknownDerivedClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 IsUnknownDerivedClient。
 pub fn IsUnknownDerivedClient::new(base_url : String) -> IsUnknownDerivedClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/isRecordUnknownDerived（自动解析响应）。
@@ -343,8 +305,6 @@ pub async fn IsUnknownDerivedClient::get_type_property_additionalproperties_isre
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/isRecordUnknownDerived（自动解析响应）。
 pub async fn IsUnknownDerivedClient::put_type_property_additionalproperties_isrecordunknownderived(
   self : IsUnknownDerivedClient,
@@ -371,14 +331,10 @@ pub async fn IsUnknownDerivedClient::put_type_property_additionalproperties_isre
 }
 
 ///|
-
-///|
 /// IsUnknownDiscriminatedClient HTTP 客户端。
 pub(all) struct IsUnknownDiscriminatedClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 IsUnknownDiscriminatedClient。
@@ -387,8 +343,6 @@ pub fn IsUnknownDiscriminatedClient::new(
 ) -> IsUnknownDiscriminatedClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/isUnknownDiscriminated（自动解析响应）。
@@ -417,8 +371,6 @@ pub async fn IsUnknownDiscriminatedClient::get_type_property_additionalpropertie
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/isUnknownDiscriminated（自动解析响应）。
 pub async fn IsUnknownDiscriminatedClient::put_type_property_additionalproperties_isunknowndiscriminated(
   self : IsUnknownDiscriminatedClient,
@@ -445,22 +397,16 @@ pub async fn IsUnknownDiscriminatedClient::put_type_property_additionalpropertie
 }
 
 ///|
-
-///|
 /// ExtendsStringClient HTTP 客户端。
 pub(all) struct ExtendsStringClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ExtendsStringClient。
 pub fn ExtendsStringClient::new(base_url : String) -> ExtendsStringClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/extendsRecordString（自动解析响应）。
@@ -491,8 +437,6 @@ pub async fn ExtendsStringClient::get_type_property_additionalproperties_extends
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/extendsRecordString（自动解析响应）。
 pub async fn ExtendsStringClient::put_type_property_additionalproperties_extendsrecordstring(
   self : ExtendsStringClient,
@@ -519,22 +463,16 @@ pub async fn ExtendsStringClient::put_type_property_additionalproperties_extends
 }
 
 ///|
-
-///|
 /// IsStringClient HTTP 客户端。
 pub(all) struct IsStringClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 IsStringClient。
 pub fn IsStringClient::new(base_url : String) -> IsStringClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/isRecordstring（自动解析响应）。
@@ -565,8 +503,6 @@ pub async fn IsStringClient::get_type_property_additionalproperties_isrecordstri
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/isRecordstring（自动解析响应）。
 pub async fn IsStringClient::put_type_property_additionalproperties_isrecordstring(
   self : IsStringClient,
@@ -593,22 +529,16 @@ pub async fn IsStringClient::put_type_property_additionalproperties_isrecordstri
 }
 
 ///|
-
-///|
 /// SpreadStringClient HTTP 客户端。
 pub(all) struct SpreadStringClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 SpreadStringClient。
 pub fn SpreadStringClient::new(base_url : String) -> SpreadStringClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/spreadRecordString（自动解析响应）。
@@ -639,8 +569,6 @@ pub async fn SpreadStringClient::get_type_property_additionalproperties_spreadre
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/spreadRecordString（自动解析响应）。
 pub async fn SpreadStringClient::put_type_property_additionalproperties_spreadrecordstring(
   self : SpreadStringClient,
@@ -667,22 +595,16 @@ pub async fn SpreadStringClient::put_type_property_additionalproperties_spreadre
 }
 
 ///|
-
-///|
 /// ExtendsFloatClient HTTP 客户端。
 pub(all) struct ExtendsFloatClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ExtendsFloatClient。
 pub fn ExtendsFloatClient::new(base_url : String) -> ExtendsFloatClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/extendsRecordFloat（自动解析响应）。
@@ -713,8 +635,6 @@ pub async fn ExtendsFloatClient::get_type_property_additionalproperties_extendsr
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/extendsRecordFloat（自动解析响应）。
 pub async fn ExtendsFloatClient::put_type_property_additionalproperties_extendsrecordfloat(
   self : ExtendsFloatClient,
@@ -741,22 +661,16 @@ pub async fn ExtendsFloatClient::put_type_property_additionalproperties_extendsr
 }
 
 ///|
-
-///|
 /// IsFloatClient HTTP 客户端。
 pub(all) struct IsFloatClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 IsFloatClient。
 pub fn IsFloatClient::new(base_url : String) -> IsFloatClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/isRecordFloat（自动解析响应）。
@@ -787,8 +701,6 @@ pub async fn IsFloatClient::get_type_property_additionalproperties_isrecordfloat
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/isRecordFloat（自动解析响应）。
 pub async fn IsFloatClient::put_type_property_additionalproperties_isrecordfloat(
   self : IsFloatClient,
@@ -815,22 +727,16 @@ pub async fn IsFloatClient::put_type_property_additionalproperties_isrecordfloat
 }
 
 ///|
-
-///|
 /// SpreadFloatClient HTTP 客户端。
 pub(all) struct SpreadFloatClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 SpreadFloatClient。
 pub fn SpreadFloatClient::new(base_url : String) -> SpreadFloatClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/spreadRecordFloat（自动解析响应）。
@@ -861,8 +767,6 @@ pub async fn SpreadFloatClient::get_type_property_additionalproperties_spreadrec
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/spreadRecordFloat（自动解析响应）。
 pub async fn SpreadFloatClient::put_type_property_additionalproperties_spreadrecordfloat(
   self : SpreadFloatClient,
@@ -889,22 +793,16 @@ pub async fn SpreadFloatClient::put_type_property_additionalproperties_spreadrec
 }
 
 ///|
-
-///|
 /// ExtendsModelClient HTTP 客户端。
 pub(all) struct ExtendsModelClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 ExtendsModelClient。
 pub fn ExtendsModelClient::new(base_url : String) -> ExtendsModelClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/extendsRecordModel（自动解析响应）。
@@ -935,8 +833,6 @@ pub async fn ExtendsModelClient::get_type_property_additionalproperties_extendsr
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/extendsRecordModel（自动解析响应）。
 pub async fn ExtendsModelClient::put_type_property_additionalproperties_extendsrecordmodel(
   self : ExtendsModelClient,
@@ -963,22 +859,16 @@ pub async fn ExtendsModelClient::put_type_property_additionalproperties_extendsr
 }
 
 ///|
-
-///|
 /// IsModelClient HTTP 客户端。
 pub(all) struct IsModelClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 IsModelClient。
 pub fn IsModelClient::new(base_url : String) -> IsModelClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/isRecordModel（自动解析响应）。
@@ -1009,8 +899,6 @@ pub async fn IsModelClient::get_type_property_additionalproperties_isrecordmodel
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/isRecordModel（自动解析响应）。
 pub async fn IsModelClient::put_type_property_additionalproperties_isrecordmodel(
   self : IsModelClient,
@@ -1037,22 +925,16 @@ pub async fn IsModelClient::put_type_property_additionalproperties_isrecordmodel
 }
 
 ///|
-
-///|
 /// SpreadModelClient HTTP 客户端。
 pub(all) struct SpreadModelClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 SpreadModelClient。
 pub fn SpreadModelClient::new(base_url : String) -> SpreadModelClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/spreadRecordModel（自动解析响应）。
@@ -1083,8 +965,6 @@ pub async fn SpreadModelClient::get_type_property_additionalproperties_spreadrec
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/spreadRecordModel（自动解析响应）。
 pub async fn SpreadModelClient::put_type_property_additionalproperties_spreadrecordmodel(
   self : SpreadModelClient,
@@ -1111,14 +991,10 @@ pub async fn SpreadModelClient::put_type_property_additionalproperties_spreadrec
 }
 
 ///|
-
-///|
 /// ExtendsModelArrayClient HTTP 客户端。
 pub(all) struct ExtendsModelArrayClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ExtendsModelArrayClient。
@@ -1127,8 +1003,6 @@ pub fn ExtendsModelArrayClient::new(
 ) -> ExtendsModelArrayClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/extendsRecordModelArray（自动解析响应）。
@@ -1159,8 +1033,6 @@ pub async fn ExtendsModelArrayClient::get_type_property_additionalproperties_ext
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/extendsRecordModelArray（自动解析响应）。
 pub async fn ExtendsModelArrayClient::put_type_property_additionalproperties_extendsrecordmodelarray(
   self : ExtendsModelArrayClient,
@@ -1187,22 +1059,16 @@ pub async fn ExtendsModelArrayClient::put_type_property_additionalproperties_ext
 }
 
 ///|
-
-///|
 /// IsModelArrayClient HTTP 客户端。
 pub(all) struct IsModelArrayClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 IsModelArrayClient。
 pub fn IsModelArrayClient::new(base_url : String) -> IsModelArrayClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/isRecordModelArray（自动解析响应）。
@@ -1233,8 +1099,6 @@ pub async fn IsModelArrayClient::get_type_property_additionalproperties_isrecord
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/isRecordModelArray（自动解析响应）。
 pub async fn IsModelArrayClient::put_type_property_additionalproperties_isrecordmodelarray(
   self : IsModelArrayClient,
@@ -1261,22 +1125,16 @@ pub async fn IsModelArrayClient::put_type_property_additionalproperties_isrecord
 }
 
 ///|
-
-///|
 /// SpreadModelArrayClient HTTP 客户端。
 pub(all) struct SpreadModelArrayClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 SpreadModelArrayClient。
 pub fn SpreadModelArrayClient::new(base_url : String) -> SpreadModelArrayClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/spreadRecordModelArray（自动解析响应）。
@@ -1307,8 +1165,6 @@ pub async fn SpreadModelArrayClient::get_type_property_additionalproperties_spre
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/spreadRecordModelArray（自动解析响应）。
 pub async fn SpreadModelArrayClient::put_type_property_additionalproperties_spreadrecordmodelarray(
   self : SpreadModelArrayClient,
@@ -1335,14 +1191,10 @@ pub async fn SpreadModelArrayClient::put_type_property_additionalproperties_spre
 }
 
 ///|
-
-///|
 /// SpreadDifferentStringClient HTTP 客户端。
 pub(all) struct SpreadDifferentStringClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 SpreadDifferentStringClient。
@@ -1351,8 +1203,6 @@ pub fn SpreadDifferentStringClient::new(
 ) -> SpreadDifferentStringClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/spreadDifferentRecordString（自动解析响应）。
@@ -1383,8 +1233,6 @@ pub async fn SpreadDifferentStringClient::get_type_property_additionalproperties
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/spreadDifferentRecordString（自动解析响应）。
 pub async fn SpreadDifferentStringClient::put_type_property_additionalproperties_spreaddifferentrecordstring(
   self : SpreadDifferentStringClient,
@@ -1411,14 +1259,10 @@ pub async fn SpreadDifferentStringClient::put_type_property_additionalproperties
 }
 
 ///|
-
-///|
 /// SpreadDifferentFloatClient HTTP 客户端。
 pub(all) struct SpreadDifferentFloatClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 SpreadDifferentFloatClient。
@@ -1427,8 +1271,6 @@ pub fn SpreadDifferentFloatClient::new(
 ) -> SpreadDifferentFloatClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/spreadDifferentRecordFloat（自动解析响应）。
@@ -1459,8 +1301,6 @@ pub async fn SpreadDifferentFloatClient::get_type_property_additionalproperties_
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/spreadDifferentRecordFloat（自动解析响应）。
 pub async fn SpreadDifferentFloatClient::put_type_property_additionalproperties_spreaddifferentrecordfloat(
   self : SpreadDifferentFloatClient,
@@ -1487,14 +1327,10 @@ pub async fn SpreadDifferentFloatClient::put_type_property_additionalproperties_
 }
 
 ///|
-
-///|
 /// SpreadDifferentModelClient HTTP 客户端。
 pub(all) struct SpreadDifferentModelClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 SpreadDifferentModelClient。
@@ -1503,8 +1339,6 @@ pub fn SpreadDifferentModelClient::new(
 ) -> SpreadDifferentModelClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/spreadDifferentRecordModel（自动解析响应）。
@@ -1535,8 +1369,6 @@ pub async fn SpreadDifferentModelClient::get_type_property_additionalproperties_
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/spreadDifferentRecordModel（自动解析响应）。
 pub async fn SpreadDifferentModelClient::put_type_property_additionalproperties_spreaddifferentrecordmodel(
   self : SpreadDifferentModelClient,
@@ -1563,14 +1395,10 @@ pub async fn SpreadDifferentModelClient::put_type_property_additionalproperties_
 }
 
 ///|
-
-///|
 /// SpreadDifferentModelArrayClient HTTP 客户端。
 pub(all) struct SpreadDifferentModelArrayClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 SpreadDifferentModelArrayClient。
@@ -1579,8 +1407,6 @@ pub fn SpreadDifferentModelArrayClient::new(
 ) -> SpreadDifferentModelArrayClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/spreadDifferentRecordModelArray（自动解析响应）。
@@ -1611,8 +1437,6 @@ pub async fn SpreadDifferentModelArrayClient::get_type_property_additionalproper
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/spreadDifferentRecordModelArray（自动解析响应）。
 pub async fn SpreadDifferentModelArrayClient::put_type_property_additionalproperties_spreaddifferentrecordmodelarray(
   self : SpreadDifferentModelArrayClient,
@@ -1639,14 +1463,10 @@ pub async fn SpreadDifferentModelArrayClient::put_type_property_additionalproper
 }
 
 ///|
-
-///|
 /// ExtendsDifferentSpreadStringClient HTTP 客户端。
 pub(all) struct ExtendsDifferentSpreadStringClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ExtendsDifferentSpreadStringClient。
@@ -1655,8 +1475,6 @@ pub fn ExtendsDifferentSpreadStringClient::new(
 ) -> ExtendsDifferentSpreadStringClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/extendsDifferentSpreadString（自动解析响应）。
@@ -1687,8 +1505,6 @@ pub async fn ExtendsDifferentSpreadStringClient::get_type_property_additionalpro
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/extendsDifferentSpreadString（自动解析响应）。
 pub async fn ExtendsDifferentSpreadStringClient::put_type_property_additionalproperties_extendsdifferentspreadstring(
   self : ExtendsDifferentSpreadStringClient,
@@ -1715,14 +1531,10 @@ pub async fn ExtendsDifferentSpreadStringClient::put_type_property_additionalpro
 }
 
 ///|
-
-///|
 /// ExtendsDifferentSpreadFloatClient HTTP 客户端。
 pub(all) struct ExtendsDifferentSpreadFloatClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ExtendsDifferentSpreadFloatClient。
@@ -1731,8 +1543,6 @@ pub fn ExtendsDifferentSpreadFloatClient::new(
 ) -> ExtendsDifferentSpreadFloatClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/extendsDifferentSpreadFloat（自动解析响应）。
@@ -1763,8 +1573,6 @@ pub async fn ExtendsDifferentSpreadFloatClient::get_type_property_additionalprop
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/extendsDifferentSpreadFloat（自动解析响应）。
 pub async fn ExtendsDifferentSpreadFloatClient::put_type_property_additionalproperties_extendsdifferentspreadfloat(
   self : ExtendsDifferentSpreadFloatClient,
@@ -1791,14 +1599,10 @@ pub async fn ExtendsDifferentSpreadFloatClient::put_type_property_additionalprop
 }
 
 ///|
-
-///|
 /// ExtendsDifferentSpreadModelClient HTTP 客户端。
 pub(all) struct ExtendsDifferentSpreadModelClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ExtendsDifferentSpreadModelClient。
@@ -1807,8 +1611,6 @@ pub fn ExtendsDifferentSpreadModelClient::new(
 ) -> ExtendsDifferentSpreadModelClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/extendsDifferentSpreadModel（自动解析响应）。
@@ -1839,8 +1641,6 @@ pub async fn ExtendsDifferentSpreadModelClient::get_type_property_additionalprop
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/extendsDifferentSpreadModel（自动解析响应）。
 pub async fn ExtendsDifferentSpreadModelClient::put_type_property_additionalproperties_extendsdifferentspreadmodel(
   self : ExtendsDifferentSpreadModelClient,
@@ -1867,14 +1667,10 @@ pub async fn ExtendsDifferentSpreadModelClient::put_type_property_additionalprop
 }
 
 ///|
-
-///|
 /// ExtendsDifferentSpreadModelArrayClient HTTP 客户端。
 pub(all) struct ExtendsDifferentSpreadModelArrayClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 ExtendsDifferentSpreadModelArrayClient。
@@ -1883,8 +1679,6 @@ pub fn ExtendsDifferentSpreadModelArrayClient::new(
 ) -> ExtendsDifferentSpreadModelArrayClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/extendsDifferentSpreadModelArray（自动解析响应）。
@@ -1915,8 +1709,6 @@ pub async fn ExtendsDifferentSpreadModelArrayClient::get_type_property_additiona
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/extendsDifferentSpreadModelArray（自动解析响应）。
 pub async fn ExtendsDifferentSpreadModelArrayClient::put_type_property_additionalproperties_extendsdifferentspreadmodelarray(
   self : ExtendsDifferentSpreadModelArrayClient,
@@ -1943,22 +1735,16 @@ pub async fn ExtendsDifferentSpreadModelArrayClient::put_type_property_additiona
 }
 
 ///|
-
-///|
 /// MultipleSpreadClient HTTP 客户端。
 pub(all) struct MultipleSpreadClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 MultipleSpreadClient。
 pub fn MultipleSpreadClient::new(base_url : String) -> MultipleSpreadClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/multipleSpreadRecord（自动解析响应）。
@@ -1989,8 +1775,6 @@ pub async fn MultipleSpreadClient::get_type_property_additionalproperties_multip
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/multipleSpreadRecord（自动解析响应）。
 pub async fn MultipleSpreadClient::put_type_property_additionalproperties_multiplespreadrecord(
   self : MultipleSpreadClient,
@@ -2017,14 +1801,10 @@ pub async fn MultipleSpreadClient::put_type_property_additionalproperties_multip
 }
 
 ///|
-
-///|
 /// SpreadRecordUnionClient HTTP 客户端。
 pub(all) struct SpreadRecordUnionClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 SpreadRecordUnionClient。
@@ -2035,12 +1815,10 @@ pub fn SpreadRecordUnionClient::new(
 }
 
 ///|
-
-///|
 /// 调用 get /type/property/additionalProperties/spreadRecordUnion（自动解析响应）。
 pub async fn SpreadRecordUnionClient::get_type_property_additionalproperties_spreadrecordunion(
   self : SpreadRecordUnionClient,
-) -> Map[String, Union0] {
+) -> Map[String, Union] {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -2055,7 +1833,7 @@ pub async fn SpreadRecordUnionClient::get_type_property_additionalproperties_spr
   if response.code == 200 {
     @runtime.expect_json_content_type(response)
     let response_body = client.read_all().text()
-    let parsed : Map[String, Union0] = @json.from_json(
+    let parsed : Map[String, Union] = @json.from_json(
       @json.parse(response_body),
     )
     parsed
@@ -2065,12 +1843,10 @@ pub async fn SpreadRecordUnionClient::get_type_property_additionalproperties_spr
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/spreadRecordUnion（自动解析响应）。
 pub async fn SpreadRecordUnionClient::put_type_property_additionalproperties_spreadrecordunion(
   self : SpreadRecordUnionClient,
-  body : Map[String, Union0],
+  body : Map[String, Union],
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -2093,14 +1869,10 @@ pub async fn SpreadRecordUnionClient::put_type_property_additionalproperties_spr
 }
 
 ///|
-
-///|
 /// SpreadRecordNonDiscriminatedUnionClient HTTP 客户端。
 pub(all) struct SpreadRecordNonDiscriminatedUnionClient {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 SpreadRecordNonDiscriminatedUnionClient。
@@ -2109,8 +1881,6 @@ pub fn SpreadRecordNonDiscriminatedUnionClient::new(
 ) -> SpreadRecordNonDiscriminatedUnionClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/spreadRecordNonDiscriminatedUnion（自动解析响应）。
@@ -2141,8 +1911,6 @@ pub async fn SpreadRecordNonDiscriminatedUnionClient::get_type_property_addition
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/spreadRecordNonDiscriminatedUnion（自动解析响应）。
 pub async fn SpreadRecordNonDiscriminatedUnionClient::put_type_property_additionalproperties_spreadrecordnondiscriminatedunion(
   self : SpreadRecordNonDiscriminatedUnionClient,
@@ -2169,14 +1937,10 @@ pub async fn SpreadRecordNonDiscriminatedUnionClient::put_type_property_addition
 }
 
 ///|
-
-///|
 /// SpreadRecordNonDiscriminatedUnion2Client HTTP 客户端。
 pub(all) struct SpreadRecordNonDiscriminatedUnion2Client {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 SpreadRecordNonDiscriminatedUnion2Client。
@@ -2185,8 +1949,6 @@ pub fn SpreadRecordNonDiscriminatedUnion2Client::new(
 ) -> SpreadRecordNonDiscriminatedUnion2Client {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/spreadRecordNonDiscriminatedUnion2（自动解析响应）。
@@ -2217,8 +1979,6 @@ pub async fn SpreadRecordNonDiscriminatedUnion2Client::get_type_property_additio
 }
 
 ///|
-
-///|
 /// 调用 put /type/property/additionalProperties/spreadRecordNonDiscriminatedUnion2（自动解析响应）。
 pub async fn SpreadRecordNonDiscriminatedUnion2Client::put_type_property_additionalproperties_spreadrecordnondiscriminatedunion2(
   self : SpreadRecordNonDiscriminatedUnion2Client,
@@ -2245,14 +2005,10 @@ pub async fn SpreadRecordNonDiscriminatedUnion2Client::put_type_property_additio
 }
 
 ///|
-
-///|
 /// SpreadRecordNonDiscriminatedUnion3Client HTTP 客户端。
 pub(all) struct SpreadRecordNonDiscriminatedUnion3Client {
   base_url : String
 }
-
-///|
 
 ///|
 /// 创建 SpreadRecordNonDiscriminatedUnion3Client。
@@ -2261,8 +2017,6 @@ pub fn SpreadRecordNonDiscriminatedUnion3Client::new(
 ) -> SpreadRecordNonDiscriminatedUnion3Client {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /type/property/additionalProperties/spreadRecordNonDiscriminatedUnion3（自动解析响应）。
@@ -2291,8 +2045,6 @@ pub async fn SpreadRecordNonDiscriminatedUnion3Client::get_type_property_additio
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 put /type/property/additionalProperties/spreadRecordNonDiscriminatedUnion3（自动解析响应）。

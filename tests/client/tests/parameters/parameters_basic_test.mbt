@@ -11,6 +11,6 @@ async test "runtime parameters/basic" {
   let implicit = @parameters_basic.ImplicitBodyClient::new(
     "http://localhost:3000",
   )
-  let body = @parameters_basic.Model0::{ name: "foo" }
+  let body = @parameters_basic.Model::{ name: "foo" }
   implicit.put_parameters_basic_implicit_body_simple(body)
 }

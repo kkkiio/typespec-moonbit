@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// OAuth2Client HTTP 客户端。
 pub(all) struct OAuth2Client {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 OAuth2Client。
 pub fn OAuth2Client::new(base_url : String) -> OAuth2Client {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /authentication/oauth2/valid（自动解析响应）。
@@ -36,8 +30,6 @@ pub async fn OAuth2Client::get_authentication_oauth2_valid(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /authentication/oauth2/invalid（自动解析响应）。

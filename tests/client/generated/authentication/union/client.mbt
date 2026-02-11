@@ -1,20 +1,14 @@
 ///|
-
-///|
 /// UnionClient HTTP 客户端。
 pub(all) struct UnionClient {
   base_url : String
 }
 
 ///|
-
-///|
 /// 创建 UnionClient。
 pub fn UnionClient::new(base_url : String) -> UnionClient {
   { base_url, }
 }
-
-///|
 
 ///|
 /// 调用 get /authentication/union/validkey（自动解析响应）。
@@ -38,8 +32,6 @@ pub async fn UnionClient::get_authentication_union_validkey(
     fail("unexpected status code: " + response.code.to_string())
   }
 }
-
-///|
 
 ///|
 /// 调用 get /authentication/union/validtoken（自动解析响应）。
