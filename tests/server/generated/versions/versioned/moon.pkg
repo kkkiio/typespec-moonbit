@@ -3,6 +3,5 @@ import {
   "moonbitlang/async",
   "moonbitlang/async/http",
   "moonbitlang/async/io",
-  "moonbitlang/async/aqueue",
   "kkkiio/typespec-server-runtime" @runtime,
 }

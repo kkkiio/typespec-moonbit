@@ -32,6 +32,9 @@ async test "runtime type/array" {
     "http://localhost:3000",
   )
   let duration_response = duration_client.get_type_array_duration()
-  assert_eq(duration_response, ["P123DT22H14M12.011S"])
-  duration_client.put_type_array_duration(["P123DT22H14M12.011S"])
+  assert_eq(duration_response.length(), 1)
+  assert_eq(duration_response[0].to_string(), "P123DT22H14M12.011S")
+  duration_client.put_type_array_duration([
+    @runtime.Duration::from_string("P123DT22H14M12.011S"),
+  ])
 }

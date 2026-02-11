@@ -2,6 +2,11 @@
   "import": [
     "moonbitlang/async/http",
     "moonbitlang/async/io",
-    "moonbitlang/core/json"
+    "moonbitlang/core/strconv",
+    "moonbitlang/core/json",
+    {
+      "path": "moonbitlang/x/time",
+      "alias": "time"
+    }
   ]
 }

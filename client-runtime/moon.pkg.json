@@ -1,8 +1,22 @@
 {
   "import": [
-    { "path": "moonbitlang/core/encoding/utf8", "alias": "encoding/utf8" },
-    { "path": "moonbitlang/x/codec/base64", "alias": "codec/base64" },
-    { "path": "moonbitlang/async/http", "alias": "http" },
-    "moonbitlang/core/json"
+    {
+      "path": "moonbitlang/core/encoding/utf8",
+      "alias": "encoding/utf8"
+    },
+    {
+      "path": "moonbitlang/x/codec/base64",
+      "alias": "codec/base64"
+    },
+    {
+      "path": "moonbitlang/async/http",
+      "alias": "http"
+    },
+    "moonbitlang/core/strconv",
+    "moonbitlang/core/json",
+    {
+      "path": "moonbitlang/x/time",
+      "alias": "time"
+    }
   ]
 }

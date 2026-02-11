@@ -1,4 +1,5 @@
 import {
   "moonbitlang/async",
+  "kkkiio/typespec-client-runtime" @runtime,
   "kkkiio/typespec-tests/client/generated/type/array" @type_array_generated,
 } for "test"

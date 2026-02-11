@@ -77,6 +77,11 @@ fn type_spec_to_type_string_with_ctx(
 ) -> String raise {
   match type_ {
     @typespec.TypeSpecType::String => "String"
+    @typespec.TypeSpecType::Duration => "@runtime.Duration"
+    @typespec.TypeSpecType::UtcDateTime => "@runtime.UtcDateTime"
+    @typespec.TypeSpecType::OffsetDateTime => "@runtime.OffsetDateTime"
+    @typespec.TypeSpecType::PlainDate => "@runtime.PlainDate"
+    @typespec.TypeSpecType::PlainTime => "@runtime.PlainTime"
     @typespec.TypeSpecType::Bytes =>
       fail("unsupported bytes type in server codegen")
     @typespec.TypeSpecType::Int => "Int"

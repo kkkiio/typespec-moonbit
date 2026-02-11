@@ -360,7 +360,7 @@ pub fn DatetimeValueClient::new(base_url : String) -> DatetimeValueClient {
 /// 调用 get /type/array/datetime（自动解析响应）。
 pub async fn DatetimeValueClient::get_type_array_datetime(
   self : DatetimeValueClient,
-) -> Array[String] {
+) -> Array[@runtime.UtcDateTime] {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -373,7 +373,9 @@ pub async fn DatetimeValueClient::get_type_array_datetime(
   if response.code == 200 {
     @runtime.expect_json_content_type(response)
     let response_body = client.read_all().text()
-    let parsed : Array[String] = @json.from_json(@json.parse(response_body))
+    let parsed : Array[@runtime.UtcDateTime] = @json.from_json(
+      @json.parse(response_body),
+    )
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())
@@ -386,7 +388,7 @@ pub async fn DatetimeValueClient::get_type_array_datetime(
 /// 调用 put /type/array/datetime（自动解析响应）。
 pub async fn DatetimeValueClient::put_type_array_datetime(
   self : DatetimeValueClient,
-  body : Array[String],
+  body : Array[@runtime.UtcDateTime],
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -428,7 +430,7 @@ pub fn DurationValueClient::new(base_url : String) -> DurationValueClient {
 /// 调用 get /type/array/duration（自动解析响应）。
 pub async fn DurationValueClient::get_type_array_duration(
   self : DurationValueClient,
-) -> Array[String] {
+) -> Array[@runtime.Duration] {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
@@ -441,7 +443,9 @@ pub async fn DurationValueClient::get_type_array_duration(
   if response.code == 200 {
     @runtime.expect_json_content_type(response)
     let response_body = client.read_all().text()
-    let parsed : Array[String] = @json.from_json(@json.parse(response_body))
+    let parsed : Array[@runtime.Duration] = @json.from_json(
+      @json.parse(response_body),
+    )
     parsed
   } else {
     fail("unexpected status code: " + response.code.to_string())
@@ -454,7 +458,7 @@ pub async fn DurationValueClient::get_type_array_duration(
 /// 调用 put /type/array/duration（自动解析响应）。
 pub async fn DurationValueClient::put_type_array_duration(
   self : DurationValueClient,
-  body : Array[String],
+  body : Array[@runtime.Duration],
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()

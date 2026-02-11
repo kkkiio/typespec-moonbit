@@ -2,6 +2,7 @@
 package "kkkiio/typespec-tests/client/generated/encode/datetime"
 
 import {
+  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -11,7 +12,7 @@ import {
 
 // Types and methods
 pub(all) struct DefaultDatetimeProperty {
-  value : String
+  value : @typespec-client-runtime.UtcDateTime
 }
 pub impl Show for DefaultDatetimeProperty
 pub impl ToJson for DefaultDatetimeProperty
@@ -20,11 +21,11 @@ pub impl @json.FromJson for DefaultDatetimeProperty
 pub(all) struct HeaderClient {
   base_url : String
 }
-pub async fn HeaderClient::get_encode_datetime_header_default(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_datetime_header_rfc3339(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_datetime_header_rfc7231(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_datetime_header_unix_timestamp(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_datetime_header_unix_timestamp_array(Self, Array[String]) -> Unit
+pub async fn HeaderClient::get_encode_datetime_header_default(Self, @typespec-client-runtime.UtcDateTime) -> Unit
+pub async fn HeaderClient::get_encode_datetime_header_rfc3339(Self, @typespec-client-runtime.UtcDateTime) -> Unit
+pub async fn HeaderClient::get_encode_datetime_header_rfc7231(Self, @typespec-client-runtime.UtcDateTime) -> Unit
+pub async fn HeaderClient::get_encode_datetime_header_unix_timestamp(Self, @typespec-client-runtime.UtcDateTime) -> Unit
+pub async fn HeaderClient::get_encode_datetime_header_unix_timestamp_array(Self, Array[@typespec-client-runtime.UtcDateTime]) -> Unit
 pub fn HeaderClient::new(String) -> Self
 
 pub(all) struct PropertyClient {
@@ -40,10 +41,10 @@ pub async fn PropertyClient::post_encode_datetime_property_unix_timestamp_array(
 pub(all) struct QueryClient {
   base_url : String
 }
-pub async fn QueryClient::get_encode_datetime_query_default__value_(Self, String) -> Unit
-pub async fn QueryClient::get_encode_datetime_query_rfc3339__value_(Self, String) -> Unit
-pub async fn QueryClient::get_encode_datetime_query_rfc7231__value_(Self, String) -> Unit
-pub async fn QueryClient::get_encode_datetime_query_unix_timestamp__value_(Self, String) -> Unit
+pub async fn QueryClient::get_encode_datetime_query_default__value_(Self, @typespec-client-runtime.UtcDateTime) -> Unit
+pub async fn QueryClient::get_encode_datetime_query_rfc3339__value_(Self, @typespec-client-runtime.UtcDateTime) -> Unit
+pub async fn QueryClient::get_encode_datetime_query_rfc7231__value_(Self, @typespec-client-runtime.UtcDateTime) -> Unit
+pub async fn QueryClient::get_encode_datetime_query_unix_timestamp__value_(Self, @typespec-client-runtime.UtcDateTime) -> Unit
 pub async fn QueryClient::get_encode_datetime_query_unix_timestamp_array__value_(Self, Array[String]) -> Unit
 pub fn QueryClient::new(String) -> Self
 
@@ -57,28 +58,28 @@ pub async fn ResponseHeaderClient::get_encode_datetime_responseheader_unix_times
 pub fn ResponseHeaderClient::new(String) -> Self
 
 pub(all) struct Rfc3339DatetimeProperty {
-  value : String
+  value : @typespec-client-runtime.UtcDateTime
 }
 pub impl Show for Rfc3339DatetimeProperty
 pub impl ToJson for Rfc3339DatetimeProperty
 pub impl @json.FromJson for Rfc3339DatetimeProperty
 
 pub(all) struct Rfc7231DatetimeProperty {
-  value : String
+  value : @typespec-client-runtime.UtcDateTime
 }
 pub impl Show for Rfc7231DatetimeProperty
 pub impl ToJson for Rfc7231DatetimeProperty
 pub impl @json.FromJson for Rfc7231DatetimeProperty
 
 pub(all) struct UnixTimestampArrayDatetimeProperty {
-  value : Array[String]
+  value : Array[@typespec-client-runtime.UtcDateTime]
 }
 pub impl Show for UnixTimestampArrayDatetimeProperty
 pub impl ToJson for UnixTimestampArrayDatetimeProperty
 pub impl @json.FromJson for UnixTimestampArrayDatetimeProperty
 
 pub(all) struct UnixTimestampDatetimeProperty {
-  value : String
+  value : @typespec-client-runtime.UtcDateTime
 }
 pub impl Show for UnixTimestampDatetimeProperty
 pub impl ToJson for UnixTimestampDatetimeProperty

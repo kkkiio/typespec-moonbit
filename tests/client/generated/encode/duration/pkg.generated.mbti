@@ -2,6 +2,7 @@
 package "kkkiio/typespec-tests/client/generated/encode/duration"
 
 import {
+  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -11,63 +12,63 @@ import {
 
 // Types and methods
 pub(all) struct DefaultDurationProperty {
-  value : String
+  value : @typespec-client-runtime.Duration
 }
 pub impl Show for DefaultDurationProperty
 pub impl ToJson for DefaultDurationProperty
 pub impl @json.FromJson for DefaultDurationProperty
 
 pub(all) struct Float64MillisecondsDurationProperty {
-  value : String
+  value : @typespec-client-runtime.Duration
 }
 pub impl Show for Float64MillisecondsDurationProperty
 pub impl ToJson for Float64MillisecondsDurationProperty
 pub impl @json.FromJson for Float64MillisecondsDurationProperty
 
 pub(all) struct Float64SecondsDurationProperty {
-  value : String
+  value : @typespec-client-runtime.Duration
 }
 pub impl Show for Float64SecondsDurationProperty
 pub impl ToJson for Float64SecondsDurationProperty
 pub impl @json.FromJson for Float64SecondsDurationProperty
 
 pub(all) struct FloatMillisecondsDurationArrayProperty {
-  value : Array[String]
+  value : Array[@typespec-client-runtime.Duration]
 }
 pub impl Show for FloatMillisecondsDurationArrayProperty
 pub impl ToJson for FloatMillisecondsDurationArrayProperty
 pub impl @json.FromJson for FloatMillisecondsDurationArrayProperty
 
 pub(all) struct FloatMillisecondsDurationProperty {
-  value : String
+  value : @typespec-client-runtime.Duration
 }
 pub impl Show for FloatMillisecondsDurationProperty
 pub impl ToJson for FloatMillisecondsDurationProperty
 pub impl @json.FromJson for FloatMillisecondsDurationProperty
 
 pub(all) struct FloatMillisecondsLargerUnitDurationProperty {
-  value : String
+  value : @typespec-client-runtime.Duration
 }
 pub impl Show for FloatMillisecondsLargerUnitDurationProperty
 pub impl ToJson for FloatMillisecondsLargerUnitDurationProperty
 pub impl @json.FromJson for FloatMillisecondsLargerUnitDurationProperty
 
 pub(all) struct FloatSecondsDurationArrayProperty {
-  value : Array[String]
+  value : Array[@typespec-client-runtime.Duration]
 }
 pub impl Show for FloatSecondsDurationArrayProperty
 pub impl ToJson for FloatSecondsDurationArrayProperty
 pub impl @json.FromJson for FloatSecondsDurationArrayProperty
 
 pub(all) struct FloatSecondsDurationProperty {
-  value : String
+  value : @typespec-client-runtime.Duration
 }
 pub impl Show for FloatSecondsDurationProperty
 pub impl ToJson for FloatSecondsDurationProperty
 pub impl @json.FromJson for FloatSecondsDurationProperty
 
 pub(all) struct FloatSecondsLargerUnitDurationProperty {
-  value : String
+  value : @typespec-client-runtime.Duration
 }
 pub impl Show for FloatSecondsLargerUnitDurationProperty
 pub impl ToJson for FloatSecondsLargerUnitDurationProperty
@@ -76,52 +77,52 @@ pub impl @json.FromJson for FloatSecondsLargerUnitDurationProperty
 pub(all) struct HeaderClient {
   base_url : String
 }
-pub async fn HeaderClient::get_encode_duration_header_default(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_duration_header_float64_milliseconds(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_duration_header_float64_seconds(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_duration_header_float_milliseconds(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_duration_header_float_milliseconds_larger_unit(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_duration_header_float_seconds(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_duration_header_float_seconds_larger_unit(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds_array(Self, Array[String]) -> Unit
-pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds_larger_unit(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_duration_header_int32_seconds(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_duration_header_int32_seconds_larger_unit(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_duration_header_iso8601(Self, String) -> Unit
-pub async fn HeaderClient::get_encode_duration_header_iso8601_array(Self, Array[String]) -> Unit
+pub async fn HeaderClient::get_encode_duration_header_default(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn HeaderClient::get_encode_duration_header_float64_milliseconds(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn HeaderClient::get_encode_duration_header_float64_seconds(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn HeaderClient::get_encode_duration_header_float_milliseconds(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn HeaderClient::get_encode_duration_header_float_milliseconds_larger_unit(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn HeaderClient::get_encode_duration_header_float_seconds(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn HeaderClient::get_encode_duration_header_float_seconds_larger_unit(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds_array(Self, Array[@typespec-client-runtime.Duration]) -> Unit
+pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds_larger_unit(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn HeaderClient::get_encode_duration_header_int32_seconds(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn HeaderClient::get_encode_duration_header_int32_seconds_larger_unit(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn HeaderClient::get_encode_duration_header_iso8601(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn HeaderClient::get_encode_duration_header_iso8601_array(Self, Array[@typespec-client-runtime.Duration]) -> Unit
 pub fn HeaderClient::new(String) -> Self
 
 pub(all) struct Int32MillisecondsDurationProperty {
-  value : String
+  value : @typespec-client-runtime.Duration
 }
 pub impl Show for Int32MillisecondsDurationProperty
 pub impl ToJson for Int32MillisecondsDurationProperty
 pub impl @json.FromJson for Int32MillisecondsDurationProperty
 
 pub(all) struct Int32MillisecondsLargerUnitDurationProperty {
-  value : String
+  value : @typespec-client-runtime.Duration
 }
 pub impl Show for Int32MillisecondsLargerUnitDurationProperty
 pub impl ToJson for Int32MillisecondsLargerUnitDurationProperty
 pub impl @json.FromJson for Int32MillisecondsLargerUnitDurationProperty
 
 pub(all) struct Int32SecondsDurationProperty {
-  value : String
+  value : @typespec-client-runtime.Duration
 }
 pub impl Show for Int32SecondsDurationProperty
 pub impl ToJson for Int32SecondsDurationProperty
 pub impl @json.FromJson for Int32SecondsDurationProperty
 
 pub(all) struct Int32SecondsLargerUnitDurationProperty {
-  value : String
+  value : @typespec-client-runtime.Duration
 }
 pub impl Show for Int32SecondsLargerUnitDurationProperty
 pub impl ToJson for Int32SecondsLargerUnitDurationProperty
 pub impl @json.FromJson for Int32SecondsLargerUnitDurationProperty
 
 pub(all) struct Iso8601DurationProperty {
-  value : String
+  value : @typespec-client-runtime.Duration
 }
 pub impl Show for Iso8601DurationProperty
 pub impl ToJson for Iso8601DurationProperty
@@ -149,20 +150,20 @@ pub async fn PropertyClient::post_encode_duration_property_iso8601(Self, Iso8601
 pub(all) struct QueryClient {
   base_url : String
 }
-pub async fn QueryClient::get_encode_duration_query_default__input_(Self, String) -> Unit
-pub async fn QueryClient::get_encode_duration_query_float64_milliseconds__input_(Self, String) -> Unit
-pub async fn QueryClient::get_encode_duration_query_float64_seconds__input_(Self, String) -> Unit
-pub async fn QueryClient::get_encode_duration_query_float_milliseconds__input_(Self, String) -> Unit
-pub async fn QueryClient::get_encode_duration_query_float_milliseconds_larger_unit__input_(Self, String) -> Unit
-pub async fn QueryClient::get_encode_duration_query_float_seconds__input_(Self, String) -> Unit
-pub async fn QueryClient::get_encode_duration_query_float_seconds_larger_unit__input_(Self, String) -> Unit
-pub async fn QueryClient::get_encode_duration_query_int32_milliseconds__input_(Self, String) -> Unit
+pub async fn QueryClient::get_encode_duration_query_default__input_(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn QueryClient::get_encode_duration_query_float64_milliseconds__input_(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn QueryClient::get_encode_duration_query_float64_seconds__input_(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn QueryClient::get_encode_duration_query_float_milliseconds__input_(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn QueryClient::get_encode_duration_query_float_milliseconds_larger_unit__input_(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn QueryClient::get_encode_duration_query_float_seconds__input_(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn QueryClient::get_encode_duration_query_float_seconds_larger_unit__input_(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn QueryClient::get_encode_duration_query_int32_milliseconds__input_(Self, @typespec-client-runtime.Duration) -> Unit
 pub async fn QueryClient::get_encode_duration_query_int32_milliseconds_array__input_(Self, Array[String]) -> Unit
-pub async fn QueryClient::get_encode_duration_query_int32_milliseconds_larger_unit__input_(Self, String) -> Unit
-pub async fn QueryClient::get_encode_duration_query_int32_seconds__input_(Self, String) -> Unit
+pub async fn QueryClient::get_encode_duration_query_int32_milliseconds_larger_unit__input_(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn QueryClient::get_encode_duration_query_int32_seconds__input_(Self, @typespec-client-runtime.Duration) -> Unit
 pub async fn QueryClient::get_encode_duration_query_int32_seconds_array__input_(Self, Array[String]) -> Unit
-pub async fn QueryClient::get_encode_duration_query_int32_seconds_larger_unit__input_(Self, String) -> Unit
-pub async fn QueryClient::get_encode_duration_query_iso8601__input_(Self, String) -> Unit
+pub async fn QueryClient::get_encode_duration_query_int32_seconds_larger_unit__input_(Self, @typespec-client-runtime.Duration) -> Unit
+pub async fn QueryClient::get_encode_duration_query_iso8601__input_(Self, @typespec-client-runtime.Duration) -> Unit
 pub fn QueryClient::new(String) -> Self
 
 // Type aliases

@@ -20,14 +20,16 @@ pub fn QueryClient::new(base_url : String) -> QueryClient {
 /// 调用 get /encode/duration/query/default{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_default__input_(
   self : QueryClient,
-  input : String,
+  input : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=102)
   sb0.write_string("/encode/duration/query/default")
-  sb0.write_string(@runtime.expand_string("?", "input", false, input))
+  sb0.write_string(
+    @runtime.expand_string("?", "input", false, input.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -48,14 +50,16 @@ pub async fn QueryClient::get_encode_duration_query_default__input_(
 /// 调用 get /encode/duration/query/iso8601{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_iso8601__input_(
   self : QueryClient,
-  input : String,
+  input : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=102)
   sb0.write_string("/encode/duration/query/iso8601")
-  sb0.write_string(@runtime.expand_string("?", "input", false, input))
+  sb0.write_string(
+    @runtime.expand_string("?", "input", false, input.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -76,14 +80,16 @@ pub async fn QueryClient::get_encode_duration_query_iso8601__input_(
 /// 调用 get /encode/duration/query/int32-seconds{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_int32_seconds__input_(
   self : QueryClient,
-  input : String,
+  input : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=108)
   sb0.write_string("/encode/duration/query/int32-seconds")
-  sb0.write_string(@runtime.expand_string("?", "input", false, input))
+  sb0.write_string(
+    @runtime.expand_string("?", "input", false, input.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -104,14 +110,16 @@ pub async fn QueryClient::get_encode_duration_query_int32_seconds__input_(
 /// 调用 get /encode/duration/query/int32-seconds-larger-unit{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_int32_seconds_larger_unit__input_(
   self : QueryClient,
-  input : String,
+  input : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=120)
   sb0.write_string("/encode/duration/query/int32-seconds-larger-unit")
-  sb0.write_string(@runtime.expand_string("?", "input", false, input))
+  sb0.write_string(
+    @runtime.expand_string("?", "input", false, input.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -132,14 +140,16 @@ pub async fn QueryClient::get_encode_duration_query_int32_seconds_larger_unit__i
 /// 调用 get /encode/duration/query/float-seconds{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_float_seconds__input_(
   self : QueryClient,
-  input : String,
+  input : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=108)
   sb0.write_string("/encode/duration/query/float-seconds")
-  sb0.write_string(@runtime.expand_string("?", "input", false, input))
+  sb0.write_string(
+    @runtime.expand_string("?", "input", false, input.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -160,14 +170,16 @@ pub async fn QueryClient::get_encode_duration_query_float_seconds__input_(
 /// 调用 get /encode/duration/query/float-seconds-larger-unit{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_float_seconds_larger_unit__input_(
   self : QueryClient,
-  input : String,
+  input : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=120)
   sb0.write_string("/encode/duration/query/float-seconds-larger-unit")
-  sb0.write_string(@runtime.expand_string("?", "input", false, input))
+  sb0.write_string(
+    @runtime.expand_string("?", "input", false, input.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -188,14 +200,16 @@ pub async fn QueryClient::get_encode_duration_query_float_seconds_larger_unit__i
 /// 调用 get /encode/duration/query/float64-seconds{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_float64_seconds__input_(
   self : QueryClient,
-  input : String,
+  input : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=110)
   sb0.write_string("/encode/duration/query/float64-seconds")
-  sb0.write_string(@runtime.expand_string("?", "input", false, input))
+  sb0.write_string(
+    @runtime.expand_string("?", "input", false, input.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -216,14 +230,16 @@ pub async fn QueryClient::get_encode_duration_query_float64_seconds__input_(
 /// 调用 get /encode/duration/query/int32-milliseconds{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_int32_milliseconds__input_(
   self : QueryClient,
-  input : String,
+  input : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=113)
   sb0.write_string("/encode/duration/query/int32-milliseconds")
-  sb0.write_string(@runtime.expand_string("?", "input", false, input))
+  sb0.write_string(
+    @runtime.expand_string("?", "input", false, input.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -244,14 +260,16 @@ pub async fn QueryClient::get_encode_duration_query_int32_milliseconds__input_(
 /// 调用 get /encode/duration/query/int32-milliseconds-larger-unit{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_int32_milliseconds_larger_unit__input_(
   self : QueryClient,
-  input : String,
+  input : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=125)
   sb0.write_string("/encode/duration/query/int32-milliseconds-larger-unit")
-  sb0.write_string(@runtime.expand_string("?", "input", false, input))
+  sb0.write_string(
+    @runtime.expand_string("?", "input", false, input.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -272,14 +290,16 @@ pub async fn QueryClient::get_encode_duration_query_int32_milliseconds_larger_un
 /// 调用 get /encode/duration/query/float-milliseconds{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_float_milliseconds__input_(
   self : QueryClient,
-  input : String,
+  input : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=113)
   sb0.write_string("/encode/duration/query/float-milliseconds")
-  sb0.write_string(@runtime.expand_string("?", "input", false, input))
+  sb0.write_string(
+    @runtime.expand_string("?", "input", false, input.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -300,14 +320,16 @@ pub async fn QueryClient::get_encode_duration_query_float_milliseconds__input_(
 /// 调用 get /encode/duration/query/float-milliseconds-larger-unit{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_float_milliseconds_larger_unit__input_(
   self : QueryClient,
-  input : String,
+  input : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=125)
   sb0.write_string("/encode/duration/query/float-milliseconds-larger-unit")
-  sb0.write_string(@runtime.expand_string("?", "input", false, input))
+  sb0.write_string(
+    @runtime.expand_string("?", "input", false, input.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -328,14 +350,16 @@ pub async fn QueryClient::get_encode_duration_query_float_milliseconds_larger_un
 /// 调用 get /encode/duration/query/float64-milliseconds{?input}（自动解析响应）。
 pub async fn QueryClient::get_encode_duration_query_float64_milliseconds__input_(
   self : QueryClient,
-  input : String,
+  input : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
   let headers : Map[String, String] = {}
   let sb0 = StringBuilder::new(size_hint=115)
   sb0.write_string("/encode/duration/query/float64-milliseconds")
-  sb0.write_string(@runtime.expand_string("?", "input", false, input))
+  sb0.write_string(
+    @runtime.expand_string("?", "input", false, input.to_string()),
+  )
   let base_path = sb0.to_string()
   let base_path = @runtime.encode_request_target(base_path)
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
@@ -906,7 +930,7 @@ pub fn HeaderClient::new(base_url : String) -> HeaderClient {
 /// 调用 get /encode/duration/header/default（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_default(
   self : HeaderClient,
-  duration : String,
+  duration : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -916,7 +940,14 @@ pub async fn HeaderClient::get_encode_duration_header_default(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("duration", duration)
+  headers.set(
+    "duration",
+    @runtime.encode_duration_uri(
+      duration,
+      @runtime.DurationEncoding::Iso8601,
+      @runtime.NumberWireType::Float64,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -933,7 +964,7 @@ pub async fn HeaderClient::get_encode_duration_header_default(
 /// 调用 get /encode/duration/header/iso8601（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_iso8601(
   self : HeaderClient,
-  duration : String,
+  duration : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -943,7 +974,14 @@ pub async fn HeaderClient::get_encode_duration_header_iso8601(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("duration", duration)
+  headers.set(
+    "duration",
+    @runtime.encode_duration_uri(
+      duration,
+      @runtime.DurationEncoding::Iso8601,
+      @runtime.NumberWireType::Float64,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -960,7 +998,7 @@ pub async fn HeaderClient::get_encode_duration_header_iso8601(
 /// 调用 get /encode/duration/header/iso8601-array（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_iso8601_array(
   self : HeaderClient,
-  duration : Array[String],
+  duration : Array[@runtime.Duration],
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -970,7 +1008,17 @@ pub async fn HeaderClient::get_encode_duration_header_iso8601_array(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("duration", @runtime.join(duration, ","))
+  let encoded_items : Array[String] = []
+  for x in duration {
+    encoded_items.push(
+      @runtime.encode_duration_uri(
+        x,
+        @runtime.DurationEncoding::Iso8601,
+        @runtime.NumberWireType::Float64,
+      ),
+    )
+  }
+  headers.set("duration", @runtime.join(encoded_items, ","))
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -987,7 +1035,7 @@ pub async fn HeaderClient::get_encode_duration_header_iso8601_array(
 /// 调用 get /encode/duration/header/int32-seconds（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_int32_seconds(
   self : HeaderClient,
-  duration : String,
+  duration : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -997,7 +1045,14 @@ pub async fn HeaderClient::get_encode_duration_header_int32_seconds(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("duration", duration)
+  headers.set(
+    "duration",
+    @runtime.encode_duration_uri(
+      duration,
+      @runtime.DurationEncoding::Seconds,
+      @runtime.NumberWireType::Int32,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -1014,7 +1069,7 @@ pub async fn HeaderClient::get_encode_duration_header_int32_seconds(
 /// 调用 get /encode/duration/header/int32-seconds-larger-unit（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_int32_seconds_larger_unit(
   self : HeaderClient,
-  duration : String,
+  duration : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -1024,7 +1079,14 @@ pub async fn HeaderClient::get_encode_duration_header_int32_seconds_larger_unit(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("duration", duration)
+  headers.set(
+    "duration",
+    @runtime.encode_duration_uri(
+      duration,
+      @runtime.DurationEncoding::Seconds,
+      @runtime.NumberWireType::Int32,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -1041,7 +1103,7 @@ pub async fn HeaderClient::get_encode_duration_header_int32_seconds_larger_unit(
 /// 调用 get /encode/duration/header/float-seconds（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_float_seconds(
   self : HeaderClient,
-  duration : String,
+  duration : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -1051,7 +1113,14 @@ pub async fn HeaderClient::get_encode_duration_header_float_seconds(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("duration", duration)
+  headers.set(
+    "duration",
+    @runtime.encode_duration_uri(
+      duration,
+      @runtime.DurationEncoding::Seconds,
+      @runtime.NumberWireType::Float,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -1068,7 +1137,7 @@ pub async fn HeaderClient::get_encode_duration_header_float_seconds(
 /// 调用 get /encode/duration/header/float-seconds-larger-unit（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_float_seconds_larger_unit(
   self : HeaderClient,
-  duration : String,
+  duration : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -1078,7 +1147,14 @@ pub async fn HeaderClient::get_encode_duration_header_float_seconds_larger_unit(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("duration", duration)
+  headers.set(
+    "duration",
+    @runtime.encode_duration_uri(
+      duration,
+      @runtime.DurationEncoding::Seconds,
+      @runtime.NumberWireType::Float,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -1095,7 +1171,7 @@ pub async fn HeaderClient::get_encode_duration_header_float_seconds_larger_unit(
 /// 调用 get /encode/duration/header/float64-seconds（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_float64_seconds(
   self : HeaderClient,
-  duration : String,
+  duration : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -1105,7 +1181,14 @@ pub async fn HeaderClient::get_encode_duration_header_float64_seconds(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("duration", duration)
+  headers.set(
+    "duration",
+    @runtime.encode_duration_uri(
+      duration,
+      @runtime.DurationEncoding::Seconds,
+      @runtime.NumberWireType::Float64,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -1122,7 +1205,7 @@ pub async fn HeaderClient::get_encode_duration_header_float64_seconds(
 /// 调用 get /encode/duration/header/int32-milliseconds（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds(
   self : HeaderClient,
-  duration : String,
+  duration : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -1132,7 +1215,14 @@ pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("duration", duration)
+  headers.set(
+    "duration",
+    @runtime.encode_duration_uri(
+      duration,
+      @runtime.DurationEncoding::Milliseconds,
+      @runtime.NumberWireType::Int32,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -1149,7 +1239,7 @@ pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds(
 /// 调用 get /encode/duration/header/int32-milliseconds-larger-unit（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds_larger_unit(
   self : HeaderClient,
-  duration : String,
+  duration : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -1159,7 +1249,14 @@ pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds_larger_
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("duration", duration)
+  headers.set(
+    "duration",
+    @runtime.encode_duration_uri(
+      duration,
+      @runtime.DurationEncoding::Milliseconds,
+      @runtime.NumberWireType::Int32,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -1176,7 +1273,7 @@ pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds_larger_
 /// 调用 get /encode/duration/header/float-milliseconds（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_float_milliseconds(
   self : HeaderClient,
-  duration : String,
+  duration : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -1186,7 +1283,14 @@ pub async fn HeaderClient::get_encode_duration_header_float_milliseconds(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("duration", duration)
+  headers.set(
+    "duration",
+    @runtime.encode_duration_uri(
+      duration,
+      @runtime.DurationEncoding::Milliseconds,
+      @runtime.NumberWireType::Float,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -1203,7 +1307,7 @@ pub async fn HeaderClient::get_encode_duration_header_float_milliseconds(
 /// 调用 get /encode/duration/header/float-milliseconds-larger-unit（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_float_milliseconds_larger_unit(
   self : HeaderClient,
-  duration : String,
+  duration : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -1213,7 +1317,14 @@ pub async fn HeaderClient::get_encode_duration_header_float_milliseconds_larger_
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("duration", duration)
+  headers.set(
+    "duration",
+    @runtime.encode_duration_uri(
+      duration,
+      @runtime.DurationEncoding::Milliseconds,
+      @runtime.NumberWireType::Float,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -1230,7 +1341,7 @@ pub async fn HeaderClient::get_encode_duration_header_float_milliseconds_larger_
 /// 调用 get /encode/duration/header/float64-milliseconds（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_float64_milliseconds(
   self : HeaderClient,
-  duration : String,
+  duration : @runtime.Duration,
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -1240,7 +1351,14 @@ pub async fn HeaderClient::get_encode_duration_header_float64_milliseconds(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("duration", duration)
+  headers.set(
+    "duration",
+    @runtime.encode_duration_uri(
+      duration,
+      @runtime.DurationEncoding::Milliseconds,
+      @runtime.NumberWireType::Float64,
+    ),
+  )
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()
@@ -1257,7 +1375,7 @@ pub async fn HeaderClient::get_encode_duration_header_float64_milliseconds(
 /// 调用 get /encode/duration/header/int32-milliseconds-array（自动解析响应）。
 pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds_array(
   self : HeaderClient,
-  duration : Array[String],
+  duration : Array[@runtime.Duration],
 ) -> Unit {
   let client = @http.Client::new(self.base_url)
   defer client.close()
@@ -1267,7 +1385,17 @@ pub async fn HeaderClient::get_encode_duration_header_int32_milliseconds_array(
   )
   let sb = StringBuilder::new(size_hint=base_path.length() + 128)
   sb.write_string(base_path)
-  headers.set("duration", @runtime.join(duration, ","))
+  let encoded_items : Array[String] = []
+  for x in duration {
+    encoded_items.push(
+      @runtime.encode_duration_uri(
+        x,
+        @runtime.DurationEncoding::Iso8601,
+        @runtime.NumberWireType::Float64,
+      ),
+    )
+  }
+  headers.set("duration", @runtime.join(encoded_items, ","))
   let path = sb.to_string()
   client.request(@http.Get, path, extra_headers=headers)
   let response = client.end_request()

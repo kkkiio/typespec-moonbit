@@ -245,7 +245,7 @@ impl @type_dictionary.DatetimeValueHandler for DictDatetimeValueHandlerImpl with
 ) {
   ignore(group)
   // Should return { k1: Temporal.Instant.from("2022-08-26T18:38:00Z") }
-  { "k1": "2022-08-26T18:38:00Z" }
+  { "k1": @runtime.UtcDateTime::from_string("2022-08-26T18:38:00Z") }
 }
 
 ///|
@@ -256,7 +256,10 @@ impl @type_dictionary.DatetimeValueHandler for DictDatetimeValueHandlerImpl with
 ) {
   ignore(group)
   assert_eq(body.length(), 1)
-  assert_eq(body.get("k1"), Some("2022-08-26T18:38:00Z"))
+  match body.get("k1") {
+    Some(v) => assert_eq(v.to_string(), "2022-08-26T18:38:00Z")
+    None => assert_true(false, msg="datetime.put: missing key k1")
+  }
 }
 
 ///|
@@ -269,7 +272,7 @@ impl @type_dictionary.DurationValueHandler for DictDurationValueHandlerImpl with
 ) {
   ignore(group)
   // Should return { k1: Temporal.Duration.from("P123DT22H14M12.011S") }
-  { "k1": "P123DT22H14M12.011S" }
+  { "k1": @runtime.Duration::from_string("P123DT22H14M12.011S") }
 }
 
 ///|
@@ -280,7 +283,10 @@ impl @type_dictionary.DurationValueHandler for DictDurationValueHandlerImpl with
 ) {
   ignore(group)
   assert_eq(body.length(), 1)
-  assert_eq(body.get("k1"), Some("P123DT22H14M12.011S"))
+  match body.get("k1") {
+    Some(v) => assert_eq(v.to_string(), "P123DT22H14M12.011S")
+    None => assert_true(false, msg="duration.put: missing key k1")
+  }
 }
 
 ///|

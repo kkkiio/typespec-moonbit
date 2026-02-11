@@ -2,6 +2,7 @@
 package "kkkiio/typespec-tests/client/generated/type/property/optionality"
 
 import {
+  "kkkiio/typespec-client-runtime",
   "moonbitlang/core/json",
 }
 
@@ -84,7 +85,7 @@ pub async fn DatetimeClient::put_type_property_optional_datetime_all(Self, Datet
 pub async fn DatetimeClient::put_type_property_optional_datetime_default(Self, DatetimeProperty) -> Unit
 
 pub(all) struct DatetimeProperty {
-  property : String?
+  property : @typespec-client-runtime.UtcDateTime?
 }
 pub impl Show for DatetimeProperty
 pub impl ToJson for DatetimeProperty
@@ -100,7 +101,7 @@ pub async fn DurationClient::put_type_property_optional_duration_all(Self, Durat
 pub async fn DurationClient::put_type_property_optional_duration_default(Self, DurationProperty) -> Unit
 
 pub(all) struct DurationProperty {
-  property : String?
+  property : @typespec-client-runtime.Duration?
 }
 pub impl Show for DurationProperty
 pub impl ToJson for DurationProperty
@@ -148,7 +149,7 @@ pub async fn PlainDateClient::put_type_property_optional_plaindate_all(Self, Pla
 pub async fn PlainDateClient::put_type_property_optional_plaindate_default(Self, PlainDateProperty) -> Unit
 
 pub(all) struct PlainDateProperty {
-  property : String?
+  property : @typespec-client-runtime.PlainDate?
 }
 pub impl Show for PlainDateProperty
 pub impl ToJson for PlainDateProperty
@@ -164,7 +165,7 @@ pub async fn PlainTimeClient::put_type_property_optional_plaintime_all(Self, Pla
 pub async fn PlainTimeClient::put_type_property_optional_plaintime_default(Self, PlainTimeProperty) -> Unit
 
 pub(all) struct PlainTimeProperty {
-  property : String?
+  property : @typespec-client-runtime.PlainTime?
 }
 pub impl Show for PlainTimeProperty
 pub impl ToJson for PlainTimeProperty

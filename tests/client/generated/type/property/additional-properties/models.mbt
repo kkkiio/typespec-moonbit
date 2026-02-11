@@ -202,8 +202,8 @@ pub(all) struct WidgetData0 {
 /// Model WidgetData1
 pub(all) struct WidgetData1 {
   kind : String
-  start : String
-  end : String?
+  start : @runtime.UtcDateTime
+  end : @runtime.UtcDateTime?
 } derive(Show, ToJson, @json.FromJson)
 
 ///|

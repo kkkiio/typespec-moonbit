@@ -50,6 +50,8 @@ pub fn try_get_array_encoding(@js.Value) -> String?
 
 pub fn try_get_bytes_encoding(@js.Value) -> String?
 
+pub fn try_get_encode_wire_type(@js.Value) -> String?
+
 // Errors
 
 // Types and methods
@@ -78,10 +80,12 @@ pub struct HttpParam {
   explode_ : Bool
   array_encoding_ : String?
   bytes_encoding_ : String?
+  encode_wire_type_ : String?
   string_literal_ : String?
 }
 pub fn HttpParam::array_encoding(Self) -> String?
 pub fn HttpParam::bytes_encoding(Self) -> String?
+pub fn HttpParam::encode_wire_type(Self) -> String?
 pub fn HttpParam::explode(Self) -> Bool
 pub fn HttpParam::is_optional(Self) -> Bool
 pub fn HttpParam::kind(Self) -> HttpParamKind
@@ -130,6 +134,8 @@ pub struct Property {
   json_name_hint : String
 }
 pub fn Property::bytes_encoding(Self) -> String?
+pub fn Property::encoding(Self) -> String?
+pub fn Property::encoding_wire_type(Self) -> String?
 pub fn Property::is_optional(Self) -> Bool
 pub fn Property::json_name(Self) -> String?
 pub fn Property::name(Self) -> String
@@ -139,6 +145,11 @@ pub enum TypeSpecType {
   Model(Model)
   Union(Union)
   String
+  Duration
+  UtcDateTime
+  OffsetDateTime
+  PlainDate
+  PlainTime
   Bytes
   Int
   Int64

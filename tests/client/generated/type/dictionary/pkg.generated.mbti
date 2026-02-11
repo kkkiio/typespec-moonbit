@@ -21,16 +21,16 @@ pub async fn BooleanValueClient::put_type_dictionary_boolean(Self, Map[String, B
 pub(all) struct DatetimeValueClient {
   base_url : String
 }
-pub async fn DatetimeValueClient::get_type_dictionary_datetime(Self) -> Map[String, String]
+pub async fn DatetimeValueClient::get_type_dictionary_datetime(Self) -> Map[String, @typespec-client-runtime.UtcDateTime]
 pub fn DatetimeValueClient::new(String) -> Self
-pub async fn DatetimeValueClient::put_type_dictionary_datetime(Self, Map[String, String]) -> Unit
+pub async fn DatetimeValueClient::put_type_dictionary_datetime(Self, Map[String, @typespec-client-runtime.UtcDateTime]) -> Unit
 
 pub(all) struct DurationValueClient {
   base_url : String
 }
-pub async fn DurationValueClient::get_type_dictionary_duration(Self) -> Map[String, String]
+pub async fn DurationValueClient::get_type_dictionary_duration(Self) -> Map[String, @typespec-client-runtime.Duration]
 pub fn DurationValueClient::new(String) -> Self
-pub async fn DurationValueClient::put_type_dictionary_duration(Self, Map[String, String]) -> Unit
+pub async fn DurationValueClient::put_type_dictionary_duration(Self, Map[String, @typespec-client-runtime.Duration]) -> Unit
 
 pub(all) struct Float32ValueClient {
   base_url : String

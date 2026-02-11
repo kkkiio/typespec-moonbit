@@ -3,6 +3,11 @@ pub enum TypeSpecType {
   Model(Model)
   Union(Union)
   String
+  Duration
+  UtcDateTime
+  OffsetDateTime
+  PlainDate
+  PlainTime
   Bytes
   Int
   Int64
@@ -130,6 +135,16 @@ pub fn Property::type_(self : Property) -> TypeSpecType {
 ///|
 pub fn Property::bytes_encoding(self : Property) -> String? {
   property_try_get_bytes_encoding(self.raw)
+}
+
+///|
+pub fn Property::encoding(self : Property) -> String? {
+  property_try_get_encoding(self.raw)
+}
+
+///|
+pub fn Property::encoding_wire_type(self : Property) -> String? {
+  property_try_get_encoding_wire_type(self.raw)
 }
 
 ///|
@@ -277,12 +292,22 @@ fn resolve_type_inner(type_ : JsValue, depth : Int) -> TypeSpecType {
         if name == "string" {
           return String
         }
-        if name == "duration" ||
-          name == "utcDateTime" ||
-          name == "offsetDateTime" ||
-          name == "plainDate" ||
-          name == "plainTime" ||
-          name == "url" {
+        if name == "duration" {
+          return Duration
+        }
+        if name == "utcDateTime" {
+          return UtcDateTime
+        }
+        if name == "offsetDateTime" {
+          return OffsetDateTime
+        }
+        if name == "plainDate" {
+          return PlainDate
+        }
+        if name == "plainTime" {
+          return PlainTime
+        }
+        if name == "url" {
           return String
         }
         if name == "boolean" {
@@ -308,6 +333,21 @@ fn resolve_type_inner(type_ : JsValue, depth : Int) -> TypeSpecType {
         }
         if is_bytes_scalar_like(type_) {
           return Bytes
+        }
+        if is_duration_scalar_like(type_) {
+          return Duration
+        }
+        if is_utc_datetime_scalar_like(type_) {
+          return UtcDateTime
+        }
+        if is_offset_datetime_scalar_like(type_) {
+          return OffsetDateTime
+        }
+        if is_plain_date_scalar_like(type_) {
+          return PlainDate
+        }
+        if is_plain_time_scalar_like(type_) {
+          return PlainTime
         }
         if is_string_scalar_like(type_) {
           return String
@@ -376,6 +416,16 @@ fn property_try_get_bytes_encoding(p : JsValue) -> String? {
 }
 
 ///|
+fn property_try_get_encoding(p : JsValue) -> String? {
+  property_try_get_encoding_ffi(p)
+}
+
+///|
+fn property_try_get_encoding_wire_type(p : JsValue) -> String? {
+  property_try_get_encoding_wire_type_ffi(p)
+}
+
+///|
 extern "js" fn property_try_get_bytes_encoding_ffi(p : JsValue) -> String? =
   #| (p) => {
   #|   const decs = p?.decorators;
@@ -384,6 +434,54 @@ extern "js" fn property_try_get_bytes_encoding_ffi(p : JsValue) -> String? =
   #|   const v = enc?.args?.[0]?.value;
   #|   const member = v?.value?.symbol?.name ?? v?.value?.name ?? v?.value?.enumMember?.name;
   #|   return typeof member === "string" ? member : undefined;
+  #| }
+
+///|
+extern "js" fn property_try_get_encoding_ffi(p : JsValue) -> String? =
+  #| (p) => {
+  #|   const read = (node) => {
+  #|     const decs = node?.decorators;
+  #|     if (!Array.isArray(decs)) return undefined;
+  #|     const enc = decs.find((d) => d?.decorator?.name === "$encode");
+  #|     const v = enc?.args?.[0]?.value;
+  #|     const member = v?.value?.symbol?.name ?? v?.value?.name ?? v?.value?.enumMember?.name;
+  #|     return typeof member === "string" ? member : undefined;
+  #|   };
+  #|   const direct = read(p);
+  #|   if (typeof direct === "string") return direct;
+  #|   let cur = p?.type;
+  #|   let steps = 0;
+  #|   while (cur && steps < 32) {
+  #|     const got = read(cur);
+  #|     if (typeof got === "string") return got;
+  #|     cur = cur.baseScalar;
+  #|     steps++;
+  #|   }
+  #|   return undefined;
+  #| }
+
+///|
+extern "js" fn property_try_get_encoding_wire_type_ffi(p : JsValue) -> String? =
+  #| (p) => {
+  #|   const read = (node) => {
+  #|     const decs = node?.decorators;
+  #|     if (!Array.isArray(decs)) return undefined;
+  #|     const enc = decs.find((d) => d?.decorator?.name === "$encode");
+  #|     const arg = enc?.args?.[1]?.value;
+  #|     const name = arg?.name ?? arg?.value?.name ?? arg?.scalar?.name;
+  #|     return typeof name === "string" ? name : undefined;
+  #|   };
+  #|   const direct = read(p);
+  #|   if (typeof direct === "string") return direct;
+  #|   let cur = p?.type;
+  #|   let steps = 0;
+  #|   while (cur && steps < 32) {
+  #|     const got = read(cur);
+  #|     if (typeof got === "string") return got;
+  #|     cur = cur.baseScalar;
+  #|     steps++;
+  #|   }
+  #|   return undefined;
   #| }
 
 ///|
@@ -402,15 +500,75 @@ extern "js" fn is_bytes_scalar_like(type_ : JsValue) -> Bool =
   #| }
 
 ///|
+extern "js" fn is_duration_scalar_like(type_ : JsValue) -> Bool =
+  #| (type_) => {
+  #|   let cur = type_;
+  #|   let steps = 0;
+  #|   while (cur && steps < 32) {
+  #|     if (cur.kind === "Scalar" && cur.name === "duration") return true;
+  #|     cur = cur.baseScalar;
+  #|     steps++;
+  #|   }
+  #|   return false;
+  #| }
+
+///|
+extern "js" fn is_utc_datetime_scalar_like(type_ : JsValue) -> Bool =
+  #| (type_) => {
+  #|   let cur = type_;
+  #|   let steps = 0;
+  #|   while (cur && steps < 32) {
+  #|     if (cur.kind === "Scalar" && cur.name === "utcDateTime") return true;
+  #|     cur = cur.baseScalar;
+  #|     steps++;
+  #|   }
+  #|   return false;
+  #| }
+
+///|
+extern "js" fn is_offset_datetime_scalar_like(type_ : JsValue) -> Bool =
+  #| (type_) => {
+  #|   let cur = type_;
+  #|   let steps = 0;
+  #|   while (cur && steps < 32) {
+  #|     if (cur.kind === "Scalar" && cur.name === "offsetDateTime") return true;
+  #|     cur = cur.baseScalar;
+  #|     steps++;
+  #|   }
+  #|   return false;
+  #| }
+
+///|
+extern "js" fn is_plain_date_scalar_like(type_ : JsValue) -> Bool =
+  #| (type_) => {
+  #|   let cur = type_;
+  #|   let steps = 0;
+  #|   while (cur && steps < 32) {
+  #|     if (cur.kind === "Scalar" && cur.name === "plainDate") return true;
+  #|     cur = cur.baseScalar;
+  #|     steps++;
+  #|   }
+  #|   return false;
+  #| }
+
+///|
+extern "js" fn is_plain_time_scalar_like(type_ : JsValue) -> Bool =
+  #| (type_) => {
+  #|   let cur = type_;
+  #|   let steps = 0;
+  #|   while (cur && steps < 32) {
+  #|     if (cur.kind === "Scalar" && cur.name === "plainTime") return true;
+  #|     cur = cur.baseScalar;
+  #|     steps++;
+  #|   }
+  #|   return false;
+  #| }
+
+///|
 extern "js" fn is_string_scalar_like(type_ : JsValue) -> Bool =
   #| (type_) => {
   #|   const names = new Set([
   #|     "string",
-  #|     "duration",
-  #|     "utcDateTime",
-  #|     "offsetDateTime",
-  #|     "plainDate",
-  #|     "plainTime",
   #|     "url",
   #|   ]);
   #|   let cur = type_;

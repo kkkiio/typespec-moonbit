@@ -58,7 +58,7 @@ pub(all) struct StringProperty {
 /// Model DatetimeProperty
 pub(all) struct DatetimeProperty {
   required_property : String
-  nullable_property : @runtime.Nullable[String]
+  nullable_property : @runtime.Nullable[@runtime.UtcDateTime]
 } derive (
   Show,
   ToJson(
@@ -81,7 +81,7 @@ pub(all) struct DatetimeProperty {
 /// Model DurationProperty
 pub(all) struct DurationProperty {
   required_property : String
-  nullable_property : @runtime.Nullable[String]
+  nullable_property : @runtime.Nullable[@runtime.Duration]
 } derive (
   Show,
   ToJson(

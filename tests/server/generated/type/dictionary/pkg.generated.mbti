@@ -74,13 +74,13 @@ pub(open) trait BooleanValueHandler {
 }
 
 pub(open) trait DatetimeValueHandler {
-  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[String, String]
-  async put(Self, group~ : @async.TaskGroup[Unit], Map[String, String]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[String, @typespec-server-runtime.UtcDateTime]
+  async put(Self, group~ : @async.TaskGroup[Unit], Map[String, @typespec-server-runtime.UtcDateTime]) -> Unit
 }
 
 pub(open) trait DurationValueHandler {
-  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[String, String]
-  async put(Self, group~ : @async.TaskGroup[Unit], Map[String, String]) -> Unit
+  async get(Self, group~ : @async.TaskGroup[Unit]) -> Map[String, @typespec-server-runtime.Duration]
+  async put(Self, group~ : @async.TaskGroup[Unit], Map[String, @typespec-server-runtime.Duration]) -> Unit
 }
 
 pub(open) trait Float32ValueHandler {

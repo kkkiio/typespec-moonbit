@@ -3,7 +3,7 @@
 ///|
 /// Model DefaultDatetimeProperty
 pub(all) struct DefaultDatetimeProperty {
-  value : String
+  value : @runtime.UtcDateTime
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -11,7 +11,7 @@ pub(all) struct DefaultDatetimeProperty {
 ///|
 /// Model Rfc3339DatetimeProperty
 pub(all) struct Rfc3339DatetimeProperty {
-  value : String
+  value : @runtime.UtcDateTime
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -19,7 +19,7 @@ pub(all) struct Rfc3339DatetimeProperty {
 ///|
 /// Model Rfc7231DatetimeProperty
 pub(all) struct Rfc7231DatetimeProperty {
-  value : String
+  value : @runtime.UtcDateTime
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -27,7 +27,7 @@ pub(all) struct Rfc7231DatetimeProperty {
 ///|
 /// Model UnixTimestampDatetimeProperty
 pub(all) struct UnixTimestampDatetimeProperty {
-  value : String
+  value : @runtime.UtcDateTime
 } derive(Show, ToJson, @json.FromJson)
 
 ///|
@@ -35,5 +35,5 @@ pub(all) struct UnixTimestampDatetimeProperty {
 ///|
 /// Model UnixTimestampArrayDatetimeProperty
 pub(all) struct UnixTimestampArrayDatetimeProperty {
-  value : Array[String]
+  value : Array[@runtime.UtcDateTime]
 } derive(Show, ToJson, @json.FromJson)

@@ -27,6 +27,7 @@ pub struct HttpParam {
   explode_ : Bool
   array_encoding_ : String?
   bytes_encoding_ : String?
+  encode_wire_type_ : String?
   string_literal_ : String?
 }
 
@@ -226,6 +227,7 @@ pub fn HttpOperation::parameters(self : HttpOperation) -> Iter[HttpParam] {
         explode_,
         array_encoding_: try_get_array_encoding(source),
         bytes_encoding_: try_get_bytes_encoding(source),
+        encode_wire_type_: try_get_encode_wire_type(source),
         string_literal_: try_get_string_literal(source),
       })
     }
@@ -245,6 +247,7 @@ pub fn HttpOperation::parameters(self : HttpOperation) -> Iter[HttpParam] {
       explode_: false,
       array_encoding_: None,
       bytes_encoding_: try_get_bytes_encoding(source),
+      encode_wire_type_: try_get_encode_wire_type(source),
       string_literal_: None,
     })
   }
@@ -397,6 +400,11 @@ pub fn HttpParam::bytes_encoding(self : HttpParam) -> String? {
 }
 
 ///|
+pub fn HttpParam::encode_wire_type(self : HttpParam) -> String? {
+  self.encode_wire_type_
+}
+
+///|
 pub fn HttpParam::string_literal(self : HttpParam) -> String? {
   self.string_literal_
 }
@@ -477,6 +485,11 @@ pub fn try_get_bytes_encoding(p : JsValue) -> String? {
 }
 
 ///|
+pub fn try_get_encode_wire_type(p : JsValue) -> String? {
+  try_get_encode_wire_type_ffi(p)
+}
+
+///|
 fn try_get_string_literal(p : JsValue) -> String? {
   try_get_string_literal_ffi(p)
 }
@@ -503,6 +516,30 @@ extern "js" fn try_get_bytes_encoding_ffi(p : JsValue) -> String? =
   #|   const v = enc?.args?.[0]?.value;
   #|   const member = v?.value?.symbol?.name ?? v?.value?.name ?? v?.value?.enumMember?.name;
   #|   return typeof member === "string" ? member : undefined;
+  #| }
+
+///|
+extern "js" fn try_get_encode_wire_type_ffi(p : JsValue) -> String? =
+  #| (p) => {
+  #|   const read = (node) => {
+  #|     const decs = node?.decorators;
+  #|     if (!Array.isArray(decs)) return undefined;
+  #|     const enc = decs.find((d) => d?.decorator?.name === "$encode");
+  #|     const arg = enc?.args?.[1]?.value;
+  #|     const name = arg?.name ?? arg?.value?.name ?? arg?.scalar?.name;
+  #|     return typeof name === "string" ? name : undefined;
+  #|   };
+  #|   const direct = read(p);
+  #|   if (typeof direct === "string") return direct;
+  #|   let cur = p?.type;
+  #|   let steps = 0;
+  #|   while (cur && steps < 32) {
+  #|     const got = read(cur);
+  #|     if (typeof got === "string") return got;
+  #|     cur = cur.baseScalar;
+  #|     steps++;
+  #|   }
+  #|   return undefined;
   #| }
 
 ///|

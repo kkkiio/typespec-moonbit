@@ -1,5 +1,6 @@
 import {
   "moonbitlang/async",
+  "kkkiio/typespec-client-runtime" @runtime,
   "kkkiio/typespec-tests/client/generated/special-headers/conditional-request" @special_headers_conditional_request,
   "kkkiio/typespec-tests/client/generated/special-headers/repeatability" @special_headers_repeatability,
 } for "test"
